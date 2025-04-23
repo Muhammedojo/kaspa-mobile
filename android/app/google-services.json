@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "666698748473",
+    "project_id": "kaspa-38f73",
+    "storage_bucket": "kaspa-38f73.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666698748473:android:1bee8cc43a36f002bef3e8",
+        "android_client_info": {
+          "package_name": "com.kaspa.kaspa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkeGu8K9Sq4dgDPelR7DTBDBNaiAEs0mM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
