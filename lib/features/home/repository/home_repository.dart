@@ -6,6 +6,7 @@ import '../../../core/data/model/cooperative.dart';
 import '../../../core/data/model/crop.dart';
 import '../../../core/data/model/lga.dart';
 import '../../../core/data/model/livestock.dart';
+import '../../../core/data/model/user.dart';
 import '../../../core/data/model/ward.dart';
 import '../../../core/storage/istorage.dart';
 import 'home_repository_contract.dart';
@@ -81,4 +82,8 @@ class HomeRepository implements IHomeRepository {
       localStorage.saveLivestock(livestockList);
   @override
   Future<void> saveWard(List<Ward> wardList) => localStorage.saveWard(wardList);
+ @override
+  Future<void> saveUser(List<User> usersList) => localStorage.saveUser(usersList);
+
+
 }

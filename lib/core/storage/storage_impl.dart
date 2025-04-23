@@ -4,6 +4,7 @@ import '../data/model/crop.dart';
 import '../data/model/lga.dart';
 import '../data/model/livestock.dart';
 import '../data/model/login.dart';
+import '../data/model/user.dart';
 import '../data/model/ward.dart';
 import 'istorage.dart';
 
@@ -78,6 +79,10 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveLivestock(List<Livestock> objectList) =>
       databaseStorage.saveLivestock(objectList);
+
+        @override
+  Future<void> saveUser(List<User> objectList) =>
+      databaseStorage.saveUser(objectList);
 
   @override
   Future<void> saveWard(List<Ward> objectList) =>

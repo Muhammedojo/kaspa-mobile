@@ -7,6 +7,7 @@ import 'package:kaspa/core/data/model/livestock.dart';
 import 'package:kaspa/core/data/model/ward.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../data/model/cooperative.dart';
+import '../../data/model/user.dart';
 import '../istorage.dart';
 import 'package:isar/isar.dart';
 
@@ -188,6 +189,18 @@ class IsarImpl implements DatabaseStorage {
       await _isar.writeTxn(() => _isar.livestocks.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving livestock: $e");
+    }
+  }
+
+   @override
+  Future<void> saveUser(List<User> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.users.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving user: $e");
     }
   }
 

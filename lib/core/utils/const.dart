@@ -223,6 +223,7 @@ const KEY_IS_VERIFIED = "is_verified";
 const KEY_LOGO = "logo";
 const KEY_REDEMPTION_CENTRE = "redemption_centre";
 const KEY_ROLE = "role";
+const KEY_ROLES = "roles";
 const KEY_PHONE_NUMBER = "phone_number";
 const KEY_RELATIONSHIP = "relationship";
 const KEY_AGRO_DEALER_PHONE_NUMBER = "agro_dealer_number";
@@ -311,6 +312,7 @@ const KEY_IS_CONFIRMED = "is_confirmed";
 const KEY_REJECTION_NOTE = "rejection_note";
 const KEY_UNIT_IN_BAGS = "unit_in_bags";
 const KEY_STATUS = "status";
+const KEY_DEACTIVATION_REASON = "deactivation_reason";
 const KEY_PRIMARY_CROP = "primary_crop_id";
 const KEY_SECONDARY_CROP = "secondary_crop";
 const KEY_WARD_OF_RESIDENCE = "ward_of_residence";
@@ -416,7 +418,7 @@ const KEY_FARM_LONGITUDE = "farm_longitude";
 const KEY_FARM_LATITUDE = "farm_latitude";
 const KEY_EDUCATION_QUALIFICATION = "education_qualification";
 const KEY_PASSPORT_PIC = "passport_pic";
-
+const KEY_IMAGE_URL = "image_url";
 const KEY_MESSAGE = "message";
 
 const SESSION_KEY_EMAIL = "email";

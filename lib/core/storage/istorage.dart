@@ -4,6 +4,7 @@ import '../data/model/crop.dart';
 import '../data/model/lga.dart';
 import '../data/model/livestock.dart';
 import '../data/model/login.dart';
+import '../data/model/user.dart';
 import '../data/model/ward.dart';
 
 abstract class LocalStorage implements DatabaseStorage, CacheStorage {}
@@ -32,4 +33,6 @@ abstract class DatabaseStorage {
   Future<void> saveLga(List<Lga> objectList);
   Future<void> saveLivestock(List<Livestock> objectList);
   Future<void> saveWard(List<Ward> objectList);
+  Future<void> saveUser(List<User> objectList);
+
 }
