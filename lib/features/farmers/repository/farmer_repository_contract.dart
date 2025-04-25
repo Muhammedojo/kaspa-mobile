@@ -5,4 +5,9 @@ import '../../../core/data/model/farmer.dart';
 
 abstract class IFarmerRepository {
    Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data);
+
+
+    Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList({
+    String? endpoint,
+  });
 }

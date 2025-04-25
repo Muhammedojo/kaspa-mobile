@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../../../core/resources/vectors.dart';
+import 'package:kaspa/features/farmers/presentation/controller/register_farmer.dart';
+import '../../../../core/navigation/navigator.dart';
 import '../../../../core/theme/colors.dart';
 import '../contract/farmer.dart';
-
 
 class FarmerView extends StatelessWidget implements FarmerViewContract {
   const FarmerView({super.key, required this.controller});
@@ -17,10 +16,8 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
       backgroundColor: AppColors.primaryBackground,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryGreen,
-        onPressed: () {},
-        child: SvgPicture.asset(
-          AppIcon.solidHome,
-        ),
+        onPressed: () => pushTo(RegisterFarmerScreen(), context),
+        child: Icon(Icons.add, color: AppColors.primaryBackground),
       ),
       body: _body(),
     );
@@ -28,14 +25,15 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
 
   Widget _body() {
     return SafeArea(
-        child: SingleChildScrollView(
-      child: Padding(
-        padding: REdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: REdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [Text('dfhshjfdgfdudfj')],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

@@ -28,12 +28,6 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getCooperativeList(endpoint);
 
-    @override
-  Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList({
-    String? endpoint,
-  }) => apiServices.getFarmerList(endpoint);
-
-
   @override
   Future<Either<Failure, ApiResponse<List<Lga>>>> getLgaList({
     String? endpoint,
@@ -94,6 +88,4 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveUser(List<User> usersList) =>
       localStorage.saveUser(usersList);
-
-
 }

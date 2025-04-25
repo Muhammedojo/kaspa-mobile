@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../agronomy/presentation/controller/agronomy.dart';
+import '../../../farmers/presentation/controller/farmer.dart';
+import '../../../insights/presentation/controller/insight.dart';
 import '../contract/home.dart';
 import '../view/home.dart';
 import 'homepage.dart';
@@ -22,12 +25,9 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   List<Widget> widgetOptions = <Widget>[
     HomePageScreen(),
-    HomePageScreen(),
-    HomePageScreen(),
-    HomePageScreen(),
-    // FarmerScreen(),
-    // AgronomyScreen(),
-    // InsightScreen(),
+    FarmerScreen(),
+    AgronomyScreen(),
+    InsightScreen(),
   ];
 
   @override

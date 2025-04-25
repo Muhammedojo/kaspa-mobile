@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import '../data/model/forgot_password.dart';
@@ -218,5 +219,15 @@ class ApiServicesImpl implements ApiServices {
       null,
       headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
     );
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async{
+    FormData formData = FormData.fromMap({});
+    return apiClient.multipartRequest<Farmer>(
+        registerFarmerEndpoint,
+        MethodType.post,
+        (data, {String? realUri}) => Farmer.fromJson(data),
+        formData);
   }
 }

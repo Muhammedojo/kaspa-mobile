@@ -50,4 +50,6 @@ abstract class ApiServices {
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList(
     String? endpoint,
   );
+
+   Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data);
 }

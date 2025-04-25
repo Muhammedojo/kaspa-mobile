@@ -17,6 +17,15 @@ import '../../core/storage/database/isar_impl.dart';
 import '../../core/storage/istorage.dart';
 import '../../core/storage/storage_impl.dart';
 import '../../features/auth/presentation/bloc/auth/auth_cubit.dart';
+import '../../features/auth/presentation/bloc/user/user_cubit.dart';
+import '../../features/auth/repository/auth_repository.dart';
+import '../../features/auth/repository/auth_repository_contract.dart';
+import '../../features/farmers/presentation/bloc/bloc.dart';
+import '../../features/farmers/repository/farmer_repository.dart';
+import '../../features/farmers/repository/farmer_repository_contract.dart';
+import '../../features/home/presentation/bloc/bloc.dart';
+import '../../features/home/repository/home_repository.dart';
+import '../../features/home/repository/home_repository_contract.dart';
 
 class AppInitializer {
   static late GetIt instanceLocator;
@@ -64,47 +73,98 @@ class AppInitializer {
   }
 
   static initBlocs() {
-    instanceLocator.registerLazySingleton<AuthCubit>(() => AuthCubit(
-          repository: instanceLocator(),
-        ));
+    instanceLocator.registerLazySingleton<AuthCubit>(
+      () => AuthCubit(repository: instanceLocator()),
+    );
+
+    instanceLocator.registerLazySingleton<CreateFarmerCubit>(
+      () => CreateFarmerCubit(repository: instanceLocator()),
+    );
+
+    instanceLocator.registerLazySingleton<BankCubit>(
+      () => BankCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<CropCubit>(
+      () => CropCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<CooperativeCubit>(
+      () => CooperativeCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<LgaCubit>(
+      () => LgaCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<LivestockCubit>(
+      () => LivestockCubit(repository: instanceLocator()),
+    );
+
+    instanceLocator.registerLazySingleton<GetFarmersCubit>(
+      () => GetFarmersCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<UserCubit>(
+      () => UserCubit(repository: instanceLocator()),
+    );
   }
 
   static initRepos() {
-    // instanceLocator.registerLazySingleton<IAuthRepository>(
-    //   () => AuthRepository(
-    //     localStorage: instanceLocator(),
-    //     apiServices: instanceLocator(),
-    //   ),
-    // );
-    // instanceLocator.registerLazySingleton<IFarmerRepository>(
-    //   () => FarmerRepository(
-    //     localStorage: instanceLocator(),
-    //     apiServices: instanceLocator(),
-    //   ),
-    // );
-    // instanceLocator.registerLazySingleton<IHomeRepository>(
-    //   () => HomeRepository(
-    //       localStorage: instanceLocator(), apiServices: instanceLocator()),
-    // );
+    instanceLocator.registerLazySingleton<IAuthRepository>(
+      () => AuthRepository(
+        localStorage: instanceLocator(),
+        apiServices: instanceLocator(),
+      ),
+    );
+    instanceLocator.registerLazySingleton<IFarmerRepository>(
+      () => FarmerRepository(
+        localStorage: instanceLocator(),
+        apiServices: instanceLocator(),
+      ),
+    );
+    instanceLocator.registerLazySingleton<IHomeRepository>(
+      () => HomeRepository(
+        localStorage: instanceLocator(),
+        apiServices: instanceLocator(),
+      ),
+    );
   }
 
   static initLocalDataSources() {
     //data sources
-    instanceLocator
-        .registerLazySingleton<CacheStorage>(() => SharedPreferenceImpl());
-    instanceLocator.registerLazySingleton<DatabaseStorage>(
-      () => IsarImpl(),
+    instanceLocator.registerLazySingleton<CacheStorage>(
+      () => SharedPreferenceImpl(),
     );
+    instanceLocator.registerLazySingleton<DatabaseStorage>(() => IsarImpl());
     instanceLocator.registerSingleton<LocalStorage>(
       LocalStorageImpl(
-          cacheStorage: instanceLocator(), databaseStorage: instanceLocator()),
+        cacheStorage: instanceLocator(),
+        databaseStorage: instanceLocator(),
+      ),
     );
   }
 
   static initRemoteDataSources() {
     //remote data sources
-    instanceLocator
-        .registerLazySingleton<NetworkInfo>(() => NetworkInfoImplementation());
+    instanceLocator.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImplementation(),
+    );
     instanceLocator.registerLazySingleton<LocalAuth>(() => LocalAuthImpl());
     instanceLocator.registerLazySingleton<IApiClient>(
       () => DioClient(instanceLocator()),
@@ -126,9 +186,15 @@ class AppInitializer {
 
   static initGlobalVariables() {
     instanceLocator.registerSingleton<String>(
-        instanceName: "accessToken", "", signalsReady: true);
+      instanceName: "accessToken",
+      "",
+      signalsReady: true,
+    );
     instanceLocator.registerSingleton<int>(
-        instanceName: "userId", 0, signalsReady: true);
+      instanceName: "userId",
+      0,
+      signalsReady: true,
+    );
   }
 
   static void disposeInstance<T extends Bloc>(T blocInstance) {
