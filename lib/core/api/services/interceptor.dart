@@ -13,7 +13,7 @@ class DioClientInterceptor extends Interceptor {
     var bearerToken =
         AppInitializer.instanceLocator.get<String>(instanceName: 'accessToken');
     if (bearerToken.isEmpty) {
-      final user = await GetIt.I.get<LocalStorage>().getUser();
+      final user = await GetIt.I.get<LocalStorage>().getLoggedInUser();
       bearerToken = user.token ?? "";
     }
     if (bearerToken.isNotEmpty) {

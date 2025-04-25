@@ -17,6 +17,7 @@ const livestockListEndpoint = "livestocks";
 const lgaListEndpoint = "locations/lgas";
 const wardListEndpoint = "locations/wards";
 const bankListEndpoint = "banks";
+const userListEndpoint = "users";
 
 
 

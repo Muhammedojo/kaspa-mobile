@@ -1,6 +1,7 @@
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
+import '../data/model/last_request_time.dart';
 import '../data/model/lga.dart';
 import '../data/model/livestock.dart';
 import '../data/model/login.dart';
@@ -18,10 +19,24 @@ class LocalStorageImpl implements LocalStorage {
   });
 
   @override
+  void saveLastRequestObject(LastRequestTime object) =>
+      cacheStorage.saveLastRequestObject(object);
+  @override
+  Future<LastRequestTime> getLastRequestTime() =>
+      cacheStorage.getLastRequestTime();
+
+  @override
+  Future<Map<String, dynamic>> getLastRequestTimeMap() =>
+      cacheStorage.getLastRequestTimeMap();
+
+  @override
+  void saveLoggedInUser(Login user) => cacheStorage.saveLoggedInUser(user);
+
+  @override
   Future<void> closeDb() => databaseStorage.closeDb();
 
   @override
-  Future<Login> getUser() => cacheStorage.getUser();
+  Future<Login> getLoggedInUser() => cacheStorage.getLoggedInUser();
 
   @override
   Future<void> setUsername(String value) => cacheStorage.setUsername(value);
@@ -47,13 +62,17 @@ class LocalStorageImpl implements LocalStorage {
   Future<List<Crop>> getCrop() => databaseStorage.getCrop();
 
   @override
-  Future<List<Cooperative>> getCooperative() => databaseStorage.getCooperative();
+  Future<List<Cooperative>> getCooperative() =>
+      databaseStorage.getCooperative();
 
   @override
   Future<List<Lga>> getLga() => databaseStorage.getLga();
 
   @override
   Future<List<Livestock>> getLivestock() => databaseStorage.getLivestock();
+
+  @override
+  Future<List<User>> getUser() => databaseStorage.getUser();
 
   @override
   Future<List<Ward>> getWard() => databaseStorage.getWard();
@@ -68,7 +87,7 @@ class LocalStorageImpl implements LocalStorage {
   Future<void> saveCrop(List<Crop> objectList) =>
       databaseStorage.saveCrop(objectList);
 
-      @override
+  @override
   Future<void> saveCooperative(List<Cooperative> objectList) =>
       databaseStorage.saveCooperative(objectList);
 
@@ -80,7 +99,7 @@ class LocalStorageImpl implements LocalStorage {
   Future<void> saveLivestock(List<Livestock> objectList) =>
       databaseStorage.saveLivestock(objectList);
 
-        @override
+  @override
   Future<void> saveUser(List<User> objectList) =>
       databaseStorage.saveUser(objectList);
 

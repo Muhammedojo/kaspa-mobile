@@ -36,7 +36,7 @@ class AuthRepository implements IAuthRepository {
   Future<void> closeDb() => localStorage.closeDb();
 
   @override
-  Future<Login> getUser() => localStorage.getUser();
+  Future<Login> getUser() => localStorage.getLoggedInUser();
 
   @override
   Future<void> setRememberMe(bool value) => localStorage.setRememberMe(value);

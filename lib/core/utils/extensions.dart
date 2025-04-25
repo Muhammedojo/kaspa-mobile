@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:substring_highlight/substring_highlight.dart';
+import 'date_utils.dart';
 
 extension StringExtension on String {
   SubstringHighlight toText(
@@ -88,6 +89,12 @@ extension StringExtension on String {
     return DateFormat('d MMM y hh:mm aa', locale.languageCode)
         .format(DateTime.parse(this));
   }
+}
+
+String currentDateTime() {
+  var now = DateTime.now();
+  String formattedDate = DateAndTimeUtil.serverDateFormat.format(now);
+  return formattedDate;
 }
 
 extension NumExtension on num {

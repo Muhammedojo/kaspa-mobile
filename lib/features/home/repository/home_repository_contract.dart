@@ -6,6 +6,7 @@ import '../../../core/data/model/cooperative.dart';
 import '../../../core/data/model/crop.dart';
 import '../../../core/data/model/lga.dart';
 import '../../../core/data/model/livestock.dart';
+import '../../../core/data/model/user.dart';
 import '../../../core/data/model/ward.dart';
 
 abstract class IHomeRepository {
@@ -55,6 +56,15 @@ abstract class IHomeRepository {
   Future<void> saveLivestock(List<Livestock> livestockList);
 
   Future<List<Livestock>> getLivestock();
+
+  //USER CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<User>>>> getUserList({
+    String? endpoint,
+  });
+
+  Future<void> saveUser(List<User> wardList);
+
+  Future<List<User>> getUser();
 
   //WARD CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList({

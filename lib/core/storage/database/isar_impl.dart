@@ -118,6 +118,20 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
+    @override
+  Future<List<User>> getUser() {
+    if (!_isar.isOpen) {
+      return Future.value(<User>[]);
+    }
+    try {
+      final users = _isar.users.where().findAllSync();
+      return Future.value(users);
+    } catch (e) {
+      debugPrint("Error retrieving users: $e");
+      return Future.value(<User>[]);
+    }
+  }
+
   @override
   Future<List<Ward>> getWard() {
     if (!_isar.isOpen) {
@@ -131,6 +145,7 @@ class IsarImpl implements DatabaseStorage {
       return Future.value(<Ward>[]);
     }
   }
+
 
   @override
   Future<void> saveBank(List<Bank> objectList) async {
@@ -215,4 +230,6 @@ class IsarImpl implements DatabaseStorage {
       debugPrint("Error saving ward: $e");
     }
   }
+
+
 }

@@ -1,13 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
-import '../../../core/data/model/bank.dart';
-import '../../../core/data/model/cooperative.dart';
-import '../../../core/data/model/crop.dart';
-import '../../../core/data/model/lga.dart';
-import '../../../core/data/model/livestock.dart';
-import '../../../core/data/model/user.dart';
-import '../../../core/data/model/ward.dart';
+import '../../../core/data/model/model.dart';
 import '../../../core/storage/istorage.dart';
 import 'home_repository_contract.dart';
 
@@ -29,10 +23,15 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getCropList(endpoint);
 
-    @override
+  @override
   Future<Either<Failure, ApiResponse<List<Cooperative>>>> getCooperativeList({
     String? endpoint,
   }) => apiServices.getCooperativeList(endpoint);
+
+    @override
+  Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList({
+    String? endpoint,
+  }) => apiServices.getFarmerList(endpoint);
 
 
   @override
@@ -44,6 +43,12 @@ class HomeRepository implements IHomeRepository {
   Future<Either<Failure, ApiResponse<List<Livestock>>>> getLivestockList({
     String? endpoint,
   }) => apiServices.getLivestockList(endpoint);
+
+  @override
+  Future<Either<Failure, ApiResponse<List<User>>>> getUserList({
+    String? endpoint,
+  }) => apiServices.getUserList(endpoint);
+
   @override
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList({
     String? endpoint,
@@ -56,7 +61,7 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<Crop>> getCrop() => localStorage.getCrop();
 
-    @override
+  @override
   Future<List<Cooperative>> getCooperative() => localStorage.getCooperative();
 
   @override
@@ -64,6 +69,9 @@ class HomeRepository implements IHomeRepository {
 
   @override
   Future<List<Livestock>> getLivestock() => localStorage.getLivestock();
+
+  @override
+  Future<List<User>> getUser() => localStorage.getUser();
 
   @override
   Future<List<Ward>> getWard() => localStorage.getWard();
@@ -74,7 +82,8 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveCrop(List<Crop> cropList) => localStorage.saveCrop(cropList);
   @override
-  Future<void> saveCooperative(List<Cooperative> cooperativeList) => localStorage.saveCooperative(cooperativeList);
+  Future<void> saveCooperative(List<Cooperative> cooperativeList) =>
+      localStorage.saveCooperative(cooperativeList);
   @override
   Future<void> saveLga(List<Lga> lgaList) => localStorage.saveLga(lgaList);
   @override
@@ -82,8 +91,9 @@ class HomeRepository implements IHomeRepository {
       localStorage.saveLivestock(livestockList);
   @override
   Future<void> saveWard(List<Ward> wardList) => localStorage.saveWard(wardList);
- @override
-  Future<void> saveUser(List<User> usersList) => localStorage.saveUser(usersList);
+  @override
+  Future<void> saveUser(List<User> usersList) =>
+      localStorage.saveUser(usersList);
 
 
 }
