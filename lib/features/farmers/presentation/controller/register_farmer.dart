@@ -101,6 +101,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
   @override
   void clearScreen() {
+    setState(() {
     firstNameController.clear();
     lastNameController.clear();
     phoneNumberController.clear();
@@ -112,6 +113,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     nokAddressController.clear();
     nokRelationshipController.clear();
     bankController.clear();
+    });
   }
 
   @override
