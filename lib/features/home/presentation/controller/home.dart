@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/utils/global_variables.dart';
 import '../../../agronomy/presentation/controller/agronomy.dart';
 import '../../../farmers/presentation/controller/farmer.dart';
 import '../../../insights/presentation/controller/insight.dart';
+import '../bloc/api_request/api_request_bloc.dart';
 import '../contract/home.dart';
 import '../view/home.dart';
 import 'homepage.dart';
@@ -42,24 +45,24 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // loadDataFromServer();
+       loadDataFromServer();
     });
     view = HomeView(controller: this);
   }
 
-  // @override
-  // loadDataFromServer() async {
-  //   var hasUserLoggedInBefore = true;
-  //   if (hasUserLoggedInBefore) {
-  //     setState(() {
-  //       GlobalVariables()
-  //           .selectedSyncItems
-  //           .addAll(GlobalVariables().syncItemList);
-  //     });
-  //     context.read<ApiRequestBloc>().add(
-  //         ApiRequestTriggered(apiRequestList: GlobalVariables().syncItemList));
-  //   }
-  // }
+  @override
+  loadDataFromServer() async {
+    var hasUserLoggedInBefore = true;
+    if (hasUserLoggedInBefore) {
+      setState(() {
+        GlobalVariables
+            .selectedSyncItems
+            .addAll(GlobalVariables().syncItemList);
+      });
+      context.read<ApiRequestBloc>().add(
+          ApiRequestTriggered(apiRequestList: GlobalVariables().syncItemList));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

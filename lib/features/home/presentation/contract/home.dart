@@ -6,7 +6,7 @@ abstract class HomeControllerContract {
   void onItemTapped(int index);
   int selectedIndex = 0;
   late List<Widget> widgetOptions;
-  //loadDataFromServer();
+  loadDataFromServer();
 }
 
 abstract class HomeViewContract extends BaseViewContract {}

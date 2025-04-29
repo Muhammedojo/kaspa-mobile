@@ -17,6 +17,8 @@ abstract class CacheStorage {
   Future<void> setUsername(String value);
   Future<String?> getUsername();
   void saveLoggedInUser(Login user);
+  Future<void> setLoggedIn(bool status);
+  Future<bool?> isLoggedIn();
   Future<LastRequestTime> getLastRequestTime();
   void saveLastRequestObject(LastRequestTime object);
   Future<Map<String, dynamic>> getLastRequestTimeMap();

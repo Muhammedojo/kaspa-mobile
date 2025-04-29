@@ -308,7 +308,6 @@ const KEY_DETAIL = "detail";
 
 const KEY_REQUEST_ID = "request_id";
 const KEY_TID = "tid";
-const KEY_AGRO_DEALER_NAME = "agro_dealer_name";
 const KEY_PRODUCT_NAME = "product_name";
 
 const KEY_SUBSIDIZED_PRICE = "subsidized_price";
@@ -377,6 +376,10 @@ const KEY_LOCATION_ID = "location_id";
 const KEY_LOCATION_CODE = "location_code";
 const KEY_ITEM_TYPE = "item_type";
 const KEY_TOTAL_DEDUCTION = "total_deduction";
+
+const KEY_ACCESS_TOKEN = "access_token";
+const KEY_FULL_NAME = "full_name";
+const KEY_USER_TYPE = "user_type";
 
 const KEY_CID = "cid";
 const KEY_ATTACHED_OMS_LIST = "attached_oms_list";

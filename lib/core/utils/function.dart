@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaspa/core/utils/extensions.dart';
+
+import '../component/welcome_dialog_widget.dart';
 
 
 class Utils {
@@ -20,6 +23,16 @@ class Utils {
             size: 25.sp,
           )),
     );
+  }
+
+   static showToastError(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => WelcomeDialog(
+            title: "error".tr(),
+            message: message,
+            image: "assets/images/error.png",
+            onTap: () => closeDialog(context)));
   }
 
   static showConfirmationDialog(

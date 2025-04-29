@@ -41,6 +41,12 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> setUsername(String value) => cacheStorage.setUsername(value);
 
+   @override
+  Future<void> setLoggedIn(bool status) => cacheStorage.setLoggedIn(status);
+
+  @override
+  Future<bool?> isLoggedIn() => cacheStorage.isLoggedIn();
+
   @override
   Future<String?> getUsername() => cacheStorage.getUsername();
 

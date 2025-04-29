@@ -40,6 +40,20 @@ class SharedPreferenceImpl implements CacheStorage {
   }
 
   @override
+  Future<bool?> isLoggedIn() {
+    return SharedPreferences.getInstance().then((value) async {
+      return value.getBool(KEY_IS_USER_LOGGED_IN);
+    });
+  }
+
+  @override
+  Future<void> setLoggedIn(bool status) async {
+    return SharedPreferences.getInstance().then((value) async {
+      await value.setBool(KEY_IS_USER_LOGGED_IN, status);
+    });
+  }
+
+  @override
   Future<void> setRememberMe(bool value) async {
     await _getPrefs().then((pref) {
       pref.setBool(KEY_REMEMBER_ME, value);

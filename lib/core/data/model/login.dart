@@ -8,8 +8,10 @@ class Login {
   String? fullname;
   String? username;
   String? email;
+  String? userType;
+
   String? token;
-  String? role;
+  List<int>? roles;
   List<String>? permissions = [];
   String? status;
   String? registrationDate;
@@ -33,7 +35,31 @@ class Login {
 Login _$LoginFromJson(Map<String, dynamic> json) {
   var obj = Login();
 
-  obj.token = json[KEY_TOKEN];
+  obj.token = json[KEY_ACCESS_TOKEN];
+  obj.fullname = json[KEY_FULL_NAME];
+  obj.username = json[KEY_USERNAME];
+  obj.userType = json[KEY_USER_TYPE];
+
+
+  List<int> roles = [];
+  if (json.containsKey(KEY_ROLES)) {
+    var list = json[KEY_ROLES] as List;
+    for (var int in list) {
+      roles.add(int);
+    }
+  }
+  obj.roles = roles;  
+
+    List<String> perms = [];
+  if (json.containsKey(KEY_PERMISSIONS)) {
+    var list = json[KEY_PERMISSIONS] as List;
+    for (var str in list) {
+      perms.add(str);
+    }
+  }
+  obj.permissions = perms;
+
+
 
   return obj;
 }
