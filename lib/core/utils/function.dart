@@ -31,7 +31,7 @@ class Utils {
         builder: (BuildContext context) => WelcomeDialog(
             title: "error".tr(),
             message: message,
-            image: "assets/images/error.png",
+           // image: "assets/images/error.png",
             onTap: () => closeDialog(context)));
   }
 
@@ -84,7 +84,11 @@ class Utils {
     Navigator.of(context, rootNavigator: true).pop('dialog');
   }
 
-  String getInitials(String name) {
+   String getInitials(String? name) {
+    
+    if (name == null || name.trim().isEmpty) {
+      return ''; 
+    }
     List<String> nameParts = name.split(' ');
 
     String initials = '';

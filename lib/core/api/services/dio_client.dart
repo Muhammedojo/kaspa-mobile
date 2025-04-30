@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import '../exceptions/api_ecxeption.dart';
+import '../exceptions/api_exception.dart';
 import '../exceptions/contracts/failure.dart';
 import '../network/network_info.dart';
 import 'api_response_impl.dart';
@@ -22,7 +22,7 @@ class DioClient implements IApiClient {
 
   @override
   setToken(String token) {
-    _dio.options.headers['Authorization'] = 'WB3 $token';
+    _dio.options.headers['Authorization'] = token;
   }
 
   @override
@@ -37,7 +37,6 @@ class DioClient implements IApiClient {
 
   DioClient(this.networkInfo) {
     _dio = Dio(
-      // BaseOptions(baseUrl: env.baseUrl)
       BaseOptions(
         baseUrl: baseApi,
         headers: {
@@ -46,13 +45,11 @@ class DioClient implements IApiClient {
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(minutes: 1),
         sendTimeout: const Duration(minutes: 1),
-        // followRedirects: true,
       ),
     )
       ..options.connectTimeout = const Duration(seconds: 60)
       ..options.receiveTimeout = const Duration(seconds: 60)
       ..options.sendTimeout = const Duration(seconds: 60)
-      // ..interceptors.add(DioFirebasePerformanceInterceptor())
       ..interceptors.add(
         PrettyDioLogger(
             requestHeader: true,
@@ -81,7 +78,7 @@ class DioClient implements IApiClient {
 
       _cancelToken = CancelToken();
       Response response;
-      // if (await networkInfo.isConnected()) {
+
       switch (method) {
         case MethodType.post:
           response = await _dio.post(
@@ -97,6 +94,7 @@ class DioClient implements IApiClient {
             url,
             data: params,
             queryParameters: queryParameters,
+            options: Options(headers: headerOption), 
             cancelToken: _cancelToken,
           );
           break;
@@ -105,14 +103,16 @@ class DioClient implements IApiClient {
             url,
             data: params,
             queryParameters: queryParameters,
+            options: Options(headers: headerOption), // Added headerOption
             cancelToken: _cancelToken,
           );
           break;
         case MethodType.get:
           response = await _dio.get(
             url,
-            data: params,
+            data: params, // Note: GET requests typically use queryParameters, not data body
             queryParameters: queryParameters,
+            options: Options(headers: headerOption), // Added headerOption
             cancelToken: _cancelToken,
           );
           break;
@@ -121,63 +121,69 @@ class DioClient implements IApiClient {
             url,
             data: params,
             queryParameters: queryParameters,
+            options: Options(headers: headerOption), // Added headerOption
             cancelToken: _cancelToken,
           );
           break;
       }
-      if (response.data != null && response.data.containsKey('responseCode')) {
-        if (_isRequestSuccessful(
-            response.statusCode.toString(), response.data['responseCode'])) {
-          return response.data.containsKey("data")
-              ? (response.data.containsKey("count")
-                  ? right(ApiResponseImpl<T>(
-                      fromJson(response.data['data']),
-                      response.data['errors'] ?? response.data['detail'] ?? '',
-                      response.data['message'] ?? '',
-                      response.data['responseCode'] ?? '',
-                      count: response.data['count'] ?? '',
-                      next: response.data['next'] ?? '',
-                      previous: response.data['prev'] ?? '',
-                    ))
-                  : right(ApiResponseImpl<T>(
-                      fromJson(response.data['data']),
-                      response.data['errors'] ?? response.data['detail'] ?? '',
-                      response.data['message'] ?? '',
-                      response.data['responseCode'] ?? '500',
-                      count: response.data['count'] ?? 0,
-                      next: response.data['next'] ?? '',
-                      previous: response.data['prev'] ?? '',
-                    )))
-              : right(ApiResponseImpl<T>(
-                  fromJson(response.data),
-                  response.data['errors'] ?? response.data['detail'] ?? '',
-                  response.data['message'] ?? '',
-                  response.data['responseCode'] ?? 100,
-                  count: 0,
-                  next: response.data['next'] ?? '',
-                  previous: response.data['prev'] ?? '',
-                ));
+
+      // Check for successful HTTP status codes first
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = response.data;
+        if (responseData != null) {
+          // Check if the API indicates success via responseCode (if present)
+          final String responseCode = responseData['responseCode']?.toString() ?? '100'; // Default to success if no code
+          final bool isApiSuccess = _isRequestSuccessful(response.statusCode.toString(), responseCode);
+
+          if (isApiSuccess) {
+            // Determine where the actual data payload is
+            dynamic dataPayload = responseData.containsKey('data') ? responseData['data'] : responseData;
+
+            // Handle cases where the payload might be null unexpectedly after checks
+            if (dataPayload == null) {
+               return left(ServerFailure(message: "Successful response but data payload is null."));
+            }
+
+            return right(ApiResponseImpl<T>(
+              fromJson(dataPayload, realUri: response.realUri.toString()),
+              responseData['errors'] ?? responseData['detail'],
+              responseData['message'],
+              responseCode,
+              count: responseData['count'] ?? responseData['total'],
+              next: responseData['next'] ?? responseData['next_page_url'],
+              previous: responseData['prev'] ?? responseData['prev_page_url'], // Assuming 'prev' is the key for previous URL
+            ));
+          } else {
+            // API returned 2xx status but responseCode indicates failure
+            return left(ValidationFailure(_formatApiErrorMessage(
+                responseData['errors'] ?? responseData['detail'],
+                responseData['message'] ?? 'API indicated failure despite 2xx status.')));
+          }
+        } else {
+          // Successful status code but null response body
+          return left(ServerFailure(message: "Successful response with null body."));
         }
       }
 
-      return response.data != null &&
-              (response.data.containsKey('errors') ||
-                  response.data.containsKey('detail'))
-          ? left(ValidationFailure(_formatApiErrorMessage(
-              response.data['errors'] ?? response.data['detail'],
-              response.data['message'])))
-          : left(ServerFailure());
+      // Handle non-2xx responses (errors)
+      return left(_handleErrorResponse(response));
+
     } on DioException catch (dioError) {
       return left(_handleDioError(dioError));
+    } finally {
+       // Ensure interceptor is removed if it was added
+       if (authInterceptor != null) {
+         _dio.interceptors.remove(authInterceptor);
+       }
     }
   }
 
   @override
   Future<Either<Failure, ApiResponse<T>>> multipartRequest<T>(
       String url,
-      MethodType method,
+      MethodType method, // MethodType might not be needed if always POST
       T Function(dynamic, {String? realUri}) fromJson,
-      dynamic params,
+      dynamic params, // Should be FormData
       {Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headerOption,
       authInterceptor = const DioClientInterceptor()}) async {
@@ -186,65 +192,124 @@ class DioClient implements IApiClient {
         _dio.interceptors.add(authInterceptor);
       }
       _cancelToken = CancelToken();
-      Response response = await _dio.post(
-        url,
-        data: params,
-        options: Options(headers: {
-          "Content-Type": "multipart/form-data",
-        }),
-        cancelToken: _cancelToken,
+
+      // Ensure headers are correctly set for multipart
+      final options = Options(
+        headers: {
+          ...?headerOption, // Spread existing headers
+          "Content-Type": "multipart/form-data", // Override Content-Type
+        },
       );
 
-      if (response.data != null && response.data.containsKey('responseCode')) {
-        if (_isRequestSuccessful(
-            response.statusCode.toString(), response.data['responseCode'])) {
-          return response.data.containsKey("data")
-              ? (response.data.containsKey("count")
-                  ? right(ApiResponseImpl<T>(
-                      fromJson(response.data['data']),
-                      response.data['errors'] ?? response.data['detail'] ?? '',
-                      response.data['message'] ?? '',
-                      response.data['responseCode'] ?? '',
-                      count: response.data['count'] ?? '',
-                      next: response.data['next'] ?? '',
-                      previous: response.data['prev'] ?? '',
-                    ))
-                  : right(ApiResponseImpl<T>(
-                      fromJson(response.data['data']),
-                      response.data['errors'] ?? response.data['detail'] ?? '',
-                      response.data['message'] ?? '',
-                      response.data['responseCode'] ?? '500',
-                      count: response.data['count'] ?? 0,
-                      next: response.data['next'] ?? '',
-                      previous: response.data['prev'] ?? '',
-                    )))
-              : right(ApiResponseImpl<T>(
-                  fromJson(response.data),
-                  response.data['errors'] ?? response.data['detail'] ?? '',
-                  response.data['message'] ?? '',
-                  response.data['responseCode'] ?? 100,
-                  count: 0,
-                  next: response.data['next'] ?? '',
-                  previous: response.data['prev'] ?? '',
-                ));
+      Response response;
+      // Multipart is typically POST, but handle others if necessary
+       switch (method) {
+         case MethodType.post:
+            response = await _dio.post(
+              url,
+              data: params,
+              queryParameters: queryParameters,
+              options: options,
+              cancelToken: _cancelToken,
+            );
+            break;
+         case MethodType.put: // Example: Handle PUT if needed
+            response = await _dio.put(
+              url,
+              data: params,
+              queryParameters: queryParameters,
+              options: options,
+              cancelToken: _cancelToken,
+            );
+            break;
+         case MethodType.patch: // Example: Handle PATCH if needed
+             response = await _dio.patch(
+              url,
+              data: params,
+              queryParameters: queryParameters,
+              options: options,
+              cancelToken: _cancelToken,
+            );
+            break;
+         default:
+           // Throw an error or return a failure if method is not supported for multipart
+           return left(ServerFailure(message: "Unsupported method type for multipart request: $method"));
+       }
+
+
+     // Check for successful HTTP status codes first
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = response.data;
+        if (responseData != null) {
+          // Check if the API indicates success via responseCode (if present)
+          final String responseCode = responseData['responseCode']?.toString() ?? '100'; // Default to success if no code
+          final bool isApiSuccess = _isRequestSuccessful(response.statusCode.toString(), responseCode);
+
+          if (isApiSuccess) {
+            // Determine where the actual data payload is
+            dynamic dataPayload = responseData.containsKey('data') ? responseData['data'] : responseData;
+
+             // Handle cases where the payload might be null unexpectedly after checks
+            if (dataPayload == null) {
+               return left(ServerFailure(message: "Successful response but data payload is null."));
+            }
+
+            return right(ApiResponseImpl<T>(
+              fromJson(dataPayload, realUri: response.realUri.toString()),
+              responseData['errors'] ?? responseData['detail'],
+              responseData['message'],
+              responseCode,
+              count: responseData['count'] ?? responseData['total'],
+              next: responseData['next'] ?? responseData['next_page_url'],
+              previous: responseData['prev'] ?? responseData['prev_page_url'],
+            ));
+          } else {
+            // API returned 2xx status but responseCode indicates failure
+            return left(ValidationFailure(_formatApiErrorMessage(
+                responseData['errors'] ?? responseData['detail'],
+                responseData['message'] ?? 'API indicated failure despite 2xx status.')));
+          }
+        } else {
+          // Successful status code but null response body
+          return left(ServerFailure(message: "Successful response with null body."));
         }
       }
 
-      return response.data != null &&
-              (response.data.containsKey('errors') ||
-                  response.data.containsKey('detail'))
-          ? left(ValidationFailure(_formatApiErrorMessage(
-              response.data['errors'] ?? response.data['detail'],
-              response.data['message'])))
-          : left(ServerFailure());
+      // Handle non-2xx responses (errors)
+      return left(_handleErrorResponse(response));
+
     } on DioException catch (dioError) {
       return left(_handleDioError(dioError));
+    } finally {
+       // Ensure interceptor is removed if it was added
+       if (authInterceptor != null) {
+         _dio.interceptors.remove(authInterceptor);
+       }
     }
   }
 
-  bool _isRequestSuccessful(String? statusCode, String responseCode) =>
+  // Helper to handle error responses based on content
+  Failure _handleErrorResponse(Response response) {
+     final responseData = response.data;
+     if (responseData != null && responseData is Map && (responseData.containsKey('errors') || responseData.containsKey('detail'))) {
+        return ValidationFailure(_formatApiErrorMessage(
+              responseData['errors'] ?? responseData['detail'],
+              responseData['message']));
+     } else if (response.statusCode == 500 || response.statusCode == 404) {
+        // Try to get a message from response data if it's a map, otherwise use status message
+        String? serverMessage;
+        if (responseData is Map && responseData.containsKey('message')) {
+           serverMessage = responseData['message']?.toString();
+        }
+        return ServerFailure(message: serverMessage ?? "Server error (${response.statusCode})");
+     } else {
+        return ServerFailure(message: "Unhandled error (${response.statusCode}): ${response.statusMessage}");
+     }
+  }
+
+  bool _isRequestSuccessful(String? statusCode, String? responseCode) =>
       (statusCode == '200' || statusCode == '201') &&
-      (responseCode == '100' || responseCode == '200');
+      (responseCode == '100' || responseCode == '200'); // Assuming '100' and '200' are success codes
 
   Failure _handleDioError(DioException error) {
     if (error.error != null && error.error is SocketException) {
@@ -260,28 +325,30 @@ class DioClient implements IApiClient {
         failureType = ConnectionTimeOutFailure();
         break;
       case DioExceptionType.connectionError:
-        failureType = ConnectionFailure();
+         // More specific check for connection refused or host lookup failed
+        if (error.error is SocketException) {
+           final socketError = error.error as SocketException;
+           if (socketError.osError?.message.contains('Connection refused') ?? false) {
+              failureType = ConnectionFailure(message: socketError.message);
+           } else if (socketError.osError?.message.contains('Failed host lookup') ?? false) {
+              failureType = ConnectionFailure(message: socketError.message);
+           } else {
+              failureType = ConnectionFailure(message: socketError.message);
+           }
+        } else {
+           failureType = ConnectionFailure(message: error.message);
+        }
         break;
       case DioExceptionType.badCertificate:
         failureType = BadCertificateFailure();
         break;
       case DioExceptionType.badResponse:
-        if (error.response != null &&
-            (error.response!.statusCode == 500 ||
-                error.response!.statusCode == 404)) {
-          failureType = ServerFailure();
+        if (error.response != null) {
+           // Use the _handleErrorResponse logic for consistency
+           failureType = _handleErrorResponse(error.response!);
         } else {
-          var response = error.response;
-          if (response?.data != null) {
-            if (response?.data.containsKey('errors')) {
-              failureType = ValidationFailure(_formatApiErrorMessage(
-                  response!.data['errors'], response.data['message']));
-            } else {
-              failureType = ValidationFailure(response?.data['message']);
-            }
-          } else {
-            failureType = BadResponseFailure(message: error.message);
-          }
+           // If response is null, it's likely a more fundamental issue
+           failureType = BadResponseFailure(message: error.message ?? "Bad response with no details");
         }
         break;
       case DioExceptionType.receiveTimeout:
@@ -291,61 +358,96 @@ class DioClient implements IApiClient {
         failureType = SendTimeOutFailure();
         break;
       case DioExceptionType.unknown:
-        failureType = ServerFailure();
+         // Provide more context if available from the underlying error
+         final underlyingError = error.error?.toString();
+         failureType = ServerFailure(message: underlyingError ?? error.message ?? "Unknown Dio error");
         break;
     }
-    // if (error.error == null) {
-    //   failureType = BadResponseFailure(message: 'Server');
-    // }
     return failureType;
   }
 
   @override
   Future<Either<Failure, ApiResponse<T>>> download<T>(
-      String url, String fileName, T Function(dynamic p1) fromJson, params,
-      {Map<String, dynamic>? queryParameters}) {
-   
-    throw UnimplementedError();
+      String url, String savePath, T Function(dynamic p1) fromJson, params, // params might not be needed for download
+      {Map<String, dynamic>? queryParameters,
+       ProgressCallback? onReceiveProgress, // Added progress callback
+       authInterceptor = const DioClientInterceptor()}) async {
+     try {
+       if (authInterceptor != null) {
+         _dio.interceptors.add(authInterceptor);
+       }
+       _cancelToken = CancelToken();
+
+       Response response = await _dio.download(
+         url,
+         savePath, // Path where the file will be saved
+         queryParameters: queryParameters,
+         cancelToken: _cancelToken,
+         onReceiveProgress: onReceiveProgress,
+         // options: Options(headers: headerOption), // Add headers if needed
+       );
+
+       // For download, success is usually indicated by status code 200.
+       // The response.data will be null for download requests.
+       if (response.statusCode == 200) {
+         // You might not need fromJson here, as the result is the file path.
+         // If you need to return something specific, adjust accordingly.
+         // Perhaps return the savePath or a custom success object.
+         // Using a placeholder T for now, assuming fromJson handles null or path.
+         return right(ApiResponseImpl<T>(
+           fromJson(savePath), // Pass savePath or handle as needed
+           null, // No errors object expected on successful download
+           'Download successful', // Success message
+           '100', // Success code
+         ));
+       } else {
+         // Handle non-200 responses for download
+         return left(ServerFailure(message: "Download failed with status: ${response.statusCode}"));
+       }
+     } on DioException catch (dioError) {
+       return left(_handleDioError(dioError));
+     } finally {
+       if (authInterceptor != null) {
+         _dio.interceptors.remove(authInterceptor);
+       }
+     }
   }
 
   @override
   void removeToken() {
-   
+    // Alias for clearToken for potentially different semantic meaning if needed
+    clearToken();
   }
 }
 
-class ApiResponseData<T> {
-  final T? data;
-  final String? errorMessage;
-
-  ApiResponseData({this.data, this.errorMessage});
-}
-
-String errorMEssage(dynamic data) {
-  if (data.runtimeType == String) {
-    return data;
-  } else {
-    return 'An error occurred';
+// Helper function for formatting API error messages (consider moving to a utility class)
+String _formatApiErrorMessage(dynamic errors, String? message) {
+  if (errors != null) {
+    if (errors is Map) {
+      // Handle map errors (e.g., field-specific errors)
+      return errors.entries
+          .map((e) => '${e.key}: ${e.value is List ? e.value.join(', ') : e.value}')
+          .join('\n');
+    } else if (errors is List) {
+      // Handle list errors (e.g., non-field errors)
+      return errors.join('\n');
+    } else if (errors is String && errors.trim().isNotEmpty) {
+       // Handle simple string errors
+       return errors;
+    }
   }
+  return message ?? 'An unknown error occurred.';
 }
 
-String _formatApiErrorMessage(dynamic response, String message) {
-  if (response != null && response.toString().trim().isNotEmpty) {
-    return response
-        .toString()
-        .replaceAll("{", '')
-        .replaceAll("}", '')
-        .replaceAll("_", " ")
-        .replaceAll("'", "")
-        .replaceAll("\"", "")
-        .replaceAll("[", '')
-        .replaceAll("]", '')
-        .replaceAll("non field errors:", "")
-        .replaceAll("Farmer Create", "")
-        .replaceAll("Ok", "")
-        .trim();
-  }
-  return message;
-}
 
+// Enum for HTTP methods (already defined, just for context)
 enum MethodType { post, get, put, delete, patch }
+
+// Consider adding specific Failure types if needed
+// class ConnectionRefusedFailure extends Failure {
+//   ConnectionRefusedFailure({String message = "Connection refused by server."}) : super(message: message);
+// }
+
+// class HostLookupFailure extends Failure {
+//   HostLookupFailure({String message = "Failed to resolve hostname."}) : super(message: message);
+// }

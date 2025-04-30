@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/navigation/route_constant.dart';
+import '../../../../core/storage/istorage.dart';
+import '../../../auth/presentation/bloc/user/user_cubit.dart';
 import '../contract/homepage.dart';
 import '../view/homepage.dart';
 
@@ -16,7 +22,7 @@ class _HomePageScreenState extends State<HomePageScreen>
 
   @override
   void initState() {
-    //context.read<UserCubit>().getUser;
+    context.read<UserCubit>().getUser;
     super.initState();
 
     view = HomePageView(controller: this);
@@ -29,9 +35,9 @@ class _HomePageScreenState extends State<HomePageScreen>
 
   @override
    void logout() {
-  //   GetIt.I.get<LocalStorage>().setLoggedIn(false);
-  //   context.goNamed(RouteConstants.login);
-  //   GetIt.I.get<LocalStorage>().closeDb();
+    GetIt.I.get<LocalStorage>().setLoggedIn(false);
+    context.goNamed(RouteConstant.login);
+    GetIt.I.get<LocalStorage>().closeDb();
    }
 
   @override

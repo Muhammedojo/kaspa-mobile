@@ -42,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen>
       bool? hasUserLoggedIn = await GetIt.I.get<LocalStorage>().isLoggedIn();
       if (hasUserLoggedIn != null && hasUserLoggedIn) {
         Login user = await GetIt.I.get<LocalStorage>().getLoggedInUser();
+        debugPrint('User ${user.fullname}');
         await showHomeScreen(user);
       } else {
         if (mounted) {

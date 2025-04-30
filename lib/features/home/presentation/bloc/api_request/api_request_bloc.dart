@@ -59,6 +59,7 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
       ),
     );
   }
+  
 
   void _onApiRequestProgress(
     ApiRequestProgress event,

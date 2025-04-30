@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import '../data/model/forgot_password.dart';
@@ -19,13 +20,16 @@ class ApiServicesImpl implements ApiServices {
     String username,
     String password,
   ) {
+    debugPrint('Login here');
     return apiClient.request<Login>(
       loginEndpoint,
       MethodType.post,
       (data, {String? realUri}) => Login.fromJson(data),
       {KEY_USERNAME: username, KEY_PASSWORD: password},
       authInterceptor: null,
+      
     );
+    
   }
 
   @override

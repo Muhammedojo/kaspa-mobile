@@ -37,7 +37,7 @@ class ApiResponseImpl<T> implements ApiResponse<T> {
   bool get isSuccess => responseCode == '100';
 
   @override
-  String get defaultErrorMessage => 'an_error_occured';
+  String get defaultErrorMessage => 'an_error_occurred';
 
   @override
   String toString() {

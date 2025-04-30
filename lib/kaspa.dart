@@ -10,7 +10,9 @@ import 'core/navigation/app_router.dart';
 import 'features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'features/auth/presentation/bloc/forgot_password/forgot_password_cubit.dart';
 import 'features/auth/presentation/bloc/reset_password/reset_password_cubit.dart';
+import 'features/auth/presentation/bloc/user/user_cubit.dart';
 import 'features/farmers/presentation/bloc/bloc.dart';
+import 'features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import 'features/home/presentation/bloc/bloc.dart';
 
 class Kaspa extends StatelessWidget {
@@ -24,12 +26,19 @@ class Kaspa extends StatelessWidget {
     ]);
     return MultiBlocProvider(
       providers: [
+            BlocProvider(
+            create: (context) =>
+                AppInitializer.instanceLocator.get<ApiRequestBloc>()),
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<AuthCubit>(),
         ),
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<BankCubit>(),
         ),
+         BlocProvider(
+          create: (context) => AppInitializer.instanceLocator.get<GetFarmersCubit>(),
+        ),
+
 
         BlocProvider(
           create:
@@ -65,6 +74,10 @@ class Kaspa extends StatelessWidget {
 
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<WardCubit>(),
+        ),
+
+          BlocProvider(
+          create: (context) => AppInitializer.instanceLocator.get<UserCubit>(),
         ),
       ],
       child: ScreenUtilInit(

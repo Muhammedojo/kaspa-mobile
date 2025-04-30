@@ -23,6 +23,7 @@ import '../../features/auth/repository/auth_repository_contract.dart';
 import '../../features/farmers/presentation/bloc/bloc.dart';
 import '../../features/farmers/repository/farmer_repository.dart';
 import '../../features/farmers/repository/farmer_repository_contract.dart';
+import '../../features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import '../../features/home/presentation/bloc/bloc.dart';
 import '../../features/home/repository/home_repository.dart';
 import '../../features/home/repository/home_repository_contract.dart';
@@ -73,6 +74,10 @@ class AppInitializer {
   }
 
   static initBlocs() {
+    instanceLocator.registerLazySingleton<ApiRequestBloc>(
+      () => ApiRequestBloc(),
+    );
+
     instanceLocator.registerLazySingleton<AuthCubit>(
       () => AuthCubit(repository: instanceLocator()),
     );
@@ -104,6 +109,13 @@ class AppInitializer {
 
     instanceLocator.registerLazySingleton<LgaCubit>(
       () => LgaCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<WardCubit>(
+      () => WardCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),

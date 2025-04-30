@@ -26,10 +26,12 @@ class IsarImpl implements DatabaseStorage {
         [
           BankSchema,
           CropSchema,
+          CooperativeSchema,
           FarmerSchema,
           LgaSchema,
           LivestockSchema,
           WardSchema,
+          UserSchema,
         ],
         inspector: kDebugMode,
         directory: await getApplicationDocumentsDirectory().then(

@@ -19,9 +19,13 @@ class CancelFailure implements Failure {
 }
 
 class ServerFailure implements Failure {
+  final String? message;
+
+  ServerFailure({this.message});
+
   @override
   String failureMessage() {
-    return "something_went_wrong_and_your_request_could_not_be_completed".tr();
+    return message ?? "something_went_wrong_and_your_request_could_not_be_completed".tr();
   }
 }
 
@@ -65,9 +69,13 @@ class SendTimeOutFailure implements Failure {
 }
 
 class ConnectionFailure implements Failure {
+  final String? message;
+
+  ConnectionFailure({this.message});
+
   @override
   String failureMessage() {
-    return "connection_to_server_failed_due_to_internet_connection".tr();
+    return message ?? "connection_to_server_failed_due_to_internet_connection".tr();
   }
 }
 

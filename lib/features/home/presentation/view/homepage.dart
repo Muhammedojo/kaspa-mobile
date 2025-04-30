@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kaspa/core/utils/extensions.dart';
+import '../../../../core/utils/extensions.dart';
 import '../../../../core/resources/vectors.dart';
 import '../../../../core/theme/colors.dart';
+import '../../../../core/utils/function.dart';
+import '../../../auth/presentation/bloc/user/user_cubit.dart';
 import '../contract/homepage.dart';
 
 class HomePageView extends StatelessWidget implements HomePageViewContract {
@@ -29,7 +32,65 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
             children: [
               Row(
                 children: [
+                  Container(
+                    width: 40.sp,
+                    height: 40.sp,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: BlocBuilder<UserCubit, UserState>(
+                      builder: (context, stateBloc) {
+                        if (stateBloc is UserLoaded) {
+                          var init = Utils().getInitials(
+                            stateBloc.login.fullname.toString(),
+                          );
+                          return Center(
+                            child: init.toText(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              translate: false,
+                            ),
+                          );
+                        }
+                        return 'N/A'.toText();
+                      },
+                    ),
+                  ),
                   16.horizontalSpace,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlocBuilder<UserCubit, UserState>(
+                          builder: (context, stateBloc) {
+                            if (stateBloc is UserLoaded) {
+                              return stateBloc.login.fullname.toString().toText(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                translate: false,
+                              );
+                            }
+                            return 'N/A'.toText();
+                          },
+                        ),
+                        BlocBuilder<UserCubit, UserState>(
+                          builder: (context, stateBloc) {
+                            if (stateBloc is UserLoaded) {
+                              return '${stateBloc.login.userType}'.toText(
+                                color: AppColors.preText,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                translate: false,
+                              );
+                            }
+                            return 'N/A'.toText();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       controller.logout();
@@ -38,7 +99,18 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                   ),
                 ],
               ),
+
               10.verticalSpace,
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, stateBloc) {
+                  if (stateBloc is UserLoaded) {
+                    return Text(
+                      'User is ${stateBloc.login.username.toString()}',
+                    );
+                  }
+                  return 'N/A'.toText();
+                },
+              ),
             ],
           ),
         ),
@@ -90,11 +162,7 @@ class GreenContainer extends StatelessWidget {
                   ),
                 ],
               ),
-              SvgPicture.asset(
-                AppIcon.solidFarmer,
-                height: 48.w,
-                width: 48.w,
-              ),
+              SvgPicture.asset(AppIcon.solidFarmer, height: 48.w, width: 48.w),
             ],
           ),
           SizedBox(height: 16),

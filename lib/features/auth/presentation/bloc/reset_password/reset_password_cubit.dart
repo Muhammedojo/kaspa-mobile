@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/api/exceptions/api_ecxeption.dart';
+import '../../../../../core/api/exceptions/api_exception.dart';
 import '../../../repository/auth_repository_contract.dart';
 import 'reset_password_state.dart';
 

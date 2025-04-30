@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kaspa/features/farmers/presentation/controller/register_farmer.dart';
+import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/navigation/navigator.dart';
+import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
+import '../bloc/get_farmer/get_farmer_cubit.dart';
+import '../bloc/get_farmer/get_farmer_state.dart';
 import '../contract/farmer.dart';
+import '../controller/register_farmer.dart';
+import '../widget/farmer_item_widget.dart';
 
 class FarmerView extends StatelessWidget implements FarmerViewContract {
   const FarmerView({super.key, required this.controller});
@@ -25,13 +31,50 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
 
   Widget _body() {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: REdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [Text('dfhshjfdgfdudfj')],
-          ),
+      child: Padding(
+        padding: REdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            'farmers'.toText(fontSize: 20, fontWeight: FontWeight.w700),
+            Expanded(child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
+                    builder: (context, state) {
+                    if (state is FarmerListLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state is FarmerListLoaded) {
+                      return state.dataList.isEmpty
+                          ? ErrorWidgets(message: 'farmer_list_empty')
+                          : ListView.separated(
+                              itemCount: state.dataList.length,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return FarmerCard(
+                                  //  farmer: state.dataList[index],
+                                    // onTap: () {
+                                    //   showCustomBottomSheet(context,
+                                    //       child: PreviewFarmer(
+                                    //         farmer: state.dataList[index],
+                                    //       ));
+                                    // }
+                                    );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      12.verticalSpace,
+                            );
+                    }
+                    if (state is FarmerListFailure) {
+                      return ErrorWidgets(
+                        title: "Error",
+                        message: state.error,
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),)
+          ],
         ),
       ),
     );

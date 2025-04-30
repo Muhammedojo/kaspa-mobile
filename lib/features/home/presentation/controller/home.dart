@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<ApiRequestBloc>().add(ApiRequestSyncStarted());
        loadDataFromServer();
     });
     view = HomeView(controller: this);

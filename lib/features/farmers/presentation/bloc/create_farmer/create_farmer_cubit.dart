@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/api/exceptions/api_ecxeption.dart';
+import '../../../../../core/api/exceptions/api_exception.dart';
 import '../../../../../core/data/model/farmer.dart';
 import '../../../repository/farmer_repository_contract.dart';
 import 'create_farmer_state.dart';
