@@ -23,7 +23,7 @@ extension StringExtension on String {
       caseSensitive: false, // user typed "m4a"
       overflow: textOverflow ?? TextOverflow.visible,
       textStyle: TextStyle(
-          fontFamily: 'Switzer',
+          fontFamily: 'Nunito',
           fontWeight: fontWeight,
           height: textHeight,
           decoration: decoration ?? TextDecoration.none,
@@ -77,7 +77,7 @@ extension StringExtension on String {
     BoxFit? fit,
   }) {
     return Image.asset(
-      'assets/images/$this.png',
+      'assets/images/$this',
       width: width,
       height: height,
       fit: fit,

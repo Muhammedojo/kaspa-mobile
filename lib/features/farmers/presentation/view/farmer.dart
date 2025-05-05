@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kaspa/core/resources/images.dart';
+import 'package:kaspa/core/utils/function.dart';
 import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/utils/extensions.dart';
@@ -32,48 +34,49 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
   Widget _body() {
     return SafeArea(
       child: Padding(
-        padding: REdgeInsets.symmetric(horizontal: 24.0),
+        padding: REdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(children: [Image.asset(AppImage.horizontalLogo)]),
             'farmers'.toText(fontSize: 20, fontWeight: FontWeight.w700),
-            Expanded(child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
-                    builder: (context, state) {
-                    if (state is FarmerListLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (state is FarmerListLoaded) {
-                      return state.dataList.isEmpty
-                          ? ErrorWidgets(message: 'farmer_list_empty')
-                          : ListView.separated(
-                              itemCount: state.dataList.length,
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return FarmerCard(
-                                  //  farmer: state.dataList[index],
-                                    // onTap: () {
-                                    //   showCustomBottomSheet(context,
-                                    //       child: PreviewFarmer(
-                                    //         farmer: state.dataList[index],
-                                    //       ));
-                                    // }
-                                    );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      12.verticalSpace,
+            Expanded(
+              child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
+                builder: (context, state) {
+                  if (state is FarmerListLoading) {
+                    return 
+                    //const Center(child: CircularProgressIndicator());
+                    ErrorWidgets(title: "Empty", message: '');
+                  }
+                  if (state is FarmerListLoaded) {
+                    return state.dataList.isEmpty
+                        ? ErrorWidgets(message: 'farmer_list_empty')
+                        : ListView.separated(
+                          itemCount: state.dataList.length,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return FarmerCard(
+                              //  farmer: state.dataList[index],
+                              // onTap: () {
+                              //   showCustomBottomSheet(context,
+                              //       child: PreviewFarmer(
+                              //         farmer: state.dataList[index],
+                              //       ));
+                              // }
                             );
-                    }
-                    if (state is FarmerListFailure) {
-                      return ErrorWidgets(
-                        title: "Error",
-                        message: state.error,
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  }),)
+                          },
+                          separatorBuilder:
+                              (BuildContext context, int index) =>
+                                  12.verticalSpace,
+                        );
+                  }
+                  if (state is FarmerListFailure) {
+                    return ErrorWidgets(title: "Error", message: state.error);
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ),
           ],
         ),
       ),

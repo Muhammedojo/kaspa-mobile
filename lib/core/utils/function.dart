@@ -1,13 +1,29 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:kaspa/core/resources/images.dart';
+import 'package:kaspa/core/resources/vectors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 
+import '../component/sucess_dialog.dart';
 import '../component/welcome_dialog_widget.dart';
 
 
 class Utils {
-  static customAppBar(
+  static customBar(
+    BuildContext context,
+
+  {GestureTapCallback? onPressed}
+  ) {
+    return AppBar(
+      centerTitle: false,
+     
+      backgroundColor: Colors.transparent,
+      leading:  Image.asset(AppImage.horizontalLogo,)
+    );
+  }
+    static customAppBar(
     BuildContext context,
     String title,
   {GestureTapCallback? onPressed}
@@ -28,11 +44,8 @@ class Utils {
    static showToastError(BuildContext context, String message) {
     showDialog(
         context: context,
-        builder: (BuildContext context) => WelcomeDialog(
-            title: "error".tr(),
-            message: message,
-           // image: "assets/images/error.png",
-            onTap: () => closeDialog(context)));
+        builder: (BuildContext context) => DialogWidget());
+         
   }
 
   static showConfirmationDialog(

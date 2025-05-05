@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kaspa/core/theme/colors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 
 class WelcomeDialog extends StatelessWidget {
@@ -29,7 +30,11 @@ class WelcomeDialog extends StatelessWidget {
             Container(
               //alignment: Alignment.center,
               padding: REdgeInsets.only(
-                  top: 18.0.sp, left: 10.0.sp, right: 10.0.sp, bottom: 10.0.sp),
+                top: 18.0.sp,
+                left: 10.0.sp,
+                right: 10.0.sp,
+                bottom: 10.0.sp,
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(13.r)),
@@ -42,36 +47,53 @@ class WelcomeDialog extends StatelessWidget {
                 children: <Widget>[
                   image != null && image?.isNotEmpty == true
                       ? Center(
-                          child: Image.asset(
-                            image!,
-                            fit: BoxFit.fill,
-                            height: 150.h,
-                          ),
-                        )
+                        child: Image.asset(
+                          image!,
+                          fit: BoxFit.fill,
+                          height: 150.h,
+                        ),
+                      )
                       : Container(),
                   5.verticalSpace,
                   Center(
-                    child: title!
-                        .toText(fontSize: 18, fontWeight: FontWeight.w700, textAlign: TextAlign.center),
+                    child: title!.toText(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   5.verticalSpace,
                   Center(
                     child: message!.toText(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        translate: false,
-                      textAlign: TextAlign.center
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      translate: false,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   5.verticalSpace,
                   Divider(),
                   2.verticalSpace,
-                  InkWell(
-                    onTap: onTap,
-                    child: Center(
-                      child: 'close'
-                          .toText(fontSize: 18, fontWeight: FontWeight.w700),
-                    ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: onTap,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryGreen,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Padding(
+                          padding:REdgeInsets.symmetric(horizontal: 16.0),
+                          child: 'close'.toText(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryBackground
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   5.verticalSpace,
                 ],

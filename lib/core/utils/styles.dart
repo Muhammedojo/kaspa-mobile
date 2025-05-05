@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import '../theme/colors.dart';
 
 class Styles {
-  static const textFormFamily = 'Sora';
+  static const textFormFamily = 'Nunito';
   static const fontFAMILY = textFormFamily;
 
   static roundCornerBorderShape(double radius, Color color) {
@@ -143,6 +143,7 @@ class Styles {
     String hintText,
     String labelText, {
     IconData? iconData,
+    IconData? prefixIconData,
     String? validationText,
     bool? check,
     Function()? onIconPressed,
@@ -179,16 +180,18 @@ class Styles {
               : null,
       prefix:
           showPrefixIcon != null && showPrefixIcon
-              ? Container(
-                width: 20.sp,
-                height: 20.sp,
-                margin: REdgeInsets.only(right: 4),
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Color(0xff909190),
-                ),
-              )
+              ?
+              Icon(prefixIconData)
+              //  Container(
+              //   width: 20.sp,
+              //   height: 20.sp,
+              //   margin: REdgeInsets.only(right: 4),
+              //   alignment: Alignment.center,
+              //   child: CircularProgressIndicator(
+              //     strokeWidth: 2,
+              //     color: Color(0xff909190),
+              //   ),
+              // )
               : null,
     );
   }
