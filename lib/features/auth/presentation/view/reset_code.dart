@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import '../../../../core/component/pattern_color.dart';
 import '../../../../core/resources/images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/theme/colors.dart';
-import '../../../../core/utils/function.dart';
-import '../../../../core/utils/styles.dart';
-import '../bloc/forgot_password/forgot_password_cubit.dart';
-import '../bloc/forgot_password/forgot_password_state.dart';
 import '../contract/reset_code.dart';
 import '../../../../core/utils/extensions.dart';
 

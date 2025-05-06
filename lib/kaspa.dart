@@ -26,19 +26,21 @@ class Kaspa extends StatelessWidget {
     ]);
     return MultiBlocProvider(
       providers: [
-            BlocProvider(
-            create: (context) =>
-                AppInitializer.instanceLocator.get<ApiRequestBloc>()),
+        BlocProvider(
+          create:
+              (context) => AppInitializer.instanceLocator.get<ApiRequestBloc>(),
+        ),
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<AuthCubit>(),
         ),
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<BankCubit>(),
         ),
-         BlocProvider(
-          create: (context) => AppInitializer.instanceLocator.get<GetFarmersCubit>(),
+        BlocProvider(
+          create:
+              (context) =>
+                  AppInitializer.instanceLocator.get<GetFarmersCubit>(),
         ),
-
 
         BlocProvider(
           create:
@@ -76,7 +78,7 @@ class Kaspa extends StatelessWidget {
           create: (context) => AppInitializer.instanceLocator.get<WardCubit>(),
         ),
 
-          BlocProvider(
+        BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<UserCubit>(),
         ),
       ],

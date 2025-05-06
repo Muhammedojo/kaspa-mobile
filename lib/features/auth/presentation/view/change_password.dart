@@ -25,7 +25,6 @@ class ChangePasswordView extends StatelessWidget
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-
       body: _body(context),
     );
   }
@@ -75,24 +74,45 @@ class ChangePasswordView extends StatelessWidget
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
+                   'password'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                     Padding(
                       padding: REdgeInsets.only(top: 5.0),
                       child: TextFormField(
-                        controller: controller.emailController,
+                        textInputAction: TextInputAction.done,
+                        obscureText: controller.obscurePassword,
+                        controller: controller.passwordController,
+                        validator: ValidationBuilder().required().build(),
                         style: Styles.x14dp_4A4A4A(14.0.sp),
                         maxLines: 1,
-                        validator: ValidationBuilder().required().build(),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                        decoration:
-                            Styles.textFormFieldDecorationBorderWithBackground(
-                              'omuhammed',
-                              '',
-                              showPrefixIcon: true,
-                              prefixIconData: Icons.abc,
-                              check: false,
-                            ),
+                        decoration: Styles.passwordFieldDecoration(
+                          '*** *** *** **',
+                          '',
+                          controller.obscurePassword,
+                          () => controller.onPasswordVisible(),
+                        ),
                         onChanged: (value) {},
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                      ),
+                    ),
+                    14.verticalSpace,
+                     'confirm_password'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                    Padding(
+                      padding: REdgeInsets.only(top: 5.0),
+                      child: TextFormField(
+                        textInputAction: TextInputAction.done,
+                        obscureText: controller.obscurePassword,
+                        controller: controller.confirmPasswordController,
+                        validator: ValidationBuilder().required().build(),
+                        style: Styles.x14dp_4A4A4A(14.0.sp),
+                        maxLines: 1,
+                        decoration: Styles.passwordFieldDecoration(
+                          '*** *** *** **',
+                          '',
+                          controller.obscurePassword,
+                          () => controller.onPasswordVisible(),
+                        ),
+                        onChanged: (value) {},
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       ),
                     ),
                     12.verticalSpace,

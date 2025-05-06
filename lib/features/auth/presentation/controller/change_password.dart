@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:kaspa/features/auth/presentation/bloc/forgot_password/forgot_password_cubit.dart';
-import '../../../../core/storage/istorage.dart';
+import '../bloc/reset_password/reset_password_cubit.dart';
 import '../contract/change_password.dart';
 import '../view/change_password.dart';
 
@@ -20,25 +18,22 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
   late final ChangePasswordViewContract view;
 
   @override
-  bool? rememberMe = false;
-
-   @override
   String get otp => widget.otp!;
 
   @override
   String get token => widget.token!;
 
   @override
-  bool obscurePassword = true;
-
-  @override
-  TextEditingController emailController = TextEditingController();
-
-  @override
   TextEditingController passwordController = TextEditingController();
 
   @override
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
   late GlobalKey<FormState> formKey;
+
+  @override
+  bool obscurePassword = true;
 
   @override
   onPasswordVisible() {
@@ -47,53 +42,32 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
     });
   }
 
-
   @override
   void initState() {
     super.initState();
-     formKey = GlobalKey<FormState>();
-     emailController = TextEditingController(text: "gemdajs@gmail.com");
-    passwordController = TextEditingController(text: "Default@123");
+    formKey = GlobalKey<FormState>();
     view = ChangePasswordView(controller: this);
-        WidgetsBinding.instance.addPostFrameCallback((_) async{
-      checkRememberMeStatus();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {});
   }
 
   @override
   void dispose() {
     super.dispose();
-      emailController.dispose();
-    passwordController.dispose();
-  }
 
-    @override
-  void forgotPassword() async {}
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+  }
 
   @override
   void onPressButton() {
     if (formKey.currentState!.validate()) {
       if (mounted) {
-        context.read<ForgotPasswordCubit>().forgotPassword(
-            emailController.text.trim(),
-             );
+        context.read<ResetPasswordCubit>().changePassword(
+          token,
+          otp,
+          passwordController.text.trim(),
+        );
       }
-    }
-  }
-
-   void checkRememberMeStatus() async{
-    bool? status = await GetIt.I.get<LocalStorage>().getRememberMe() ?? false;
-    setState(() {
-      rememberMe = status;
-    });
-  }
-
-   @override
-  void onSelectRememberMe(bool? status){
-    if(status != null) {
-      setState(() {
-        rememberMe = status;
-      });
     }
   }
 
@@ -101,4 +75,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
   Widget build(BuildContext context) {
     return view.build(context);
   }
+  
+  
+
+
 }
