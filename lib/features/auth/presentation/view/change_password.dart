@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kaspa/core/navigation/navigator.dart';
-import 'package:kaspa/features/auth/presentation/controller/reset_code.dart';
 import '../../../../core/component/pattern_color.dart';
 import '../../../../core/resources/images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -14,14 +12,14 @@ import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../bloc/forgot_password/forgot_password_cubit.dart';
 import '../bloc/forgot_password/forgot_password_state.dart';
-import '../contract/reset_password.dart';
+import '../contract/change_password.dart';
 import '../../../../core/utils/extensions.dart';
 
-class ResetPasswordView extends StatelessWidget
-    implements ResetPasswordViewContract {
-  const ResetPasswordView({super.key, required this.controller});
+class ChangePasswordView extends StatelessWidget
+    implements ChangePasswordViewContract {
+  const ChangePasswordView({super.key, required this.controller});
 
-  final ResetPasswordControllerContract controller;
+  final ChangePasswordControllerContract controller;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +64,8 @@ class ResetPasswordView extends StatelessWidget
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
+
+
                     'reset_password'.toText(
                       fontWeight: FontWeight.w700,
                       fontSize: 18,
@@ -103,12 +103,8 @@ class ResetPasswordView extends StatelessWidget
                         }
 
                         if (state is ForgotPasswordSuccess) {
-                          final String token = state.response['token'];
                           hideLoading(context);
-                          pushTo(ResetCodeScreen(
-                            email: controller.emailController.text.trim(),
-                           token:token,
-                            ), context);
+                          context.goNamed(RouteConstant.homePage);
                         }
                         if (state is ForgotPasswordFailure) {
                           hideLoading(context);
@@ -138,8 +134,6 @@ class ResetPasswordView extends StatelessWidget
                         ),
                       ),
                     ),
-
-        
                     80.verticalSpace,
 
                     Row(

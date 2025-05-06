@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kaspa/features/auth/presentation/bloc/forgot_password/forgot_password_cubit.dart';
 import '../../core/api/api_services.dart';
 import '../../core/api/api_services_impl.dart';
 import '../../core/api/network/network_info.dart';
@@ -104,6 +105,13 @@ class AppInitializer {
       () => CooperativeCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
+      ),
+    );
+
+     instanceLocator.registerLazySingleton<ForgotPasswordCubit>(
+      () => ForgotPasswordCubit(
+        repository: instanceLocator(),
+       
       ),
     );
 

@@ -1,6 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:kaspa/features/agronomy/presentation/controller/agronomy.dart';
+import '../../features/auth/presentation/controller/change_password.dart';
+import '../../features/auth/presentation/controller/auth_option.dart';
 import '../../features/auth/presentation/controller/login.dart';
+import '../../features/auth/presentation/controller/reset_code.dart';
+import '../../features/auth/presentation/controller/reset_password.dart';
 import '../../features/auth/presentation/controller/splash.dart';
 import '../../features/farmers/presentation/controller/farmer.dart';
 import '../../features/home/presentation/controller/home.dart';
@@ -21,6 +25,26 @@ class AppRouter {
         path: '/',
         name: RouteConstant.splash,
         builder: (context, state) => const SplashScreen(),
+      ),
+       GoRoute(
+        path: '/${RouteConstant.authOption}',
+        name: RouteConstant.authOption,
+        builder: (context, state) => const AuthOptionScreen(),
+      ),
+       GoRoute(
+        path: '/${RouteConstant.resetPassword}',
+        name: RouteConstant.resetPassword,
+        builder: (context, state) => const ResetPasswordScreen(),
+      ),
+       GoRoute(
+        path: '/${RouteConstant.resetCode}',
+        name: RouteConstant.resetCode,
+        builder: (context, state) => const ResetCodeScreen(email: '', token: '',),
+      ),
+       GoRoute(
+        path: '/${RouteConstant.changePassword}',
+        name: RouteConstant.changePassword,
+        builder: (context, state) => const ChangePasswordScreen(),
       ),
       GoRoute(
         path: '/${RouteConstant.login}',

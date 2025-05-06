@@ -13,12 +13,13 @@ class ForgotPasswordInitial extends ForgotPasswordState {}
 class ForgotPasswordLoading extends ForgotPasswordState {}
 
 class ForgotPasswordSuccess extends ForgotPasswordState {
+  final Map<String, dynamic> response;
   final ForgotPassword forgotPassword;
 
-  const ForgotPasswordSuccess(this.forgotPassword);
+  const ForgotPasswordSuccess({required this.response, required this.forgotPassword});
 
   @override
-  List<Object> get props => [forgotPassword];
+  List<Object> get props => [response,forgotPassword];
 
   @override
   String toString() => 'ForgotPasswordSuccess { forgotPassword: $forgotPassword }';

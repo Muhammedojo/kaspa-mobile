@@ -5,13 +5,22 @@ import 'package:kaspa/core/utils/extensions.dart';
 import '../theme/colors.dart';
 
 class DialogWidget extends StatelessWidget {
-  const DialogWidget({super.key});
+  final String? message;
+
+  final String? title;
+  final VoidCallback onTap;
+  const DialogWidget({
+    super.key,
+    required this.message,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-       elevation: 0.0,
-      
+      elevation: 0.0,
+
       backgroundColor: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -31,9 +40,11 @@ class DialogWidget extends StatelessWidget {
                   SvgPicture.asset('assets/vectors/success.svg'),
                   4.horizontalSpace,
                   Expanded(
-                    child: ''.toText(fontSize: 14, fontWeight: FontWeight.w700),
+                    child: '$title'.toText(fontSize: 14, fontWeight: FontWeight.w700),
                   ),
-                  Icon(Icons.close),
+                  InkWell(
+                    onTap: onTap,
+                child: Icon(Icons.close)),
                 ],
               ),
             ),
@@ -43,7 +54,7 @@ class DialogWidget extends StatelessWidget {
             child: Padding(
               padding: REdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
               child:
-                  'Congratulations! You have successfully performed the action / An error occurred. Kindly try again ensuring that you are connected to the internet.'
+                  '$message'
                       .toText(fontSize: 14, fontWeight: FontWeight.w700),
             ),
           ),
@@ -72,10 +83,13 @@ class DialogWidget extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              'cancel'.toText(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.ColorAccent,
+                              InkWell(
+                                onTap: onTap,
+                                child: 'cancel'.toText(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.ColorAccent,
+                                ),
                               ),
                             ],
                           ),
@@ -83,6 +97,7 @@ class DialogWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   // 4.horizontalSpace,
                   // Expanded(
                   //   child: Container(
@@ -107,7 +122,6 @@ class DialogWidget extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-               
                 ],
               ),
             ),

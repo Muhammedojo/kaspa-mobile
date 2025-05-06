@@ -1,13 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:kaspa/core/resources/images.dart';
-import 'package:kaspa/core/resources/vectors.dart';
-import 'package:kaspa/core/utils/extensions.dart';
-
+import '../../core/resources/images.dart';
+import '../../core/utils/extensions.dart';
 import '../component/sucess_dialog.dart';
-import '../component/welcome_dialog_widget.dart';
 
 
 class Utils {
@@ -44,7 +39,10 @@ class Utils {
    static showToastError(BuildContext context, String message) {
     showDialog(
         context: context,
-        builder: (BuildContext context) => DialogWidget());
+        builder: (BuildContext context) => DialogWidget(message: message, title: 'success', onTap: (){
+          Navigator.pop(context);
+        
+        },));
          
   }
 
@@ -165,7 +163,7 @@ class Utils {
                     title: 'camera'
                         .toText(fontSize: 14, fontWeight: FontWeight.w500),
                     onTap: () {
-                      Navigator.pop(context); //close bottomsheetdialog
+                      Navigator.pop(context); 
                       onCameraSelected();
                     }),
                 ListTile(

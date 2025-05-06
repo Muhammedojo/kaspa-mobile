@@ -13,7 +13,7 @@ class AppColors {
   static const Color accentElement = Color.fromARGB(255, 74, 74, 74);
   static const Color primaryText = Color.fromARGB(255, 165, 169, 179);
   static const Color secondaryText = Color.fromARGB(255, 255, 255, 255);
-  static const Color accentText = Color.fromARGB(114, 114, 114, 1);
+  static const Color accentText = Color.fromRGBO(114, 114, 114, 1);
   static const Color lightGreen = Color.fromRGBO(214, 241, 223, 1);
   static const Color primaryGreen = Color.fromRGBO(20, 142, 42, 1);
   static const Color secondaryGreen = Color.fromRGBO(33, 131, 88, 1);

@@ -3,6 +3,7 @@ import '../../utils/const.dart';
 class ForgotPassword {
   String? email;
   String? username;
+  String? token;
   String? oldPassword;
   String? newPassword;
 
@@ -17,6 +18,10 @@ ForgotPassword _$ForgotPasswordFromJson(Map<String, dynamic> json) {
   var obj = ForgotPassword();
 
   if (json.containsKey(KEY_EMAIL)) obj.email = json[KEY_EMAIL];
+
+  if(json.containsKey(KEY_TOKEN)) obj.token = json[KEY_TOKEN];
+
+  
 
   if (json.containsKey(KEY_USERNAME)) obj.username = json[KEY_USERNAME];
 
@@ -37,4 +42,5 @@ Map<String, dynamic> _$ForgotPasswordToJson(ForgotPassword obj) =>
       KEY_USERNAME: obj.username,
       KEY_NEW_PASSWORD: obj.newPassword,
       KEY_OLD_PASSWORD: obj.oldPassword,
+      KEY_TOKEN: obj.token,
     };

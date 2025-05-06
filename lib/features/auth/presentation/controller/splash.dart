@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen>
         await showHomeScreen(user);
       } else {
         if (mounted) {
-          context.goNamed(RouteConstant.login);
+          context.goNamed(RouteConstant.authOption);
         }
       }
     });

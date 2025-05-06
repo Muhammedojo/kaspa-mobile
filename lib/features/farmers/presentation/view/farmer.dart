@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kaspa/core/resources/images.dart';
-import 'package:kaspa/core/utils/function.dart';
+import '../../../../core/resources/images.dart';
 import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/utils/extensions.dart';
