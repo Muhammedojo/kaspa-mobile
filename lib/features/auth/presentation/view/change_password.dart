@@ -1,17 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/component/pattern_color.dart';
 import '../../../../core/resources/images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
-import '../bloc/forgot_password/forgot_password_cubit.dart';
-import '../bloc/forgot_password/forgot_password_state.dart';
+import '../bloc/reset_password/cubit.dart';
 import '../contract/change_password.dart';
 import '../../../../core/utils/extensions.dart';
 
@@ -70,11 +68,11 @@ class ChangePasswordView extends StatelessWidget
                       fontSize: 18,
                     ),
                     24.verticalSpace,
-                    'enter_your_username'.toText(
+                    'enter_new_password'.toText(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
-                   'password'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                  
                     Padding(
                       padding: REdgeInsets.only(top: 5.0),
                       child: TextFormField(
@@ -113,20 +111,21 @@ class ChangePasswordView extends StatelessWidget
                         ),
                         onChanged: (value) {},
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                      
                       ),
                     ),
                     12.verticalSpace,
-                    BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
+                    BlocListener<ResetPasswordCubit, ResetPasswordState>(
                       listener: (context, state) {
-                        if (state is ForgotPasswordLoading) {
+                        if (state is ResetPasswordLoading) {
                           showLoading(context);
                         }
-
-                        if (state is ForgotPasswordSuccess) {
+                        if (state is ResetPasswordSuccess) {
                           hideLoading(context);
-                          context.goNamed(RouteConstant.homePage);
+                          Utils.showToastError(context, 'password_reset_successfully'.tr());
+                         
                         }
-                        if (state is ForgotPasswordFailure) {
+                        if (state is ResetPasswordFailure) {
                           hideLoading(context);
                           Utils.showToastError(context, state.error.toString());
                         }
@@ -154,7 +153,7 @@ class ChangePasswordView extends StatelessWidget
                         ),
                       ),
                     ),
-                    80.verticalSpace,
+                    50.verticalSpace,
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

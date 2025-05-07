@@ -23,6 +23,7 @@ class _ResetCodeScreenState extends State<ResetCodeScreen>
   void initState() {
     super.initState();
     view = ResetCodeView(controller: this);
+    codeController = TextEditingController(text: "");
     WidgetsBinding.instance.addPostFrameCallback((_) async {});
   }
 

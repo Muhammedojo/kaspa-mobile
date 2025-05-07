@@ -125,9 +125,9 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<GetFarmersCubit>().loadFarmers();
         break;
 
-      case lgaListEndpoint:
-        AppInitializer.instanceLocator.get<LgaCubit>().loadLga();
-        break;
+      // case lgaListEndpoint:
+      //   AppInitializer.instanceLocator.get<LgaCubit>().loadLga();
+      //   break;
 
       case livestockListEndpoint:
         AppInitializer.instanceLocator.get<LivestockCubit>().loadLivestock();

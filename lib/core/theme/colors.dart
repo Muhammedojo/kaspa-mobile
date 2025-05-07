@@ -135,4 +135,5 @@ class AppColors {
   static const Color colorPrimary = x008751;
   static const Color ColorSecondary = x008751;
   static const Color ColorAccent = xB8B8BA;
+
 }

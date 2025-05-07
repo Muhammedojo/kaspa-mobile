@@ -1,8 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../../../core/resources/vectors.dart';
 import '../../../../core/theme/colors.dart';
 import '../contract/home.dart';
 
@@ -31,24 +30,29 @@ class HomeView extends StatelessWidget implements HomeViewContract {
       backgroundColor: AppColors.primaryBackground,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcon.inactiveHome),
-          activeIcon: SvgPicture.asset(AppIcon.solidHome),
-          label: 'home'.tr(),
+          icon: SvgPicture.asset('assets/vectors/inactiveDash.svg',height: 16.sp,width: 16.sp ),
+          activeIcon: SvgPicture.asset('assets/vectors/activeDash.svg',height: 16.sp,width: 16.sp ),
+          label: 'dashboard'.tr(),
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcon.inactiveFarmer),
-          activeIcon: SvgPicture.asset(AppIcon.solidFarmer),
+          icon: SvgPicture.asset('assets/vectors/inactiveFarmer.svg',height: 16.sp,width: 16.sp ,),
+          activeIcon: SvgPicture.asset('assets/vectors/activeFarmer.svg',height: 16.sp,width: 16.sp ),
           label: 'farmers'.tr(),
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcon.inactiveHome),
-          activeIcon: SvgPicture.asset(AppIcon.solidHome),
-          label: 'agronomy'.tr(),
+          icon: SvgPicture.asset('assets/vectors/inactiveCoop.svg',height: 16.sp,width: 16.sp ),
+          activeIcon: SvgPicture.asset('assets/vectors/inactiveCoop.svg',height: 16.sp,width: 16.sp ),
+          label: 'cooperatives'.tr(),
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcon.inactiveFarmer),
-          activeIcon: SvgPicture.asset(AppIcon.solidFarmer),
-          label: 'insights'.tr(),
+          icon: SvgPicture.asset('assets/vectors/inactiveCal.svg',height: 16.sp,width: 16.sp ),
+          activeIcon: SvgPicture.asset('assets/vectors/inactiveCal.svg',height: 16.sp,width: 16.sp ),
+          label: 'calendar'.tr(),
+        ),
+         BottomNavigationBarItem(
+          icon: SvgPicture.asset('assets/vectors/inactiveMore.svg',height: 16.sp,width: 16.sp ),
+          activeIcon: SvgPicture.asset('assets/vectors/inactiveMore.svg',height: 16.sp,width: 16.sp ),
+          label: 'more'.tr(),
         ),
       ],
       currentIndex: controller.selectedIndex,

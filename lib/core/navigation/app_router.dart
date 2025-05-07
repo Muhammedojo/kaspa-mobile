@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:kaspa/features/agronomy/presentation/controller/agronomy.dart';
+import '../../features/cooperative/presentation/controller/cooperative.dart';
+import '../../features/auth/presentation/controller/privacy_policy.dart';
+import '../../features/auth/presentation/controller/terms.dart';
 import '../../features/auth/presentation/controller/change_password.dart';
 import '../../features/auth/presentation/controller/auth_option.dart';
 import '../../features/auth/presentation/controller/login.dart';
@@ -15,8 +17,6 @@ import 'route_constant.dart';
 
 class AppRouter {
  
-
-
   static final GoRouter router = GoRouter(
     navigatorKey:GlobalVariables.rootNavigatorKey,
     initialLocation: "/",
@@ -45,6 +45,16 @@ class AppRouter {
         path: '/${RouteConstant.changePassword}',
         name: RouteConstant.changePassword,
         builder: (context, state) => const ChangePasswordScreen(),
+      ),
+        GoRoute(
+        path: '/${RouteConstant.terms}',
+        name: RouteConstant.terms,
+        builder: (context, state) => const TermsScreen(),
+      ),
+         GoRoute(
+        path: '/${RouteConstant.privacyPolicy}',
+        name: RouteConstant.privacyPolicy,
+        builder: (context, state) => const PrivacyPolicyScreen(),
       ),
       GoRoute(
         path: '/${RouteConstant.login}',
@@ -83,14 +93,14 @@ class AppRouter {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: GlobalVariables.shellNavigatorAgronomyKey,
+            navigatorKey: GlobalVariables.shellNavigatorCooperativeKey,
             routes: [
               GoRoute(
-                path: '/${RouteConstant.agronomy}',
-                name: RouteConstant.agronomy,
+                path: '/${RouteConstant.cooperative}',
+                name: RouteConstant.cooperative,
                 pageBuilder:
                     (context, state) =>
-                        const NoTransitionPage(child: AgronomyScreen()),
+                        const NoTransitionPage(child: CooperativeScreen()),
                 routes: [],
               ),
             ],

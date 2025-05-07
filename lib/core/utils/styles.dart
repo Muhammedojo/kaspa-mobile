@@ -1222,6 +1222,19 @@ class Styles {
       color: color ?? AppColors.x404040,
     );
   }
+  static colorComboDecoration(){
+    return BoxDecoration(
+        color: Color(0xFFFCFCFC),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0x0F5CD53C).withAlpha((0.1 * 255).toInt()),
+            Color(0x005CD53C),
+          ],
+        ),
+      );
+  }
 
   static ovalMarketDecoration({Color? color, double? radius}) {
     return BoxDecoration(

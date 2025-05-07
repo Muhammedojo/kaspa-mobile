@@ -10,5 +10,8 @@ class RouteConstant {
   static const farmer = "farmer";
   static const agronomy = "agronomy";
   static const insight = "insight";
+  static const cooperative = "cooperative";
+  static const terms = "terms";
+  static const privacyPolicy = "privacy_policy";
   static const registerFarmer = "register_farmer";
 }

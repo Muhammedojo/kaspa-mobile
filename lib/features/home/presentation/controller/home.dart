@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/utils/global_variables.dart';
-import '../../../agronomy/presentation/controller/agronomy.dart';
+import '../../../cooperative/presentation/controller/cooperative.dart';
 import '../../../farmers/presentation/controller/farmer.dart';
 import '../../../insights/presentation/controller/insight.dart';
 import '../bloc/api_request/api_request_bloc.dart';
@@ -29,7 +29,8 @@ class _HomeScreenState extends State<HomeScreen>
   List<Widget> widgetOptions = <Widget>[
     HomePageScreen(),
     FarmerScreen(),
-    AgronomyScreen(),
+    CooperativeScreen(),
+    InsightScreen(),
     InsightScreen(),
   ];
 

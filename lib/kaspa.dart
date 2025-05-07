@@ -7,6 +7,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'config/di/app_initializer.dart';
 import 'core/navigation/app_router.dart';
+import 'core/theme/colors.dart';
 import 'features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'features/auth/presentation/bloc/forgot_password/forgot_password_cubit.dart';
 import 'features/auth/presentation/bloc/reset_password/reset_password_cubit.dart';
@@ -97,6 +98,7 @@ class Kaspa extends StatelessWidget {
               child: MaterialApp.router(
                 debugShowCheckedModeBanner: false,
                 title: 'Kaspa',
+                color: AppColors.primaryGreen,
                 routerConfig: AppRouter.router,
                 supportedLocales: context.supportedLocales,
                 localizationsDelegates: context.localizationDelegates,

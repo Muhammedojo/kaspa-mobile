@@ -46,6 +46,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen>
   void initState() {
     super.initState();
     formKey = GlobalKey<FormState>();
+    passwordController = TextEditingController(text: "");
+    confirmPasswordController = TextEditingController(text: "");
     view = ChangePasswordView(controller: this);
     WidgetsBinding.instance.addPostFrameCallback((_) async {});
   }

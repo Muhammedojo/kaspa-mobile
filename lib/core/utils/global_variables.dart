@@ -19,7 +19,7 @@ class GlobalVariables {
 
   var syncItemList = <String>[
     farmersListEndpoint,
-    lgaListEndpoint,
+   // lgaListEndpoint,
     wardListEndpoint,
     cropListEndpoint,
     livestockListEndpoint,
@@ -29,7 +29,7 @@ class GlobalVariables {
 
   var syncMap = {
     farmersListEndpoint: KEY_FARMERS,
-    lgaListEndpoint: KEY_LGA,
+   // lgaListEndpoint: KEY_LGA,
     wardListEndpoint: KEY_WARD,
     cropListEndpoint: KEY_CROPS,
     livestockListEndpoint: KEY_LIVESTOCK,
@@ -40,8 +40,8 @@ class GlobalVariables {
   static final shellNavigatorFarmerKey = GlobalKey<NavigatorState>(
     debugLabel: 'Farmer',
   );
-  static final shellNavigatorAgronomyKey = GlobalKey<NavigatorState>(
-    debugLabel: 'Agronomy',
+  static final shellNavigatorCooperativeKey = GlobalKey<NavigatorState>(
+    debugLabel: 'Cooperative',
   );
   static final shellNavigatorInsightKey = GlobalKey<NavigatorState>(
     debugLabel: 'Insight',

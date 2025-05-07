@@ -68,58 +68,40 @@ class ResetCodeView extends StatelessWidget implements ResetCodeViewContract {
                     defaultPinTheme: PinTheme(
                       width: 56,
                       height: 56,
-                       decoration: BoxDecoration(
-                          color: AppColors.primaryBackground,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(
-                            color: AppColors.lightGrey,
-                            width: 2.w,
-                          ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryBackground,
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(
+                          color: AppColors.lightGrey,
+                          width: 2.w,
                         ),
+                      ),
                       textStyle: TextStyle(fontSize: 20, color: Colors.black),
                     ),
                   ),
-
                   12.verticalSpace,
-                  // BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
-                  //   listener: (context, state) {
-                  //     if (state is ForgotPasswordLoading) {
-                  //       showLoading(context);
-                  //     }
-
-                  //     if (state is ForgotPasswordSuccess) {
-                  //       hideLoading(context);
-                  //       context.goNamed(RouteConstant.homePage);
-                  //     }
-                  //     if (state is ForgotPasswordFailure) {
-                  //       hideLoading(context);
-                  //       Utils.showToastError(context, state.error.toString());
-                  //     }
-                  //   },
-                  //   child: 
-                    Padding(
-                      padding: REdgeInsets.only(top: 24.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          controller.onPressButton();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.0.r),
-                          ),
-                          backgroundColor: AppColors.primaryGreen,
+                  Padding(
+                    padding: REdgeInsets.only(top: 24.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        controller.onPressButton();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0.r),
                         ),
-                        child: Padding(
-                          padding: REdgeInsets.symmetric(vertical: 15.0),
-                          child: 'proceed'.toText(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primaryBackground,
-                          ),
+                        backgroundColor: AppColors.primaryGreen,
+                      ),
+                      child: Padding(
+                        padding: REdgeInsets.symmetric(vertical: 15.0),
+                        child: 'proceed'.toText(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primaryBackground,
                         ),
                       ),
                     ),
-                 // ),
+                  ),
                   80.verticalSpace,
 
                   Row(

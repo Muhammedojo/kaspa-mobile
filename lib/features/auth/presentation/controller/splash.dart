@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kaspa/core/navigation/navigator.dart';
+import 'package:kaspa/features/auth/presentation/view/auth_options.dart';
 import '../../../../core/data/model/login.dart';
 import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/storage/istorage.dart';
@@ -46,7 +48,8 @@ class _SplashScreenState extends State<SplashScreen>
         await showHomeScreen(user);
       } else {
         if (mounted) {
-          context.goNamed(RouteConstant.authOption);
+          // context.goNamed(RouteConstant.authOption);
+          pushTo(Auths(), context);
         }
       }
     });

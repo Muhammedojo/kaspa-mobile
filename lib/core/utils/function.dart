@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/resources/images.dart';
 import '../../core/utils/extensions.dart';
 import '../component/sucess_dialog.dart';
+import '../component/welcome_dialog_widget.dart';
 
 
 class Utils {
@@ -112,15 +113,15 @@ class Utils {
     return initials;
   }
 
-  // static showToastError(BuildContext context, String message) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) => WelcomeDialog(
-  //           title: "error".tr(),
-  //           message: message,
-  //           image: "assets/images/error.png",
-  //           onTap: () => closeDialog(context)));
-  // }
+  static showToastErrors(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => WelcomeDialog(
+            title: "error",
+            message: message,
+            image: "assets/images/error.png",
+            onTap: () => closeDialog(context)));
+  }
 
   // static showBottomToast(BuildContext context,
   //     {Function()? onTap,

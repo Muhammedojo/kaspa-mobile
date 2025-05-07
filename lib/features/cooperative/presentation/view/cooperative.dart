@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kaspa/core/component/pages_bar.dart';
+import 'package:kaspa/core/utils/extensions.dart';
 import '../../../../core/component/empty_list_widget.dart';
+import '../../../../core/component/pages_bar.dart';
 import '../../../../core/navigation/navigator.dart';
-import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/styles.dart';
-import '../bloc/get_farmer/get_farmer_cubit.dart';
-import '../bloc/get_farmer/get_farmer_state.dart';
-import '../contract/farmer.dart';
-import '../controller/register_farmer.dart';
-import '../widget/farmer_item_widget.dart';
+import '../../../farmers/presentation/controller/register_farmer.dart';
+import '../../../home/presentation/bloc/bloc.dart';
+import '../contract/cooperative.dart';
+import '../widget/cooperative_card.dart';
 
-class FarmerView extends StatelessWidget implements FarmerViewContract {
-  const FarmerView({super.key, required this.controller});
 
-  final FarmerControllerContract controller;
+class CooperativeView extends StatelessWidget implements CooperativeViewContract {
+  const CooperativeView({super.key, required this.controller});
+
+  final CooperativeControllerContract controller;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      floatingActionButton: FloatingActionButton(
+     floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryGreen,
         onPressed: () => pushTo(RegisterFarmerScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
@@ -32,56 +32,49 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
   }
 
   Widget _body() {
-    return Container(
+    return 
+  Container(
       decoration: Styles.colorComboDecoration(),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PageBar(onTap: () {}),
-            24.verticalSpace,
+            20.verticalSpace,
             Expanded(
               child: Padding(
                 padding: REdgeInsets.symmetric(horizontal: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    'farmers'.toText(fontSize: 18, fontWeight: FontWeight.w700),
+                    'cooperatives'.toText(fontSize: 18, fontWeight: FontWeight.w700),
+                    2.verticalSpace,
+                    "Here’s a list of cooperatives on KASPA".toText(
+                      translate: false,
+                      color: AppColors.accentText,
+                      fontSize: 12, fontWeight: FontWeight.w500),
                     Expanded(
-                      child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
+                      child: BlocBuilder<CooperativeCubit, CooperativeState>(
                         builder: (context, state) {
-                          if (state is FarmerListLoading) {
-                            return
-                            // ErrorWidgets(title: "empty", message: '');
-                               ListView.separated(
-                                  itemCount: 10,
+                          if (state is CooperativeLoading) {
+                            return ErrorWidgets(title: "empty", message: '');
+                          }
+                          if (state is CooperativeLoaded) {
+                            return state.cooperativeList.isEmpty
+                                ? ErrorWidgets(message: 'cooperative_list_empty')
+                                : ListView.separated(
+                                  itemCount: state.cooperativeList.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
-                                    return FarmerCard();
+                                    return CooperativeCard();
                                   },
                                   separatorBuilder:
                                       (BuildContext context, int index) =>
                                           12.verticalSpace,
                                 );
                           }
-                          if (state is FarmerListLoaded) {
-                            return state.dataList.isEmpty
-                                ? ErrorWidgets(message: 'farmer_list_empty')
-                                : 
-                                ListView.separated(
-                                  itemCount: state.dataList.length,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return FarmerCard();
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          12.verticalSpace,
-                                );
-                          }
-                          if (state is FarmerListFailure) {
+                          if (state is CooperativeFailure) {
                             return ErrorWidgets(
                               title: "Error",
                               message: state.error,

@@ -36,6 +36,7 @@ void main() {
           useOnlyLangCode: true,
           child: const Kaspa(),
         ),
+        
       );
       FlutterNativeSplash.remove();
       completer.complete();
