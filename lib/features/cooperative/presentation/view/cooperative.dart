@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kaspa/core/utils/extensions.dart';
+import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/component/pages_bar.dart';
 import '../../../../core/navigation/navigator.dart';
@@ -10,10 +10,11 @@ import '../../../../core/utils/styles.dart';
 import '../../../farmers/presentation/controller/register_farmer.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../contract/cooperative.dart';
+import '../controller/cooperative_details.dart';
 import '../widget/cooperative_card.dart';
 
-
-class CooperativeView extends StatelessWidget implements CooperativeViewContract {
+class CooperativeView extends StatelessWidget
+    implements CooperativeViewContract {
   const CooperativeView({super.key, required this.controller});
 
   final CooperativeControllerContract controller;
@@ -22,7 +23,7 @@ class CooperativeView extends StatelessWidget implements CooperativeViewContract
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-     floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryGreen,
         onPressed: () => pushTo(RegisterFarmerScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
@@ -32,8 +33,7 @@ class CooperativeView extends StatelessWidget implements CooperativeViewContract
   }
 
   Widget _body() {
-    return 
-  Container(
+    return Container(
       decoration: Styles.colorComboDecoration(),
       child: SafeArea(
         child: Column(
@@ -47,12 +47,17 @@ class CooperativeView extends StatelessWidget implements CooperativeViewContract
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    'cooperatives'.toText(fontSize: 18, fontWeight: FontWeight.w700),
+                    'cooperatives'.toText(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
                     2.verticalSpace,
                     "Here’s a list of cooperatives on KASPA".toText(
                       translate: false,
                       color: AppColors.accentText,
-                      fontSize: 12, fontWeight: FontWeight.w500),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
                     Expanded(
                       child: BlocBuilder<CooperativeCubit, CooperativeState>(
                         builder: (context, state) {
@@ -61,13 +66,25 @@ class CooperativeView extends StatelessWidget implements CooperativeViewContract
                           }
                           if (state is CooperativeLoaded) {
                             return state.cooperativeList.isEmpty
-                                ? ErrorWidgets(message: 'cooperative_list_empty')
+                                ? ErrorWidgets(
+                                  message: 'cooperative_list_empty',
+                                )
                                 : ListView.separated(
                                   itemCount: state.cooperativeList.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
-                                    return CooperativeCard();
+                                    return CooperativeCard(
+                                      cooperative: state.cooperativeList[index],
+                                      onTap:
+                                          () => pushTo(
+                                            CooperativeDetailsScreen(
+                                              cooperative:
+                                                  state.cooperativeList[index],
+                                            ),
+                                            context,
+                                          ),
+                                    );
                                   },
                                   separatorBuilder:
                                       (BuildContext context, int index) =>
@@ -92,6 +109,5 @@ class CooperativeView extends StatelessWidget implements CooperativeViewContract
         ),
       ),
     );
- 
   }
 }

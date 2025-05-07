@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
+import '../../../../core/data/model/cooperative.dart';
 import '../contract/cooperative_details.dart';
 import '../view/cooperative_details.dart';
 
 
 class CooperativeDetailsScreen extends StatefulWidget {
-  const CooperativeDetailsScreen({super.key});
+  final Cooperative cooperative;
+  const CooperativeDetailsScreen({super.key, required this.cooperative});
 
   @override
   State<CooperativeDetailsScreen> createState() => _CooperativeDetailsScreenState();

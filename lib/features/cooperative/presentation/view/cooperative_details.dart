@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/extensions.dart';
-import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/component/pages_bar.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../farmers/presentation/controller/register_farmer.dart';
-import '../../../home/presentation/bloc/bloc.dart';
 import '../contract/cooperative_details.dart';
-import '../widget/cooperative_card.dart';
 
 
 class CooperativeDetailsView extends StatelessWidget implements CooperativeDetailsViewContract {
@@ -53,38 +49,7 @@ class CooperativeDetailsView extends StatelessWidget implements CooperativeDetai
                       translate: false,
                       color: AppColors.accentText,
                       fontSize: 12, fontWeight: FontWeight.w500),
-                    Expanded(
-                      child: BlocBuilder<CooperativeCubit, CooperativeState>(
-                        builder: (context, state) {
-                          if (state is CooperativeLoading) {
-                            return ErrorWidgets(title: "empty", message: '');
-                          }
-                          if (state is CooperativeLoaded) {
-                            return state.cooperativeList.isEmpty
-                                ? ErrorWidgets(message: 'cooperative_list_empty')
-                                : ListView.separated(
-                                  itemCount: state.cooperativeList.length,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return CooperativeCard();
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          12.verticalSpace,
-                                );
-                          }
-                          if (state is CooperativeFailure) {
-                            return ErrorWidgets(
-                              title: "Error",
-                              message: state.error,
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ),
-                  ],
+               ],
                 ),
               ),
             ),
