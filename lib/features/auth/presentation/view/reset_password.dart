@@ -14,6 +14,8 @@ import '../bloc/forgot_password/forgot_password_cubit.dart';
 import '../bloc/forgot_password/forgot_password_state.dart';
 import '../contract/reset_password.dart';
 import '../../../../core/utils/extensions.dart';
+import '../controller/privacy_policy.dart';
+import '../controller/terms.dart';
 
 class ResetPasswordView extends StatelessWidget
     implements ResetPasswordViewContract {
@@ -103,10 +105,13 @@ class ResetPasswordView extends StatelessWidget
                         if (state is ForgotPasswordSuccess) {
                           final String token = state.response['token'];
                           hideLoading(context);
-                          pushTo(ResetCodeScreen(
-                            email: controller.emailController.text.trim(),
-                           token:token,
-                            ), context);
+                          pushTo(
+                            ResetCodeScreen(
+                              email: controller.emailController.text.trim(),
+                              token: token,
+                            ),
+                            context,
+                          );
                         }
                         if (state is ForgotPasswordFailure) {
                           hideLoading(context);
@@ -137,7 +142,6 @@ class ResetPasswordView extends StatelessWidget
                       ),
                     ),
 
-        
                     80.verticalSpace,
 
                     Row(
@@ -145,7 +149,7 @@ class ResetPasswordView extends StatelessWidget
                       children: [
                         InkWell(
                           onTap: () {
-                            //   pushTo(ForgotPasswordScreen(), context);
+                            pushTo(TermsScreen(), context);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -160,7 +164,7 @@ class ResetPasswordView extends StatelessWidget
                         Text(' | ', style: TextStyle(color: Colors.grey)),
                         InkWell(
                           onTap: () {
-                            //   pushTo(ForgotPasswordScreen(), context);
+                            pushTo(PrivacyPolicyScreen(), context);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -178,14 +182,11 @@ class ResetPasswordView extends StatelessWidget
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '© 2025 KASPA. All rights reserved',
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
+                        '© 2025 KASPA. All rights reserved'.toText(
+                          translate: false,
+                          color: AppColors.ColorAccent,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),

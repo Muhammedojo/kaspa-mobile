@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kaspa/features/auth/presentation/controller/reset_password.dart';
+import '../../../../features/auth/presentation/controller/privacy_policy.dart';
+import '../../../../features/auth/presentation/controller/reset_password.dart';
+import '../../../../features/auth/presentation/controller/terms.dart';
 import '../../../../core/component/pattern_color.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/resources/images.dart';
@@ -38,27 +40,25 @@ class LoginView extends StatelessWidget implements LoginViewContract {
         children: [
           WidgetWrapper(
             child: Container(
-               decoration: BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/pattern.png'),
                   fit: BoxFit.cover,
                 ),
-              
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                Padding(
-                  padding:REdgeInsets.symmetric(vertical: 40.0),
-                  child: Image.asset(AppImage.verticalLogo),
-                )
-              ],),
+                  Padding(
+                    padding: REdgeInsets.symmetric(vertical: 40.0),
+                    child: Image.asset(AppImage.verticalLogo),
+                  ),
+                ],
+              ),
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-             
-            ),
+            decoration: BoxDecoration(),
             child: Form(
               key: controller.formKey,
               child: Padding(
@@ -67,12 +67,12 @@ class LoginView extends StatelessWidget implements LoginViewContract {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    'log_in'.toText(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18
-                    ),
+                    'log_in'.toText(fontWeight: FontWeight.w700, fontSize: 18),
                     24.verticalSpace,
-                    'username'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                    'username'.toText(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                     Padding(
                       padding: REdgeInsets.only(top: 5.0),
                       child: TextFormField(
@@ -94,7 +94,10 @@ class LoginView extends StatelessWidget implements LoginViewContract {
                       ),
                     ),
                     12.verticalSpace,
-                    'password'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                    'password'.toText(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                     Padding(
                       padding: REdgeInsets.only(top: 5.0),
                       child: TextFormField(
@@ -115,31 +118,31 @@ class LoginView extends StatelessWidget implements LoginViewContract {
                       ),
                     ),
                     12.verticalSpace,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                                onTap: () {
-                                    pushTo(ResetPasswordScreen(), context);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: REdgeInsets.all(2.sp),
-                                  child: 'reset_password'.toText(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,color: AppColors.colorPrimary
-                                   
-                                  ),
-                                ),
-                              ),
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            pushTo(ResetPasswordScreen(), context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: REdgeInsets.all(2.sp),
+                            child: 'reset_password'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.colorPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     BlocListener<AuthCubit, AuthState>(
                       listener: (context, state) {
                         if (state is AuthLoginLoading) {
                           showLoading(context);
                         }
-            
+
                         if (state is AuthLoginSuccess) {
                           hideLoading(context);
                           context.read<UserCubit>().getUser();
@@ -174,59 +177,53 @@ class LoginView extends StatelessWidget implements LoginViewContract {
                       ),
                     ),
                     16.verticalSpace,
-      
+
                     Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                               InkWell(
-                                    onTap: () {
-                                      //   pushTo(ForgotPasswordScreen(), context);
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: REdgeInsets.all(2.sp),
-                                      child: 'terms_of_service'.toText(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,color: AppColors.colorPrimary
-                                       
-                                      ),
-                                    ),
-                                  ),
-                              Text(' | ', style: TextStyle(color: Colors.grey)),
-                                InkWell(
-                                    onTap: () {
-                                      //   pushTo(ForgotPasswordScreen(), context);
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: REdgeInsets.all(2.sp),
-                                      child: 'privacy_policy'.toText(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,color: AppColors.colorPrimary
-                                       
-                                      ),
-                                    ),
-                                  ),
-                            ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            pushTo(TermsScreen(), context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: REdgeInsets.all(2.sp),
+                            child: 'terms_of_service'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.colorPrimary,
+                            ),
                           ),
-                          16.verticalSpace,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '© 2025 KASPA. All rights reserved',
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                        ),
+                        Text(' | ', style: TextStyle(color: Colors.grey)),
+                        InkWell(
+                          onTap: () {
+                            pushTo(PrivacyPolicyScreen(), context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: REdgeInsets.all(2.sp),
+                            child: 'privacy_policy'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.colorPrimary,
+                            ),
                           ),
-                       
-            
-                 
+                        ),
+                      ],
+                    ),
+                    16.verticalSpace,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        '© 2025 KASPA. All rights reserved'.toText(
+                          translate: false,
+                          color: AppColors.ColorAccent,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

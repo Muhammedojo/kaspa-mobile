@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/pattern_color.dart';
+import '../../../../core/navigation/navigator.dart';
 import '../../../../core/resources/images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import '../../../../core/theme/colors.dart';
@@ -12,6 +13,8 @@ import '../../../../core/utils/styles.dart';
 import '../bloc/reset_password/cubit.dart';
 import '../contract/change_password.dart';
 import '../../../../core/utils/extensions.dart';
+import '../controller/privacy_policy.dart';
+import '../controller/terms.dart';
 
 class ChangePasswordView extends StatelessWidget
     implements ChangePasswordViewContract {
@@ -61,8 +64,6 @@ class ChangePasswordView extends StatelessWidget
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-
-
                     'reset_password'.toText(
                       fontWeight: FontWeight.w700,
                       fontSize: 18,
@@ -72,7 +73,7 @@ class ChangePasswordView extends StatelessWidget
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
-                  
+
                     Padding(
                       padding: REdgeInsets.only(top: 5.0),
                       child: TextFormField(
@@ -93,7 +94,10 @@ class ChangePasswordView extends StatelessWidget
                       ),
                     ),
                     14.verticalSpace,
-                     'confirm_password'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                    'confirm_password'.toText(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                     Padding(
                       padding: REdgeInsets.only(top: 5.0),
                       child: TextFormField(
@@ -111,7 +115,6 @@ class ChangePasswordView extends StatelessWidget
                         ),
                         onChanged: (value) {},
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                      
                       ),
                     ),
                     12.verticalSpace,
@@ -122,8 +125,10 @@ class ChangePasswordView extends StatelessWidget
                         }
                         if (state is ResetPasswordSuccess) {
                           hideLoading(context);
-                          Utils.showToastError(context, 'password_reset_successfully'.tr());
-                         
+                          Utils.showToastError(
+                            context,
+                            'password_reset_successfully'.tr(),
+                          );
                         }
                         if (state is ResetPasswordFailure) {
                           hideLoading(context);
@@ -160,7 +165,7 @@ class ChangePasswordView extends StatelessWidget
                       children: [
                         InkWell(
                           onTap: () {
-                            //   pushTo(ForgotPasswordScreen(), context);
+                            pushTo(TermsScreen(), context);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -175,7 +180,7 @@ class ChangePasswordView extends StatelessWidget
                         Text(' | ', style: TextStyle(color: Colors.grey)),
                         InkWell(
                           onTap: () {
-                            //   pushTo(ForgotPasswordScreen(), context);
+                            pushTo(PrivacyPolicyScreen(), context);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -193,14 +198,11 @@ class ChangePasswordView extends StatelessWidget
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '© 2025 KASPA. All rights reserved',
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
+                        '© 2025 KASPA. All rights reserved'.toText(
+                          translate: false,
+                          color: AppColors.ColorAccent,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),

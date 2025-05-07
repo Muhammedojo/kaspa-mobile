@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import '../../../../core/component/pattern_color.dart';
+import '../../../../core/navigation/navigator.dart';
 import '../../../../core/resources/images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import '../../../../core/theme/colors.dart';
 import '../contract/reset_code.dart';
 import '../../../../core/utils/extensions.dart';
+import '../controller/privacy_policy.dart';
+import '../controller/terms.dart';
 
 class ResetCodeView extends StatelessWidget implements ResetCodeViewContract {
   const ResetCodeView({super.key, required this.controller});
@@ -109,7 +112,7 @@ class ResetCodeView extends StatelessWidget implements ResetCodeViewContract {
                     children: [
                       InkWell(
                         onTap: () {
-                          //   pushTo(ForgotPasswordScreen(), context);
+                          pushTo(TermsScreen(), context);
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -124,7 +127,7 @@ class ResetCodeView extends StatelessWidget implements ResetCodeViewContract {
                       Text(' | ', style: TextStyle(color: Colors.grey)),
                       InkWell(
                         onTap: () {
-                          //   pushTo(ForgotPasswordScreen(), context);
+                          pushTo(PrivacyPolicyScreen(), context);
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -142,14 +145,11 @@ class ResetCodeView extends StatelessWidget implements ResetCodeViewContract {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        '© 2025 KASPA. All rights reserved',
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.center,
+                      '© 2025 KASPA. All rights reserved'.toText(
+                        translate: false,
+                        color: AppColors.ColorAccent,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
                     ],
                   ),
