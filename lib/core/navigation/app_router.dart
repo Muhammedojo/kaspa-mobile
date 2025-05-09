@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import '../../features/farmers/presentation/controller/register_farmer.dart';
 import '../../features/cooperative/presentation/controller/cooperative.dart';
 import '../../features/auth/presentation/controller/privacy_policy.dart';
 import '../../features/auth/presentation/controller/terms.dart';
@@ -88,6 +89,14 @@ class AppRouter {
                 pageBuilder:
                     (context, state) =>
                         const NoTransitionPage(child: FarmerScreen()),
+                routes: [],
+              ),
+              GoRoute(
+                path: '/${RouteConstant.registerFarmer}',
+                name: RouteConstant.registerFarmer,
+                pageBuilder:
+                    (context, state) =>
+                        const NoTransitionPage(child: RegisterFarmerScreen()),
                 routes: [],
               ),
             ],

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kaspa/core/navigation/navigator.dart';
 import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/storage/istorage.dart';
 import '../../../auth/presentation/bloc/user/user_cubit.dart';
+import '../../../farmers/presentation/controller/register_farmer.dart';
 import '../contract/homepage.dart';
 import '../view/homepage.dart';
 
@@ -57,6 +59,26 @@ class _HomePageScreenState extends State<HomePageScreen>
   @override
   Widget build(BuildContext context) {
     return view.build(context);
+  }
+
+  @override
+  void registerFarmer() {
+    pushTo( RegisterFarmerScreen(), context);
+  }
+
+  @override
+  void farmVisit() {
+    pushTo( RegisterFarmerScreen(), context);
+  }
+
+  @override
+  void priceUpdate() {
+    pushTo( RegisterFarmerScreen(), context);
+  }
+
+  @override
+  void report() {
+    pushTo( RegisterFarmerScreen(), context);
   }
 
   @override

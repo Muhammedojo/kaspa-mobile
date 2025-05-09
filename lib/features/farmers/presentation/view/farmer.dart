@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kaspa/core/component/pages_bar.dart';
+import '../../../../core/component/pages_bar.dart';
 import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/component/search_bar_widget.dart';
 import '../../../../core/navigation/navigator.dart';
@@ -29,18 +29,20 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
         onPressed: () => pushTo(RegisterFarmerScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
       ),
-      body: _body(),
+      body: _body(context),
     );
   }
 
-  Widget _body() {
+  Widget _body(context) {
     return Container(
       decoration: Styles.colorComboDecoration(),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageBar(onTap: () {}),
+            PageBar(onTap: () {
+           //   pushTo(FarmerRegistrationWithStepper(), context);
+            }),
             24.verticalSpace,
             Expanded(
               child: Padding(

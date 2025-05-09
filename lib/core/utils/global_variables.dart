@@ -9,6 +9,19 @@ class GlobalVariables {
     Locale('sw', 'TZ'),
   ];
 
+  var genderList = ["Male", "Female"];
+
+  var nokRelationshipList = [
+    "Brother",
+    "Sister",
+    "Mother",
+    "Father",
+    "Uncle",
+    "Aunty",
+    "Son",
+    "Daughter"
+  ];
+
   static Set<String> selectedSyncItems = {};
   static Set<String> pulledSyncItems = {};
 

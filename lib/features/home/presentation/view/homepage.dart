@@ -71,10 +71,11 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                         },
                       ),
                     ),
+                    10.verticalSpace,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(2, (index) {
-                        return Container( 
+                        return Container(
                           width: controller.currentPage == index ? 30 : 15,
                           height: 6,
                           margin: REdgeInsets.symmetric(horizontal: 2),
@@ -106,24 +107,28 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                           'Farmer',
                           AppIcon.addFarmer,
                           AppColors.bgGreen,
+                          () => controller.registerFarmer(),
                         ),
                         _buildQuickActionButton(
                           'Farm',
                           'Visit',
                           AppIcon.farmVisit,
                           AppColors.bgBlue,
+                          () => controller.farmVisit(),
                         ),
                         _buildQuickActionButton(
                           'Price',
                           'Updates',
                           AppIcon.cal,
                           AppColors.bgYellow,
+                          () => controller.priceUpdate(),
                         ),
                         _buildQuickActionButton(
                           'Report an',
                           'Incident',
                           AppIcon.warning,
                           AppColors.bgRed,
+                          () => controller.report(),
                         ),
                       ],
                     ),
@@ -209,7 +214,9 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                             value: 0.45,
                             minHeight: 8,
                             borderRadius: BorderRadius.circular(4.r),
-                            backgroundColor: AppColors.brown.withAlpha(((0.4 * 255).toInt())),
+                            backgroundColor: AppColors.brown.withAlpha(
+                              ((0.4 * 255).toInt()),
+                            ),
                             valueColor: AlwaysStoppedAnimation<Color>(
                               AppColors.brown,
                             ),
@@ -217,7 +224,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                           8.verticalSpace,
                           const Divider(),
                           10.verticalSpace,
-                           Row(
+                          Row(
                             children: [
                               '690 Profile Issues'.toText(
                                 fontSize: 10,
@@ -231,7 +238,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                                 color: AppColors.accentText,
                                 fontWeight: FontWeight.w700,
                               ),
-                              SvgPicture.asset(AppIcon.rightArrow)
+                              SvgPicture.asset(AppIcon.rightArrow),
                             ],
                           ),
                         ],
@@ -252,30 +259,36 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
     String labels,
     String icon,
     Color bgColor,
+    final Function() onTap,
   ) {
-    return Container(
-      width: 90.w,
-      padding: REdgeInsets.symmetric(vertical: 13),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(icon, height: 18.sp, width: 18.sp),
-          8.verticalSpace,
-          label.toText(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            textAlign: TextAlign.center,
-          ),
-          labels.toText(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: 90.w,
+        padding: REdgeInsets.symmetric(vertical: 13),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(icon, height: 18.sp, width: 18.sp),
+            8.verticalSpace,
+            label.toText(
+              fontSize: 12,
+              translate: false,
+              fontWeight: FontWeight.w500,
+              textAlign: TextAlign.center,
+            ),
+            labels.toText(
+               translate: false,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

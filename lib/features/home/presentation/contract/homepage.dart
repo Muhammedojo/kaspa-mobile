@@ -7,6 +7,10 @@ abstract class HomePageControllerContract {
   late PageController pageController;
   late int currentPage;
   void monitor(index);
+  void registerFarmer();
+  void farmVisit();
+  void priceUpdate();
+  void report();
 }
 
 abstract class HomePageViewContract extends BaseViewContract {}

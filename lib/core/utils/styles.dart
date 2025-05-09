@@ -143,7 +143,7 @@ class Styles {
     String hintText,
     String labelText, {
     IconData? iconData,
-    IconData? prefixIconData,
+    Widget? prefixIconData,
     String? validationText,
     bool? check,
     Function()? onIconPressed,
@@ -151,18 +151,23 @@ class Styles {
   }) {
     return InputDecoration(
       border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.r)),
         borderSide: BorderSide(color: Color(0xff909190), width: 1.w),
       ),
       focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.r)),
         borderSide: BorderSide(color: Color(0xff088008), width: 1.w),
       ),
       enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.r)),
         borderSide: BorderSide(color: AppColors.lightGrey, width: 1.5.w),
       ),
       errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.r)),
         borderSide: BorderSide(color: Color(0xffE93426), width: 1.w),
       ),
       disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.r)),
         borderSide: BorderSide(color: Color(0xff909190), width: 1.w),
       ),
       hintText: hintText,
@@ -180,8 +185,7 @@ class Styles {
               : null,
       prefix:
           showPrefixIcon != null && showPrefixIcon
-              ?
-              Icon(prefixIconData)
+              ? prefixIconData
               //  Container(
               //   width: 20.sp,
               //   height: 20.sp,
@@ -1221,18 +1225,19 @@ class Styles {
       color: color ?? AppColors.x404040,
     );
   }
-  static colorComboDecoration(){
+
+  static colorComboDecoration() {
     return BoxDecoration(
-        color: Color(0xFFFCFCFC),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0x0F5CD53C).withAlpha((0.1 * 255).toInt()),
-            Color(0x005CD53C),
-          ],
-        ),
-      );
+      color: Color(0xFFFCFCFC),
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0x0F5CD53C).withAlpha((0.1 * 255).toInt()),
+          Color(0x005CD53C),
+        ],
+      ),
+    );
   }
 
   static ovalMarketDecoration({Color? color, double? radius}) {
