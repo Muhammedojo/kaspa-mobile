@@ -25,7 +25,7 @@ class Ward extends GeneralModel {
 Ward _$WardFromJson(Map<String, dynamic> json) {
   var obj = Ward();
 
-  obj.pk = json[KEY_PK];
+  obj.pk = json[KEY_PK] ?? 0;
   obj.name = json[KEY_NAME];
   if (json.containsKey(KEY_LGA) && json[KEY_LGA] != null) {
     obj.lga = Lga.fromJson(json[KEY_LGA]);

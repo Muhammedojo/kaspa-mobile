@@ -10,8 +10,27 @@ val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build"
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
-    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
-    project.layout.buildDirectory.value(newSubprojectBuildDir)
+    val newSubprojectBuildDir = newBuildDir.dir(project.name)
+    project.layout.buildDirectory.set(newSubprojectBuildDir)
+
+    afterEvaluate {
+        if (plugins.hasPlugin("com.android.application") ||
+            plugins.hasPlugin("com.android.library")) {
+            // In Kotlin DSL, we need to use extensions for android configuration
+            configure<com.android.build.gradle.BaseExtension> {
+                compileSdkVersion(34)
+                buildToolsVersion = "34.0.0"
+            }
+        }
+        
+        if (hasProperty("android")) {
+            configure<com.android.build.gradle.BaseExtension> {
+                if (this.namespace == null) {
+                    this.namespace = project.group.toString()
+                }
+            }
+        }
+    }
 }
 
 subprojects {

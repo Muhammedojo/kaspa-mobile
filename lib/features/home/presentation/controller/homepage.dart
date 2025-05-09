@@ -8,7 +8,6 @@ import '../../../auth/presentation/bloc/user/user_cubit.dart';
 import '../contract/homepage.dart';
 import '../view/homepage.dart';
 
-
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
 
@@ -21,9 +20,23 @@ class _HomePageScreenState extends State<HomePageScreen>
   late final HomePageViewContract view;
 
   @override
+  late PageController pageController = PageController();
+
+  @override
+  int currentPage = 0;
+
+  @override
   void initState() {
     context.read<UserCubit>().getUser;
     super.initState();
+    pageController.addListener(() {
+      int next = pageController.page!.round();
+      if (currentPage != next) {
+        setState(() {
+          currentPage = next;
+        });
+      }
+    });
 
     view = HomePageView(controller: this);
   }
@@ -31,17 +44,25 @@ class _HomePageScreenState extends State<HomePageScreen>
   @override
   void dispose() {
     super.dispose();
+    pageController.dispose();
   }
 
   @override
-   void logout() {
+  void logout() {
     GetIt.I.get<LocalStorage>().setLoggedIn(false);
     context.goNamed(RouteConstant.login);
     GetIt.I.get<LocalStorage>().closeDb();
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
     return view.build(context);
+  }
+
+  @override
+  void monitor(index) {
+    setState(() {
+      currentPage = index;
+    });
   }
 }

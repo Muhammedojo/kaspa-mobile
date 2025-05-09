@@ -25,6 +25,7 @@ class AppColors {
   static const Color subText = Color.fromRGBO(134, 142, 139, 1);
   static const Color whiteGrey = Color.fromRGBO(82, 88, 102, 1);
   static const Color preText = Color.fromRGBO(95, 101, 99, 1);
+  static const Color primaryRed = Color.fromRGBO(229, 51, 54, 1);
 
   static const Color xE8342B =
       Color.fromRGBO(232, 52, 43, 1); //rgba(232,52,43, 1)//E8342B, 100%
@@ -47,7 +48,7 @@ class AppColors {
   //static const Color x51965E = Color.fromRGBO(81,150,94, 1);
   static const Color x505154 = Color.fromRGBO(80, 81, 84, 1);
   static const Color xEFF0F4 = Color.fromRGBO(239, 240, 244, 1);
-  static const Color x404040 = Color.fromRGBO(64, 64, 64, 1); //dark grey afex
+  static const Color x404040 = Color.fromRGBO(64, 64, 64, 1); //dark grey 
   static const Color xA4A9B2 =
       Color.fromRGBO(164, 169, 178, 1); //light grey rgba(164, 169, 178, 1)
   static const Color xA4A9B3 =
@@ -59,13 +60,13 @@ class AppColors {
   static const Color xB9B9B9 =
       Color.fromRGBO(185, 185, 185, 1); //lightest grey rgba(185, 185, 185, 1)
   static const Color xD61A0D =
-      Color.fromRGBO(214, 26, 13, 1); //bold red afex rgba(214, 26, 13, 1)
+      Color.fromRGBO(214, 26, 13, 1); //bold red  rgba(214, 26, 13, 1)
   static const Color xEAEAEA = Color.fromRGBO(
       234, 234, 234, 1); //fingerprint grey rgba(234, 234, 234, 1)
   static const Color xD0D0D0 =
       Color.fromRGBO(208, 208, 208, 1); //label grey rgba(208, 208, 208, 1)
   static const Color x52965E =
-      Color.fromRGBO(82, 150, 94, 1); //green afex rgba(82, 150, 94, 1)
+      Color.fromRGBO(82, 150, 94, 1); //green  rgba(82, 150, 94, 1)
   static const Color x4A4A4A = Color.fromRGBO(74, 74, 74, 1);
   static const Color x6E7F8D = Color.fromRGBO(110, 127, 141, 1);
   static const Color xE5E9F4 =
@@ -80,9 +81,7 @@ class AppColors {
       Color.fromRGBO(245, 245, 245, 1); //rgba(193, 44, 34, 1)
   static const Color xE0E0E0 =
       Color.fromRGBO(224, 224, 224, 1); //rgba(224, 224, 224, 1)
-  static const Color xBDBDBD =
-      Color.fromRGBO(189, 189, 189, 1); //rgba(189, 189, 189, 1)
-  static const Color xACACAC =
+static const Color xACACAC =
       Color.fromRGBO(172, 172, 172, 1); //rgba(172, 172, 172, 1)
   static const Color xC3C3C3 =
       Color.fromRGBO(195, 195, 195, 1); //rgba(195, 195, 195, 1)
@@ -135,5 +134,15 @@ class AppColors {
   static const Color colorPrimary = x008751;
   static const Color ColorSecondary = x008751;
   static const Color ColorAccent = xB8B8BA;
+
+  static const Color bgGreen = Color.fromRGBO(199, 228, 204, 1);
+  static const Color bgBlue = Color.fromRGBO(235, 238, 252, 1);
+  static const Color bgYellow = Color.fromRGBO(253, 247, 235, 1);
+  static const Color bgRed = Color.fromRGBO(252, 235, 235, 1);
+static const Color brown = Color.fromRGBO(208, 142, 20, 1);
+
+  
+
+  
 
 }

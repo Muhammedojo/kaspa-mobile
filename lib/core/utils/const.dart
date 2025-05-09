@@ -52,7 +52,7 @@ const TABLE_STOCK = "stock";
 const TABLE_VALUE_CHAIN = "value_chain";
 const TABLE_OTC_GRN_IMAGES = "oct_grn_image";
 
-const KEY_PK = "pk";
+const KEY_PK = "id";
 const KEY_ACTIVE = "active";
 const KEY_ITEMS = "items";
 const KEY_CODE = "code";

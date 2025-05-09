@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
+import '../../../../features/auth/presentation/controller/login.dart';
 import '../../../../core/component/pattern_color.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/resources/images.dart';
@@ -125,14 +126,18 @@ class ChangePasswordView extends StatelessWidget
                         }
                         if (state is ResetPasswordSuccess) {
                           hideLoading(context);
-                          Utils.showToastError(
+                          Utils.showToastSuccess(
                             context,
                             'password_reset_successfully'.tr(),
+                            'proceed_to_login'.tr(),
+                            () {
+                              pushTo(LoginScreen(), context);
+                            },
                           );
                         }
                         if (state is ResetPasswordFailure) {
                           hideLoading(context);
-                          Utils.showToastError(context, state.error.toString());
+                          Utils.showToastError(context, state.error.toString(),'',(){});
                         }
                       },
                       child: Padding(

@@ -25,7 +25,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
   void initState() {
     super.initState();
     formKey = GlobalKey<FormState>();
-    emailController = TextEditingController(text: "gemdajs@gmail.com");
+    emailController = TextEditingController(text: "");
 
     view = ResetPasswordView(controller: this);
     WidgetsBinding.instance.addPostFrameCallback((_) async {});

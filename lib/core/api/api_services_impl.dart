@@ -9,6 +9,7 @@ import '../storage/istorage.dart';
 import '../utils/const.dart';
 import '../utils/extensions.dart';
 import 'api.dart';
+import 'exceptions/api_exception.dart';
 import 'exceptions/contracts/failure.dart';
 
 class ApiServicesImpl implements ApiServices {
@@ -208,6 +209,7 @@ class ApiServicesImpl implements ApiServices {
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList(
     String? endpoint,
   ) async {
+    try{
     var lastRequestTime =
         await GetIt.I.get<LocalStorage>().getLastRequestTime();
     return apiClient.request<List<Ward>>(
@@ -222,7 +224,12 @@ class ApiServicesImpl implements ApiServices {
       },
       null,
       headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
-    );
+    );}
+    on Error catch (e){
+    
+      return left(ServerFailure(message: e.toString()));
+      
+    }
   }
 
   @override

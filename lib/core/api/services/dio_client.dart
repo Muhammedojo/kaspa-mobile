@@ -149,7 +149,7 @@ class DioClient implements IApiClient {
               responseData['errors'] ?? responseData['detail'],
               responseData['message'],
               responseCode,
-              count: responseData['count'] ?? responseData['total'],
+              total: responseData['total'] ?? responseData['total'],
               next: responseData['next'] ?? responseData['next_page_url'],
               previous: responseData['prev'] ?? responseData['prev_page_url'], // Assuming 'prev' is the key for previous URL
             ));
@@ -259,7 +259,7 @@ class DioClient implements IApiClient {
               responseData['errors'] ?? responseData['detail'],
               responseData['message'],
               responseCode,
-              count: responseData['count'] ?? responseData['total'],
+              total: responseData['count'] ?? responseData['total'],
               next: responseData['next'] ?? responseData['next_page_url'],
               previous: responseData['prev'] ?? responseData['prev_page_url'],
             ));

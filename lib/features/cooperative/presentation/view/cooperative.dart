@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/component/search_bar_widget.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/component/pages_bar.dart';
@@ -58,18 +59,34 @@ class CooperativeView extends StatelessWidget
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
+                     SearchBarWidget(
+                      hint: 'search_for_a_cooperative',
+                      onTextChanged: (text) {
+                        controller.updateSearchStatus(text != null && text.isNotEmpty);
+                        if (text != null && text.isNotEmpty) {
+                          controller.searchCooperative(text);
+                        }
+                      },
+                      searchController: controller.searchController,
+                      onClearSearch: () => controller.onClearSearch(), isSearching: controller.isSearching,
+                    ),
+                    16.verticalSpace,
                     Expanded(
                       child: BlocBuilder<CooperativeCubit, CooperativeState>(
                         builder: (context, state) {
                           if (state is CooperativeLoading) {
-                            return ErrorWidgets(title: "empty", message: '');
+                            return 
+                            ErrorWidgets(title: "empty", message: '');
+                               
+                         
                           }
                           if (state is CooperativeLoaded) {
                             return state.cooperativeList.isEmpty
                                 ? ErrorWidgets(
                                   message: 'cooperative_list_empty',
                                 )
-                                : ListView.separated(
+                                : 
+                                ListView.separated(
                                   itemCount: state.cooperativeList.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -90,6 +107,7 @@ class CooperativeView extends StatelessWidget
                                       (BuildContext context, int index) =>
                                           12.verticalSpace,
                                 );
+                         
                           }
                           if (state is CooperativeFailure) {
                             return ErrorWidgets(

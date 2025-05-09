@@ -19,7 +19,7 @@ class GlobalVariables {
 
   var syncItemList = <String>[
     farmersListEndpoint,
-   // lgaListEndpoint,
+    lgaListEndpoint,
     wardListEndpoint,
     cropListEndpoint,
     livestockListEndpoint,
@@ -29,7 +29,7 @@ class GlobalVariables {
 
   var syncMap = {
     farmersListEndpoint: KEY_FARMERS,
-   // lgaListEndpoint: KEY_LGA,
+    lgaListEndpoint: KEY_LGA,
     wardListEndpoint: KEY_WARD,
     cropListEndpoint: KEY_CROPS,
     livestockListEndpoint: KEY_LIVESTOCK,

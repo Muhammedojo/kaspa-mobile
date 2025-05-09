@@ -16,7 +16,13 @@ class _CooperativeScreenState extends State<CooperativeScreen>
   late final CooperativeViewContract view;
 
   @override
+  late bool isSearching = false;
+  @override
+  late TextEditingController searchController = TextEditingController();
+
+  @override
   void initState() {
+    isSearching = false;
     super.initState();
     view = CooperativeView(controller: this);
   }
@@ -24,6 +30,28 @@ class _CooperativeScreenState extends State<CooperativeScreen>
   @override
   void dispose() {
     super.dispose();
+  }
+
+    @override
+  searchCooperative(String text) {
+    // if(text.isNotEmpty) {
+    //   GetIt.I.get<SearchFarmerCubit>().searchFarmers(text);
+    // }
+  }
+
+   @override
+  void updateSearchStatus(bool status){
+    setState(() {
+      isSearching = status;
+    });
+  }
+
+  @override
+  void onClearSearch() {
+    searchController.clear();
+    setState(() {
+      isSearching = false;
+    });
   }
 
   @override

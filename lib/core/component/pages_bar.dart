@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../resources/images.dart';
 import '../theme/colors.dart';
 
@@ -29,7 +28,11 @@ class PageBar extends StatelessWidget {
               child: Icon(Icons.logout, color: AppColors.burntRed)),
             16.horizontalSpace,
 
-            SvgPicture.asset('assets/vectors/bell.svg'),
+            InkWell(
+              onTap :(){
+               
+              },
+              child: SvgPicture.asset('assets/vectors/bell.svg')),
             10.horizontalSpace,
           ],
         ),

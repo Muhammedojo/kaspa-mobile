@@ -86,8 +86,7 @@ class LoginView extends StatelessWidget implements LoginViewContract {
                             Styles.textFormFieldDecorationBorderWithBackground(
                               'omuhammed',
                               '',
-                              showPrefixIcon: true,
-                              prefixIconData: Icons.abc,
+
                               check: false,
                             ),
                         onChanged: (value) {},
@@ -107,8 +106,10 @@ class LoginView extends StatelessWidget implements LoginViewContract {
                         validator: ValidationBuilder().required().build(),
                         style: Styles.x14dp_4A4A4A(14.0.sp),
                         maxLines: 1,
+                        
                         decoration: Styles.passwordFieldDecoration(
-                          '*** *** *** **',
+                          
+                          '',
                           '',
                           controller.obscurePassword,
                           () => controller.onPasswordVisible(),
@@ -150,7 +151,15 @@ class LoginView extends StatelessWidget implements LoginViewContract {
                         }
                         if (state is AuthLoginFailure) {
                           hideLoading(context);
-                          Utils.showToastError(context, state.error.toString());
+                          Utils.showToastError(
+                            context,
+                  
+                            state.error.toString(),
+                            'close',
+                            () {
+                              context.pop();
+                            },
+                          );
                         }
                       },
                       child: Padding(

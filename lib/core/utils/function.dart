@@ -1,58 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../core/resources/images.dart';
 import '../../core/utils/extensions.dart';
+import '../component/error_dialog.dart';
 import '../component/sucess_dialog.dart';
-import '../component/welcome_dialog_widget.dart';
-
+import '../component/warning_dialog.dart';
+import '../resources/vectors.dart';
 
 class Utils {
-  static customBar(
-    BuildContext context,
-
-  {GestureTapCallback? onPressed}
-  ) {
+  static customBar(BuildContext context, {GestureTapCallback? onPressed}) {
     return AppBar(
       centerTitle: false,
-     
+
       backgroundColor: Colors.transparent,
-      leading:  Image.asset(AppImage.horizontalLogo,)
+      leading: Image.asset(AppImage.horizontalLogo),
     );
   }
-    static customAppBar(
+
+  static customAppBar(
     BuildContext context,
-    String title,
-  {GestureTapCallback? onPressed}
-  ) {
+    String title, {
+    GestureTapCallback? onPressed,
+  }) {
     return AppBar(
-      centerTitle: false,
-      title: title.toText(fontSize: 20, fontWeight: FontWeight.w700),
       backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      title: title.toText(fontSize: 14, fontWeight: FontWeight.w700),
       leading: InkWell(
-          onTap: onPressed ?? () => Navigator.pop(context),
-          child: Icon(
-            Icons.arrow_back,
-            size: 25.sp,
-          )),
+        onTap: () => Navigator.pop(context),
+        child: SvgPicture.asset(
+          AppIcon.pop,
+          fit: BoxFit.scaleDown,
+          height: 30.w,
+          width: 30.w,
+        ),
+      ),
     );
   }
 
-   static showToastError(BuildContext context, String message) {
+  static showToastSuccess(
+    BuildContext context,
+    String message,
+    String title,
+    Function() onTap,
+  ) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) => DialogWidget(message: message, title: 'success', onTap: (){
-          Navigator.pop(context);
-        
-        },));
-         
+      context: context,
+      builder:
+          (BuildContext context) =>
+              SuccessDialogWidget(message: message, title: title, onTap: onTap),
+    );
+  }
+
+  static showToastWarning(
+    BuildContext context,
+    String message,
+    String title,
+    Function() onTap,
+  ) {
+    showDialog(
+      context: context,
+      builder:
+          (BuildContext context) =>
+              WarningDialogWidget(message: message, title: title, onTap: onTap),
+    );
+  }
+
+  static showToastError(
+    BuildContext context,
+    String message,
+    String title,
+    Function() onTap,
+  ) {
+    showDialog(
+      context: context,
+      builder:
+          (BuildContext context) =>
+              ErrorDialogWidget(message: message, title: title, onTap: onTap),
+    );
   }
 
   static showConfirmationDialog(
     BuildContext context, {
     required VoidCallback onYesPressed,
     String yesButtonText = 'Yes',
-        String? title = 'Confirm Action',
-        String? message = 'Are you sure you want to perform this action?'
+    String? title = 'Confirm Action',
+    String? message = 'Are you sure you want to perform this action?',
   }) {
     showDialog(
       context: context,
@@ -78,16 +113,6 @@ class Utils {
     );
   }
 
-  // static showToast(BuildContext context, String? message) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) => AppDialog(
-  //           title: "success".tr(),
-  //           message: message,
-  //           image: "assets/images/done.png",
-  //           onTap: () => closeDialog(context)));
-  // }
-
   static hideProgress() {
     // return EasyLoading.dismiss();
   }
@@ -96,10 +121,9 @@ class Utils {
     Navigator.of(context, rootNavigator: true).pop('dialog');
   }
 
-   String getInitials(String? name) {
-    
+  String getInitials(String? name) {
     if (name == null || name.trim().isEmpty) {
-      return ''; 
+      return '';
     }
     List<String> nameParts = name.split(' ');
 
@@ -113,72 +137,44 @@ class Utils {
     return initials;
   }
 
-  static showToastErrors(BuildContext context, String message) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => WelcomeDialog(
-            title: "error",
-            message: message,
-            image: "assets/images/error.png",
-            onTap: () => closeDialog(context)));
-  }
-
-  // static showBottomToast(BuildContext context,
-  //     {Function()? onTap,
-  //     String? titleLabel,
-  //     String? subTitleLabel,
-  //     bool? isConfirmationDialog,
-  //     bool? isRejectionDialog,
-  //     String? buttonLabel,
-  //     String? customImagePath,
-  //     bool? isDismissible}) {
-  //   showModalBottomSheet(
-  //       isScrollControlled: true,
-  //       context: context,
-  //       isDismissible: isDismissible ?? false,
-  //       backgroundColor: Colors.transparent,
-  //       builder: (context) {
-  //         return SnackBarWidget(
-  //           onTap: onTap,
-  //           titleLabel: titleLabel,
-  //           subTitleLabel: subTitleLabel,
-  //           isConfirmationDialog: isConfirmationDialog,
-  //           isRejectionDialog: isRejectionDialog,
-  //           buttonLabel: buttonLabel,
-  //           customImagePath: customImagePath,
-  //         );
-  //       });
-  // }
-
   static mediaBottomSheet(
-      context, Function onCameraSelected, Function onGallerySelected) {
+    context,
+    Function onCameraSelected,
+    Function onGallerySelected,
+  ) {
     showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(
-            color: Colors.white,
-            child: Wrap(
-              children: <Widget>[
-                ListTile(
-                    leading: Icon(Icons.camera_alt),
-                    title: 'camera'
-                        .toText(fontSize: 14, fontWeight: FontWeight.w500),
-                    onTap: () {
-                      Navigator.pop(context); 
-                      onCameraSelected();
-                    }),
-                ListTile(
-                  leading: Icon(Icons.image),
-                  title: 'gallery'
-                      .toText(fontSize: 14, fontWeight: FontWeight.w500),
-                  onTap: () {
-                    Navigator.pop(context);
-                    onGallerySelected();
-                  },
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          color: Colors.white,
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: 'camera'.toText(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
-              ],
-            ),
-          );
-        });
+                onTap: () {
+                  Navigator.pop(context);
+                  onCameraSelected();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.image),
+                title: 'gallery'.toText(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  onGallerySelected();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

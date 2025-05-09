@@ -352,7 +352,7 @@ class Styles {
         borderSide: BorderSide(color: AppColors.lightGrey, width: 1.5.w),
       ),
       hintText: hintText,
-      labelText: labelText,
+      labelText: '*** **** ***',
       labelStyle: x14dp_A4A9B3(14.0.sp),
       hintStyle: x16dp_textFieldHint(12.0.sp),
       counterStyle: x16dp_textFieldHint(16.0.sp),
@@ -379,7 +379,6 @@ class Styles {
       border: UnderlineInputBorder(),
       hintText: hintText,
       labelText: labelText,
-      //labelStyle: x14dp_9B9B9B(12.0)
       labelStyle: x14dp_A4A9B3(14.0.sp),
       hintStyle: x16dp_textFieldHint(16.0.sp),
       errorText: check != null && check ? validationText : null,

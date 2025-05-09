@@ -5,12 +5,12 @@ class ApiResponseImpl<T> implements ApiResponse<T> {
   final String? _message;
   final dynamic _errors;
   final String? _responseCode;
-  final int? count;
+  final int? total;
   final String? next;
   final String? previous;
 
   ApiResponseImpl(this._data, this._errors, this._message, this._responseCode,
-      {this.count, this.next, this.previous});
+      {this.total, this.next, this.previous});
 
   @override
   T? get data => _data;
@@ -25,7 +25,7 @@ class ApiResponseImpl<T> implements ApiResponse<T> {
   dynamic get errors => _errors == null ? "" : _errors.toString();
 
   @override
-  int? get itemCount => count;
+  int? get itemCount => total;
 
   @override
   String? get nextUrl => next;

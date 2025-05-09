@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaspa/core/component/pages_bar.dart';
 import '../../../../core/component/empty_list_widget.dart';
+import '../../../../core/component/search_bar_widget.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
@@ -48,6 +49,17 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     'farmers'.toText(fontSize: 18, fontWeight: FontWeight.w700),
+                    SearchBarWidget(
+                      hint: 'search_for_a_farmer',
+                      onTextChanged: (text) {
+                        controller.updateSearchStatus(text != null && text.isNotEmpty);
+                        if (text != null && text.isNotEmpty) {
+                          controller.searchFarmer(text);
+                        }
+                      },
+                      searchController: controller.searchController,
+                      onClearSearch: () => controller.onClearSearch(), isSearching: controller.isSearching,
+                    ),
                     Expanded(
                       child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
                         builder: (context, state) {

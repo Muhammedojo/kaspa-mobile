@@ -8,7 +8,6 @@ import '../../../../core/component/pattern_color.dart';
 import '../../../../core/resources/images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import '../../../../core/theme/colors.dart';
-import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../bloc/forgot_password/forgot_password_cubit.dart';
 import '../bloc/forgot_password/forgot_password_state.dart';
@@ -115,7 +114,7 @@ class ResetPasswordView extends StatelessWidget
                         }
                         if (state is ForgotPasswordFailure) {
                           hideLoading(context);
-                          Utils.showToastError(context, state.error.toString());
+                         // Utils.showToastError(context, state.error.toString(),'',(){});
                         }
                       },
                       child: Padding(

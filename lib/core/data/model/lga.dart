@@ -24,7 +24,7 @@ class Lga {
 Lga _$LgaFromJson(Map<String, dynamic> json) {
   var obj = Lga();
 
-  obj.pk = json[KEY_PK];
+  obj.pk = json[KEY_PK] ?? 0;
   obj.name = json[KEY_NAME];
   obj.longitude = json[KEY_LONGITUDE];
   obj.latitude = json[KEY_LATITUDE];

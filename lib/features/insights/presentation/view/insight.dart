@@ -19,7 +19,7 @@ class InsightView extends StatelessWidget implements InsightViewContract {
         backgroundColor: AppColors.primaryGreen,
         onPressed: () {},
         child: SvgPicture.asset(
-          AppIcon.success,
+          AppIcon.cancel,
         ),
       ),
       body: _body(),
