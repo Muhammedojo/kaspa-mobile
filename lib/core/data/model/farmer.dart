@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/bank_detail.dart';
 import 'package:kaspa/core/data/model/cooperative.dart';
@@ -58,7 +59,6 @@ class Farmer {
 
 Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   var obj = Farmer();
-
   obj.pk = json[KEY_PK];
   obj.folioId = json[KEY_FOLIO_ID];
   obj.firstName = json[KEY_FIRST_NAME];
@@ -70,13 +70,27 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   obj.phoneNumber = json[KEY_PHONE_NUMBER];
   obj.nin = json[KEY_NIN];
   obj.bvn = json[KEY_BVN];
+
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
-  obj.cooperative = Cooperative.fromJson(json[KEY_COOPERATIVE]);
-  obj.bankDetails = BankDetail.fromJson(json[KEY_BANK_DETAILS]);
-  obj.nokDetails = NokDetails.fromJson(json[KEY_NOK_DETAILS]);
-  obj.lga = Lga.fromJson(json[KEY_LGA]);
-  obj.ward = Ward.fromJson(json[KEY_WARD]);
-  obj.farms = Farm.fromJson(json[KEY_FARMS]);
+
+  if (json.containsKey(KEY_BANK_DETAILS) && json[KEY_BANK_DETAILS] != null) {
+    obj.bankDetails = BankDetail.fromJson(json[KEY_BANK_DETAILS]);
+  }
+
+  if (json.containsKey(KEY_NOK_DETAILS) && json[KEY_NOK_DETAILS] != null) {
+    obj.nokDetails = NokDetails.fromJson(json[KEY_NOK_DETAILS]);
+  }
+
+  if (json.containsKey(KEY_LGA) && json[KEY_LGA] != null) {
+    obj.lga = Lga.fromJson(json[KEY_LGA]);
+  }
+
+  if (json.containsKey(KEY_WARD) && json[KEY_WARD] != null) {
+    obj.ward = Ward.fromJson(json[KEY_WARD]);
+  }
+  if (json.containsKey(KEY_WARD) && json[KEY_WARD] != null) {
+    obj.farms = Farm.fromJson(json[KEY_WARD]);
+  }
   if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
     obj.cooperative = Cooperative.fromJson(json[KEY_COOPERATIVE]);
   }

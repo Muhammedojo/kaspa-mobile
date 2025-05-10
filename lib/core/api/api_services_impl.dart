@@ -24,7 +24,7 @@ class ApiServicesImpl implements ApiServices {
     String username,
     String password,
   ) {
-    debugPrint('Login here');
+ 
     return apiClient.request<Login>(
       loginEndpoint,
       MethodType.post,
@@ -124,14 +124,17 @@ class ApiServicesImpl implements ApiServices {
   Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList(
     String? endpoint,
   ) async {
+   
     var lastRequestTime =
         await GetIt.I.get<LocalStorage>().getLastRequestTime();
     return apiClient.request<List<Farmer>>(
       endpoint ?? farmersListEndpoint,
       MethodType.get,
       (data, {String? realUri}) {
+      
         lastRequestTime.farmer = currentDateTime();
         lastRequestTime.farmerUrl = realUri;
+       
         final farmerList =
             (data as List).map((e) => Farmer.fromJson(e)).toList();
         GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);

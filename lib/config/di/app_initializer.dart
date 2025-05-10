@@ -133,6 +133,13 @@ class AppInitializer {
       ),
     );
 
+     instanceLocator.registerLazySingleton<GetFarmersCubit>(
+      () => GetFarmersCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
     instanceLocator.registerLazySingleton<ForgotPasswordCubit>(
       () => ForgotPasswordCubit(repository: instanceLocator()),
     );
@@ -159,12 +166,7 @@ class AppInitializer {
       () => LivestockCubit(repository: instanceLocator()),
     );
 
-    instanceLocator.registerLazySingleton<GetFarmersCubit>(
-      () => GetFarmersCubit(
-        repository: instanceLocator(),
-        databaseManager: instanceLocator(),
-      ),
-    );
+   
 
     instanceLocator.registerLazySingleton<UserCubit>(
       () => UserCubit(repository: instanceLocator()),

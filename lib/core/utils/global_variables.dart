@@ -31,7 +31,6 @@ class GlobalVariables {
   );
 
   var syncItemList = <String>[
-    farmersListEndpoint,
     lgaListEndpoint,
     wardListEndpoint,
     weatherListEndpoint,
@@ -39,12 +38,13 @@ class GlobalVariables {
     marketPriceListEndpoint,
     cropListEndpoint,
     livestockListEndpoint,
+    farmersListEndpoint,
     cooperativeListEndpoint,
     bankListEndpoint,
   ];
 
   var syncMap = {
-    farmersListEndpoint: KEY_FARMERS,
+    
     lgaListEndpoint: KEY_LGA,
     wardListEndpoint: KEY_WARD,
     weatherListEndpoint: KEY_WEATHER,
@@ -52,6 +52,7 @@ class GlobalVariables {
     marketPriceListEndpoint: KEY_MARKET_PRICE,
     cropListEndpoint: KEY_CROPS,
     livestockListEndpoint: KEY_LIVESTOCK,
+    farmersListEndpoint: KEY_FARMER,
     cooperativeListEndpoint: KEY_COOPERATIVE,
     bankListEndpoint: KEY_BANK,
   };

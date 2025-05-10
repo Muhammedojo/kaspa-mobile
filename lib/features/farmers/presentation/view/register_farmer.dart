@@ -62,7 +62,9 @@ class RegisterFarmerView extends StatelessWidget
             ),
             Positioned.fill(
               child: Column(
-                children: [Utils.customAppBar(context, 'register_farmer')],
+                children: [
+                  Utils.customAppBar(context, 'register_farmer')
+                  ],
               ),
             ),
             Positioned.fill(

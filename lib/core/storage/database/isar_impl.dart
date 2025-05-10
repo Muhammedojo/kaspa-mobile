@@ -98,6 +98,20 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
+   @override
+  Future<List<Farmer>> getFarmer() {
+    if (!_isar.isOpen) {
+      return Future.value(<Farmer>[]);
+    }
+    try {
+      final farmers = _isar.farmers.where().findAllSync();
+      return Future.value(farmers);
+    } catch (e) {
+      debugPrint("Error retrieving farmers: $e");
+      return Future.value(<Farmer>[]);
+    }
+  }
+
   @override
   Future<List<Lga>> getLga() {
     if (!_isar.isOpen) {
@@ -229,6 +243,18 @@ class IsarImpl implements DatabaseStorage {
       await _isar.writeTxn(() => _isar.cooperatives.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving cooperative: $e");
+    }
+  }
+
+   @override
+  Future<void> saveFarmer(List<Farmer> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.farmers.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving farmer: $e");
     }
   }
 

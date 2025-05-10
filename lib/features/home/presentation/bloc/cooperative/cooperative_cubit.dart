@@ -23,6 +23,7 @@ class CooperativeCubit extends Cubit<CooperativeState> {
   loadCooperative({String? url}) async {
     try {
       emit(CooperativeLoading());
+      debugPrint('Try calling cooperative');
       final response =
           url != null && url.isNotEmpty
               ? await repository.getCooperativeList(endpoint: url)

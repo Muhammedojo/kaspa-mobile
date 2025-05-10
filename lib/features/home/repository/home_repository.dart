@@ -26,6 +26,8 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getCropList(endpoint);
 
+ 
+
   @override
   Future<Either<Failure, ApiResponse<List<Cooperative>>>> getCooperativeList({
     String? endpoint,
@@ -73,6 +75,7 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<Crop>> getCrop() => localStorage.getCrop();
 
+
   @override
   Future<List<Cooperative>> getCooperative() => localStorage.getCooperative();
 
@@ -101,6 +104,9 @@ class HomeRepository implements IHomeRepository {
   Future<void> saveBank(List<Bank> bankList) => localStorage.saveBank(bankList);
   @override
   Future<void> saveCrop(List<Crop> cropList) => localStorage.saveCrop(cropList);
+
+
+
   @override
   Future<void> saveCooperative(List<Cooperative> cooperativeList) =>
       localStorage.saveCooperative(cooperativeList);

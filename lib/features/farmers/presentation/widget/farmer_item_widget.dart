@@ -15,7 +15,8 @@ class FarmerCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: CardContainerWidget(
-        child: Row(
+        child: 
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
@@ -38,7 +39,7 @@ class FarmerCard extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
-                    (farmer.cooperative?.name ?? '').toText(
+                    (farmer.cooperative?.name ?? 'Null Cooperative').toText(
                       translate: false,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -60,7 +61,7 @@ class FarmerCard extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
-                '+234 818 234 1725'.toText(
+                '${farmer.phoneNumber}'.toText(
                   translate: false,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,

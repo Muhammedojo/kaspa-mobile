@@ -298,8 +298,6 @@ const KEY_DESTINATION = "destination";
 const KEY_LGA_NAME = "lga_name";
 const KEY_TOTAL_SOLD = "total_sold";
 const KEY_TOTAL_SUBSIDY = "total_subsidy";
-const KEY_WAREHOUSE_FERTILIZER_RECORD_AVAILABLE_UNIT =
-    "warehousefertilizerrecord_available_unit";
 const KEY_INPUTS_RECEIVED = "inputs_received";
 const KEY_INPUTS_RECEIVED_IN_BAGS = "inputs_received_in_bags";
 const KEY_TOTAL_SOLD_IN_MT = "total_sold_in_mt";

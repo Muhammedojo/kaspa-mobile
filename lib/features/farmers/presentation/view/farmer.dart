@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,11 +63,12 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
                       searchController: controller.searchController,
                       onClearSearch: () => controller.onClearSearch(), isSearching: controller.isSearching,
                     ),
+                     16.verticalSpace,
                     Expanded(
                       child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
                         builder: (context, state) {
                           if (state is FarmerListLoading) {
-                            return ErrorWidgets(title: "empty", message: '');
+                            return ErrorWidgets(title: "empty".tr(), message: '');
                           }
                           if (state is FarmerListLoaded) {
                             return state.dataList.isEmpty

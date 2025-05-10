@@ -13,16 +13,23 @@ class FarmerListLoading extends GetFarmersState {}
 
 class FarmerListLoaded extends GetFarmersState {
   final List<Farmer> dataList;
-  final String searchTerm;
+ // final String searchTerm;
 
-  const FarmerListLoaded(this.dataList, this.searchTerm);
+  const FarmerListLoaded(this.dataList, 
+  //this.searchTerm
+  );
 
   @override
-  List<Object> get props => [dataList, searchTerm];
+  List<Object> get props => [dataList, 
+  //searchTerm
+  ];
 
   @override
   String toString() =>
-      'FarmerLoaded { farmers: ${dataList.length}, searchTerm: $searchTerm';
+      'FarmerLoaded { farmers: $dataList}';
+      // ,
+      //  searchTerm: $searchTerm'
+       //;
 }
 
 class FarmerListNotLoaded extends GetFarmersState {}

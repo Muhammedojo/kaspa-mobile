@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:kaspa/core/data/model/product_data.dart';
-import 'package:kaspa/core/data/model/ward.dart';
+import '../../../core/data/model/ward.dart';
 import '../../utils/const.dart';
 import 'general_model.dart';
 import 'lga.dart';

@@ -1,5 +1,5 @@
+import 'package:flutter/rendering.dart';
 import 'package:fpdart/fpdart.dart';
-
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/farmer.dart';
@@ -13,12 +13,20 @@ class FarmerRepository implements IFarmerRepository {
   FarmerRepository({required this.localStorage, required this.apiServices});
 
   @override
-  Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) => apiServices.createFarmer(data);
+  Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) =>
+      apiServices.createFarmer(data);
 
-   @override
+  @override
   Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList({
     String? endpoint,
-  }) => apiServices.getFarmerList(endpoint);
+  }) {
+    
+    return  apiServices.getFarmerList(endpoint);}
 
+  @override
+  Future<void> saveFarmer(List<Farmer> farmerList) =>
+      localStorage.saveFarmer(farmerList);
 
+  @override
+  Future<List<Farmer>> getFarmer() => localStorage.getFarmer();
 }

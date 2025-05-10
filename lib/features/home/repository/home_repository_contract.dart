@@ -1,15 +1,9 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
-import '../../../core/data/model/bank.dart';
-import '../../../core/data/model/cooperative.dart';
-import '../../../core/data/model/crop.dart';
-import '../../../core/data/model/lga.dart';
-import '../../../core/data/model/livestock.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
-import '../../../core/data/model/user.dart';
-import '../../../core/data/model/ward.dart';
+import '../../../core/data/model/model.dart';
 import '../../../core/data/model/weather.dart';
 
 abstract class IHomeRepository {
@@ -22,7 +16,7 @@ abstract class IHomeRepository {
 
   Future<List<Bank>> getBank();
 
-   //COOPERATIVE CUBIT CALLS
+  //COOPERATIVE CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Cooperative>>>> getCooperativeList({
     String? endpoint,
   });
@@ -31,7 +25,7 @@ abstract class IHomeRepository {
 
   Future<List<Cooperative>> getCooperative();
 
-   //CROP CUBIT CALLS
+  //CROP CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Crop>>>> getCropList({
     String? endpoint,
   });
@@ -39,7 +33,6 @@ abstract class IHomeRepository {
   Future<void> saveCrop(List<Crop> cropList);
 
   Future<List<Crop>> getCrop();
-
 
   //LGA CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Lga>>>> getLgaList({
@@ -49,7 +42,6 @@ abstract class IHomeRepository {
   Future<void> saveLga(List<Lga> lgaList);
 
   Future<List<Lga>> getLga();
-
 
   //LIVESTOCK CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Livestock>>>> getLivestockList({
@@ -78,8 +70,6 @@ abstract class IHomeRepository {
 
   Future<List<Market>> getMarket();
 
-
-
   //USER CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<User>>>> getUserList({
     String? endpoint,
@@ -98,7 +88,7 @@ abstract class IHomeRepository {
 
   Future<List<Ward>> getWard();
 
-    //WEATHER CUBIT CALLS
+  //WEATHER CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Weather>>>> getWeatherList({
     String? endpoint,
   });

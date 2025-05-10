@@ -19,6 +19,7 @@ class _FarmerDetailsScreenState extends State<FarmerDetailsScreen>
   @override
   void initState() {
     super.initState();
+    farmer = widget.farmer;
     view = FarmerDetailsView(controller: this);
   }
 
@@ -31,4 +32,7 @@ class _FarmerDetailsScreenState extends State<FarmerDetailsScreen>
   Widget build(BuildContext context) {
     return view.build(context);
   }
+
+  @override
+  Farmer farmer = Farmer();
 }
