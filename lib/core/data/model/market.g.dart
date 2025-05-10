@@ -17,34 +17,75 @@ const MarketSchema = CollectionSchema(
   name: r'Market',
   id: 7822782226548105936,
   properties: {
-    r'lga': PropertySchema(
+    r'address': PropertySchema(
       id: 0,
-      name: r'lga',
+      name: r'address',
+      type: IsarType.string,
+    ),
+    r'created': PropertySchema(
+      id: 1,
+      name: r'created',
+      type: IsarType.string,
+    ),
+    r'createdInEpsilon': PropertySchema(
+      id: 2,
+      name: r'createdInEpsilon',
+      type: IsarType.long,
+    ),
+    r'createdOffline': PropertySchema(
+      id: 3,
+      name: r'createdOffline',
+      type: IsarType.string,
+    ),
+    r'errorMessage': PropertySchema(
+      id: 4,
+      name: r'errorMessage',
+      type: IsarType.string,
+    ),
+    r'hasSynced': PropertySchema(
+      id: 5,
+      name: r'hasSynced',
+      type: IsarType.bool,
+    ),
+    r'lastPulledTime': PropertySchema(
+      id: 6,
+      name: r'lastPulledTime',
       type: IsarType.string,
     ),
     r'marketDays': PropertySchema(
-      id: 1,
+      id: 7,
       name: r'marketDays',
       type: IsarType.string,
     ),
+    r'marketType': PropertySchema(
+      id: 8,
+      name: r'marketType',
+      type: IsarType.string,
+    ),
     r'name': PropertySchema(
-      id: 2,
+      id: 9,
       name: r'name',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 3,
+      id: 10,
       name: r'pk',
       type: IsarType.long,
     ),
+    r'productData': PropertySchema(
+      id: 11,
+      name: r'productData',
+      type: IsarType.object,
+      target: r'ProductData',
+    ),
     r'size': PropertySchema(
-      id: 4,
+      id: 12,
       name: r'size',
       type: IsarType.string,
     ),
-    r'type': PropertySchema(
-      id: 5,
-      name: r'type',
+    r'updated': PropertySchema(
+      id: 13,
+      name: r'updated',
       type: IsarType.string,
     )
   },
@@ -58,7 +99,7 @@ const MarketSchema = CollectionSchema(
       id: -4985078949141874687,
       name: r'pk',
       unique: true,
-      replace: true,
+      replace: false,
       properties: [
         IndexPropertySchema(
           name: r'pk',
@@ -66,10 +107,49 @@ const MarketSchema = CollectionSchema(
           caseSensitive: false,
         )
       ],
+    ),
+    r'created': IndexSchema(
+      id: 9089682803336859617,
+      name: r'created',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'created',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    ),
+    r'createdInEpsilon': IndexSchema(
+      id: 7613178208104782269,
+      name: r'createdInEpsilon',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'createdInEpsilon',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
+    r'updated': IndexSchema(
+      id: -2318325077866435473,
+      name: r'updated',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'updated',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'ProductData': ProductDataSchema},
   getId: _marketGetId,
   getLinks: _marketGetLinks,
   attach: _marketAttach,
@@ -83,7 +163,31 @@ int _marketEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.lga;
+    final value = object.address;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.created;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.createdOffline;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.errorMessage;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.lastPulledTime;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -95,9 +199,23 @@ int _marketEstimateSize(
     }
   }
   {
+    final value = object.marketType;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.productData;
+    if (value != null) {
+      bytesCount += 3 +
+          ProductDataSchema.estimateSize(
+              value, allOffsets[ProductData]!, allOffsets);
     }
   }
   {
@@ -107,7 +225,7 @@ int _marketEstimateSize(
     }
   }
   {
-    final value = object.type;
+    final value = object.updated;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -121,12 +239,25 @@ void _marketSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.lga);
-  writer.writeString(offsets[1], object.marketDays);
-  writer.writeString(offsets[2], object.name);
-  writer.writeLong(offsets[3], object.pk);
-  writer.writeString(offsets[4], object.size);
-  writer.writeString(offsets[5], object.type);
+  writer.writeString(offsets[0], object.address);
+  writer.writeString(offsets[1], object.created);
+  writer.writeLong(offsets[2], object.createdInEpsilon);
+  writer.writeString(offsets[3], object.createdOffline);
+  writer.writeString(offsets[4], object.errorMessage);
+  writer.writeBool(offsets[5], object.hasSynced);
+  writer.writeString(offsets[6], object.lastPulledTime);
+  writer.writeString(offsets[7], object.marketDays);
+  writer.writeString(offsets[8], object.marketType);
+  writer.writeString(offsets[9], object.name);
+  writer.writeLong(offsets[10], object.pk);
+  writer.writeObject<ProductData>(
+    offsets[11],
+    allOffsets,
+    ProductDataSchema.serialize,
+    object.productData,
+  );
+  writer.writeString(offsets[12], object.size);
+  writer.writeString(offsets[13], object.updated);
 }
 
 Market _marketDeserialize(
@@ -136,13 +267,25 @@ Market _marketDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Market();
+  object.address = reader.readStringOrNull(offsets[0]);
+  object.created = reader.readStringOrNull(offsets[1]);
+  object.createdInEpsilon = reader.readLongOrNull(offsets[2]);
+  object.createdOffline = reader.readStringOrNull(offsets[3]);
+  object.errorMessage = reader.readStringOrNull(offsets[4]);
+  object.hasSynced = reader.readBoolOrNull(offsets[5]);
   object.id = id;
-  object.lga = reader.readStringOrNull(offsets[0]);
-  object.marketDays = reader.readStringOrNull(offsets[1]);
-  object.name = reader.readStringOrNull(offsets[2]);
-  object.pk = reader.readLong(offsets[3]);
-  object.size = reader.readStringOrNull(offsets[4]);
-  object.type = reader.readStringOrNull(offsets[5]);
+  object.lastPulledTime = reader.readStringOrNull(offsets[6]);
+  object.marketDays = reader.readStringOrNull(offsets[7]);
+  object.marketType = reader.readStringOrNull(offsets[8]);
+  object.name = reader.readStringOrNull(offsets[9]);
+  object.pk = reader.readLong(offsets[10]);
+  object.productData = reader.readObjectOrNull<ProductData>(
+    offsets[11],
+    ProductDataSchema.deserialize,
+    allOffsets,
+  );
+  object.size = reader.readStringOrNull(offsets[12]);
+  object.updated = reader.readStringOrNull(offsets[13]);
   return object;
 }
 
@@ -158,12 +301,32 @@ P _marketDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
+      return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
+      return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readLong(offset)) as P;
+    case 11:
+      return (reader.readObjectOrNull<ProductData>(
+        offset,
+        ProductDataSchema.deserialize,
+        allOffsets,
+      )) as P;
+    case 12:
+      return (reader.readStringOrNull(offset)) as P;
+    case 13:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -247,6 +410,14 @@ extension MarketQueryWhereSort on QueryBuilder<Market, Market, QWhere> {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'pk'),
+      );
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhere> anyCreatedInEpsilon() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'createdInEpsilon'),
       );
     });
   }
@@ -405,9 +576,932 @@ extension MarketQueryWhere on QueryBuilder<Market, Market, QWhereClause> {
       ));
     });
   }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'created',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'created',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdEqualTo(
+      String? created) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'created',
+        value: [created],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdNotEqualTo(
+      String? created) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'created',
+              lower: [],
+              upper: [created],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'created',
+              lower: [created],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'created',
+              lower: [created],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'created',
+              lower: [],
+              upper: [created],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdInEpsilonIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'createdInEpsilon',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdInEpsilonIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'createdInEpsilon',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdInEpsilonEqualTo(
+      int? createdInEpsilon) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'createdInEpsilon',
+        value: [createdInEpsilon],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdInEpsilonNotEqualTo(
+      int? createdInEpsilon) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createdInEpsilon',
+              lower: [],
+              upper: [createdInEpsilon],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createdInEpsilon',
+              lower: [createdInEpsilon],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createdInEpsilon',
+              lower: [createdInEpsilon],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createdInEpsilon',
+              lower: [],
+              upper: [createdInEpsilon],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdInEpsilonGreaterThan(
+    int? createdInEpsilon, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'createdInEpsilon',
+        lower: [createdInEpsilon],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdInEpsilonLessThan(
+    int? createdInEpsilon, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'createdInEpsilon',
+        lower: [],
+        upper: [createdInEpsilon],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> createdInEpsilonBetween(
+    int? lowerCreatedInEpsilon,
+    int? upperCreatedInEpsilon, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'createdInEpsilon',
+        lower: [lowerCreatedInEpsilon],
+        includeLower: includeLower,
+        upper: [upperCreatedInEpsilon],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> updatedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'updated',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> updatedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'updated',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> updatedEqualTo(
+      String? updated) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'updated',
+        value: [updated],
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterWhereClause> updatedNotEqualTo(
+      String? updated) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updated',
+              lower: [],
+              upper: [updated],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updated',
+              lower: [updated],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updated',
+              lower: [updated],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updated',
+              lower: [],
+              upper: [updated],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
 }
 
 extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'address',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'address',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> addressIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'created',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'created',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'created',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'created',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'created',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'created',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'created',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'created',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'created',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'created',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'created',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'created',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdInEpsilonIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'createdInEpsilon',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition>
+      createdInEpsilonIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'createdInEpsilon',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdInEpsilonEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdInEpsilon',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition>
+      createdInEpsilonGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdInEpsilon',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdInEpsilonLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdInEpsilon',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdInEpsilonBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdInEpsilon',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'createdOffline',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition>
+      createdOfflineIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'createdOffline',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdOffline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdOffline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdOffline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdOffline',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'createdOffline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'createdOffline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'createdOffline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'createdOffline',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> createdOfflineIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdOffline',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition>
+      createdOfflineIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'createdOffline',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'errorMessage',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'errorMessage',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'errorMessage',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'errorMessage',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'errorMessage',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> errorMessageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'errorMessage',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> hasSyncedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'hasSynced',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> hasSyncedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'hasSynced',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> hasSyncedEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hasSynced',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -476,36 +1570,37 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIsNull() {
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'lga',
+        property: r'lastPulledTime',
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIsNotNull() {
+  QueryBuilder<Market, Market, QAfterFilterCondition>
+      lastPulledTimeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'lga',
+        property: r'lastPulledTime',
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaEqualTo(
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lga',
+        property: r'lastPulledTime',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaGreaterThan(
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -513,14 +1608,14 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'lga',
+        property: r'lastPulledTime',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaLessThan(
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -528,14 +1623,14 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'lga',
+        property: r'lastPulledTime',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaBetween(
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -544,7 +1639,7 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'lga',
+        property: r'lastPulledTime',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -554,67 +1649,70 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaStartsWith(
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'lga',
+        property: r'lastPulledTime',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaEndsWith(
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'lga',
+        property: r'lastPulledTime',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaContains(String value,
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'lga',
+        property: r'lastPulledTime',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaMatches(String pattern,
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeMatches(
+      String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'lga',
+        property: r'lastPulledTime',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIsEmpty() {
+  QueryBuilder<Market, Market, QAfterFilterCondition> lastPulledTimeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lga',
+        property: r'lastPulledTime',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIsNotEmpty() {
+  QueryBuilder<Market, Market, QAfterFilterCondition>
+      lastPulledTimeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'lga',
+        property: r'lastPulledTime',
         value: '',
       ));
     });
@@ -761,6 +1859,152 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'marketDays',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'marketType',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'marketType',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'marketType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'marketType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'marketType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'marketType',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'marketType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'marketType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'marketType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'marketType',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'marketType',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketTypeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'marketType',
         value: '',
       ));
     });
@@ -963,6 +2207,22 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterFilterCondition> productDataIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'productData',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> productDataIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'productData',
+      ));
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterFilterCondition> sizeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1108,36 +2368,36 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeIsNull() {
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'type',
+        property: r'updated',
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeIsNotNull() {
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'type',
+        property: r'updated',
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeEqualTo(
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'type',
+        property: r'updated',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeGreaterThan(
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1145,14 +2405,14 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'type',
+        property: r'updated',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeLessThan(
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1160,14 +2420,14 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'type',
+        property: r'updated',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeBetween(
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1176,7 +2436,7 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'type',
+        property: r'updated',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1186,88 +2446,168 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeStartsWith(
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'type',
+        property: r'updated',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeEndsWith(
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'type',
+        property: r'updated',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeContains(String value,
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'type',
+        property: r'updated',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeMatches(
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'type',
+        property: r'updated',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeIsEmpty() {
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'type',
+        property: r'updated',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Market, Market, QAfterFilterCondition> typeIsNotEmpty() {
+  QueryBuilder<Market, Market, QAfterFilterCondition> updatedIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'type',
+        property: r'updated',
         value: '',
       ));
     });
   }
 }
 
-extension MarketQueryObject on QueryBuilder<Market, Market, QFilterCondition> {}
+extension MarketQueryObject on QueryBuilder<Market, Market, QFilterCondition> {
+  QueryBuilder<Market, Market, QAfterFilterCondition> productData(
+      FilterQuery<ProductData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'productData');
+    });
+  }
+}
 
 extension MarketQueryLinks on QueryBuilder<Market, Market, QFilterCondition> {}
 
 extension MarketQuerySortBy on QueryBuilder<Market, Market, QSortBy> {
-  QueryBuilder<Market, Market, QAfterSortBy> sortByLga() {
+  QueryBuilder<Market, Market, QAfterSortBy> sortByAddress() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lga', Sort.asc);
+      return query.addSortBy(r'address', Sort.asc);
     });
   }
 
-  QueryBuilder<Market, Market, QAfterSortBy> sortByLgaDesc() {
+  QueryBuilder<Market, Market, QAfterSortBy> sortByAddressDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lga', Sort.desc);
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByCreatedInEpsilon() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdInEpsilon', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByCreatedInEpsilonDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdInEpsilon', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByCreatedOffline() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdOffline', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByCreatedOfflineDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdOffline', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByErrorMessage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByErrorMessageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByHasSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasSynced', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByHasSyncedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByLastPulledTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastPulledTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByLastPulledTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastPulledTime', Sort.desc);
     });
   }
 
@@ -1280,6 +2620,18 @@ extension MarketQuerySortBy on QueryBuilder<Market, Market, QSortBy> {
   QueryBuilder<Market, Market, QAfterSortBy> sortByMarketDaysDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marketDays', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByMarketType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByMarketTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketType', Sort.desc);
     });
   }
 
@@ -1319,20 +2671,92 @@ extension MarketQuerySortBy on QueryBuilder<Market, Market, QSortBy> {
     });
   }
 
-  QueryBuilder<Market, Market, QAfterSortBy> sortByType() {
+  QueryBuilder<Market, Market, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.asc);
+      return query.addSortBy(r'updated', Sort.asc);
     });
   }
 
-  QueryBuilder<Market, Market, QAfterSortBy> sortByTypeDesc() {
+  QueryBuilder<Market, Market, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.desc);
+      return query.addSortBy(r'updated', Sort.desc);
     });
   }
 }
 
 extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
+  QueryBuilder<Market, Market, QAfterSortBy> thenByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByCreatedInEpsilon() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdInEpsilon', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByCreatedInEpsilonDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdInEpsilon', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByCreatedOffline() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdOffline', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByCreatedOfflineDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdOffline', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByErrorMessage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByErrorMessageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByHasSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasSynced', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByHasSyncedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasSynced', Sort.desc);
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1345,15 +2769,15 @@ extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Market, Market, QAfterSortBy> thenByLga() {
+  QueryBuilder<Market, Market, QAfterSortBy> thenByLastPulledTime() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lga', Sort.asc);
+      return query.addSortBy(r'lastPulledTime', Sort.asc);
     });
   }
 
-  QueryBuilder<Market, Market, QAfterSortBy> thenByLgaDesc() {
+  QueryBuilder<Market, Market, QAfterSortBy> thenByLastPulledTimeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lga', Sort.desc);
+      return query.addSortBy(r'lastPulledTime', Sort.desc);
     });
   }
 
@@ -1366,6 +2790,18 @@ extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
   QueryBuilder<Market, Market, QAfterSortBy> thenByMarketDaysDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marketDays', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByMarketType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByMarketTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketType', Sort.desc);
     });
   }
 
@@ -1405,24 +2841,66 @@ extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Market, Market, QAfterSortBy> thenByType() {
+  QueryBuilder<Market, Market, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.asc);
+      return query.addSortBy(r'updated', Sort.asc);
     });
   }
 
-  QueryBuilder<Market, Market, QAfterSortBy> thenByTypeDesc() {
+  QueryBuilder<Market, Market, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.desc);
+      return query.addSortBy(r'updated', Sort.desc);
     });
   }
 }
 
 extension MarketQueryWhereDistinct on QueryBuilder<Market, Market, QDistinct> {
-  QueryBuilder<Market, Market, QDistinct> distinctByLga(
+  QueryBuilder<Market, Market, QDistinct> distinctByAddress(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lga', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'address', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByCreated(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'created', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByCreatedInEpsilon() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdInEpsilon');
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByCreatedOffline(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdOffline',
+          caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByErrorMessage(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'errorMessage', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByHasSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hasSynced');
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByLastPulledTime(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastPulledTime',
+          caseSensitive: caseSensitive);
     });
   }
 
@@ -1430,6 +2908,13 @@ extension MarketQueryWhereDistinct on QueryBuilder<Market, Market, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'marketDays', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByMarketType(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'marketType', caseSensitive: caseSensitive);
     });
   }
 
@@ -1453,10 +2938,10 @@ extension MarketQueryWhereDistinct on QueryBuilder<Market, Market, QDistinct> {
     });
   }
 
-  QueryBuilder<Market, Market, QDistinct> distinctByType(
+  QueryBuilder<Market, Market, QDistinct> distinctByUpdated(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'type', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'updated', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1468,15 +2953,57 @@ extension MarketQueryProperty on QueryBuilder<Market, Market, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Market, String?, QQueryOperations> lgaProperty() {
+  QueryBuilder<Market, String?, QQueryOperations> addressProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lga');
+      return query.addPropertyName(r'address');
+    });
+  }
+
+  QueryBuilder<Market, String?, QQueryOperations> createdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'created');
+    });
+  }
+
+  QueryBuilder<Market, int?, QQueryOperations> createdInEpsilonProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdInEpsilon');
+    });
+  }
+
+  QueryBuilder<Market, String?, QQueryOperations> createdOfflineProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdOffline');
+    });
+  }
+
+  QueryBuilder<Market, String?, QQueryOperations> errorMessageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'errorMessage');
+    });
+  }
+
+  QueryBuilder<Market, bool?, QQueryOperations> hasSyncedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hasSynced');
+    });
+  }
+
+  QueryBuilder<Market, String?, QQueryOperations> lastPulledTimeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastPulledTime');
     });
   }
 
   QueryBuilder<Market, String?, QQueryOperations> marketDaysProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'marketDays');
+    });
+  }
+
+  QueryBuilder<Market, String?, QQueryOperations> marketTypeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'marketType');
     });
   }
 
@@ -1492,15 +3019,21 @@ extension MarketQueryProperty on QueryBuilder<Market, Market, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Market, ProductData?, QQueryOperations> productDataProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'productData');
+    });
+  }
+
   QueryBuilder<Market, String?, QQueryOperations> sizeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'size');
     });
   }
 
-  QueryBuilder<Market, String?, QQueryOperations> typeProperty() {
+  QueryBuilder<Market, String?, QQueryOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'type');
+      return query.addPropertyName(r'updated');
     });
   }
 }

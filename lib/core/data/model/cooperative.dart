@@ -20,6 +20,7 @@ class Cooperative extends GeneralModel {
 
   @ignore
   Lga? lga;
+  
   String? dateOfIncorporation = "";
 
   Certificate? certificate;
