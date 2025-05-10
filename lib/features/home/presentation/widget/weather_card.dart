@@ -4,10 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaspa/core/theme/colors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 
+import '../../../../core/data/model/weather.dart';
 import '../../../../core/resources/vectors.dart';
 
 class WeatherCard extends StatelessWidget {
-  const WeatherCard({super.key});
+  final Weather weather;
+  const WeatherCard({super.key, required this.weather});
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +46,34 @@ class WeatherCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  '41°C'.toText(
-                    translate: false,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      '${weather.tempMean}°C'.toText(
+                        translate: false,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      SizedBox(width: 8), // Add some spacing
+
+                       '${weather.tempMax}°/${weather.tempMin}°'.toText(
+                        translate: false,
+                        fontSize: 12,
+                        color: AppColors.accentText,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      
+                    ],
                   ),
-                  'Sunrise - 5:45AM | Sunset - 6:30PM'.toText(
-                    translate: false,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.accentText,
-                  ),
+
+                  'Sunrise - ${_formatTimeDisplay(weather.sunrise)}AM | Sunset - ${_formatTimeDisplay(weather.sunset)}PM'
+                      .toText(
+                        translate: false,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.accentText,
+                      ),
                 ],
               ),
               SvgPicture.asset(AppIcon.sun),
@@ -64,10 +83,10 @@ class WeatherCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildWeatherDetail('1,013 hPa', 'Pressure'),
-              _buildWeatherDetail('60%', 'Humidity'),
-              _buildWeatherDetail('100km/h', 'Wind'),
-              _buildWeatherDetail('32°C', 'Soil Temp'),
+              _buildWeatherDetail('-- hPa', 'Pressure'),
+              _buildWeatherDetail('--%', 'Humidity'),
+              _buildWeatherDetail('${weather.windSpeedMax}km/h', 'Wind'),
+              _buildWeatherDetail('--°C', 'Soil Temp'),
             ],
           ),
           10.verticalSpace,
@@ -94,6 +113,8 @@ class WeatherCard extends StatelessWidget {
 
   Widget _buildWeatherDetail(String value, String label) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         value.toText(
           fontSize: 14,
@@ -108,5 +129,12 @@ class WeatherCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _formatTimeDisplay(String? timeStr) {
+    if (timeStr != null && timeStr.length >= 5) {
+      return timeStr.substring(0, 5);
+    }
+    return "--:--";
   }
 }

@@ -62,9 +62,9 @@ const FarmerSchema = CollectionSchema(
       name: r'nin',
       type: IsarType.string,
     ),
-    r'otherName': PropertySchema(
+    r'otherNames': PropertySchema(
       id: 9,
-      name: r'otherName',
+      name: r'otherNames',
       type: IsarType.string,
     ),
     r'phoneNumber': PropertySchema(
@@ -177,7 +177,7 @@ int _farmerEstimateSize(
     }
   }
   {
-    final value = object.otherName;
+    final value = object.otherNames;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -218,7 +218,7 @@ void _farmerSerialize(
   writer.writeString(offsets[6], object.lastName);
   writer.writeLongList(offsets[7], object.livestock);
   writer.writeString(offsets[8], object.nin);
-  writer.writeString(offsets[9], object.otherName);
+  writer.writeString(offsets[9], object.otherNames);
   writer.writeString(offsets[10], object.phoneNumber);
   writer.writeLong(offsets[11], object.pk);
   writer.writeString(offsets[12], object.registrationDate);
@@ -242,7 +242,7 @@ Farmer _farmerDeserialize(
   object.lastName = reader.readStringOrNull(offsets[6]);
   object.livestock = reader.readLongList(offsets[7]);
   object.nin = reader.readStringOrNull(offsets[8]);
-  object.otherName = reader.readStringOrNull(offsets[9]);
+  object.otherNames = reader.readStringOrNull(offsets[9]);
   object.phoneNumber = reader.readStringOrNull(offsets[10]);
   object.pk = reader.readLong(offsets[11]);
   object.registrationDate = reader.readStringOrNull(offsets[12]);
@@ -1922,36 +1922,36 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameIsNull() {
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'otherName',
+        property: r'otherNames',
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameIsNotNull() {
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'otherName',
+        property: r'otherNames',
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameEqualTo(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'otherName',
+        property: r'otherNames',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameGreaterThan(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1959,14 +1959,14 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'otherName',
+        property: r'otherNames',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameLessThan(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1974,14 +1974,14 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'otherName',
+        property: r'otherNames',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameBetween(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1990,7 +1990,7 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'otherName',
+        property: r'otherNames',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -2000,69 +2000,69 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameStartsWith(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'otherName',
+        property: r'otherNames',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameEndsWith(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'otherName',
+        property: r'otherNames',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameContains(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'otherName',
+        property: r'otherNames',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameMatches(
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'otherName',
+        property: r'otherNames',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameIsEmpty() {
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'otherName',
+        property: r'otherNames',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNameIsNotEmpty() {
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> otherNamesIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'otherName',
+        property: r'otherNames',
         value: '',
       ));
     });
@@ -2653,15 +2653,15 @@ extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByOtherName() {
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByOtherNames() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'otherName', Sort.asc);
+      return query.addSortBy(r'otherNames', Sort.asc);
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByOtherNameDesc() {
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByOtherNamesDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'otherName', Sort.desc);
+      return query.addSortBy(r'otherNames', Sort.desc);
     });
   }
 
@@ -2811,15 +2811,15 @@ extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByOtherName() {
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByOtherNames() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'otherName', Sort.asc);
+      return query.addSortBy(r'otherNames', Sort.asc);
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByOtherNameDesc() {
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByOtherNamesDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'otherName', Sort.desc);
+      return query.addSortBy(r'otherNames', Sort.desc);
     });
   }
 
@@ -2934,10 +2934,10 @@ extension FarmerQueryWhereDistinct on QueryBuilder<Farmer, Farmer, QDistinct> {
     });
   }
 
-  QueryBuilder<Farmer, Farmer, QDistinct> distinctByOtherName(
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByOtherNames(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'otherName', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'otherNames', caseSensitive: caseSensitive);
     });
   }
 
@@ -3031,9 +3031,9 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Farmer, String?, QQueryOperations> otherNameProperty() {
+  QueryBuilder<Farmer, String?, QQueryOperations> otherNamesProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'otherName');
+      return query.addPropertyName(r'otherNames');
     });
   }
 

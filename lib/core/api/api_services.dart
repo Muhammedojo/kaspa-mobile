@@ -1,7 +1,10 @@
 import 'package:fpdart/fpdart.dart';
 import '../data/model/forgot_password.dart';
 import '../data/model/login.dart';
+import '../data/model/market.dart';
+import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/weather.dart';
 import 'exceptions/contracts/failure.dart';
 import 'services/contracts/api_response.dart';
 
@@ -48,6 +51,18 @@ abstract class ApiServices {
   );
 
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList(
+    String? endpoint,
+  );
+
+  Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList(
+    String? endpoint,
+  );
+
+  Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList(
+    String? endpoint,
+  );
+
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getWeatherList(
     String? endpoint,
   );
 

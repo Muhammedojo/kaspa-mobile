@@ -5,8 +5,11 @@ import '../data/model/last_request_time.dart';
 import '../data/model/lga.dart';
 import '../data/model/livestock.dart';
 import '../data/model/login.dart';
+import '../data/model/market.dart';
+import '../data/model/market_data.dart';
 import '../data/model/user.dart';
 import '../data/model/ward.dart';
+import '../data/model/weather.dart';
 
 abstract class LocalStorage implements DatabaseStorage, CacheStorage {}
 
@@ -34,6 +37,9 @@ abstract class DatabaseStorage {
   Future<List<Livestock>> getLivestock();
   Future<List<User>> getUser();
   Future<List<Ward>> getWard();
+  Future<List<Market>> getMarket();
+  Future<List<MarketData>> getMarketPrice();
+  Future<List<Weather>> getWeather();
 
   Future<void> saveBank(List<Bank> objectList);
   Future<void> saveCrop(List<Crop> objectList);
@@ -42,4 +48,7 @@ abstract class DatabaseStorage {
   Future<void> saveLivestock(List<Livestock> objectList);
   Future<void> saveWard(List<Ward> objectList);
   Future<void> saveUser(List<User> objectList);
+  Future<void> saveMarket(List<Market> objectList);
+  Future<void> saveMarketPrice(List<MarketData> objectList);
+  Future<void> saveWeather(List<Weather> objectList);
 }

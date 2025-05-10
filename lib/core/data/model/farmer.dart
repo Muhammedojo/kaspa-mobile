@@ -19,7 +19,7 @@ class Farmer {
   String? folioId;
   String? firstName = "";
   String? lastName = "";
-  String? otherName = "";
+  String? otherNames = "";
   String? title = "";
   String? gender = "";
   String? nin = "";
@@ -63,7 +63,7 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   obj.folioId = json[KEY_FOLIO_ID];
   obj.firstName = json[KEY_FIRST_NAME];
   obj.lastName = json[KEY_LAST_NAME];
-  obj.otherName = json[KEY_OTHER_NAME];
+  obj.otherNames = json[KEY_OTHER_NAME];
   obj.title = json[KEY_TITLE];
   obj.gender = json[KEY_GENDER];
   obj.address = json[KEY_ADDRESS];
@@ -77,7 +77,9 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   obj.lga = Lga.fromJson(json[KEY_LGA]);
   obj.ward = Ward.fromJson(json[KEY_WARD]);
   obj.farms = Farm.fromJson(json[KEY_FARMS]);
-  obj.cooperative = json[KEY_COOPERATIVE];
+  if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
+    obj.cooperative = Cooperative.fromJson(json[KEY_COOPERATIVE]);
+  }
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
   obj.livestock = json[KEY_LIVESTOCK];
   obj.crop = json[KEY_CROPS];
@@ -89,7 +91,7 @@ Map<String, dynamic> _$FarmerToJson(Farmer obj) => <String, dynamic>{
   KEY_FOLIO_ID: obj.folioId,
   KEY_FIRST_NAME: obj.firstName,
   KEY_LAST_NAME: obj.lastName,
-  KEY_OTHER_NAME: obj.otherName,
+  KEY_OTHER_NAME: obj.otherNames,
   KEY_TITLE: obj.title,
   KEY_GENDER: obj.gender,
   KEY_ADDRESS: obj.address,

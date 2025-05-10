@@ -5,6 +5,9 @@ import '../../../../../core/api/api.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../../farmers/presentation/bloc/bloc.dart';
 import '../bloc.dart';
+import '../market/cubit.dart';
+import '../market_price/cubit.dart';
+import '../weather/cubit.dart';
 import 'api_request_state.dart';
 part 'api_request_event.dart';
 
@@ -125,9 +128,9 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<GetFarmersCubit>().loadFarmers();
         break;
 
-      // case lgaListEndpoint:
-      //   AppInitializer.instanceLocator.get<LgaCubit>().loadLga();
-      //   break;
+      case lgaListEndpoint:
+        AppInitializer.instanceLocator.get<LgaCubit>().loadLga();
+        break;
 
       case livestockListEndpoint:
         AppInitializer.instanceLocator.get<LivestockCubit>().loadLivestock();
@@ -154,6 +157,19 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
       // case usersListEndpoint:
       //   AppInitializer.instanceLocator.get<UserCubit>().loadUser();
       //   break;
+      case weatherListEndpoint:
+        AppInitializer.instanceLocator.get<WeatherCubit>().loadWeather();
+        break;
+
+      case marketListEndpoint:
+        AppInitializer.instanceLocator.get<MarketCubit>().loadMarket();
+        break;
+
+      case marketPriceListEndpoint:
+        AppInitializer.instanceLocator
+            .get<MarketPriceCubit>()
+            .loadMarketPrice();
+        break;
 
       default:
         add(ApiRequestCompleted());

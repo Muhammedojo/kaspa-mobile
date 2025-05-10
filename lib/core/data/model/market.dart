@@ -20,7 +20,7 @@ class Market extends GeneralModel {
   @ignore
   Lga? lga;
 
-  ProductData? productData;
+  // ProductData? productData;
 
   @ignore
   Ward? ward;
@@ -45,7 +45,7 @@ Market _$MarketFromJson(Map<String, dynamic> json) {
     obj.lga = Lga.fromJson(json[KEY_LGA]);
   }
   obj.address = json[KEY_ADDRESS];
-  obj.productData = ProductData.fromJson(json[KEY_PRODUCT_DATA]);
+ // obj.productData = ProductData.fromJson(json[KEY_PRODUCT_DATA]);
   obj.ward = Ward.fromJson(json[KEY_WARD]);
   obj.marketDays = json[KEY_MARKET_DAYS];
   obj.marketType = json[KEY_MARKET_TYPE];

@@ -1,10 +1,12 @@
 import 'package:isar/isar.dart';
-import 'package:kaspa/core/data/model/general_model.dart';
-
+import '../../../core/data/model/general_model.dart';
 import '../../utils/const.dart';
 import 'market.dart';
 import 'product.dart';
 
+part 'market_data.g.dart';
+
+@Collection()
 class MarketData extends GeneralModel {
   Id? id;
 

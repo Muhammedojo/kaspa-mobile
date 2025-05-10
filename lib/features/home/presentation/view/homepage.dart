@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:kaspa/core/component/card_container_widget.dart';
 import 'package:kaspa/core/theme/colors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
+import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/resources/vectors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../../core/component/pages_bar.dart';
 import '../../../auth/presentation/bloc/user/cubit.dart';
+import '../bloc/weather/cubit.dart';
 import '../contract/homepage.dart';
 import '../widget/forecast_card.dart';
 import '../widget/weather_card.dart';
@@ -51,6 +54,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                           builder: (context, stateBloc) {
                             if (stateBloc is UserLoaded) {
                               return stateBloc.login.fullname.toString().toText(
+                                translate: false,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               );
@@ -65,7 +69,55 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                       height: 260.h,
                       child: PageView(
                         controller: controller.pageController,
-                        children: [WeatherCard(), ForecastCard()],
+                        children: [
+                          BlocBuilder<WeatherCubit, WeatherState>(
+                            builder: (context, state) {
+                              if (state is WeatherLoading) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.colorPrimary,
+                                  ),
+                                );
+                              }
+                              if (state is WeatherLoaded) {
+                                final today = '2025-05-13';
+                                //DateTime.now();
+                                // final formattedToday = DateFormat(
+                                //   'yyyy-MM-dd',
+                                // ).format(today);
+                                final filteredWeatherList =
+                                    state.weatherList.where((weather) {
+                                      return weather.lgaId == 2 &&
+                                          weather.date == today;
+                                    }).toList();
+                                if (filteredWeatherList.isEmpty) {
+                                  return ErrorWidgets(
+                                    message:
+                                        'Weather data not available for your location.',
+                                  );
+                                }
+                                return ListView.separated(
+                                  itemCount: filteredWeatherList.length,
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return WeatherCard(
+                                      weather: filteredWeatherList[index],
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          12.verticalSpace,
+                                );
+                              }
+
+                              return ErrorWidgets(
+                                message: 'Unable to load weather data.',
+                              );
+                            },
+                          ),
+                          ForecastCard(),
+                        ],
                         onPageChanged: (index) {
                           controller.monitor(index);
                         },
@@ -282,7 +334,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
               textAlign: TextAlign.center,
             ),
             labels.toText(
-               translate: false,
+              translate: false,
               fontSize: 12,
               fontWeight: FontWeight.w500,
               textAlign: TextAlign.center,

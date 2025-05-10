@@ -15,6 +15,9 @@ import 'features/auth/presentation/bloc/user/user_cubit.dart';
 import 'features/farmers/presentation/bloc/bloc.dart';
 import 'features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import 'features/home/presentation/bloc/bloc.dart';
+import 'features/home/presentation/bloc/market/cubit.dart';
+import 'features/home/presentation/bloc/market_price/cubit.dart';
+import 'features/home/presentation/bloc/weather/cubit.dart';
 
 class Kaspa extends StatelessWidget {
   const Kaspa({super.key});
@@ -71,12 +74,28 @@ class Kaspa extends StatelessWidget {
 
         BlocProvider(
           create:
+              (context) => AppInitializer.instanceLocator.get<MarketCubit>(),
+        ),
+
+        BlocProvider(
+          create:
+              (context) =>
+                  AppInitializer.instanceLocator.get<MarketPriceCubit>(),
+        ),
+
+        BlocProvider(
+          create:
               (context) =>
                   AppInitializer.instanceLocator.get<ResetPasswordCubit>(),
         ),
 
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<WardCubit>(),
+        ),
+
+        BlocProvider(
+          create:
+              (context) => AppInitializer.instanceLocator.get<WeatherCubit>(),
         ),
 
         BlocProvider(

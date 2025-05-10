@@ -27,6 +27,9 @@ import '../../features/farmers/repository/farmer_repository.dart';
 import '../../features/farmers/repository/farmer_repository_contract.dart';
 import '../../features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import '../../features/home/presentation/bloc/bloc.dart';
+import '../../features/home/presentation/bloc/market/cubit.dart';
+import '../../features/home/presentation/bloc/market_price/cubit.dart';
+import '../../features/home/presentation/bloc/weather/cubit.dart';
 import '../../features/home/repository/home_repository.dart';
 import '../../features/home/repository/home_repository_contract.dart';
 
@@ -95,6 +98,27 @@ class AppInitializer {
       ),
     );
 
+    instanceLocator.registerLazySingleton<MarketCubit>(
+      () => MarketCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<MarketPriceCubit>(
+      () => MarketPriceCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<WeatherCubit>(
+      () => WeatherCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
     instanceLocator.registerLazySingleton<CropCubit>(
       () => CropCubit(
         repository: instanceLocator(),
@@ -109,11 +133,8 @@ class AppInitializer {
       ),
     );
 
-     instanceLocator.registerLazySingleton<ForgotPasswordCubit>(
-      () => ForgotPasswordCubit(
-        repository: instanceLocator(),
-       
-      ),
+    instanceLocator.registerLazySingleton<ForgotPasswordCubit>(
+      () => ForgotPasswordCubit(repository: instanceLocator()),
     );
 
     instanceLocator.registerLazySingleton<LgaCubit>(
@@ -130,11 +151,8 @@ class AppInitializer {
       ),
     );
 
-     instanceLocator.registerLazySingleton<ResetPasswordCubit>(
-      () => ResetPasswordCubit(
-        repository: instanceLocator(),
-       
-      ),
+    instanceLocator.registerLazySingleton<ResetPasswordCubit>(
+      () => ResetPasswordCubit(repository: instanceLocator()),
     );
 
     instanceLocator.registerLazySingleton<LivestockCubit>(

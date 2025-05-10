@@ -6,8 +6,11 @@ import '../../../core/data/model/cooperative.dart';
 import '../../../core/data/model/crop.dart';
 import '../../../core/data/model/lga.dart';
 import '../../../core/data/model/livestock.dart';
+import '../../../core/data/model/market.dart';
+import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/user.dart';
 import '../../../core/data/model/ward.dart';
+import '../../../core/data/model/weather.dart';
 
 abstract class IHomeRepository {
   //BANK CUBIT CALLS
@@ -57,6 +60,26 @@ abstract class IHomeRepository {
 
   Future<List<Livestock>> getLivestock();
 
+  //MARKET-PRICE CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList({
+    String? endpoint,
+  });
+
+  Future<void> saveMarketPrice(List<MarketData> marketPriceList);
+
+  Future<List<MarketData>> getMarketPrice();
+
+  //MARKET CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList({
+    String? endpoint,
+  });
+
+  Future<void> saveMarket(List<Market> marketList);
+
+  Future<List<Market>> getMarket();
+
+
+
   //USER CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<User>>>> getUserList({
     String? endpoint,
@@ -74,4 +97,13 @@ abstract class IHomeRepository {
   Future<void> saveWard(List<Ward> wardList);
 
   Future<List<Ward>> getWard();
+
+    //WEATHER CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getWeatherList({
+    String? endpoint,
+  });
+
+  Future<void> saveWeather(List<Weather> weatherList);
+
+  Future<List<Weather>> getWeather();
 }

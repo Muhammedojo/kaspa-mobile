@@ -4,7 +4,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import '../data/model/forgot_password.dart';
 import '../data/model/login.dart';
+import '../data/model/market.dart';
+import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/weather.dart';
 import '../storage/istorage.dart';
 import '../utils/const.dart';
 import '../utils/extensions.dart';
@@ -28,9 +31,7 @@ class ApiServicesImpl implements ApiServices {
       (data, {String? realUri}) => Login.fromJson(data),
       {KEY_USERNAME: username, KEY_PASSWORD: password},
       authInterceptor: null,
-      
     );
-    
   }
 
   @override
@@ -209,36 +210,113 @@ class ApiServicesImpl implements ApiServices {
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList(
     String? endpoint,
   ) async {
-    try{
-    var lastRequestTime =
-        await GetIt.I.get<LocalStorage>().getLastRequestTime();
-    return apiClient.request<List<Ward>>(
-      endpoint ?? wardListEndpoint,
-      MethodType.get,
-      (data, {String? realUri}) {
-        lastRequestTime.ward = currentDateTime();
-        lastRequestTime.wardUrl = realUri;
-        final wardList = (data as List).map((e) => Ward.fromJson(e)).toList();
-        GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
-        return wardList;
-      },
-      null,
-      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
-    );}
-    on Error catch (e){
-    
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Ward>>(
+        endpoint ?? wardListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.ward = currentDateTime();
+          lastRequestTime.wardUrl = realUri;
+          final wardList = (data as List).map((e) => Ward.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return wardList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
       return left(ServerFailure(message: e.toString()));
-      
     }
   }
 
   @override
-  Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async{
+  Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Market>>(
+        endpoint ?? marketListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.market = currentDateTime();
+          lastRequestTime.marketUrl = realUri;
+          final marketList =
+              (data as List).map((e) => Market.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return marketList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<MarketData>>(
+        endpoint ?? marketPriceListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.marketPrice = currentDateTime();
+          lastRequestTime.marketPriceUrl = realUri;
+          final marketPriceList =
+              (data as List).map((e) => MarketData.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return marketPriceList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getWeatherList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Weather>>(
+        endpoint ?? weatherListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.weather = currentDateTime();
+          lastRequestTime.weatherUrl = realUri;
+          final weatherList =
+              (data as List).map((e) => Weather.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return weatherList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async {
     FormData formData = FormData.fromMap({});
     return apiClient.multipartRequest<Farmer>(
-        registerFarmerEndpoint,
-        MethodType.post,
-        (data, {String? realUri}) => Farmer.fromJson(data),
-        formData);
+      registerFarmerEndpoint,
+      MethodType.post,
+      (data, {String? realUri}) => Farmer.fromJson(data),
+      formData,
+    );
   }
 }

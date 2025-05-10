@@ -5,8 +5,11 @@ import '../data/model/last_request_time.dart';
 import '../data/model/lga.dart';
 import '../data/model/livestock.dart';
 import '../data/model/login.dart';
+import '../data/model/market.dart';
+import '../data/model/market_data.dart';
 import '../data/model/user.dart';
 import '../data/model/ward.dart';
+import '../data/model/weather.dart';
 import 'istorage.dart';
 
 class LocalStorageImpl implements LocalStorage {
@@ -41,7 +44,7 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> setUsername(String value) => cacheStorage.setUsername(value);
 
-   @override
+  @override
   Future<void> setLoggedIn(bool status) => cacheStorage.setLoggedIn(status);
 
   @override
@@ -83,6 +86,15 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<List<Ward>> getWard() => databaseStorage.getWard();
 
+  @override
+  Future<List<Market>> getMarket() => databaseStorage.getMarket();
+
+  @override
+  Future<List<MarketData>> getMarketPrice() => databaseStorage.getMarketPrice();
+
+  @override
+  Future<List<Weather>> getWeather() => databaseStorage.getWeather();
+
   // SAVE TO DB CALLS
 
   @override
@@ -112,4 +124,15 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveWard(List<Ward> objectList) =>
       databaseStorage.saveWard(objectList);
+
+  @override
+  Future<void> saveMarket(List<Market> objectList) =>
+      databaseStorage.saveMarket(objectList);
+
+  @override
+  Future<void> saveMarketPrice(List<MarketData> objectList) =>
+      databaseStorage.saveMarketPrice(objectList);
+  @override
+  Future<void> saveWeather(List<Weather> objectList) =>
+      databaseStorage.saveWeather(objectList);
 }

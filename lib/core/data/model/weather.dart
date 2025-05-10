@@ -1,7 +1,8 @@
 import 'package:isar/isar.dart';
-import 'package:kaspa/core/data/model/general_model.dart';
-
+import '../../../core/data/model/general_model.dart';
 import '../../utils/const.dart';
+
+part 'weather.g.dart';
 
 @Collection()
 class Weather extends GeneralModel{
@@ -16,8 +17,8 @@ String? date = "";
 double? tempMax = 0.0;
 double? tempMean = 0.0;
 double? tempMin = 0.0;
-int? precipSum = 0;
-int? precipProbMean = 0;
+double? precipSum = 0;
+double? precipProbMean = 0;
 int? weatherCode = 0;
 String? sunrise = "";
 String? sunset = "";

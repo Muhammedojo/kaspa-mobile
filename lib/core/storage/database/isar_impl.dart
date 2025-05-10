@@ -4,10 +4,13 @@ import 'package:kaspa/core/data/model/crop.dart';
 import 'package:kaspa/core/data/model/farmer.dart';
 import 'package:kaspa/core/data/model/lga.dart';
 import 'package:kaspa/core/data/model/livestock.dart';
+import 'package:kaspa/core/data/model/market.dart';
 import 'package:kaspa/core/data/model/ward.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../data/model/cooperative.dart';
+import '../../data/model/market_data.dart';
 import '../../data/model/user.dart';
+import '../../data/model/weather.dart';
 import '../istorage.dart';
 import 'package:isar/isar.dart';
 
@@ -30,7 +33,10 @@ class IsarImpl implements DatabaseStorage {
           FarmerSchema,
           LgaSchema,
           LivestockSchema,
+          MarketSchema,
+          MarketDataSchema,
           WardSchema,
+          WeatherSchema,
           UserSchema,
         ],
         inspector: kDebugMode,
@@ -120,7 +126,35 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-    @override
+  @override
+  Future<List<Market>> getMarket() {
+    if (!_isar.isOpen) {
+      return Future.value(<Market>[]);
+    }
+    try {
+      final markets = _isar.markets.where().findAllSync();
+      return Future.value(markets);
+    } catch (e) {
+      debugPrint("Error retrieving markets: $e");
+      return Future.value(<Market>[]);
+    }
+  }
+
+  @override
+  Future<List<MarketData>> getMarketPrice() {
+    if (!_isar.isOpen) {
+      return Future.value(<MarketData>[]);
+    }
+    try {
+      final marketPrices = _isar.marketDatas.where().findAllSync();
+      return Future.value(marketPrices);
+    } catch (e) {
+      debugPrint("Error retrieving market prices: $e");
+      return Future.value(<MarketData>[]);
+    }
+  }
+
+  @override
   Future<List<User>> getUser() {
     if (!_isar.isOpen) {
       return Future.value(<User>[]);
@@ -148,6 +182,19 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
+  @override
+  Future<List<Weather>> getWeather() {
+    if (!_isar.isOpen) {
+      return Future.value(<Weather>[]);
+    }
+    try {
+      final weathers = _isar.weathers.where().findAllSync();
+      return Future.value(weathers);
+    } catch (e) {
+      debugPrint("Error retrieving weathers: $e");
+      return Future.value(<Weather>[]);
+    }
+  }
 
   @override
   Future<void> saveBank(List<Bank> objectList) async {
@@ -209,7 +256,31 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-   @override
+  @override
+  Future<void> saveMarket(List<Market> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.markets.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving market: $e");
+    }
+  }
+
+  @override
+  Future<void> saveMarketPrice(List<MarketData> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.marketDatas.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving market prices: $e");
+    }
+  }
+
+  @override
   Future<void> saveUser(List<User> objectList) async {
     if (!_isar.isOpen) {
       return;
@@ -233,5 +304,15 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-
+    @override
+  Future<void> saveWeather(List<Weather> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.weathers.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving weather : $e");
+    }
+  }
 }

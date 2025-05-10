@@ -1,7 +1,10 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/market.dart';
+import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
+import '../../../core/data/model/weather.dart';
 import '../../../core/storage/istorage.dart';
 import 'home_repository_contract.dart';
 
@@ -44,6 +47,21 @@ class HomeRepository implements IHomeRepository {
   }) => apiServices.getUserList(endpoint);
 
   @override
+  Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList({
+    String? endpoint,
+  }) => apiServices.getMarketList(endpoint);
+
+  @override
+  Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList({
+    String? endpoint,
+  }) => apiServices.getMarketPriceList(endpoint);
+
+  @override
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getWeatherList({
+    String? endpoint,
+  }) => apiServices.getWeatherList(endpoint);
+
+  @override
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList({
     String? endpoint,
   }) => apiServices.getWardList(endpoint);
@@ -70,6 +88,14 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<Ward>> getWard() => localStorage.getWard();
 
+  @override
+  Future<List<Market>> getMarket() => localStorage.getMarket();
+  @override
+  Future<List<MarketData>> getMarketPrice() => localStorage.getMarketPrice();
+
+  @override
+  Future<List<Weather>> getWeather() => localStorage.getWeather();
+
   //SAVE LOCAL STORAGE CALLS
   @override
   Future<void> saveBank(List<Bank> bankList) => localStorage.saveBank(bankList);
@@ -88,4 +114,16 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveUser(List<User> usersList) =>
       localStorage.saveUser(usersList);
+
+  @override
+  Future<void> saveMarket(List<Market> marketList) =>
+      localStorage.saveMarket(marketList);
+
+  @override
+  Future<void> saveMarketPrice(List<MarketData> marketPriceList) =>
+      localStorage.saveMarketPrice(marketPriceList);
+
+  @override
+  Future<void> saveWeather(List<Weather> weatherList) =>
+      localStorage.saveWeather(weatherList);
 }
