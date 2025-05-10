@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kaspa/core/component/pages_bar.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';

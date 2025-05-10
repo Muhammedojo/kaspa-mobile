@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/bank_detail.dart';
 import 'package:kaspa/core/data/model/cooperative.dart';
