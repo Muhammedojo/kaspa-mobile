@@ -246,30 +246,24 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     });
   }
 
-    Widget showFarmerDetailsModal(context, double percentIndicator,
-      String percentCompleted, Function onProceed) {
+  Widget showFarmerDetailsModal(
+    context,
+    double percentIndicator,
+    String percentCompleted,
+    Function onProceed,
+  ) {
     return FarmerConfirmation(
-      
-      // emptyBank: selectedBankName == null ? true : false,
-      // fullName:
-      //     '${selectedTitle ?? ""} ${surnameController.text} ${firstNameController.text ?? ""}',
-      // percentageCompleted: percentCompleted,
-      // percentageForLinearIndicator: percentIndicator,
-      // proceed: () {
-      //   onProceed();
-      // },
-      // dob: dateController.text ?? "Nil",
-      // houseAddress: houseAddressController.text,
-      // gender: selectedGender ?? "Nil",
-      // maritalStatus: selectedMaritalStatus ?? "Nil",
-      // RLga: lgaController.text,
-      // stateOfResidence: stateOfResidenceController.text,
-      // primaryCrop:
-      //     cropIds.isNotEmpty ? farmer.cropNamesPlantedByFarmer() : "Nil",
-      // bankName: '$selectedBankName',
-      // accountNumber: accountNumberController.text,
-      // accountName: accountNameController.text,
-      // photoPath: '${image?.path}',
+      name: '',
+      age: '',
+      proceed: () {},
+      gender: '',
+      phone: '',
+      address: '',
+      nin: '',
+      lga: '',
+      ward: '',
+      registrationDate: '',
+      registrationOfficer: '',
     );
   }
 

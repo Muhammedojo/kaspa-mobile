@@ -611,8 +611,8 @@ class RegisterFarmerView extends StatelessWidget
                                             value: e,
                                             child: (e.name!).toText(
                                               translate: false,
-                                              textOverflow: TextOverflow.ellipsis,
-               
+                                              textOverflow:
+                                                  TextOverflow.ellipsis,
                                             ),
                                           );
                                         }).toList(),
@@ -809,17 +809,9 @@ class RegisterFarmerView extends StatelessWidget
                                               6,
                                             ),
                                           ),
-                                          child: Text(
-                                            'back'.tr(),
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                              // fontFamily: Styles.FONT_TEXT_FAMILY,
-                                              color:
-                                                  controller.currentStep == 0
-                                                      ? Colors.grey
-                                                      : AppColors.accentText,
-                                            ),
+                                          child: 'back'.toText(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                               ),
@@ -843,15 +835,10 @@ class RegisterFarmerView extends StatelessWidget
                                   onPressed: () {
                                     controller.next(context);
                                   },
-                                  child: Text(
-                                    'next'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18.sp,
-                                      // fontFamily:
-                                      // Styles.FONT_TEXT_FAMILY,
-                                      color: AppColors.xFFFFFF,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: 'next'.toText(
+                                    fontSize: 14,
+                                    color: AppColors.primaryBackground,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
