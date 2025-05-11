@@ -41,7 +41,14 @@ abstract class RegisterFarmerControllerContract {
   late Ward? selectedWard;
   late Bank? selectedBank;
 
+  late int currentStep;
+  late GlobalKey<FormState> formKey;
+
   void clearScreen();
+  void onStepTapped(int index);
+  void back();
+  void saveFarmer();
+  void next(BuildContext context);
 }
 
 abstract class RegisterFarmerViewContract extends BaseViewContract {}

@@ -168,6 +168,9 @@
     "education_qualification": "Education Qualification",
     "date_of_birth": "Date of Birth",
     "camera": "Camera",
+    "bank_verification_number":"Bank Verification Number",
+    "account_number":"Account Number",
+    "account_name":"Account Name",
     "gallery": "Gallery",
     "upload_info": "Upload 'jpg, png,jpeg' formats only.",
     "inventory": "Inventory",
@@ -175,6 +178,8 @@
     "provide_your_email": "Provide your email",
     "change_your_password": "Change your password",
     "register_a_farmer":"Register a Farmer",
+    "farm_address":"Farm Address",
+    
     "farm_visit":"Farm Visit",
     "farmer_details":"Farmer Details",
     "price_updates":"Price Updates",

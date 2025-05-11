@@ -7,6 +7,7 @@ import '../../../../core/data/model/ward.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../contract/register_farmer.dart';
 import '../view/register_farmer.dart';
+import '../widget/farmer_details_preview.dart';
 
 class RegisterFarmerScreen extends StatefulWidget {
   const RegisterFarmerScreen({super.key});
@@ -46,7 +47,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   late TextEditingController nokNameController;
   @override
   late TextEditingController ninController;
-   @override
+  @override
   late TextEditingController addressController;
   @override
   late TextEditingController bvnController;
@@ -58,7 +59,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   late TextEditingController nokRelationshipController;
   @override
   late TextEditingController bankController;
-   @override
+  @override
   late TextEditingController ageController;
 
   @override
@@ -68,6 +69,12 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
   @override
   String? selectedGender;
+
+  @override
+  int currentStep = 0;
+
+  @override
+  late GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   String? selectedNokRelationship;
@@ -170,11 +177,104 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   }
 
   @override
+  onStepTapped(int index) {
+    if (formKey.currentState != null && formKey.currentState!.validate()) {
+      setState(() {
+        currentStep = index;
+      });
+    }
+  }
+
+  @override
+  back() {
+    if (currentStep > 0) {
+      setState(() {
+        currentStep--;
+      });
+    }
+  }
+
+  @override
+  void next(BuildContext context) {
+    final lastStep = currentStep == 4;
+
+    if (lastStep) {
+      if (currentStep == 4 && formKey5.currentState!.validate()) {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) {
+            return ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 600),
+              child: showFarmerDetailsModal(context, 1, "100", () {
+                Navigator.of(context).pop();
+                saveFarmer();
+              }),
+            );
+          },
+        );
+      }
+    } else {
+      if (currentStep == 0 && formKey1.currentState!.validate()) {
+        setState(() {
+          currentStep += 1;
+        });
+      } else if (currentStep == 1 && formKey2.currentState!.validate()) {
+        setState(() {
+          currentStep += 1;
+        });
+      } else if (currentStep == 2 && formKey3.currentState!.validate()) {
+        setState(() {
+          currentStep += 1;
+        });
+      } else if (currentStep == 3 && formKey4.currentState!.validate()) {
+        setState(() {
+          currentStep += 1;
+        });
+      } else if (currentStep == 4 && formKey5.currentState!.validate()) {
+        setState(() {
+          currentStep += 1;
+        });
+      }
+    }
+  }
+
+  @override
   void onSelectLga(Lga? newValue) {
     setState(() {
       selectedLga = newValue!;
     });
   }
+
+    Widget showFarmerDetailsModal(context, double percentIndicator,
+      String percentCompleted, Function onProceed) {
+    return FarmerConfirmation(
+      
+      // emptyBank: selectedBankName == null ? true : false,
+      // fullName:
+      //     '${selectedTitle ?? ""} ${surnameController.text} ${firstNameController.text ?? ""}',
+      // percentageCompleted: percentCompleted,
+      // percentageForLinearIndicator: percentIndicator,
+      // proceed: () {
+      //   onProceed();
+      // },
+      // dob: dateController.text ?? "Nil",
+      // houseAddress: houseAddressController.text,
+      // gender: selectedGender ?? "Nil",
+      // maritalStatus: selectedMaritalStatus ?? "Nil",
+      // RLga: lgaController.text,
+      // stateOfResidence: stateOfResidenceController.text,
+      // primaryCrop:
+      //     cropIds.isNotEmpty ? farmer.cropNamesPlantedByFarmer() : "Nil",
+      // bankName: '$selectedBankName',
+      // accountNumber: accountNumberController.text,
+      // accountName: accountNameController.text,
+      // photoPath: '${image?.path}',
+    );
+  }
+
+  @override
+  void saveFarmer() {}
 
   @override
   void onSelectNokRelationship(String? newValue) {

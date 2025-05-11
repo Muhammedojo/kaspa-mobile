@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:kaspa/core/component/card_container_widget.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 import 'package:kaspa/core/utils/global_variables.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -62,26 +63,44 @@ class RegisterFarmerView extends StatelessWidget
             ),
             Positioned.fill(
               child: Column(
-                children: [
-                  Utils.customAppBar(context, 'register_farmer')
-                  ],
+                children: [Utils.customAppBar(context, 'register_farmer')],
               ),
             ),
             Positioned.fill(
               top: 54,
               child: Stepper(
                 clipBehavior: Clip.antiAlias,
+
                 type: StepperType.horizontal,
                 controlsBuilder: (context, index) {
                   return const SizedBox();
                 },
                 physics: const ScrollPhysics(),
-                onStepTapped: (index) {},
-                currentStep: 0,
+                onStepTapped: (index) {
+                  controller.onStepTapped(index);
+                },
+                onStepContinue: () {
+                  if (controller.formKey.currentState != null &&
+                      controller.formKey.currentState!.validate()) {
+                    controller.onStepTapped(controller.currentStep + 1);
+                  }
+                },
+                onStepCancel: () {
+                  controller.onStepTapped(controller.currentStep - 1);
+                },
+                currentStep: controller.currentStep,
                 elevation: 0,
                 steps: [
-                Step(
+                  Step(
                     title: ''.toText(),
+                    isActive: controller.currentStep >= 0,
+                    stepStyle: StepStyle(
+                      color:
+                          controller.currentStep >= 0
+                              ? AppColors.colorPrimary
+                              : AppColors.ColorAccent,
+                    ),
+
                     content: Form(
                       key: controller.formKey1,
                       child: Column(
@@ -125,8 +144,7 @@ class RegisterFarmerView extends StatelessWidget
                                     Padding(
                                       padding: REdgeInsets.only(top: 5.0),
                                       child: TextFormField(
-                                        controller:
-                                            controller.ageController,
+                                        controller: controller.ageController,
                                         style: Styles.x14dp_4A4A4A(14.0.sp),
                                         maxLines: 1,
                                         validator:
@@ -187,7 +205,7 @@ class RegisterFarmerView extends StatelessWidget
                                               'choose_an_option'.tr(),
                                               '',
                                             ),
-                                       icon: 'arrowDown'.toSvg()
+                                        icon: 'arrowDown'.toSvg(),
                                       ),
                                     ),
                                   ],
@@ -233,7 +251,11 @@ class RegisterFarmerView extends StatelessWidget
                                                 height: 30.sp,
                                                 child: Center(
                                                   child: Row(
-                                                    children: ['+234'.toText(translate: false)],
+                                                    children: [
+                                                      '+234'.toText(
+                                                        translate: false,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -339,7 +361,9 @@ class RegisterFarmerView extends StatelessWidget
                                         state.dataList.map((e) {
                                           return DropdownMenuItem(
                                             value: e,
-                                            child: (e.name!).toText(),
+                                            child: (e.name!).toText(
+                                              translate: false,
+                                            ),
                                           );
                                         }).toList(),
                                     onChanged: (newValue) {
@@ -379,7 +403,9 @@ class RegisterFarmerView extends StatelessWidget
                                         state.dataList.map((e) {
                                           return DropdownMenuItem(
                                             value: e,
-                                            child: (e.name!).toText(translate: false),
+                                            child: (e.name!).toText(
+                                              translate: false,
+                                            ),
                                           );
                                         }).toList(),
                                     onChanged: (newValue) {
@@ -395,18 +421,26 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
+                          80.verticalSpace,
                         ],
                       ),
                     ),
                   ),
-                     Step(
+                  Step(
                     title: ''.toText(),
+                    isActive: controller.currentStep >= 1,
+                    stepStyle: StepStyle(
+                      color:
+                          controller.currentStep >= 1
+                              ? AppColors.colorPrimary
+                              : AppColors.ColorAccent,
+                    ),
                     content: Form(
                       key: controller.formKey2,
                       child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                             'nok_name'.toText(
+                          'nok_name'.toText(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -430,8 +464,8 @@ class RegisterFarmerView extends StatelessWidget
                               onChanged: (value) {},
                             ),
                           ),
-                        16.verticalSpace,
-                                  'nok_phone_number'.toText(
+                          16.verticalSpace,
+                          'nok_phone_number'.toText(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -468,7 +502,11 @@ class RegisterFarmerView extends StatelessWidget
                                                 height: 30.sp,
                                                 child: Center(
                                                   child: Row(
-                                                    children: ['+234'.toText(translate: false)],
+                                                    children: [
+                                                      '+234'.toText(
+                                                        translate: false,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -485,7 +523,8 @@ class RegisterFarmerView extends StatelessWidget
                                         ),
                                       ),
 
-                                  controller: controller.nokPhoneNumberController,
+                                  controller:
+                                      controller.nokPhoneNumberController,
                                   validator:
                                       ValidationBuilder()
                                           .required()
@@ -498,63 +537,333 @@ class RegisterFarmerView extends StatelessWidget
                               ),
                             ],
                           ),
-   16.verticalSpace,
-                              'nok_relationship'.toText(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    Padding(
-                                      padding: REdgeInsets.only(top: 5.0),
-                                      child: DropdownButtonFormField<String>(
-                                        validator:
-                                            ValidationBuilder()
-                                                .required()
-                                                .build(),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.zero,
+                          16.verticalSpace,
+                          'nok_relationship'.toText(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: DropdownButtonFormField<String>(
+                              validator: ValidationBuilder().required().build(),
+                              borderRadius: const BorderRadius.all(Radius.zero),
+                              value: controller.selectedNokRelationship,
+                              onChanged: (newValue) {
+                                controller.onSelectNokRelationship(newValue);
+                              },
+                              items:
+                                  GlobalVariables().nokRelationshipList.map((
+                                    String value,
+                                  ) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                              style: Styles.x14dp_4A4A4A(14.0.sp),
+                              decoration:
+                                  Styles.textFormFieldDecorationBorderWithBackground(
+                                    'choose_an_option'.tr(),
+                                    '',
+                                  ),
+                              icon: 'arrowDown'.toSvg(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Step(
+                    title: ''.toText(),
+                    isActive: controller.currentStep >= 2,
+                    stepStyle: StepStyle(
+                      color:
+                          controller.currentStep >= 2
+                              ? AppColors.colorPrimary
+                              : AppColors.ColorAccent,
+                    ),
+                    content: Form(
+                      key: controller.formKey3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          'bank'.toText(
+                            fontSize: 14,
+                            translate: false,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: BlocBuilder<BankCubit, BankState>(
+                              builder: (context, state) {
+                                if (state is BankLoaded) {
+                                  return DropdownButtonFormField(
+                                    icon: 'arrowDown'.toSvg(height: 11.sp),
+                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                                    decoration:
+                                        Styles.textFormFieldDecorationBorderWithBackground(
+                                          ''.tr(),
+                                          '',
                                         ),
-                                        value: controller.selectedNokRelationship,
-                                        onChanged: (newValue) {
-                                          controller.onSelectNokRelationship(newValue);
-                                        },
-                                        items:
-                                            GlobalVariables().nokRelationshipList.map((
-                                              String value,
-                                            ) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                        style: Styles.x14dp_4A4A4A(14.0.sp),
-                                        decoration:
-                                            Styles.textFormFieldDecorationBorderWithBackground(
-                                              'choose_an_option'.tr(),
-                                              '',
+                                    items:
+                                        state.bankList.map((e) {
+                                          return DropdownMenuItem(
+                                            value: e,
+                                            child: (e.name!).toText(
+                                              translate: false,
+                                              textOverflow: TextOverflow.ellipsis,
+               
                                             ),
-                                        icon: 'arrowDown'.toSvg()
-                                      ),
-                                    ),
-                                
-                        ])),
+                                          );
+                                        }).toList(),
+                                    onChanged: (newValue) {
+                                      controller.onSelectBank(newValue);
+                                    },
+                                  );
+                                }
+                                return DropdownButtonFormField(
+                                  style: Styles.x14dp_4A4A4A(14.0.sp),
+                                  items: [],
+                                  onChanged: (_) {},
+                                );
+                              },
+                            ),
+                          ),
+                          16.verticalSpace,
+                          'bank_verification_number'.toText(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: TextFormField(
+                              controller: controller.bvnController,
+                              style: Styles.x14dp_4A4A4A(14.0.sp),
+                              maxLines: 1,
+                              validator: ValidationBuilder().required().build(),
+                              keyboardType: TextInputType.name,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              decoration:
+                                  Styles.textFormFieldDecorationBorderWithBackground(
+                                    '',
+                                    '',
+                                    check: false,
+                                  ),
+                              onChanged: (value) {},
+                            ),
+                          ),
+                          16.verticalSpace,
+                          'account_number'.toText(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: TextFormField(
+                              controller: controller.accountNumberController,
+                              style: Styles.x14dp_4A4A4A(14.0.sp),
+                              maxLines: 1,
+                              validator: ValidationBuilder().required().build(),
+                              keyboardType: TextInputType.name,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              decoration:
+                                  Styles.textFormFieldDecorationBorderWithBackground(
+                                    '',
+                                    '',
+                                    check: false,
+                                  ),
+                              onChanged: (value) {},
+                            ),
+                          ),
+                          16.verticalSpace,
+                          'account_number'.toText(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: TextFormField(
+                              controller: controller.accountNameController,
+                              style: Styles.x14dp_4A4A4A(14.0.sp),
+                              maxLines: 1,
+                              validator: ValidationBuilder().required().build(),
+                              keyboardType: TextInputType.name,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              decoration:
+                                  Styles.textFormFieldDecorationBorderWithBackground(
+                                    '',
+                                    '',
+                                    check: false,
+                                  ),
+                              onChanged: (value) {},
+                            ),
+                          ),
+                          16.verticalSpace,
+                        ],
+                      ),
+                    ),
                   ),
-                 
                   Step(
                     title: ''.toText(),
-                    content: Form(child: Column(children: [])),
+                    isActive: controller.currentStep >= 3,
+                    stepStyle: StepStyle(
+                      color:
+                          controller.currentStep >= 3
+                              ? AppColors.colorPrimary
+                              : AppColors.ColorAccent,
+                    ),
+                    content: Form(
+                      key: controller.formKey4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          'farm_address'.toText(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: TextFormField(
+                              controller: controller.bvnController,
+                              style: Styles.x14dp_4A4A4A(14.0.sp),
+                              maxLines: 1,
+                              validator: ValidationBuilder().required().build(),
+                              keyboardType: TextInputType.name,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              decoration:
+                                  Styles.textFormFieldDecorationBorderWithBackground(
+                                    '',
+                                    '',
+                                    check: false,
+                                  ),
+                              onChanged: (value) {},
+                            ),
+                          ),
+                          16.verticalSpace,
+                        ],
+                      ),
+                    ),
                   ),
                   Step(
                     title: ''.toText(),
-                    content: Form(child: Column(children: [])),
-                  ),
-                  Step(
-                    title: ''.toText(),
-                    content: Form(child: Column(children: [])),
+                    isActive: controller.currentStep >= 4,
+                    stepStyle: StepStyle(
+                      color:
+                          controller.currentStep >= 4
+                              ? AppColors.colorPrimary
+                              : AppColors.ColorAccent,
+                    ),
+                    content: Form(
+                      key: controller.formKey5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CardContainerWidget(child: 'add_image'.toText()),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            Positioned.fill(bottom: 0, child: Column(children: [])),
+            Positioned.fill(
+              bottom: 0,
+              child: Padding(
+                padding: REdgeInsets.symmetric(horizontal: 22.0),
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: AppColors.primaryBackground,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 97.w,
+                                height: 58.h,
+                                child:
+                                    controller.currentStep == 0
+                                        ? null
+                                        : MaterialButton(
+                                          color: AppColors.xFFFFFF,
+                                          onPressed: () {
+                                            controller.back();
+                                          },
+                                          shape: RoundedRectangleBorder(
+                                            side: const BorderSide(
+                                              color: Color(0xff54565B),
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              6,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'back'.tr(),
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              // fontFamily: Styles.FONT_TEXT_FAMILY,
+                                              color:
+                                                  controller.currentStep == 0
+                                                      ? Colors.grey
+                                                      : AppColors.accentText,
+                                            ),
+                                          ),
+                                        ),
+                              ),
+                              SizedBox(
+                                width: 97.w,
+                                height: 58.h,
+                                child:
+                                //  controller.currentStep == 0
+                                // &&
+                                //         !(controller.image != null ||
+                                //             (controller.farmer.photoUrl != null &&
+                                //                 controller.farmer.photoUrl!
+                                //                     .isNotEmpty))
+                                //     ? null
+                                //     :
+                                MaterialButton(
+                                  color: AppColors.colorPrimary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  onPressed: () {
+                                    controller.next(context);
+                                  },
+                                  child: Text(
+                                    'next'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      // fontFamily:
+                                      // Styles.FONT_TEXT_FAMILY,
+                                      color: AppColors.xFFFFFF,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
