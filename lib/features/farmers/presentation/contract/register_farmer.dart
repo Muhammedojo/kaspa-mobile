@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/data/model/bank.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/ward.dart';
@@ -32,6 +33,7 @@ abstract class RegisterFarmerControllerContract {
   late TextEditingController nokRelationshipController;
   late TextEditingController bankController;
   late TextEditingController ageController;
+  late  TextEditingController imageController;
 
   late bool hasSubmitted;
   late String tempFolioId;
@@ -40,6 +42,8 @@ abstract class RegisterFarmerControllerContract {
   late Lga? selectedLga;
   late Ward? selectedWard;
   late Bank? selectedBank;
+
+  late ImagePicker picker;
 
   late int currentStep;
   late GlobalKey<FormState> formKey;

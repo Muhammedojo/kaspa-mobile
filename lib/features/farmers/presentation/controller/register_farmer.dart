@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:kaspa/core/utils/global_variables.dart';
 
 import '../../../../core/data/model/bank.dart';
+import '../../../../core/data/model/farmer.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/ward.dart';
 import '../../../../core/utils/date_utils.dart';
+import '../bloc/create_farmer/create_farmer_cubit.dart';
 import '../contract/register_farmer.dart';
 import '../view/register_farmer.dart';
 import '../widget/farmer_details_preview.dart';
@@ -85,6 +90,12 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   Ward? selectedWard;
   @override
   Bank? selectedBank;
+
+  @override
+  late ImagePicker picker;
+
+  @override
+  late TextEditingController imageController;
 
   @override
   void initState() {
@@ -205,8 +216,8 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
           isScrollControlled: true,
           builder: (context) {
             return ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 600),
-              child: showFarmerDetailsModal(context, 1, "100", () {
+              constraints: const BoxConstraints(maxHeight: 700),
+              child: showFarmerDetailsModal(context, () {
                 Navigator.of(context).pop();
                 saveFarmer();
               }),
@@ -246,29 +257,51 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     });
   }
 
-  Widget showFarmerDetailsModal(
-    context,
-    double percentIndicator,
-    String percentCompleted,
-    Function onProceed,
-  ) {
+  Widget showFarmerDetailsModal(context, Function onProceed) {
+    final today = DateTime.now();
+    final formattedToday = DateFormat('yyyy-MM-dd').format(today);
+
     return FarmerConfirmation(
-      name: '',
-      age: '',
-      proceed: () {},
-      gender: '',
-      phone: '',
-      address: '',
-      nin: '',
-      lga: '',
-      ward: '',
-      registrationDate: '',
-      registrationOfficer: '',
+      name: firstNameController.text,
+      age: ageController.text,
+      proceed: () {
+        saveFarmer();
+      },
+      gender: '$selectedGender',
+      phone: phoneNumberController.text,
+      address: addressController.text,
+      nin: ninController.text,
+      lga: selectedLga?.name ?? '',
+      ward: selectedWard?.name ?? '',
+      registrationDate: formattedToday,
+      registrationOfficer: GlobalVariables().currentUser?.fullname ?? 'N/A',
     );
   }
 
   @override
-  void saveFarmer() {}
+  Future<void> saveFarmer() async {
+    Farmer farmer = Farmer();
+
+    farmer.address = addressController.text;
+    farmer.age = ageController.text;
+    farmer.bvn = bvnController.text;
+    //farmer.cooperative = selectedCooperative;
+    farmer.firstName = firstNameController.text;
+    farmer.lastName = lastNameController.text;
+    farmer.bankDetails?.accountNumber = accountNumberController.text;
+    farmer.bankDetails?.accountName = accountNameController.text;
+    farmer.bankDetails?.bank?.pk = selectedBank!.pk;
+    farmer.nin = ninController.text;
+    farmer.nokDetails?.name = nokNameController.text;
+    farmer.nokDetails?.address = nokAddressController.text;
+    farmer.nokDetails?.phoneNumber = nokPhoneNumberController.text;
+    farmer.nokDetails?.relationship = selectedNokRelationship.toString();
+    farmer.lga?.pk = selectedLga!.pk;
+    farmer.gender = selectedGender.toString();
+    farmer.phoneNumber = phoneNumberController.text;
+    farmer.ward?.pk = selectedWard!.pk;
+    GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
+  }
 
   @override
   void onSelectNokRelationship(String? newValue) {

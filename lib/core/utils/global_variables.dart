@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kaspa/core/api/api.dart';
 import 'package:kaspa/core/utils/const.dart';
 
+import '../data/model/login.dart';
+
 class GlobalVariables {
   static const List<Locale> appLocales = [
     Locale('en', 'US'),
@@ -24,6 +26,8 @@ class GlobalVariables {
 
   static Set<String> selectedSyncItems = {};
   static Set<String> pulledSyncItems = {};
+
+  Login? currentUser;
 
   static final rootNavigatorKey = GlobalKey<NavigatorState>();
   static final shellNavigatorHomeKey = GlobalKey<NavigatorState>(

@@ -36,7 +36,8 @@ class SuccessDialogWidget extends StatelessWidget {
             ),
             child: Padding(
               padding: REdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-              child: Row(
+              child:
+               Row(
                 children: [
                   Image.asset(AppImage.success, height: 32.sp, width: 32.sp),
                   4.horizontalSpace,

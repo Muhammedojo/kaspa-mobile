@@ -24,6 +24,7 @@ class Farmer {
   String? gender = "";
   String? nin = "";
   String? bvn = "";
+  String? age = "";
   String? address = "";
   String? registrationDate = "";
   String? phoneNumber = "";
@@ -69,7 +70,7 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   obj.phoneNumber = json[KEY_PHONE_NUMBER];
   obj.nin = json[KEY_NIN];
   obj.bvn = json[KEY_BVN];
-
+  obj.age = json[KEY_AGE];
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
 
   if (json.containsKey(KEY_BANK_DETAILS) && json[KEY_BANK_DETAILS] != null) {

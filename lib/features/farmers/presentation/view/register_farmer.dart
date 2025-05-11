@@ -1,14 +1,14 @@
 import 'dart:math';
-
+import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:kaspa/core/component/card_container_widget.dart';
-import 'package:kaspa/core/utils/extensions.dart';
-import 'package:kaspa/core/utils/global_variables.dart';
+import '../../../../core/utils/extensions.dart';
+import '../../../../../core/utils/global_variables.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
@@ -70,7 +70,6 @@ class RegisterFarmerView extends StatelessWidget
               top: 54,
               child: Stepper(
                 clipBehavior: Clip.antiAlias,
-
                 type: StepperType.horizontal,
                 controlsBuilder: (context, index) {
                   return const SizedBox();
@@ -766,7 +765,32 @@ class RegisterFarmerView extends StatelessWidget
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CardContainerWidget(child: 'add_image'.toText()),
+                          DottedBorder(
+                            color: const Color(0xff1D925D),
+                            radius: Radius.circular(8.r),
+                            strokeWidth: 2,
+                            dashPattern: const [10, 6],
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryGreen.withAlpha((0.1 * 255).toInt()),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Padding(
+                                padding: REdgeInsets.symmetric(vertical: 25.0),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset('assets/vectors/image.svg'),
+                                    Center(
+                                      child: 
+                                      'add_farmer_profile_image'.toText(fontSize: 14,fontWeight: FontWeight.w700,color: AppColors.colorPrimary),
+                                      
+                                     
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

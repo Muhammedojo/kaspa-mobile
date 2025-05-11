@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../core/resources/vectors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
 
@@ -39,81 +39,119 @@ class FarmerConfirmation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xffD1D5DB)),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.r),
-          topRight: Radius.circular(24.r),
+          topLeft: Radius.circular(8.r),
+          topRight: Radius.circular(8.r),
         ),
-        color: AppColors.ColorAccent,
+        color: Colors.transparent,
       ),
-      child: Padding(
-        padding: REdgeInsets.symmetric(horizontal: 28.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 10.h),
-                SvgPicture.asset('assets/images/rectangle.svg'),
-                SizedBox(height: 34.h),
-
-                'Confirm Farmer Detail'.toText(),
-                20.verticalSpace,
-
-                CircleAvatar(
-                  // backgroundImage: FileImage(File(photoPath)),
-                  radius: 50.r,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+             
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.bgGreen,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.r),
+                    topRight: Radius.circular(16.r),
+                  ),
                 ),
-            20.verticalSpace,
-              ],
-            ),
-            Expanded(
-              child: SingleChildScrollView(
+                child: Padding(
+                  padding: REdgeInsets.symmetric(vertical: 10.0,horizontal: 16),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                       AppIcon.addFarmer,
+                        height: 20.sp,
+                        width: 20.sp,
+                      ),
+                      4.horizontalSpace,
+                      Expanded(
+                        child: 'Confirm Farmer Detail'.toText(
+                          fontSize: 12,
+                          color: AppColors.colorPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: SvgPicture.asset(
+                          AppIcon.cancel,
+                          height: 32.sp,
+                          width: 32.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+              20.verticalSpace,
+
+              CircleAvatar(
+                // backgroundImage: FileImage(File(photoPath)),
+                radius: 40.r,
+              ),
+              20.verticalSpace,
+            ],
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: REdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 6.h),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
-                    HorizontalWidget(value: '', label: ''),
+                    HorizontalWidget(value: name, label: 'name'),
+                    HorizontalWidget(value: age, label: 'age'),
+                    HorizontalWidget(value: gender, label: 'gender'),
+                    HorizontalWidget(value: phone, label: 'phone_number'),
+                    HorizontalWidget(value: nin, label: 'NIN'),
+                    HorizontalWidget(value: address, label: 'address'),
+                    HorizontalWidget(value: lga, label: 'lga'),
+                    HorizontalWidget(value: ward, label: 'ward'),
+                    HorizontalWidget(
+                      value: registrationDate,
+                      label: 'registration_date',
+                    ),
+                    HorizontalWidget(
+                      value: registrationOfficer,
+                      label: 'registration_officer',
+                    ),
+                    HorizontalWidget(value: cooperative, label: 'cooperative'),
                   ],
                 ),
               ),
             ),
-            InkWell(
+          ),
+          Padding(
+            padding: REdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+            child: InkWell(
               onTap: proceed,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6.r),
-                  color: AppColors.accentText,
+                  color: AppColors.colorPrimary,
                 ),
                 child: Center(
                   child: Padding(
                     padding: REdgeInsets.symmetric(vertical: 15.0),
-                    child: Text(
-                      'confirm_and_proceed'.tr(),
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        // fontFamily: Styles.FONT_TEXT_FAMILY,
-                        color: const Color(0xffFFFFFF),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    child: 
+                    'confirm'.toText(fontSize: 13,fontWeight: FontWeight.w600,color: AppColors.primaryBackground),
+                  
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
