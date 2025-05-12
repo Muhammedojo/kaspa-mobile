@@ -1,8 +1,11 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/data/model/farm_coordinate.dart';
 import '../../../../core/data/model/farm_location.dart';
 import '../../../../core/data/model/model.dart';
+import '../../../../core/data/model/polygon.dart';
 import '../../../../core/data/model/product.dart';
 import '../../../../core/utils/contract.dart';
 
@@ -23,6 +26,19 @@ abstract class RegisterFarmerControllerContract {
   void onSelectBank(Bank newValue);
   void removeCoordinatePoint(int position);
   void onAddFarmFarmLocation({int? selectedFarmLocationIndex});
+  void onGetFarmLocationCoordinates(
+    double latitude,
+    double longitude,
+    int coordinatePosition,
+    StateSetter setStateModal,
+  );
+  void onAddFarmLocationCoordinates(StateSetter setStateModal);
+  void onDeleteFarmLocationCoordinates(
+    int coordinatePosition,
+    StateSetter setStateModal,
+  );
+  void onSaveFarmLocation({int? selectedFarmLocationIndex});
+  Set<Polygon> farmPolygonsBasedOnFarmLocations = HashSet<Polygon>();
 
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
@@ -56,7 +72,7 @@ abstract class RegisterFarmerControllerContract {
   late List<FarmLocation> farmLocations = [];
   late FarmLocation currentFarmLocation;
   late ImagePicker picker;
-  late List<FarmCoordinates> currentFarmLocationCoordinates = [];
+  late List<Coordinates> currentFarmLocationCoordinates = [];
 
   late int currentStep;
   late GlobalKey<FormState> formKey;

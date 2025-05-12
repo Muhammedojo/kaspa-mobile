@@ -1,3 +1,7 @@
+import 'dart:collection';
+
+import 'package:kaspa/core/data/model/farm_coordinate.dart';
+
 import '../../utils/const.dart';
 import 'polygon.dart';
 
@@ -9,6 +13,17 @@ class FarmLocation {
   double? longitude = 0.0;
   double? latitude = 0.0;
   Polygon? polygon;
+  List<Coordinates> coordinates = [];
+
+   bool hasDuplicateCoordinates() {
+    var coordinateArr = coordinates;
+    var coordinateSet = HashSet<String>();
+    for (var coordinate in coordinateArr) {
+      if (coordinateSet.contains(coordinate.coordinatesLabel())) return true;
+      coordinateSet.add(coordinate.coordinatesLabel());
+    }
+    return false;
+  }
 FarmLocation();
 
 factory FarmLocation.fromJson(Map<String, dynamic> json) =>

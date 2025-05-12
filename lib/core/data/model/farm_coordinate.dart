@@ -1,4 +1,10 @@
-class FarmCoordinates{
-double? latitude;
-double? longitude;
+class Coordinates {
+  double? latitude = 0.0;
+  double? longitude = 0.0;
+
+  String coordinatesLabel() {
+    return "$latitude,$longitude";
+  }
+
+  Coordinates({this.latitude, this.longitude});
 }

@@ -7,16 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
+import '../../../../core/component/button.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../../core/utils/global_variables.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/product/cubit.dart';
-import '../bloc/create_farmer/create_farmer_cubit.dart';
-import '../bloc/create_farmer/create_farmer_state.dart';
 import '../contract/register_farmer.dart';
 
 class RegisterFarmerView extends StatelessWidget
@@ -29,23 +27,7 @@ class RegisterFarmerView extends StatelessWidget
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      body: BlocListener<CreateFarmerCubit, CreateFarmerState>(
-        listener: (stateContext, state) {
-          if (state is CreateFarmerLoading) {
-            context.loaderOverlay.show();
-          }
-          if (state is CreateFarmerFailure) {
-            context.loaderOverlay.hide();
-            Text('Failed');
-          }
-          if (state is CreateFarmerSuccess) {
-            context.loaderOverlay.hide();
-            controller.clearScreen();
-            Text('Success');
-          }
-        },
-        child: _body(context),
-      ),
+      body:_body(context)
     );
   }
 
@@ -110,133 +92,25 @@ class RegisterFarmerView extends StatelessWidget
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
-                          // Padding(
-                          //   padding: REdgeInsets.only(top: 5.0),
-                          //   child: TextFormField(
-                          //     controller: controller.firstNameController,
-                          //     style: Styles.x14dp_4A4A4A(14.0.sp),
-                          //     maxLines: 1,
-                          //     validator: ValidationBuilder().required().build(),
-                          //     keyboardType: TextInputType.name,
-                          //     autovalidateMode:
-                          //         AutovalidateMode.onUserInteraction,
-                          //     textInputAction: TextInputAction.next,
-                          //     decoration:
-                          //         Styles.textFormFieldDecorationBorderWithBackground(
-                          //           'Muhammad',
-                          //           '',
-                          //           check: false,
-                          //         ),
-                          //     onChanged: (value) {},
-                          //   ),
-                          // ),
-                        controller.farmLocations.isEmpty? 
-                              InkWell(
-                                onTap: () {
-                                   controller
-                                                        .onAddFarmFarmLocation();
-                                },
-                                child: DottedBorder(
-                                                            color: const Color(0xff1D925D),
-                                                            radius: Radius.circular(8.r),
-                                                            strokeWidth: 2,
-                                                            dashPattern: const [10, 6],
-                                                            child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryGreen.withAlpha(
-                                    (0.1 * 255).toInt(),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: TextFormField(
+                              controller: controller.firstNameController,
+                              style: Styles.x14dp_4A4A4A(14.0.sp),
+                              maxLines: 1,
+                              validator: ValidationBuilder().required().build(),
+                              keyboardType: TextInputType.name,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              decoration:
+                                  Styles.textFormFieldDecorationBorderWithBackground(
+                                    'Muhammad',
+                                    '',
+                                    check: false,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                child: Padding(
-                                  padding: REdgeInsets.symmetric(vertical: 25.0),
-                                  child: Column(
-                                    children: [
-                                      SvgPicture.asset(
-                                        'assets/vectors/image.svg',
-                                      ),
-                                      Center(
-                                        child: 'Add Farm'.toText(
-                                          fontSize: 14,
-                                          translate: false,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.colorPrimary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                                            ),
-                                                          ),
-                              )
-                        :
-                        
-                          ListView.builder(
-                            itemCount: controller.farmLocations.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffF5F6F7),
-                                    ),
-                                    child: Padding(
-                                      padding: REdgeInsets.symmetric(
-                                        horizontal: 12.0,
-                                        vertical: 14.0,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/vectors/addFarmer.svg',
-                                            height: 36.w,
-                                            width: 36.w,
-                                            fit: BoxFit.scaleDown,
-                                          ),
-                                          SizedBox(width: 9.w),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              'Farm Location Added'.toText(
-                                                translate: false,
-                                                fontSize: 14,
-                                              ),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  controller
-                                                      .removeCoordinatePoint(
-                                                        index,
-                                                      );
-                                                },
-                                                child: SvgPicture.asset(
-                                                  'assets/images/cancel.svg',
-                                                  height: 24.w,
-                                                  width: 24.w,
-                                                  fit: BoxFit.scaleDown,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                ],
-                              );
-                            },
+                              onChanged: (value) {},
+                            ),
                           ),
 
                           16.verticalSpace,
@@ -861,7 +735,7 @@ class RegisterFarmerView extends StatelessWidget
                           16.verticalSpace,
                           'livestock'.toText(
                             fontSize: 14,
-                            translate: false,
+
                             fontWeight: FontWeight.w600,
                           ),
                           Padding(
@@ -909,7 +783,7 @@ class RegisterFarmerView extends StatelessWidget
                           16.verticalSpace,
                           'crop'.toText(
                             fontSize: 14,
-                            translate: false,
+
                             fontWeight: FontWeight.w600,
                           ),
                           Padding(
@@ -954,6 +828,116 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
+                          25.verticalSpace,
+                          controller.farmLocations.isEmpty
+                              ? InkWell(
+                                onTap: () {
+                                  controller.onAddFarmFarmLocation();
+                                },
+                                child: DottedBorder(
+                                  color: const Color(0xff1D925D),
+                                  radius: Radius.circular(8.r),
+                                  strokeWidth: 2,
+                                  dashPattern: const [10, 6],
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryGreen.withAlpha(
+                                        (0.1 * 255).toInt(),
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Padding(
+                                      padding: REdgeInsets.symmetric(
+                                        vertical: 25.0,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/vectors/location.svg',
+                                            height: 50.sp,
+                                            width: 50.sp,
+                                          ),
+                                          Center(
+                                            child: 'Add Farm'.toText(
+                                              fontSize: 14,
+                                              translate: false,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.colorPrimary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              : ListView.builder(
+                                itemCount: controller.farmLocations.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Color(0xffF5F6F7),
+                                        ),
+                                        child: Padding(
+                                          padding: REdgeInsets.symmetric(
+                                            horizontal: 12.0,
+                                            vertical: 14.0,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/vectors/addFarmer.svg',
+                                                height: 36.w,
+                                                width: 36.w,
+                                                fit: BoxFit.scaleDown,
+                                              ),
+                                              SizedBox(width: 9.w),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  'Farm Location Added'.toText(
+                                                    translate: false,
+                                                    fontSize: 14,
+                                                  ),
+                                                ],
+                                              ),
+                                              const Spacer(),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () {
+                                                      controller
+                                                          .removeCoordinatePoint(
+                                                            index,
+                                                          );
+                                                    },
+                                                    child: SvgPicture.asset(
+                                                      'assets/images/cancel.svg',
+                                                      height: 24.w,
+                                                      width: 24.w,
+                                                      fit: BoxFit.scaleDown,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                    ],
+                                  );
+                                },
+                              ),
                         ],
                       ),
                     ),
@@ -1027,55 +1011,24 @@ class RegisterFarmerView extends StatelessWidget
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                width: 97.w,
-                                height: 58.h,
+                                width: 150.sp,
+                                height: 58.sp,
                                 child:
                                     controller.currentStep == 0
-                                        ? null
-                                        : MaterialButton(
-                                          color: AppColors.xFFFFFF,
-                                          onPressed: () {
-                                            controller.back();
-                                          },
-                                          shape: RoundedRectangleBorder(
-                                            side: const BorderSide(
-                                              color: Color(0xff54565B),
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              6,
-                                            ),
-                                          ),
-                                          child: 'back'.toText(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        ? SizedBox.shrink()
+                                        : ButtonWidget(
+                                          label: 'previous',
+                                          bgColor: AppColors.primaryBackground,
+                                          textColor: AppColors.accentElement,
+                                          onPressed: () => controller.back(),
                                         ),
                               ),
                               SizedBox(
-                                width: 97.w,
-                                height: 58.h,
-                                child:
-                                //  controller.currentStep == 0
-                                // &&
-                                //         !(controller.image != null ||
-                                //             (controller.farmer.photoUrl != null &&
-                                //                 controller.farmer.photoUrl!
-                                //                     .isNotEmpty))
-                                //     ? null
-                                //     :
-                                MaterialButton(
-                                  color: AppColors.colorPrimary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  onPressed: () {
-                                    controller.next(context);
-                                  },
-                                  child: 'next'.toText(
-                                    fontSize: 14,
-                                    color: AppColors.primaryBackground,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                width: 150.sp,
+                                height: 58.sp,
+                                child: ButtonWidget(
+                                  label: 'next',
+                                  onPressed: () => controller.next(context),
                                 ),
                               ),
                             ],

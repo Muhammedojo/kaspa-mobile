@@ -51,7 +51,6 @@ class FarmerConfirmation extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-             
               Container(
                 decoration: BoxDecoration(
                   color: AppColors.bgGreen,
@@ -61,11 +60,14 @@ class FarmerConfirmation extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: REdgeInsets.symmetric(vertical: 10.0,horizontal: 16),
+                  padding: REdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 16,
+                  ),
                   child: Row(
                     children: [
                       SvgPicture.asset(
-                       AppIcon.addFarmer,
+                        AppIcon.addFarmer,
                         height: 20.sp,
                         width: 20.sp,
                       ),
@@ -91,7 +93,7 @@ class FarmerConfirmation extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               20.verticalSpace,
 
               CircleAvatar(
@@ -132,7 +134,7 @@ class FarmerConfirmation extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: REdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+            padding: REdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
             child: InkWell(
               onTap: proceed,
               child: Container(
@@ -143,9 +145,11 @@ class FarmerConfirmation extends StatelessWidget {
                 child: Center(
                   child: Padding(
                     padding: REdgeInsets.symmetric(vertical: 15.0),
-                    child: 
-                    'confirm'.toText(fontSize: 13,fontWeight: FontWeight.w600,color: AppColors.primaryBackground),
-                  
+                    child: 'confirm'.toText(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryBackground,
+                    ),
                   ),
                 ),
               ),

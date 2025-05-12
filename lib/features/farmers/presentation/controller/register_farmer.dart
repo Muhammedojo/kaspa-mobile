@@ -1,15 +1,17 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kaspa/core/utils/global_variables.dart';
-import '../../../../core/data/model/bank_detail.dart';
 import '../../../../core/data/model/farm_coordinate.dart';
 import '../../../../core/data/model/farm_location.dart';
 import '../../../../core/data/model/model.dart';
-import '../../../../core/data/model/nok_details.dart';
+import '../../../../core/data/model/polygon.dart';
 import '../../../../core/data/model/product.dart';
 import '../../../../core/utils/date_utils.dart';
+import '../../../../core/utils/function.dart';
 import '../bloc/create_farmer/create_farmer_cubit.dart';
 import '../contract/register_farmer.dart';
 import '../view/register_farmer.dart';
@@ -87,6 +89,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   late GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
+  Set<Polygon> farmPolygonsBasedOnFarmLocations = HashSet<Polygon>();
+
+  @override
   String? selectedNokRelationship;
 
   @override
@@ -116,7 +121,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   late FarmLocation currentFarmLocation;
 
   @override
-  List<FarmCoordinates> currentFarmLocationCoordinates = [];
+  List<Coordinates> currentFarmLocationCoordinates = [];
 
   @override
   void initState() {
@@ -303,6 +308,120 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   }
 
   @override
+  void onGetFarmLocationCoordinates(
+    double latitude,
+    double longitude,
+    int coordinatePosition,
+    StateSetter setStateModal,
+  ) {
+    setStateModal(() {
+      currentFarmLocationCoordinates[coordinatePosition] = Coordinates(
+        latitude: latitude,
+        longitude: longitude,
+      );
+    });
+  }
+
+  @override
+  void onDeleteFarmLocationCoordinates(
+    int coordinatePosition,
+    StateSetter setStateModal,
+  ) {
+    setStateModal(() {
+      currentFarmLocationCoordinates.removeAt(coordinatePosition);
+      // calculateLandSize();
+    });
+  }
+
+  @override
+  void onAddFarmLocationCoordinates(StateSetter setStateModal) async {
+    // Position position = await LocationManager().getCurrentPosition();
+    setStateModal(() {
+      // currentFarmLocationCoordinates.add(FarmCoordinates(
+      //     latitude: position.latitude, longitude: position.longitude)
+      //     );
+      currentFarmLocationCoordinates.reversed.toList();
+      //calculateLandSize();
+    });
+  }
+
+  @override
+  void onSaveFarmLocation({int? selectedFarmLocationIndex}) {
+    if (currentFarmLocationCoordinates.isEmpty) {
+      Utils.showToastError(context, "farm_points_are_required", '', () {});
+      return;
+    }
+
+    if (currentFarmLocationCoordinates.length < 4) {
+      Utils.showToastError(
+        context,
+        "minimum_of_4_farm_points_are_required",
+        '',
+        () {},
+      );
+      return;
+    }
+
+    var location = FarmLocation();
+    // location.id = farmLocations.length + 1;
+    // location.farmSize = "$estimatedHectaresOfLand";
+    // location.farmCoordinates!.clear();
+    // location.farmCoordinates!.addAll(currentFarmLocationCoordinates);
+
+    if (currentFarmLocationCoordinates.isNotEmpty) {
+      if (location.hasDuplicateCoordinates()) {
+        Utils.showToastError(
+          context,
+          "there_are_duplicate_points_captured_you_need_to_move_to_the_farm_points_to_recapture",
+          '',
+          () {},
+        );
+        return;
+      }
+    }
+    Navigator.pop(context);
+
+    if (selectedFarmLocationIndex != null) {
+      farmLocations[selectedFarmLocationIndex] = location;
+    } else {
+      farmLocations.add(location);
+    }
+    currentFarmLocationCoordinates.clear();
+    //_convertFarmLocationsToPolygons();
+    //farmer.farms = farmLocations;
+  }
+
+    // _convertFarmLocationsToPolygons() {
+    // farmPolygonsBasedOnFarmLocations.clear();
+    // int counter = 0;
+    // for (var farmLocation in farmLocations) {
+    //   List<LatLng> farmPoints = [];
+
+    //   for (var farmCoordinate in farmLocation.farmCoordinates!) {
+    //     var point = LatLng(farmCoordinate.latitude!, farmCoordinate.longitude!);
+    //     farmPoints.add(point);
+    //   }
+    //   final PolygonId polygonId =
+    //       PolygonId('${farmLocation.farmSize}_hectares');
+    //   farmPolygonsBasedOnFarmLocations.add(
+    //     Polygon(
+    //         polygonId: polygonId,
+    //         points: farmPoints,
+    //         strokeColor: Colors.orange,
+    //         strokeWidth: 4,
+    //         fillColor: Colors.green,
+    //         visible: true,
+    //         consumeTapEvents: true,
+    //         onTap: () {
+    //           _showPopupMenu(counter);
+    //         }),
+    //   );
+    //   counter++;
+    // }
+  //   setState(() {});
+  // }
+
+  @override
   void onAddFarmFarmLocation({int? selectedFarmLocationIndex}) {
     if (selectedFarmLocationIndex != null) {
       currentFarmLocation = farmLocations[selectedFarmLocationIndex];
@@ -311,7 +430,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       currentFarmLocation = FarmLocation();
     }
     showModalBottomSheet(
-      context: this.context,
+      context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
@@ -319,21 +438,25 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
           builder: (BuildContext context, StateSetter setState) {
             return FarmLocationModal(
               onGetCoordinates: (latitude, longitude, position) {
-                // onGetFarmLocationCoordinates(
-                //     latitude, longitude, position, setState);
+                onGetFarmLocationCoordinates(
+                  latitude,
+                  longitude,
+                  position,
+                  setState,
+                );
               },
               onDelete: (position) {
-                // onDeleteFarmLocationCoordinates(position, setState);
+                onDeleteFarmLocationCoordinates(position, setState);
               },
               onAddPoint: () {
-                //  onAddFarmLocationCoordinates(setState);
+                onAddFarmLocationCoordinates(setState);
               },
               currentFarmLocationCoordinates: currentFarmLocationCoordinates,
               hectares: estimatedHectaresOfLand,
               onSavePoints: () {
-                //   onSaveFarmLocation(
-                //   selectedFarmLocationIndex: selectedFarmLocationIndex,
-                // );
+                onSaveFarmLocation(
+                  selectedFarmLocationIndex: selectedFarmLocationIndex,
+                );
               },
             );
           },
@@ -398,6 +521,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     farmer.livestock = [selectedLivestock!.pk];
     farmer.farmLand = [];
     GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
+    
   }
 
   @override
