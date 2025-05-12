@@ -9,6 +9,7 @@ import 'package:kaspa/core/data/model/ward.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../data/model/cooperative.dart';
 import '../../data/model/market_data.dart';
+import '../../data/model/product.dart';
 import '../../data/model/user.dart';
 import '../../data/model/weather.dart';
 import '../istorage.dart';
@@ -35,6 +36,7 @@ class IsarImpl implements DatabaseStorage {
           LivestockSchema,
           MarketSchema,
           MarketDataSchema,
+          ProductSchema,
           WardSchema,
           WeatherSchema,
           UserSchema,
@@ -123,6 +125,20 @@ class IsarImpl implements DatabaseStorage {
     } catch (e) {
       debugPrint("Error retrieving lgas: $e");
       return Future.value(<Lga>[]);
+    }
+  }
+
+   @override
+  Future<List<Product>> getProduct() {
+    if (!_isar.isOpen) {
+      return Future.value(<Product>[]);
+    }
+    try {
+      final products = _isar.products.where().findAllSync();
+      return Future.value(products);
+    } catch (e) {
+      debugPrint("Error retrieving products: $e");
+      return Future.value(<Product>[]);
     }
   }
 
@@ -267,6 +283,19 @@ class IsarImpl implements DatabaseStorage {
       await _isar.writeTxn(() => _isar.lgas.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving lga: $e");
+    }
+  }
+
+   @override
+  Future<void> saveProduct(List<Product> objectList) async {
+       debugPrint('Product here saved now');
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.products.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving product: $e");
     }
   }
 

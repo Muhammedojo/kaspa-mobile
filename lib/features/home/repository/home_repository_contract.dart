@@ -4,6 +4,7 @@ import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
+import '../../../core/data/model/product.dart';
 import '../../../core/data/model/weather.dart';
 
 abstract class IHomeRepository {
@@ -69,6 +70,15 @@ abstract class IHomeRepository {
   Future<void> saveMarket(List<Market> marketList);
 
   Future<List<Market>> getMarket();
+
+    //PRODUCT CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<Product>>>> getProductList({
+    String? endpoint,
+  });
+
+  Future<void> saveProduct(List<Product> productList);
+
+  Future<List<Product>> getProduct();
 
   //USER CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<User>>>> getUserList({

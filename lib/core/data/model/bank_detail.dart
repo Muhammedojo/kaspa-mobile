@@ -21,6 +21,9 @@ class BankDetail extends GeneralModel {
 
   factory BankDetail.fromJson(Map<String, dynamic> json) =>
       _$BankDetailFromJson(json);
+
+        Map<String, dynamic> toJson() => _$BankDetailsToJson(this);
+        
 }
 
 BankDetail _$BankDetailFromJson(Map<String, dynamic> json) {
@@ -35,3 +38,13 @@ BankDetail _$BankDetailFromJson(Map<String, dynamic> json) {
 
   return obj;
 }
+
+Map<String, dynamic> _$BankDetailsToJson(BankDetail obj) => <String, dynamic>{
+  KEY_ACCOUNT_NAME: obj.accountName,
+  KEY_ACCOUNT_NUMBER: obj.accountNumber,
+  KEY_BANK: obj.bank?.toJson(),
+  KEY_PK: obj.pk,
+  KEY_CREATED_AT: obj.created,
+  KEY_UPDATED_AT: obj.updated,
+};
+

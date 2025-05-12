@@ -29,6 +29,7 @@ import '../../features/home/presentation/bloc/api_request/api_request_bloc.dart'
 import '../../features/home/presentation/bloc/bloc.dart';
 import '../../features/home/presentation/bloc/market/cubit.dart';
 import '../../features/home/presentation/bloc/market_price/cubit.dart';
+import '../../features/home/presentation/bloc/product/cubit.dart';
 import '../../features/home/presentation/bloc/weather/cubit.dart';
 import '../../features/home/repository/home_repository.dart';
 import '../../features/home/repository/home_repository_contract.dart';
@@ -146,6 +147,13 @@ class AppInitializer {
 
     instanceLocator.registerLazySingleton<LgaCubit>(
       () => LgaCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+     instanceLocator.registerLazySingleton<ProductCubit>(
+      () => ProductCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),

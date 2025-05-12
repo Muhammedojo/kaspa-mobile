@@ -14,6 +14,7 @@ import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
+import '../../../home/presentation/bloc/product/cubit.dart';
 import '../bloc/create_farmer/create_farmer_cubit.dart';
 import '../bloc/create_farmer/create_farmer_state.dart';
 import '../contract/register_farmer.dart';
@@ -109,26 +110,135 @@ class RegisterFarmerView extends StatelessWidget
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.firstNameController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    'Muhammad',
-                                    '',
-                                    check: false,
+                          // Padding(
+                          //   padding: REdgeInsets.only(top: 5.0),
+                          //   child: TextFormField(
+                          //     controller: controller.firstNameController,
+                          //     style: Styles.x14dp_4A4A4A(14.0.sp),
+                          //     maxLines: 1,
+                          //     validator: ValidationBuilder().required().build(),
+                          //     keyboardType: TextInputType.name,
+                          //     autovalidateMode:
+                          //         AutovalidateMode.onUserInteraction,
+                          //     textInputAction: TextInputAction.next,
+                          //     decoration:
+                          //         Styles.textFormFieldDecorationBorderWithBackground(
+                          //           'Muhammad',
+                          //           '',
+                          //           check: false,
+                          //         ),
+                          //     onChanged: (value) {},
+                          //   ),
+                          // ),
+                        controller.farmLocations.isEmpty? 
+                              InkWell(
+                                onTap: () {
+                                   controller
+                                                        .onAddFarmFarmLocation();
+                                },
+                                child: DottedBorder(
+                                                            color: const Color(0xff1D925D),
+                                                            radius: Radius.circular(8.r),
+                                                            strokeWidth: 2,
+                                                            dashPattern: const [10, 6],
+                                                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryGreen.withAlpha(
+                                    (0.1 * 255).toInt(),
                                   ),
-                              onChanged: (value) {},
-                            ),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Padding(
+                                  padding: REdgeInsets.symmetric(vertical: 25.0),
+                                  child: Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/vectors/image.svg',
+                                      ),
+                                      Center(
+                                        child: 'Add Farm'.toText(
+                                          fontSize: 14,
+                                          translate: false,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.colorPrimary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                                            ),
+                                                          ),
+                              )
+                        :
+                        
+                          ListView.builder(
+                            itemCount: controller.farmLocations.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xffF5F6F7),
+                                    ),
+                                    child: Padding(
+                                      padding: REdgeInsets.symmetric(
+                                        horizontal: 12.0,
+                                        vertical: 14.0,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/vectors/addFarmer.svg',
+                                            height: 36.w,
+                                            width: 36.w,
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                          SizedBox(width: 9.w),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              'Farm Location Added'.toText(
+                                                translate: false,
+                                                fontSize: 14,
+                                              ),
+                                            ],
+                                          ),
+                                          const Spacer(),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  controller
+                                                      .removeCoordinatePoint(
+                                                        index,
+                                                      );
+                                                },
+                                                child: SvgPicture.asset(
+                                                  'assets/images/cancel.svg',
+                                                  height: 24.w,
+                                                  width: 24.w,
+                                                  fit: BoxFit.scaleDown,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                ],
+                              );
+                            },
                           ),
+
                           16.verticalSpace,
                           Row(
                             children: [
@@ -365,8 +475,9 @@ class RegisterFarmerView extends StatelessWidget
                                             ),
                                           );
                                         }).toList(),
+                                    value: controller.selectedLga,
                                     onChanged: (newValue) {
-                                      controller.onSelectLga(newValue);
+                                      controller.onSelectLga(newValue!);
                                     },
                                   );
                                 }
@@ -407,8 +518,9 @@ class RegisterFarmerView extends StatelessWidget
                                             ),
                                           );
                                         }).toList(),
+                                    value: controller.selectedWard,
                                     onChanged: (newValue) {
-                                      controller.onSelectWard(newValue);
+                                      controller.onSelectWard(newValue!);
                                     },
                                   );
                                 }
@@ -588,7 +700,6 @@ class RegisterFarmerView extends StatelessWidget
                         children: [
                           'bank'.toText(
                             fontSize: 14,
-                            translate: false,
                             fontWeight: FontWeight.w600,
                           ),
                           Padding(
@@ -615,8 +726,9 @@ class RegisterFarmerView extends StatelessWidget
                                             ),
                                           );
                                         }).toList(),
+                                    value: controller.selectedBank,
                                     onChanged: (newValue) {
-                                      controller.onSelectBank(newValue);
+                                      controller.onSelectBank(newValue!);
                                     },
                                   );
                                 }
@@ -679,7 +791,7 @@ class RegisterFarmerView extends StatelessWidget
                             ),
                           ),
                           16.verticalSpace,
-                          'account_number'.toText(
+                          'account_name'.toText(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -747,6 +859,101 @@ class RegisterFarmerView extends StatelessWidget
                             ),
                           ),
                           16.verticalSpace,
+                          'livestock'.toText(
+                            fontSize: 14,
+                            translate: false,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: BlocBuilder<ProductCubit, ProductState>(
+                              builder: (context, state) {
+                                if (state is ProductLoaded) {
+                                  return DropdownButtonFormField(
+                                    icon: 'arrowDown'.toSvg(),
+                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                                    decoration:
+                                        Styles.textFormFieldDecorationBorderWithBackground(
+                                          'choose_an_option'.tr(),
+                                          '',
+                                        ),
+
+                                    items:
+                                        state.productList
+                                            .where(
+                                              (product) =>
+                                                  product.type == 'Livestock',
+                                            )
+                                            .map((e) {
+                                              return DropdownMenuItem(
+                                                value: e,
+                                                child: (e.name ?? '').toText(
+                                                  translate: false,
+                                                ),
+                                              );
+                                            })
+                                            .toList(),
+                                    onChanged: (newValue) {
+                                      controller.onSelectLivestock(newValue!);
+                                    },
+                                  );
+                                }
+                                return DropdownButtonFormField(
+                                  style: Styles.x14dp_4A4A4A(14.0.sp),
+                                  items: [],
+                                  onChanged: (_) {},
+                                );
+                              },
+                            ),
+                          ),
+                          16.verticalSpace,
+                          'crop'.toText(
+                            fontSize: 14,
+                            translate: false,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: BlocBuilder<ProductCubit, ProductState>(
+                              builder: (context, state) {
+                                if (state is ProductLoaded) {
+                                  return DropdownButtonFormField(
+                                    icon: 'arrowDown'.toSvg(),
+                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                                    decoration:
+                                        Styles.textFormFieldDecorationBorderWithBackground(
+                                          'choose_an_option'.tr(),
+                                          '',
+                                        ),
+
+                                    items:
+                                        state.productList
+                                            .where(
+                                              (product) =>
+                                                  product.type == 'Crop',
+                                            )
+                                            .map((e) {
+                                              return DropdownMenuItem(
+                                                value: e,
+                                                child: (e.name ?? '').toText(
+                                                  translate: false,
+                                                ),
+                                              );
+                                            })
+                                            .toList(),
+                                    onChanged: (newValue) {
+                                      controller.onSelectCrops(newValue!);
+                                    },
+                                  );
+                                }
+                                return DropdownButtonFormField(
+                                  style: Styles.x14dp_4A4A4A(14.0.sp),
+                                  items: [],
+                                  onChanged: (_) {},
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -772,19 +979,24 @@ class RegisterFarmerView extends StatelessWidget
                             dashPattern: const [10, 6],
                             child: Container(
                               decoration: BoxDecoration(
-                                color: AppColors.primaryGreen.withAlpha((0.1 * 255).toInt()),
+                                color: AppColors.primaryGreen.withAlpha(
+                                  (0.1 * 255).toInt(),
+                                ),
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
                               child: Padding(
                                 padding: REdgeInsets.symmetric(vertical: 25.0),
                                 child: Column(
                                   children: [
-                                    SvgPicture.asset('assets/vectors/image.svg'),
+                                    SvgPicture.asset(
+                                      'assets/vectors/image.svg',
+                                    ),
                                     Center(
-                                      child: 
-                                      'add_farmer_profile_image'.toText(fontSize: 14,fontWeight: FontWeight.w700,color: AppColors.colorPrimary),
-                                      
-                                     
+                                      child: 'add_farmer_profile_image'.toText(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.colorPrimary,
+                                      ),
                                     ),
                                   ],
                                 ),

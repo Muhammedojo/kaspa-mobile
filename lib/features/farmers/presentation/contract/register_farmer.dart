@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../core/data/model/bank.dart';
-import '../../../../core/data/model/lga.dart';
-import '../../../../core/data/model/ward.dart';
+import '../../../../core/data/model/farm_coordinate.dart';
+import '../../../../core/data/model/farm_location.dart';
+import '../../../../core/data/model/model.dart';
+import '../../../../core/data/model/product.dart';
 import '../../../../core/utils/contract.dart';
 
 abstract class RegisterFarmerControllerContract {
@@ -13,10 +14,15 @@ abstract class RegisterFarmerControllerContract {
   late GlobalKey<FormState> formKey5;
 
   void onSelectGender(String? newValue);
-  void onSelectLga(Lga? newValue);
-  void onSelectWard(Ward? newValue);
+  void onSelectLga(Lga newValue);
+  void onSelectLivestock(Product livestock);
+  void onSelectCrops(Product crops);
+  void onSelectCrop(Crop crop);
+  void onSelectWard(Ward newValue);
   void onSelectNokRelationship(String? newValue);
-  void onSelectBank(Bank? newValue);
+  void onSelectBank(Bank newValue);
+  void removeCoordinatePoint(int position);
+  void onAddFarmFarmLocation({int? selectedFarmLocationIndex});
 
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
@@ -33,17 +39,24 @@ abstract class RegisterFarmerControllerContract {
   late TextEditingController nokRelationshipController;
   late TextEditingController bankController;
   late TextEditingController ageController;
-  late  TextEditingController imageController;
+  late TextEditingController imageController;
 
   late bool hasSubmitted;
+  late double estimatedHectaresOfLand;
   late String tempFolioId;
   late String? selectedGender;
   late String? selectedNokRelationship;
   late Lga? selectedLga;
   late Ward? selectedWard;
   late Bank? selectedBank;
+  late Product? selectedLivestock;
+  late Product? selectedCrops;
+  late Crop? selectedCrop;
 
+  late List<FarmLocation> farmLocations = [];
+  late FarmLocation currentFarmLocation;
   late ImagePicker picker;
+  late List<FarmCoordinates> currentFarmLocationCoordinates = [];
 
   late int currentStep;
   late GlobalKey<FormState> formKey;

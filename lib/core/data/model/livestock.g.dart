@@ -57,13 +57,18 @@ const LivestockSchema = CollectionSchema(
       name: r'pk',
       type: IsarType.long,
     ),
-    r'updated': PropertySchema(
+    r'unit': PropertySchema(
       id: 8,
+      name: r'unit',
+      type: IsarType.string,
+    ),
+    r'updated': PropertySchema(
+      id: 9,
       name: r'updated',
       type: IsarType.string,
     ),
     r'variety': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'variety',
       type: IsarType.string,
     )
@@ -172,6 +177,12 @@ int _livestockEstimateSize(
     }
   }
   {
+    final value = object.unit;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.updated;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -200,8 +211,9 @@ void _livestockSerialize(
   writer.writeString(offsets[5], object.lastPulledTime);
   writer.writeString(offsets[6], object.name);
   writer.writeLong(offsets[7], object.pk);
-  writer.writeString(offsets[8], object.updated);
-  writer.writeString(offsets[9], object.variety);
+  writer.writeString(offsets[8], object.unit);
+  writer.writeString(offsets[9], object.updated);
+  writer.writeString(offsets[10], object.variety);
 }
 
 Livestock _livestockDeserialize(
@@ -220,8 +232,9 @@ Livestock _livestockDeserialize(
   object.lastPulledTime = reader.readStringOrNull(offsets[5]);
   object.name = reader.readStringOrNull(offsets[6]);
   object.pk = reader.readLong(offsets[7]);
-  object.updated = reader.readStringOrNull(offsets[8]);
-  object.variety = reader.readStringOrNull(offsets[9]);
+  object.unit = reader.readStringOrNull(offsets[8]);
+  object.updated = reader.readStringOrNull(offsets[9]);
+  object.variety = reader.readStringOrNull(offsets[10]);
   return object;
 }
 
@@ -251,6 +264,8 @@ P _livestockDeserializeProp<P>(
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readStringOrNull(offset)) as P;
+    case 10:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1727,6 +1742,152 @@ extension LivestockQueryFilter
     });
   }
 
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'unit',
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'unit',
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'unit',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'unit',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'unit',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'unit',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'unit',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'unit',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'unit',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'unit',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'unit',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> unitIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'unit',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Livestock, Livestock, QAfterFilterCondition> updatedIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2126,6 +2287,18 @@ extension LivestockQuerySortBy on QueryBuilder<Livestock, Livestock, QSortBy> {
     });
   }
 
+  QueryBuilder<Livestock, Livestock, QAfterSortBy> sortByUnit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'unit', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterSortBy> sortByUnitDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'unit', Sort.desc);
+    });
+  }
+
   QueryBuilder<Livestock, Livestock, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updated', Sort.asc);
@@ -2262,6 +2435,18 @@ extension LivestockQuerySortThenBy
     });
   }
 
+  QueryBuilder<Livestock, Livestock, QAfterSortBy> thenByUnit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'unit', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterSortBy> thenByUnitDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'unit', Sort.desc);
+    });
+  }
+
   QueryBuilder<Livestock, Livestock, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updated', Sort.asc);
@@ -2344,6 +2529,13 @@ extension LivestockQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Livestock, Livestock, QDistinct> distinctByUnit(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'unit', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Livestock, Livestock, QDistinct> distinctByUpdated(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2412,6 +2604,12 @@ extension LivestockQueryProperty
   QueryBuilder<Livestock, int, QQueryOperations> pkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pk');
+    });
+  }
+
+  QueryBuilder<Livestock, String?, QQueryOperations> unitProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'unit');
     });
   }
 

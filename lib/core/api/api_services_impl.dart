@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import '../data/model/forgot_password.dart';
@@ -6,6 +7,7 @@ import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/product.dart';
 import '../data/model/weather.dart';
 import '../storage/istorage.dart';
 import '../utils/const.dart';
@@ -23,7 +25,6 @@ class ApiServicesImpl implements ApiServices {
     String username,
     String password,
   ) {
- 
     return apiClient.request<Login>(
       loginEndpoint,
       MethodType.post,
@@ -123,17 +124,15 @@ class ApiServicesImpl implements ApiServices {
   Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList(
     String? endpoint,
   ) async {
-   
     var lastRequestTime =
         await GetIt.I.get<LocalStorage>().getLastRequestTime();
     return apiClient.request<List<Farmer>>(
       endpoint ?? farmersListEndpoint,
       MethodType.get,
       (data, {String? realUri}) {
-      
         lastRequestTime.farmer = currentDateTime();
         lastRequestTime.farmerUrl = realUri;
-       
+
         final farmerList =
             (data as List).map((e) => Farmer.fromJson(e)).toList();
         GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
@@ -158,6 +157,7 @@ class ApiServicesImpl implements ApiServices {
         lastRequestTime.lgaUrl = realUri;
         final lgaList = (data as List).map((e) => Lga.fromJson(e)).toList();
         GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+
         return lgaList;
       },
       null,
@@ -260,6 +260,33 @@ class ApiServicesImpl implements ApiServices {
   }
 
   @override
+  Future<Either<Failure, ApiResponse<List<Product>>>> getProductList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Product>>(
+        endpoint ?? productListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.product = currentDateTime();
+          lastRequestTime.productUrl = realUri;
+
+          final productList =
+              (data as List).map((e) => Product.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return productList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList(
     String? endpoint,
   ) async {
@@ -313,12 +340,75 @@ class ApiServicesImpl implements ApiServices {
 
   @override
   Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async {
-    FormData formData = FormData.fromMap({});
-    return apiClient.multipartRequest<Farmer>(
+    return apiClient.request<Farmer>(
       registerFarmerEndpoint,
       MethodType.post,
       (data, {String? realUri}) => Farmer.fromJson(data),
-      formData,
+      {
+        KEY_FOLIO_ID: data.folioId,
+        KEY_FIRST_NAME: data.firstName,
+        KEY_LAST_NAME: data.lastName,
+        KEY_OTHER_NAME: data.otherNames,
+        KEY_AGE: data.age,
+        KEY_TITLE: data.title,
+        KEY_GENDER: data.gender,
+        KEY_ADDRESS: data.address,
+        KEY_PHONE_NUMBER: data.phoneNumber,
+        KEY_NIN: data.nin,
+        KEY_ACCOUNT_NAME: data.accountName,
+        KEY_ACCOUNT_NUMBER: data.accountNumber,
+        KEY_NOK_NAME: data.nokName,
+        KEY_BANK_ID: data.bankId,
+        KEY_NOK_PHONE_NUMBER: data.nokPhoneNumber,
+        KEY_NOK_ADDRESS: data.nokAddress,
+        KEY_NOK_RELATIONSHIP: data.nokRelationship,
+        KEY_FARMS: data.farmLand,
+        KEY_BVN: data.bvn,
+        KEY_REGISTRATION_DATE: data.registrationDate,
+        KEY_LGA: data.lga,
+        KEY_WARD_ID: data.wardId,
+        KEY_LIVESTOCK_ID: data.livestock,
+        KEY_CROP_ID: data.crop,
+      },
     );
   }
+
+  // @override
+  // Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async {
+  //   // final Map<String, dynamic> farmerJsonData = data;
+  //   // debugPrint('Farmer Data ${farmerJsonData.toString()}');
+
+  //   FormData formData = FormData.fromMap({
+  //      KEY_FOLIO_ID: data.folioId,
+  // KEY_FIRST_NAME: data.firstName,
+  // KEY_LAST_NAME: data.lastName,
+  // KEY_OTHER_NAME: data.otherNames,
+  // KEY_AGE: data.age,
+  // KEY_TITLE: data.title,
+  // KEY_GENDER: data.gender,
+  // KEY_ADDRESS: data.address,
+  // KEY_PHONE_NUMBER: data.phoneNumber,
+  // KEY_NIN: data.nin,
+  // KEY_ACCOUNT_NAME: data.accountName,
+  // KEY_ACCOUNT_NUMBER: data.accountNumber,
+  // KEY_NOK_NAME: data.nokName,
+  // KEY_BANK_ID: data.bankId,
+  // KEY_NOK_PHONE_NUMBER: data.nokPhoneNumber,
+  // KEY_NOK_ADDRESS: data.nokAddress,
+  // KEY_NOK_RELATIONSHIP: data.nokRelationship,
+  // KEY_FARMS: data.farmLand,
+  // KEY_BVN: data.bvn,
+  // KEY_REGISTRATION_DATE: data.registrationDate,
+  // KEY_LGA: data.lga,
+  // KEY_WARD_ID: data.wardId,
+  // KEY_LIVESTOCK_ID: data.livestock,
+  // KEY_CROP_ID: data.crop,
+  //   });
+  //   return apiClient.multipartRequest<Farmer>(
+  //     registerFarmerEndpoint,
+  //     MethodType.post,
+  //     (data, {String? realUri}) => Farmer.fromJson(data),
+  //     formData,
+  //   );
+  // }
 }

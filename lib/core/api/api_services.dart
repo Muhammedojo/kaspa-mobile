@@ -4,6 +4,7 @@ import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/product.dart';
 import '../data/model/weather.dart';
 import 'exceptions/contracts/failure.dart';
 import 'services/contracts/api_response.dart';
@@ -51,6 +52,10 @@ abstract class ApiServices {
   );
 
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList(
+    String? endpoint,
+  );
+
+ Future<Either<Failure, ApiResponse<List<Product>>>> getProductList(
     String? endpoint,
   );
 

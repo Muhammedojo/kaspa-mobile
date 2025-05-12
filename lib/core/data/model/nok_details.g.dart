@@ -17,58 +17,63 @@ const NokDetailsSchema = CollectionSchema(
   name: r'NokDetails',
   id: 491377451530934033,
   properties: {
-    r'created': PropertySchema(
+    r'address': PropertySchema(
       id: 0,
+      name: r'address',
+      type: IsarType.string,
+    ),
+    r'created': PropertySchema(
+      id: 1,
       name: r'created',
       type: IsarType.string,
     ),
     r'createdInEpsilon': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'createdInEpsilon',
       type: IsarType.long,
     ),
     r'createdOffline': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'createdOffline',
       type: IsarType.string,
     ),
     r'errorMessage': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'errorMessage',
       type: IsarType.string,
     ),
     r'hasSynced': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'hasSynced',
       type: IsarType.bool,
     ),
     r'lastPulledTime': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'name',
       type: IsarType.string,
     ),
     r'phoneNumber': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'pk',
       type: IsarType.long,
     ),
     r'relationship': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'relationship',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'updated',
       type: IsarType.string,
     )
@@ -147,6 +152,12 @@ int _nokDetailsEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.address;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.created;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -203,17 +214,18 @@ void _nokDetailsSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.created);
-  writer.writeLong(offsets[1], object.createdInEpsilon);
-  writer.writeString(offsets[2], object.createdOffline);
-  writer.writeString(offsets[3], object.errorMessage);
-  writer.writeBool(offsets[4], object.hasSynced);
-  writer.writeString(offsets[5], object.lastPulledTime);
-  writer.writeString(offsets[6], object.name);
-  writer.writeString(offsets[7], object.phoneNumber);
-  writer.writeLong(offsets[8], object.pk);
-  writer.writeString(offsets[9], object.relationship);
-  writer.writeString(offsets[10], object.updated);
+  writer.writeString(offsets[0], object.address);
+  writer.writeString(offsets[1], object.created);
+  writer.writeLong(offsets[2], object.createdInEpsilon);
+  writer.writeString(offsets[3], object.createdOffline);
+  writer.writeString(offsets[4], object.errorMessage);
+  writer.writeBool(offsets[5], object.hasSynced);
+  writer.writeString(offsets[6], object.lastPulledTime);
+  writer.writeString(offsets[7], object.name);
+  writer.writeString(offsets[8], object.phoneNumber);
+  writer.writeLong(offsets[9], object.pk);
+  writer.writeString(offsets[10], object.relationship);
+  writer.writeString(offsets[11], object.updated);
 }
 
 NokDetails _nokDetailsDeserialize(
@@ -223,18 +235,19 @@ NokDetails _nokDetailsDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = NokDetails();
-  object.created = reader.readStringOrNull(offsets[0]);
-  object.createdInEpsilon = reader.readLongOrNull(offsets[1]);
-  object.createdOffline = reader.readStringOrNull(offsets[2]);
-  object.errorMessage = reader.readStringOrNull(offsets[3]);
-  object.hasSynced = reader.readBoolOrNull(offsets[4]);
+  object.address = reader.readStringOrNull(offsets[0]);
+  object.created = reader.readStringOrNull(offsets[1]);
+  object.createdInEpsilon = reader.readLongOrNull(offsets[2]);
+  object.createdOffline = reader.readStringOrNull(offsets[3]);
+  object.errorMessage = reader.readStringOrNull(offsets[4]);
+  object.hasSynced = reader.readBoolOrNull(offsets[5]);
   object.id = id;
-  object.lastPulledTime = reader.readStringOrNull(offsets[5]);
-  object.name = reader.readStringOrNull(offsets[6]);
-  object.phoneNumber = reader.readStringOrNull(offsets[7]);
-  object.pk = reader.readLong(offsets[8]);
-  object.relationship = reader.readStringOrNull(offsets[9]);
-  object.updated = reader.readStringOrNull(offsets[10]);
+  object.lastPulledTime = reader.readStringOrNull(offsets[6]);
+  object.name = reader.readStringOrNull(offsets[7]);
+  object.phoneNumber = reader.readStringOrNull(offsets[8]);
+  object.pk = reader.readLong(offsets[9]);
+  object.relationship = reader.readStringOrNull(offsets[10]);
+  object.updated = reader.readStringOrNull(offsets[11]);
   return object;
 }
 
@@ -248,24 +261,26 @@ P _nokDetailsDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
-    case 2:
       return (reader.readStringOrNull(offset)) as P;
+    case 2:
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readBoolOrNull(offset)) as P;
-    case 5:
       return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readBoolOrNull(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readLong(offset)) as P;
-    case 9:
       return (reader.readStringOrNull(offset)) as P;
+    case 9:
+      return (reader.readLong(offset)) as P;
     case 10:
+      return (reader.readStringOrNull(offset)) as P;
+    case 11:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -766,6 +781,155 @@ extension NokDetailsQueryWhere
 
 extension NokDetailsQueryFilter
     on QueryBuilder<NokDetails, NokDetails, QFilterCondition> {
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition>
+      addressIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition>
+      addressGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'address',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'address',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> addressIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition>
+      addressIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<NokDetails, NokDetails, QAfterFilterCondition> createdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2213,6 +2377,18 @@ extension NokDetailsQueryLinks
 
 extension NokDetailsQuerySortBy
     on QueryBuilder<NokDetails, NokDetails, QSortBy> {
+  QueryBuilder<NokDetails, NokDetails, QAfterSortBy> sortByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterSortBy> sortByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
   QueryBuilder<NokDetails, NokDetails, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.asc);
@@ -2351,6 +2527,18 @@ extension NokDetailsQuerySortBy
 
 extension NokDetailsQuerySortThenBy
     on QueryBuilder<NokDetails, NokDetails, QSortThenBy> {
+  QueryBuilder<NokDetails, NokDetails, QAfterSortBy> thenByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NokDetails, NokDetails, QAfterSortBy> thenByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
   QueryBuilder<NokDetails, NokDetails, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.asc);
@@ -2501,6 +2689,13 @@ extension NokDetailsQuerySortThenBy
 
 extension NokDetailsQueryWhereDistinct
     on QueryBuilder<NokDetails, NokDetails, QDistinct> {
+  QueryBuilder<NokDetails, NokDetails, QDistinct> distinctByAddress(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'address', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<NokDetails, NokDetails, QDistinct> distinctByCreated(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2583,6 +2778,12 @@ extension NokDetailsQueryProperty
   QueryBuilder<NokDetails, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<NokDetails, String?, QQueryOperations> addressProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'address');
     });
   }
 

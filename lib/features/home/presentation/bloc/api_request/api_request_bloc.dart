@@ -7,6 +7,7 @@ import '../../../../farmers/presentation/bloc/bloc.dart';
 import '../bloc.dart';
 import '../market/cubit.dart';
 import '../market_price/cubit.dart';
+import '../product/cubit.dart';
 import '../weather/cubit.dart';
 import 'api_request_state.dart';
 part 'api_request_event.dart';
@@ -138,6 +139,10 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
 
       case bankListEndpoint:
         AppInitializer.instanceLocator.get<BankCubit>().loadBank();
+        break;
+
+        case productListEndpoint:
+        AppInitializer.instanceLocator.get<ProductCubit>().loadProduct();
         break;
 
       case cooperativeListEndpoint:

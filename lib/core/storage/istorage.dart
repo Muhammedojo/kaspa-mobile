@@ -8,6 +8,7 @@ import '../data/model/livestock.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
+import '../data/model/product.dart';
 import '../data/model/user.dart';
 import '../data/model/ward.dart';
 import '../data/model/weather.dart';
@@ -36,6 +37,7 @@ abstract class DatabaseStorage {
   Future<List<Cooperative>> getCooperative();
   Future<List<Farmer>> getFarmer();
   Future<List<Lga>> getLga();
+   Future<List<Product>> getProduct();
   Future<List<Livestock>> getLivestock();
   Future<List<User>> getUser();
   Future<List<Ward>> getWard();
@@ -50,6 +52,7 @@ abstract class DatabaseStorage {
   Future<void> saveLga(List<Lga> objectList);
   Future<void> saveLivestock(List<Livestock> objectList);
   Future<void> saveWard(List<Ward> objectList);
+  Future<void> saveProduct(List<Product> objectList);
   Future<void> saveUser(List<User> objectList);
   Future<void> saveMarket(List<Market> objectList);
   Future<void> saveMarketPrice(List<MarketData> objectList);

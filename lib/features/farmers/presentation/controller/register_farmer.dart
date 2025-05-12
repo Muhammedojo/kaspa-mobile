@@ -3,15 +3,17 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kaspa/core/utils/global_variables.dart';
-
-import '../../../../core/data/model/bank.dart';
-import '../../../../core/data/model/farmer.dart';
-import '../../../../core/data/model/lga.dart';
-import '../../../../core/data/model/ward.dart';
+import '../../../../core/data/model/bank_detail.dart';
+import '../../../../core/data/model/farm_coordinate.dart';
+import '../../../../core/data/model/farm_location.dart';
+import '../../../../core/data/model/model.dart';
+import '../../../../core/data/model/nok_details.dart';
+import '../../../../core/data/model/product.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../bloc/create_farmer/create_farmer_cubit.dart';
 import '../contract/register_farmer.dart';
 import '../view/register_farmer.dart';
+import '../widget/farm_location_modal.dart';
 import '../widget/farmer_details_preview.dart';
 
 class RegisterFarmerScreen extends StatefulWidget {
@@ -73,6 +75,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   late String tempFolioId;
 
   @override
+  late double estimatedHectaresOfLand = 0.0;
+
+  @override
   String? selectedGender;
 
   @override
@@ -90,12 +95,28 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   Ward? selectedWard;
   @override
   Bank? selectedBank;
+  @override
+  Product? selectedLivestock;
+
+  @override
+  List<FarmLocation> farmLocations = [];
+
+  @override
+  Product? selectedCrops;
+  @override
+  Crop? selectedCrop;
 
   @override
   late ImagePicker picker;
 
   @override
   late TextEditingController imageController;
+
+  @override
+  late FarmLocation currentFarmLocation;
+
+  @override
+  List<FarmCoordinates> currentFarmLocationCoordinates = [];
 
   @override
   void initState() {
@@ -165,6 +186,16 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       ageController.clear();
       nokRelationshipController.clear();
       bankController.clear();
+      addressController.clear();
+      ninController.clear();
+      bvnController.clear();
+    });
+  }
+
+  @override
+  void removeCoordinatePoint(int position) {
+    setState(() {
+      farmLocations.removeAt(position);
     });
   }
 
@@ -174,9 +205,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   }
 
   @override
-  void onSelectBank(Bank? newValue) {
+  void onSelectBank(Bank newValue) {
     setState(() {
-      selectedBank = newValue!;
+      selectedBank = newValue;
     });
   }
 
@@ -257,6 +288,67 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     });
   }
 
+  @override
+  void onSelectLivestock(Product? newValue) {
+    setState(() {
+      selectedLivestock = newValue!;
+    });
+  }
+
+  @override
+  void onSelectCrops(Product? newValue) {
+    setState(() {
+      selectedCrops = newValue!;
+    });
+  }
+
+  @override
+  void onAddFarmFarmLocation({int? selectedFarmLocationIndex}) {
+    if (selectedFarmLocationIndex != null) {
+      currentFarmLocation = farmLocations[selectedFarmLocationIndex];
+      // currentFarmLocationCoordinates = currentFarmLocation.!;
+    } else {
+      currentFarmLocation = FarmLocation();
+    }
+    showModalBottomSheet(
+      context: this.context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return FarmLocationModal(
+              onGetCoordinates: (latitude, longitude, position) {
+                // onGetFarmLocationCoordinates(
+                //     latitude, longitude, position, setState);
+              },
+              onDelete: (position) {
+                // onDeleteFarmLocationCoordinates(position, setState);
+              },
+              onAddPoint: () {
+                //  onAddFarmLocationCoordinates(setState);
+              },
+              currentFarmLocationCoordinates: currentFarmLocationCoordinates,
+              hectares: estimatedHectaresOfLand,
+              onSavePoints: () {
+                //   onSaveFarmLocation(
+                //   selectedFarmLocationIndex: selectedFarmLocationIndex,
+                // );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  void onSelectCrop(Crop? newValue) {
+    setState(() {
+      selectedCrop = newValue!;
+    });
+  }
+
   Widget showFarmerDetailsModal(context, Function onProceed) {
     final today = DateTime.now();
     final formattedToday = DateFormat('yyyy-MM-dd').format(today);
@@ -280,26 +372,31 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
   @override
   Future<void> saveFarmer() async {
+    final today = DateTime.now();
+    final formattedToday = DateFormat('yyyy-MM-dd').format(today);
     Farmer farmer = Farmer();
+    farmer.folioId = tempFolioId;
 
     farmer.address = addressController.text;
     farmer.age = ageController.text;
     farmer.bvn = bvnController.text;
-    //farmer.cooperative = selectedCooperative;
     farmer.firstName = firstNameController.text;
     farmer.lastName = lastNameController.text;
-    farmer.bankDetails?.accountNumber = accountNumberController.text;
-    farmer.bankDetails?.accountName = accountNameController.text;
-    farmer.bankDetails?.bank?.pk = selectedBank!.pk;
+    farmer.accountNumber = accountNumberController.text;
+    farmer.accountName = accountNameController.text;
+    farmer.bankId = selectedBank!.pk;
     farmer.nin = ninController.text;
-    farmer.nokDetails?.name = nokNameController.text;
-    farmer.nokDetails?.address = nokAddressController.text;
-    farmer.nokDetails?.phoneNumber = nokPhoneNumberController.text;
-    farmer.nokDetails?.relationship = selectedNokRelationship.toString();
-    farmer.lga?.pk = selectedLga!.pk;
+    farmer.nokName = nokNameController.text;
+    farmer.nokAddress = nokAddressController.text;
+    farmer.nokPhoneNumber = nokPhoneNumberController.text;
+    farmer.nokRelationship = selectedNokRelationship.toString();
     farmer.gender = selectedGender.toString();
     farmer.phoneNumber = phoneNumberController.text;
-    farmer.ward?.pk = selectedWard!.pk;
+    farmer.wardId = selectedWard!.pk;
+    farmer.registrationDate = formattedToday.toString();
+    farmer.crop = [selectedCrops!.pk];
+    farmer.livestock = [selectedLivestock!.pk];
+    farmer.farmLand = [];
     GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
   }
 

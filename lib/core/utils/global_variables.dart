@@ -21,7 +21,7 @@ class GlobalVariables {
     "Uncle",
     "Aunty",
     "Son",
-    "Daughter"
+    "Daughter",
   ];
 
   static Set<String> selectedSyncItems = {};
@@ -35,27 +35,28 @@ class GlobalVariables {
   );
 
   var syncItemList = <String>[
-    lgaListEndpoint,
+    livestockListEndpoint,
     wardListEndpoint,
     weatherListEndpoint,
     marketListEndpoint,
     marketPriceListEndpoint,
     cropListEndpoint,
-    livestockListEndpoint,
+    lgaListEndpoint,
+    productListEndpoint,
     farmersListEndpoint,
     cooperativeListEndpoint,
     bankListEndpoint,
   ];
 
-  var syncMap = {
-    
-    lgaListEndpoint: KEY_LGA,
+  var syncMap = <String, String>{
+    livestockListEndpoint: KEY_LIVESTOCK,
     wardListEndpoint: KEY_WARD,
     weatherListEndpoint: KEY_WEATHER,
     marketListEndpoint: KEY_MARKET,
     marketPriceListEndpoint: KEY_MARKET_PRICE,
     cropListEndpoint: KEY_CROPS,
-    livestockListEndpoint: KEY_LIVESTOCK,
+    lgaListEndpoint: KEY_LGA,
+    productListEndpoint: KEY_PRODUCT,
     farmersListEndpoint: KEY_FARMER,
     cooperativeListEndpoint: KEY_COOPERATIVE,
     bankListEndpoint: KEY_BANK,

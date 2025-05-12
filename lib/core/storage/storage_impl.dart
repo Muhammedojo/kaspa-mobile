@@ -8,6 +8,7 @@ import '../data/model/livestock.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
+import '../data/model/product.dart';
 import '../data/model/user.dart';
 import '../data/model/ward.dart';
 import '../data/model/weather.dart';
@@ -90,6 +91,9 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<List<Ward>> getWard() => databaseStorage.getWard();
 
+   @override
+  Future<List<Product>> getProduct() => databaseStorage.getProduct();
+
   @override
   Future<List<Market>> getMarket() => databaseStorage.getMarket();
 
@@ -120,6 +124,10 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveLga(List<Lga> objectList) =>
       databaseStorage.saveLga(objectList);
+
+       @override
+  Future<void> saveProduct(List<Product> objectList) =>
+      databaseStorage.saveProduct(objectList);
 
   @override
   Future<void> saveLivestock(List<Livestock> objectList) =>

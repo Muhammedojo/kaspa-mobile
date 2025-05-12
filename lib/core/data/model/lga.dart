@@ -19,6 +19,8 @@ class Lga {
   Lga();
 
   factory Lga.fromJson(Map<String, dynamic> json) => _$LgaFromJson(json);
+
+    Map<String, dynamic> toJson() => _$LgaToJson(this);
 }
 
 Lga _$LgaFromJson(Map<String, dynamic> json) {
@@ -33,3 +35,14 @@ Lga _$LgaFromJson(Map<String, dynamic> json) {
 
   return obj;
 }
+
+Map<String, dynamic> _$LgaToJson(Lga obj) => <String, dynamic>{
+  KEY_NAME: obj.name,
+  KEY_LONGITUDE: obj.longitude,
+  KEY_LATITUDE: obj.latitude,
+  KEY_PK: obj.pk,
+  KEY_CREATED_AT: obj.created,
+  KEY_UPDATED_AT: obj.updated,
+};
+
+

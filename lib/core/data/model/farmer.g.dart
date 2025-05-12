@@ -22,68 +22,73 @@ const FarmerSchema = CollectionSchema(
       name: r'address',
       type: IsarType.string,
     ),
-    r'bvn': PropertySchema(
+    r'age': PropertySchema(
       id: 1,
+      name: r'age',
+      type: IsarType.string,
+    ),
+    r'bvn': PropertySchema(
+      id: 2,
       name: r'bvn',
       type: IsarType.string,
     ),
     r'crop': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'crop',
       type: IsarType.longList,
     ),
     r'firstName': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'firstName',
       type: IsarType.string,
     ),
     r'folioId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'folioId',
       type: IsarType.string,
     ),
     r'gender': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'gender',
       type: IsarType.string,
     ),
     r'lastName': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'lastName',
       type: IsarType.string,
     ),
     r'livestock': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'livestock',
       type: IsarType.longList,
     ),
     r'nin': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'nin',
       type: IsarType.string,
     ),
     r'otherNames': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'otherNames',
       type: IsarType.string,
     ),
     r'phoneNumber': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'pk',
       type: IsarType.long,
     ),
     r'registrationDate': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'registrationDate',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'title',
       type: IsarType.string,
     )
@@ -124,6 +129,12 @@ int _farmerEstimateSize(
   var bytesCount = offsets.last;
   {
     final value = object.address;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.age;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -210,19 +221,20 @@ void _farmerSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.address);
-  writer.writeString(offsets[1], object.bvn);
-  writer.writeLongList(offsets[2], object.crop);
-  writer.writeString(offsets[3], object.firstName);
-  writer.writeString(offsets[4], object.folioId);
-  writer.writeString(offsets[5], object.gender);
-  writer.writeString(offsets[6], object.lastName);
-  writer.writeLongList(offsets[7], object.livestock);
-  writer.writeString(offsets[8], object.nin);
-  writer.writeString(offsets[9], object.otherNames);
-  writer.writeString(offsets[10], object.phoneNumber);
-  writer.writeLong(offsets[11], object.pk);
-  writer.writeString(offsets[12], object.registrationDate);
-  writer.writeString(offsets[13], object.title);
+  writer.writeString(offsets[1], object.age);
+  writer.writeString(offsets[2], object.bvn);
+  writer.writeLongList(offsets[3], object.crop);
+  writer.writeString(offsets[4], object.firstName);
+  writer.writeString(offsets[5], object.folioId);
+  writer.writeString(offsets[6], object.gender);
+  writer.writeString(offsets[7], object.lastName);
+  writer.writeLongList(offsets[8], object.livestock);
+  writer.writeString(offsets[9], object.nin);
+  writer.writeString(offsets[10], object.otherNames);
+  writer.writeString(offsets[11], object.phoneNumber);
+  writer.writeLong(offsets[12], object.pk);
+  writer.writeString(offsets[13], object.registrationDate);
+  writer.writeString(offsets[14], object.title);
 }
 
 Farmer _farmerDeserialize(
@@ -233,20 +245,21 @@ Farmer _farmerDeserialize(
 ) {
   final object = Farmer();
   object.address = reader.readStringOrNull(offsets[0]);
-  object.bvn = reader.readStringOrNull(offsets[1]);
-  object.crop = reader.readLongList(offsets[2]);
-  object.firstName = reader.readStringOrNull(offsets[3]);
-  object.folioId = reader.readStringOrNull(offsets[4]);
-  object.gender = reader.readStringOrNull(offsets[5]);
+  object.age = reader.readStringOrNull(offsets[1]);
+  object.bvn = reader.readStringOrNull(offsets[2]);
+  object.crop = reader.readLongList(offsets[3]);
+  object.firstName = reader.readStringOrNull(offsets[4]);
+  object.folioId = reader.readStringOrNull(offsets[5]);
+  object.gender = reader.readStringOrNull(offsets[6]);
   object.id = id;
-  object.lastName = reader.readStringOrNull(offsets[6]);
-  object.livestock = reader.readLongList(offsets[7]);
-  object.nin = reader.readStringOrNull(offsets[8]);
-  object.otherNames = reader.readStringOrNull(offsets[9]);
-  object.phoneNumber = reader.readStringOrNull(offsets[10]);
-  object.pk = reader.readLong(offsets[11]);
-  object.registrationDate = reader.readStringOrNull(offsets[12]);
-  object.title = reader.readStringOrNull(offsets[13]);
+  object.lastName = reader.readStringOrNull(offsets[7]);
+  object.livestock = reader.readLongList(offsets[8]);
+  object.nin = reader.readStringOrNull(offsets[9]);
+  object.otherNames = reader.readStringOrNull(offsets[10]);
+  object.phoneNumber = reader.readStringOrNull(offsets[11]);
+  object.pk = reader.readLong(offsets[12]);
+  object.registrationDate = reader.readStringOrNull(offsets[13]);
+  object.title = reader.readStringOrNull(offsets[14]);
   return object;
 }
 
@@ -262,9 +275,9 @@ P _farmerDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readLongList(offset)) as P;
-    case 3:
       return (reader.readStringOrNull(offset)) as P;
+    case 3:
+      return (reader.readLongList(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
@@ -272,18 +285,20 @@ P _farmerDeserializeProp<P>(
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readLongList(offset)) as P;
-    case 8:
       return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readLongList(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
-      return (reader.readLong(offset)) as P;
-    case 12:
       return (reader.readStringOrNull(offset)) as P;
+    case 12:
+      return (reader.readLong(offset)) as P;
     case 13:
+      return (reader.readStringOrNull(offset)) as P;
+    case 14:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -669,6 +684,150 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'age',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'age',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'age',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'age',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'age',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'age',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'age',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'age',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'age',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'age',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'age',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'age',
         value: '',
       ));
     });
@@ -2581,6 +2740,18 @@ extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByAge() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'age', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByAgeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'age', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByBvn() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'bvn', Sort.asc);
@@ -2724,6 +2895,18 @@ extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
   QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAddressDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAge() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'age', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAgeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'age', Sort.desc);
     });
   }
 
@@ -2880,6 +3063,13 @@ extension FarmerQueryWhereDistinct on QueryBuilder<Farmer, Farmer, QDistinct> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByAge(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'age', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QDistinct> distinctByBvn(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2980,6 +3170,12 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
   QueryBuilder<Farmer, String?, QQueryOperations> addressProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'address');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> ageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'age');
     });
   }
 

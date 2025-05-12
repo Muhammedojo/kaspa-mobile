@@ -24,6 +24,7 @@ class Farm extends GeneralModel {
   Farm();
 
   factory Farm.fromJson(Map<String, dynamic> json) => _$FarmFromJson(json);
+    Map<String, dynamic> toJson() => _$FarmToJson(this);
 }
 
 Farm _$FarmFromJson(Map<String, dynamic> json) {
@@ -43,3 +44,18 @@ Farm _$FarmFromJson(Map<String, dynamic> json) {
 
   return obj;
 }
+
+Map<String, dynamic> _$FarmToJson(Farm obj) => <String, dynamic>{
+  KEY_ADDRESS: obj.address,
+  KEY_WARD: obj.ward?.toJson(),
+  KEY_SIZE_IN_HA: obj.sizeInHa,
+  KEY_OWNERSHIP_TYPE: obj.ownershipType,
+  KEY_POLYGON: obj.polygon,
+  KEY_LONGITUDE: obj.longitude,
+  KEY_LATITUDE: obj.latitude,
+  KEY_SOIL_PROFILE: obj.soilProfile,
+  KEY_SOIL_TYPE: obj.soilType,
+  KEY_CREATED_AT: obj.created,
+  KEY_UPDATED_AT: obj.updated,
+};
+

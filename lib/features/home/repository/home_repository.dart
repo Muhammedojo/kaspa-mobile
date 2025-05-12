@@ -4,6 +4,7 @@ import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
+import '../../../core/data/model/product.dart';
 import '../../../core/data/model/weather.dart';
 import '../../../core/storage/istorage.dart';
 import 'home_repository_contract.dart';
@@ -53,6 +54,12 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getMarketList(endpoint);
 
+    @override
+  Future<Either<Failure, ApiResponse<List<Product>>>> getProductList({
+    String? endpoint,
+  }) => apiServices.getProductList(endpoint);
+
+
   @override
   Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList({
     String? endpoint,
@@ -91,6 +98,10 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<Ward>> getWard() => localStorage.getWard();
 
+    @override
+  Future<List<Product>> getProduct() => localStorage.getProduct();
+
+
   @override
   Future<List<Market>> getMarket() => localStorage.getMarket();
   @override
@@ -117,6 +128,11 @@ class HomeRepository implements IHomeRepository {
       localStorage.saveLivestock(livestockList);
   @override
   Future<void> saveWard(List<Ward> wardList) => localStorage.saveWard(wardList);
+ 
+  @override
+  Future<void> saveProduct(List<Product> productList) => localStorage.saveProduct(productList);
+  
+ 
   @override
   Future<void> saveUser(List<User> usersList) =>
       localStorage.saveUser(usersList);

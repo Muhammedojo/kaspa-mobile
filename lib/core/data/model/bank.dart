@@ -16,6 +16,7 @@ class Bank extends GeneralModel {
   Bank();
 
   factory Bank.fromJson(Map<String, dynamic> json) => _$BankFromJson(json);
+    Map<String, dynamic> toJson() => _$BankToJson(this);
 }
 
 Bank _$BankFromJson(Map<String, dynamic> json) {
@@ -28,3 +29,12 @@ Bank _$BankFromJson(Map<String, dynamic> json) {
 
   return obj;
 }
+
+Map<String, dynamic> _$BankToJson(Bank obj) => <String, dynamic>{
+  KEY_NAME: obj.name,
+  KEY_PK: obj.pk,
+  KEY_CREATED_AT: obj.created,
+  KEY_UPDATED_AT: obj.updated,
+};
+
+

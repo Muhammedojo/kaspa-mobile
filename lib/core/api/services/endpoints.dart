@@ -13,6 +13,7 @@ const cooperativeListEndpoint = "cooperatives";
 const createCooperativeEndpoint = "cooperatives";
 const updateCooperativesEndpoint = "cooperatives/";
 const cropListEndpoint = "crops";
+const productListEndpoint = "products";
 const weatherListEndpoint = "weather-data";
 const marketListEndpoint = "markets";
 const marketPriceListEndpoint = "market-data";

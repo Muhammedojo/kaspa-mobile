@@ -20,6 +20,8 @@ class Ward extends GeneralModel {
   Ward();
 
   factory Ward.fromJson(Map<String, dynamic> json) => _$WardFromJson(json);
+
+    Map<String, dynamic> toJson() => _$WardToJson(this);
 }
 
 Ward _$WardFromJson(Map<String, dynamic> json) {
@@ -35,3 +37,13 @@ Ward _$WardFromJson(Map<String, dynamic> json) {
 
   return obj;
 }
+
+Map<String, dynamic> _$WardToJson(Ward obj) => <String, dynamic>{
+  KEY_NAME: obj.name,
+  KEY_LGA: obj.lga?.toJson(),
+  KEY_PK: obj.pk,
+  KEY_CREATED_AT: obj.created,
+  KEY_UPDATED_AT: obj.updated,
+};
+
+

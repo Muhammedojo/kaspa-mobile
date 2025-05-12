@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import '../../utils/const.dart';
+import 'product.dart';
 
  part 'livestock.g.dart';
 
@@ -12,6 +13,10 @@ class Livestock extends GeneralModel {
   late int pk = 0;
 
   String? name = "";
+  String? unit = "";
+
+  @ignore
+  Product? product;
   String? variety = "";
 
   Livestock();
@@ -24,6 +29,8 @@ Livestock _$CropFromJson(Map<String, dynamic> json) {
 
   obj.pk = json[KEY_PK];
   obj.name = json[KEY_NAME];
+  obj.unit = json[KEY_UNIT];
+  obj.product = Product.fromJson(json[KEY_PRODUCT]);
   obj.variety = json[KEY_LGA];
   obj.created = json[KEY_CREATED_AT];
   obj.updated = json[KEY_UPDATED_AT];

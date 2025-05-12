@@ -24,6 +24,17 @@ class Farmer {
   String? gender = "";
   String? nin = "";
   String? bvn = "";
+  String? accountName = "";
+  String? accountNumber = "";
+  String? nokName = "";
+  String? nokPhoneNumber = "";
+  String? nokAddress = "";
+  String? nokRelationship = "";
+  List<dynamic>? farmLand = [];
+
+  int? wardId = 0;
+  String? cooperativeCode = '';
+  int? bankId = 0;
   String? age = "";
   String? address = "";
   String? registrationDate = "";
@@ -65,6 +76,7 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   obj.lastName = json[KEY_LAST_NAME];
   obj.otherNames = json[KEY_OTHER_NAME];
   obj.title = json[KEY_TITLE];
+  obj.age = json[KEY_AGE];
   obj.gender = json[KEY_GENDER];
   obj.address = json[KEY_ADDRESS];
   obj.phoneNumber = json[KEY_PHONE_NUMBER];
@@ -96,7 +108,7 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   }
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
   obj.livestock = json[KEY_LIVESTOCK];
-  obj.crop = json[KEY_CROPS];
+  obj.crop = json[KEY_CROP];
 
   return obj;
 }
@@ -106,20 +118,25 @@ Map<String, dynamic> _$FarmerToJson(Farmer obj) => <String, dynamic>{
   KEY_FIRST_NAME: obj.firstName,
   KEY_LAST_NAME: obj.lastName,
   KEY_OTHER_NAME: obj.otherNames,
+  KEY_AGE: obj.age,
   KEY_TITLE: obj.title,
   KEY_GENDER: obj.gender,
   KEY_ADDRESS: obj.address,
   KEY_PHONE_NUMBER: obj.phoneNumber,
   KEY_NIN: obj.nin,
+  KEY_ACCOUNT_NAME: obj.accountName,
+  KEY_ACCOUNT_NUMBER: obj.accountNumber,
+  KEY_NOK_NAME: obj.nokName,
+  KEY_BANK_ID: obj.bankId,
+  KEY_NOK_PHONE_NUMBER: obj.nokPhoneNumber,
+  KEY_NOK_ADDRESS: obj.nokAddress,
+  KEY_NOK_RELATIONSHIP: obj.nokRelationship,
+  KEY_FARMS: obj.farmLand,
   KEY_BVN: obj.bvn,
   KEY_REGISTRATION_DATE: obj.registrationDate,
-  KEY_COOPERATIVE: obj.cooperative,
-  KEY_BANK_DETAILS: obj.bankDetails,
-  KEY_NOK_DETAILS: obj.nokDetails,
   KEY_LGA: obj.lga,
-  KEY_WARD: obj.ward,
-  KEY_FARMS: obj.farms,
-  KEY_LIVESTOCK: obj.livestock,
-  KEY_CROPS: obj.crop,
-  KEY_PK: obj.pk,
+  KEY_WARD_ID: obj.wardId,
+  KEY_LIVESTOCK_ID: obj.livestock,
+  KEY_CROP_ID: obj.crop,
+
 };

@@ -2,45 +2,44 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/api/api.dart';
-import '../../../../../core/data/model/lga.dart';
+import '../../../../../core/data/model/product.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../repository/home_repository_contract.dart';
 import '../api_request/api_request_bloc.dart';
 import '../api_request/api_request_state.dart';
 
-part 'lga_state.dart';
+part 'product_state.dart';
 
-class LgaCubit extends Cubit<LgaState> {
+class ProductCubit extends Cubit<ProductState> {
   final IHomeRepository repository;
   final LocalStorage databaseManager;
-  LgaCubit({required this.databaseManager, required this.repository})
-    : super(LgaLoading());
+  ProductCubit({required this.databaseManager, required this.repository})
+    : super(ProductLoading());
 
   int currentPulledCount = 0;
 
-  loadLga({String? url}) async {
-
+  loadProduct({String? url}) async {
     try {
-      emit(LgaLoading());
+      emit(ProductLoading());
       final response =
           url != null && url.isNotEmpty
-              ? await repository.getLgaList(endpoint: url)
-              : await repository.getLgaList();
+              ? await repository.getProductList(endpoint: url)
+              : await repository.getProductList();
 
       final state =
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
       if (state is ApiRequestStateCompleted) {
-        loadLgasFromDb();
+        loadProductsFromDb();
       } else {
         response.fold(
           (l) {
             GlobalVariables.rootNavigatorKey.currentContext!
                 .read<ApiRequestBloc>()
                 .add(ApiRequestCompleted());
-            loadLgasFromDb();
+            loadProductsFromDb();
           },
           (r) async {
             currentPulledCount += r.data?.length ?? 0;
@@ -53,15 +52,16 @@ class LgaCubit extends Cubit<LgaState> {
                 .read<ApiRequestBloc>()
                 .add(
                   ApiRequestLoading(
-                    identifier: lgaListEndpoint,
+                    identifier: productListEndpoint,
                     progress: progressPercent,
                   ),
                 );
-
-            saveLgasToDb(r.data ?? []);
+            saveProductsToDb(r.data ?? []);
             if (r.nextUrl != null && (r.nextUrl ?? "").isNotEmpty) {
-              loadLga(url: r.nextUrl);
+              
+              loadProduct(url: r.nextUrl);
             } else {
+              
               GlobalVariables.rootNavigatorKey.currentContext!
                   .read<ApiRequestBloc>()
                   .add(ApiRequestCompleted());
@@ -73,26 +73,27 @@ class LgaCubit extends Cubit<LgaState> {
       GlobalVariables.rootNavigatorKey.currentContext!
           .read<ApiRequestBloc>()
           .add(ApiRequestCompleted());
-      loadLgasFromDb();
+      loadProductsFromDb();
       debugPrint(e.toString());
     }
   }
 
-  loadLgasFromDb() async {
+  loadProductsFromDb() async {
     try {
-      final response = await repository.getLga();
-      emit(LgaLoaded(response));
+      final response = await repository.getProduct();
+      emit(ProductLoaded(response));
     } catch (e) {
-      emit(LgaNotLoaded());
+      emit(ProductNotLoaded());
     }
   }
 
-  saveLgasToDb(List<Lga> lgaList) async {
+  saveProductsToDb(List<Product> productList) async {
     try {
-      await repository.saveLga(lgaList);
-      loadLgasFromDb();
+      await repository.saveProduct(productList);
+      loadProductsFromDb();
     } on Error catch (e) {
       debugPrint(e.toString());
     }
   }
+
 }
