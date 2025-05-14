@@ -40,11 +40,13 @@ class Farmer {
   String? registrationDate = "";
   String? phoneNumber = "";
 
+  List<Map<String, dynamic>>? farms;
+
   @ignore
   Cooperative? cooperative;
 
-  @ignore
-  Farm? farms;
+  // @ignore
+  // Farm? farms;
 
   @ignore
   NokDetails? nokDetails;
@@ -100,9 +102,17 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   if (json.containsKey(KEY_WARD) && json[KEY_WARD] != null) {
     obj.ward = Ward.fromJson(json[KEY_WARD]);
   }
-  if (json.containsKey(KEY_WARD) && json[KEY_WARD] != null) {
-    obj.farms = Farm.fromJson(json[KEY_WARD]);
+
+  if (json.containsKey(KEY_FARMS) && json[KEY_FARMS] != null) {
+    var farmDataFromServer = json[KEY_FARMS] as List<dynamic>?;
+    if (farmDataFromServer != null) {
+      obj.farms =
+          farmDataFromServer
+              .map((farm) => Map<String, dynamic>.from(farm as Map))
+              .toList();
+    }
   }
+
   if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
     obj.cooperative = Cooperative.fromJson(json[KEY_COOPERATIVE]);
   }
@@ -131,12 +141,11 @@ Map<String, dynamic> _$FarmerToJson(Farmer obj) => <String, dynamic>{
   KEY_NOK_PHONE_NUMBER: obj.nokPhoneNumber,
   KEY_NOK_ADDRESS: obj.nokAddress,
   KEY_NOK_RELATIONSHIP: obj.nokRelationship,
-  KEY_FARMS: obj.farmLand,
+  KEY_FARMS: obj.farms,
   KEY_BVN: obj.bvn,
   KEY_REGISTRATION_DATE: obj.registrationDate,
   KEY_LGA: obj.lga,
   KEY_WARD_ID: obj.wardId,
   KEY_LIVESTOCK_ID: obj.livestock,
   KEY_CROP_ID: obj.crop,
-
 };

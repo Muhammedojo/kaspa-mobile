@@ -1,5 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
+// import 'package:geolocator/geolocator.dart';
 // import 'package:kaspa/core/utils/function.dart';
 // import '../data/model/farm_location.dart';
 // import '../data/model/polygon.dart';
@@ -50,9 +51,9 @@
 //     try {
 //       bool? serviceEnabled = await location?.serviceEnabled();
 //       if (_serviceEnabled != null && !serviceEnabled!) {
-//         WidgetHelper.showToastError(
+//         Utils.showToastError(
 //           context,
-//           "Location services are disabled, kindly enable it",
+//           "Location services are disabled, kindly enable it",'',(){}
 //         );
 //         return false;
 //       }
@@ -61,18 +62,18 @@
 //       if (permission == LocationPermission.denied) {
 //         permission = await Geolocator.requestPermission();
 //         if (permission == LocationPermission.denied) {
-//           WidgetHelper.showToastError(
+//           Utils.showToastError(
 //             context,
-//             "Location permissions are denied, kindly enable it",
+//             "Location permissions are denied, kindly enable it",'',(){}
 //           );
 //           return false;
 //         }
 //       }
 //       if (permission == LocationPermission.deniedForever) {
-//         WidgetHelper.showToastError(
-//           context,
-//           "Location permissions are permanently denied, kindly enable it",
-//         );
+//        Utils.showToastError(
+//             context,
+//             "Location permissions are denied, kindly enable it",'',(){}
+//           );
 //         return false;
 //       }
 

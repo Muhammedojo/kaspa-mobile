@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import '../../core/resources/images.dart';
 import '../../core/utils/extensions.dart';
 import '../component/error_dialog.dart';
 import '../component/sucess_dialog.dart';
 import '../component/warning_dialog.dart';
+import '../data/model/farm_coordinate.dart';
 import '../resources/vectors.dart';
 
 class Utils {
@@ -54,6 +56,13 @@ class Utils {
     );
   }
 
+    static bool isDuplicateCoordinate(List<Coordinates> existingCoordinates,
+      Coordinates newCoordinate) {
+    return existingCoordinates.any((coord) =>
+        coord.latitude == newCoordinate.latitude &&
+        coord.longitude == newCoordinate.longitude);
+  }
+
   static showToastWarning(
     BuildContext context,
     String message,
@@ -80,6 +89,14 @@ class Utils {
           (BuildContext context) =>
               ErrorDialogWidget(message: message, title: title, onTap: onTap),
     );
+  }
+
+   static hideLoading(BuildContext context) {
+    return context.loaderOverlay.hide();
+  }
+
+  static showLoading(BuildContext context) {
+    return context.loaderOverlay.show();
   }
 
   static showConfirmationDialog(

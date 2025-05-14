@@ -1,9 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:kaspa/core/navigation/navigator.dart';
 import 'package:kaspa/core/utils/global_variables.dart';
 import '../../../../core/data/model/farm_coordinate.dart';
 import '../../../../core/data/model/farm_location.dart';
@@ -65,11 +67,19 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   @override
   late TextEditingController nokAddressController;
   @override
+  late TextEditingController farmAddressController;
+  @override
   late TextEditingController nokRelationshipController;
   @override
   late TextEditingController bankController;
   @override
   late TextEditingController ageController;
+
+  @override
+  TextEditingController? lat = TextEditingController();
+
+  @override
+  TextEditingController? long = TextEditingController();
 
   @override
   late bool hasSubmitted = false;
@@ -147,6 +157,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     addressController = TextEditingController();
     nokPhoneNumberController = TextEditingController();
     nokAddressController = TextEditingController();
+    farmAddressController = TextEditingController();
     nokRelationshipController = TextEditingController();
     bankController = TextEditingController();
   }
@@ -162,6 +173,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     nokNameController.dispose();
     nokPhoneNumberController.dispose();
     nokAddressController.dispose();
+    farmAddressController.dispose();
     nokRelationshipController.dispose();
     bankController.dispose();
     addressController.dispose();
@@ -188,6 +200,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       nokNameController.clear();
       nokPhoneNumberController.clear();
       nokAddressController.clear();
+      farmAddressController.clear();
       ageController.clear();
       nokRelationshipController.clear();
       bankController.clear();
@@ -232,6 +245,12 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     }
   }
 
+  setLocation() async {
+    permission = await Geolocator.checkPermission();
+  }
+
+  LocationPermission? permission;
+
   @override
   back() {
     if (currentStep > 0) {
@@ -275,6 +294,18 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
           currentStep += 1;
         });
       } else if (currentStep == 3 && formKey4.currentState!.validate()) {
+        if (currentFarmLocationCoordinates.isNotEmpty &&
+            currentFarmLocationCoordinates.length < 4) {
+          Utils.showToastError(
+            context,
+            "Minimum of 4 farm points are required if you start adding them.",
+            '',
+            () {
+              Navigator.pop(context);
+            },
+          );
+          return;
+        }
         setState(() {
           currentStep += 1;
         });
@@ -292,6 +323,11 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       selectedLga = newValue!;
     });
   }
+
+  late bool _isFetchingLocation = false;
+
+  @override
+  bool get isFetchingLocation => _isFetchingLocation;
 
   @override
   void onSelectLivestock(Product? newValue) {
@@ -323,146 +359,116 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   }
 
   @override
-  void onDeleteFarmLocationCoordinates(
-    int coordinatePosition,
-    StateSetter setStateModal,
-  ) {
-    setStateModal(() {
-      currentFarmLocationCoordinates.removeAt(coordinatePosition);
-      // calculateLandSize();
-    });
+  void onDeleteFarmLocationCoordinates(int index) {
+    if (currentFarmLocationCoordinates.isNotEmpty) {
+      setState(() {
+        currentFarmLocationCoordinates.removeLast();
+      });
+    }
   }
 
   @override
   void onAddFarmLocationCoordinates(StateSetter setStateModal) async {
-    // Position position = await LocationManager().getCurrentPosition();
-    setStateModal(() {
-      // currentFarmLocationCoordinates.add(FarmCoordinates(
-      //     latitude: position.latitude, longitude: position.longitude)
-      //     );
-      currentFarmLocationCoordinates.reversed.toList();
-      //calculateLandSize();
-    });
-  }
-
-  @override
-  void onSaveFarmLocation({int? selectedFarmLocationIndex}) {
-    if (currentFarmLocationCoordinates.isEmpty) {
-      Utils.showToastError(context, "farm_points_are_required", '', () {});
-      return;
-    }
-
-    if (currentFarmLocationCoordinates.length < 4) {
+    if (lat!.text.isNotEmpty && long!.text.isNotEmpty) {
+      setStateModal(() {
+        currentFarmLocationCoordinates.add(
+          Coordinates(
+            latitude: double.parse(lat!.text),
+            longitude: double.parse(long!.text),
+          ),
+        );
+        lat!.clear();
+        long!.clear();
+      });
+    } else {
       Utils.showToastError(
         context,
-        "minimum_of_4_farm_points_are_required",
         '',
+        'Kindly get your current point ',
         () {},
       );
-      return;
     }
-
-    var location = FarmLocation();
-    // location.id = farmLocations.length + 1;
-    // location.farmSize = "$estimatedHectaresOfLand";
-    // location.farmCoordinates!.clear();
-    // location.farmCoordinates!.addAll(currentFarmLocationCoordinates);
-
-    if (currentFarmLocationCoordinates.isNotEmpty) {
-      if (location.hasDuplicateCoordinates()) {
-        Utils.showToastError(
-          context,
-          "there_are_duplicate_points_captured_you_need_to_move_to_the_farm_points_to_recapture",
-          '',
-          () {},
-        );
-        return;
-      }
-    }
-    Navigator.pop(context);
-
-    if (selectedFarmLocationIndex != null) {
-      farmLocations[selectedFarmLocationIndex] = location;
-    } else {
-      farmLocations.add(location);
-    }
-    currentFarmLocationCoordinates.clear();
-    //_convertFarmLocationsToPolygons();
-    //farmer.farms = farmLocations;
   }
 
-    // _convertFarmLocationsToPolygons() {
-    // farmPolygonsBasedOnFarmLocations.clear();
-    // int counter = 0;
-    // for (var farmLocation in farmLocations) {
-    //   List<LatLng> farmPoints = [];
-
-    //   for (var farmCoordinate in farmLocation.farmCoordinates!) {
-    //     var point = LatLng(farmCoordinate.latitude!, farmCoordinate.longitude!);
-    //     farmPoints.add(point);
-    //   }
-    //   final PolygonId polygonId =
-    //       PolygonId('${farmLocation.farmSize}_hectares');
-    //   farmPolygonsBasedOnFarmLocations.add(
-    //     Polygon(
-    //         polygonId: polygonId,
-    //         points: farmPoints,
-    //         strokeColor: Colors.orange,
-    //         strokeWidth: 4,
-    //         fillColor: Colors.green,
-    //         visible: true,
-    //         consumeTapEvents: true,
-    //         onTap: () {
-    //           _showPopupMenu(counter);
-    //         }),
-    //   );
-    //   counter++;
-    // }
-  //   setState(() {});
-  // }
 
   @override
-  void onAddFarmFarmLocation({int? selectedFarmLocationIndex}) {
-    if (selectedFarmLocationIndex != null) {
-      currentFarmLocation = farmLocations[selectedFarmLocationIndex];
-      // currentFarmLocationCoordinates = currentFarmLocation.!;
-    } else {
-      currentFarmLocation = FarmLocation();
+  void onAddFarmLocation(BuildContext context) async {
+    if (_isFetchingLocation) return;
+
+    setState(() {
+      _isFetchingLocation = true;
+    });
+
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
     }
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return FarmLocationModal(
-              onGetCoordinates: (latitude, longitude, position) {
-                onGetFarmLocationCoordinates(
-                  latitude,
-                  longitude,
-                  position,
-                  setState,
-                );
-              },
-              onDelete: (position) {
-                onDeleteFarmLocationCoordinates(position, setState);
-              },
-              onAddPoint: () {
-                onAddFarmLocationCoordinates(setState);
-              },
-              currentFarmLocationCoordinates: currentFarmLocationCoordinates,
-              hectares: estimatedHectaresOfLand,
-              onSavePoints: () {
-                onSaveFarmLocation(
-                  selectedFarmLocationIndex: selectedFarmLocationIndex,
-                );
-              },
+
+    try {
+      if (permission == LocationPermission.whileInUse ||
+          permission == LocationPermission.always) {
+        try {
+          Position position = await Geolocator.getCurrentPosition(
+            locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
+            timeLimit: const Duration(seconds: 15),
+          );
+
+          // Consider re-enabling duplicate check if needed
+          // final newCoordinate = Coordinates(latitude: position.latitude, longitude: position.longitude);
+          // if (Utils.isDuplicateCoordinate(currentFarmLocationCoordinates, newCoordinate)) {
+          //   if (mounted) {
+          //     Utils.showToastError(
+          //       context, // Use passed context
+          //       'Multiple Coordinate Detected',
+          //       'close',
+          //       () {},
+          //     );
+          //   }
+          //   return;
+          // }
+
+          if (mounted) {
+            setState(() {
+              lat!.text = position.latitude.toString();
+              long!.text = position.longitude.toString();
+              currentFarmLocationCoordinates.add(
+                Coordinates(
+                  latitude: position.latitude,
+                  longitude: position.longitude,
+                ),
+              );
+            });
+          }
+        } catch (e) {
+          debugPrint("Error fetching location: ${e.toString()}");
+          if (mounted) {
+            Utils.showToastError(
+              this.context,
+              "Error fetching location: ${e.toString()}",
+              '',
+              () {},
             );
-          },
-        );
-      },
-    );
+          }
+        }
+      } else {
+        if (mounted) {
+          Utils.showToastError(
+            this.context,
+            "Location permission is required to add farm points.",
+            '',
+            () {},
+          );
+        }
+        debugPrint("Location permission not granted: $permission");
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    }
   }
 
   @override
@@ -519,9 +525,55 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     farmer.registrationDate = formattedToday.toString();
     farmer.crop = [selectedCrops!.pk];
     farmer.livestock = [selectedLivestock!.pk];
-    farmer.farmLand = [];
+   // farmer.farmLand = [];
+
+ List<Map<String, dynamic>> farmsPayload = [];
+    if (currentFarmLocationCoordinates.isNotEmpty) {
+      // Ensure there are enough points for a polygon (as per your existing validation)
+      // if (currentFarmLocationCoordinates.length < 4) {
+      //   Utils.showToastError(
+      //     context, // Assuming context is available here
+      //     "Minimum of 4 farm points are required to save farm details.",
+      //     '',
+      //     () {},
+      //   );
+        // Potentially return or handle this error appropriately
+        // For now, we'll proceed but the polygon might be invalid for the backend
+
+     // }
+
+      List<List<double>> polygonRing = currentFarmLocationCoordinates
+          .map((coord) => [coord.longitude!, coord.latitude!])
+          .toList();
+
+      // Ensure the polygon is closed (first and last points are the same)
+      if (polygonRing.isNotEmpty &&
+          (polygonRing.first.first != polygonRing.last.first ||
+              polygonRing.first.last != polygonRing.last.last)) {
+        polygonRing.add(List.from(polygonRing.first));
+      }
+
+      Map<String, dynamic> farmData = {
+        "address": farmAddressController.text, // Assuming farmer's address is the farm address
+        "ward_id": selectedWard?.pk, // Assuming farm is in the farmer's ward
+        "size_in_ha": estimatedHectaresOfLand, // Assuming this is for the current farm
+        "ownership_type": "Owned", // Placeholder - this needs to be captured if required
+        "longitude": currentFarmLocationCoordinates.first.longitude, // Representative point
+        "latitude": currentFarmLocationCoordinates.first.latitude,   // Representative point
+        "polygon": {
+          "coordinates": [polygonRing] // GeoJSON format: Array of rings
+        }
+      };
+      farmsPayload.add(farmData);
+    }
+
+    // Assuming your Farmer model has a field `farms` or `farmLand` that maps to "farms" in JSON
+    farmer.farms = farmsPayload; // Or farmer.farmLand = farmsPayload;
+    // --- End of Add Farm Coordinates Data ---
+
+
+
     GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
-    
   }
 
   @override

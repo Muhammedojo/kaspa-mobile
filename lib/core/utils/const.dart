@@ -442,6 +442,7 @@ const KEY_LGA_ID = "lga_id";
 const KEY_CROP_ID = "crop_ids";
 const KEY_LIVESTOCK_ID = "livestock_ids";
 const KEY_WARD_ID = "ward_id";
+const KEY_MARKET_ID = "market_id";
 const KEY_UPDATED_LGA_OF_RESIDENCE = "updated_lga_of_residence";
 const KEY_UPDATED_WARD_OF_RESIDENCE = "updated_ward_of_residence";
 const KEY_UPDATED_IRRIGATION_SITE = "updated_irrigation_site";

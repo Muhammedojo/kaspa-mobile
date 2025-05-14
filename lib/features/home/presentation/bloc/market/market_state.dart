@@ -23,10 +23,15 @@ class MarketLoaded extends MarketState {
   String toString() => 'MarketLoaded { Market: $marketList }';
 }
 
-class MarketNotLoaded extends MarketState {}
+class CreateMarketSuccess extends MarketState {}
+
+class MarketNotLoaded extends MarketState {
+
+
+}
 
 class MarketFailure extends MarketState {
-  final String error;
+  final Failure error;
 
   const MarketFailure(this.error);
 

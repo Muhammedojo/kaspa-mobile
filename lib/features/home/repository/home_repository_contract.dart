@@ -62,6 +62,9 @@ abstract class IHomeRepository {
 
   Future<List<MarketData>> getMarketPrice();
 
+    Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(Market data);
+
+
   //MARKET CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList({
     String? endpoint,
@@ -71,7 +74,9 @@ abstract class IHomeRepository {
 
   Future<List<Market>> getMarket();
 
-    //PRODUCT CUBIT CALLS
+  Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
+
+  //PRODUCT CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Product>>>> getProductList({
     String? endpoint,
   });

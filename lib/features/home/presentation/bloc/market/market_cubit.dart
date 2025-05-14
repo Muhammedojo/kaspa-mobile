@@ -1,8 +1,10 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../../../../../core/api/api.dart';
+import '../../../../../core/api/exceptions/api_exception.dart';
+import '../../../../../core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/data/model/market.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
@@ -32,7 +34,7 @@ class MarketCubit extends Cubit<MarketState> {
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
-            if (state is ApiRequestStateCompleted) {
+      if (state is ApiRequestStateCompleted) {
         loadMarketsFromDb();
       } else {
         response.fold(
@@ -78,7 +80,7 @@ class MarketCubit extends Cubit<MarketState> {
     }
   }
 
-    loadMarketsFromDb() async {
+  loadMarketsFromDb() async {
     try {
       final response = await repository.getMarket();
       emit(MarketLoaded(response));
@@ -93,6 +95,36 @@ class MarketCubit extends Cubit<MarketState> {
       loadMarketsFromDb();
     } on Error catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  createMarket(Market data) async {
+    try {
+      emit(MarketLoading());
+      final response = await repository.createMarket(data);
+      response.fold((l) => emit(MarketFailure(l)), (r) async {
+        GetIt.I.get<ApiRequestBloc>().add(
+          ApiRequestTriggered(apiRequestList: [marketListEndpoint]),
+        );
+        emit(MarketLoaded([]));
+      });
+    } on Error catch (e) {
+      emit(MarketFailure(UnknownFailure(message: e.toString())));
+    }
+  }
+
+  addMarketPrice(Market data) async {
+    try {
+      emit(MarketLoading());
+      final response = await repository.createMarketPrice(data);
+      response.fold((l) => emit(MarketFailure(l)), (r) async {
+        GetIt.I.get<ApiRequestBloc>().add(
+          ApiRequestTriggered(apiRequestList: [marketPriceListEndpoint]),
+        );
+        emit(CreateMarketSuccess());
+      });
+    } on Error catch (e) {
+      emit(MarketFailure(UnknownFailure(message: e.toString())));
     }
   }
 }

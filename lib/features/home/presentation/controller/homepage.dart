@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kaspa/core/navigation/navigator.dart';
+import '../../../../core/navigation/navigator.dart';
+import 'package:kaspa/features/more/presentation/controller/create_market.dart';
+import 'package:kaspa/features/more/presentation/controller/create_market_price.dart';
 import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/storage/istorage.dart';
 import '../../../auth/presentation/bloc/user/user_cubit.dart';
@@ -68,12 +70,12 @@ class _HomePageScreenState extends State<HomePageScreen>
 
   @override
   void farmVisit() {
-    pushTo( RegisterFarmerScreen(), context);
+    pushTo( CreateMarketScreen(), context);
   }
 
   @override
   void priceUpdate() {
-    pushTo( RegisterFarmerScreen(), context);
+    pushTo( CreateMarketPriceScreen(), context);
   }
 
   @override

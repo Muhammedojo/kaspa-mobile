@@ -37,7 +37,7 @@ abstract class ApiServices {
     String? endpoint,
   );
 
-   Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList(
+  Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList(
     String? endpoint,
   );
 
@@ -55,7 +55,7 @@ abstract class ApiServices {
     String? endpoint,
   );
 
- Future<Either<Failure, ApiResponse<List<Product>>>> getProductList(
+  Future<Either<Failure, ApiResponse<List<Product>>>> getProductList(
     String? endpoint,
   );
 
@@ -71,5 +71,9 @@ abstract class ApiServices {
     String? endpoint,
   );
 
-   Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data);
+  Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data);
+
+  Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
+
+  Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(Market data);
 }

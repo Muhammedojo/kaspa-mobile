@@ -337,6 +337,28 @@ class ApiServicesImpl implements ApiServices {
   }
 
   @override
+  Future<Either<Failure, ApiResponse<Market>>> createMarket(
+      Market data) {
+    return apiClient.request<Market>(
+      createMarketEndpoint,
+      MethodType.post,
+      (data, {String? realUri}) => Market.fromJson(data),
+      data.toJson(),
+    );
+  }
+
+   @override
+  Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(
+      Market data) {
+    return apiClient.request<Market>(
+      logMarketPriceEndpoint,
+      MethodType.post,
+      (data, {String? realUri}) => Market.fromJson(data),
+      data.toJson(),
+    );
+  }
+
+  @override
   Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async {
     return apiClient.request<Farmer>(
       registerFarmerEndpoint,
@@ -360,13 +382,14 @@ class ApiServicesImpl implements ApiServices {
         KEY_NOK_PHONE_NUMBER: data.nokPhoneNumber,
         KEY_NOK_ADDRESS: data.nokAddress,
         KEY_NOK_RELATIONSHIP: data.nokRelationship,
-        KEY_FARMS: data.farmLand,
+        KEY_FARMS: data.farms,
         KEY_BVN: data.bvn,
         KEY_REGISTRATION_DATE: data.registrationDate,
         KEY_LGA: data.lga,
         KEY_WARD_ID: data.wardId,
         KEY_LIVESTOCK_ID: data.livestock,
         KEY_CROP_ID: data.crop,
+       
       },
     );
   }

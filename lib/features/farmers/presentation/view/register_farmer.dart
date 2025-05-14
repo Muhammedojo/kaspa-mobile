@@ -16,6 +16,7 @@ import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/product/cubit.dart';
 import '../contract/register_farmer.dart';
+import '../widget/points.dart';
 
 class RegisterFarmerView extends StatelessWidget
     implements RegisterFarmerViewContract {
@@ -27,7 +28,7 @@ class RegisterFarmerView extends StatelessWidget
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      body:_body(context)
+      body: _body(context),
     );
   }
 
@@ -88,6 +89,7 @@ class RegisterFarmerView extends StatelessWidget
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                    
                           'name'.toText(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -715,7 +717,7 @@ class RegisterFarmerView extends StatelessWidget
                           Padding(
                             padding: REdgeInsets.only(top: 5.0),
                             child: TextFormField(
-                              controller: controller.bvnController,
+                              controller: controller.farmAddressController,
                               style: Styles.x14dp_4A4A4A(14.0.sp),
                               maxLines: 1,
                               validator: ValidationBuilder().required().build(),
@@ -783,7 +785,6 @@ class RegisterFarmerView extends StatelessWidget
                           16.verticalSpace,
                           'crop'.toText(
                             fontSize: 14,
-
                             fontWeight: FontWeight.w600,
                           ),
                           Padding(
@@ -828,116 +829,121 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
-                          25.verticalSpace,
-                          controller.farmLocations.isEmpty
-                              ? InkWell(
-                                onTap: () {
-                                  controller.onAddFarmFarmLocation();
-                                },
-                                child: DottedBorder(
-                                  color: const Color(0xff1D925D),
-                                  radius: Radius.circular(8.r),
-                                  strokeWidth: 2,
-                                  dashPattern: const [10, 6],
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primaryGreen.withAlpha(
-                                        (0.1 * 255).toInt(),
+
+                          16.verticalSpace,
+                                Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              'farm'.toText(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+
+                              if (controller
+                                  .currentFarmLocationCoordinates
+                                  .isNotEmpty)
+                                controller.isFetchingLocation
+                                    ? Padding(
+                                      padding: REdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        width: 24.sp,
+                                        height: 24.sp,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.0,
+                                          color: AppColors.colorPrimary,
+                                        ),
                                       ),
-                                      borderRadius: BorderRadius.circular(8.r),
+                                    )
+                                    : InkWell(
+                                      onTap:
+                                          controller.isFetchingLocation
+                                              ? null 
+                                              : () => controller
+                                                  .onAddFarmLocation(context),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: AppColors.colorPrimary,
+                                      ),
                                     ),
-                                    child: Padding(
-                                      padding: REdgeInsets.symmetric(
-                                        vertical: 25.0,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/vectors/location.svg',
-                                            height: 50.sp,
-                                            width: 50.sp,
+                            ],
+                          ),
+                          5.verticalSpace,
+                        controller.currentFarmLocationCoordinates.isEmpty
+                              ? controller.isFetchingLocation
+                                  ? Center(
+                                      child: Padding(
+                                      padding: REdgeInsets.symmetric(vertical: 50.0),
+                                      child: CircularProgressIndicator(color: AppColors.colorPrimary),
+                                    ))
+                                  : InkWell(
+                                      onTap: controller.isFetchingLocation
+                                          ? null 
+                                          : () => controller.onAddFarmLocation(context),
+                                      child: DottedBorder(
+                                        color: AppColors.primaryGreen,
+                                        radius: Radius.circular(8.r),
+                                        strokeWidth: 2,
+                                        dashPattern: const [10, 6],
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryGreen.withAlpha(
+                                              (0.1 * 255).toInt(),
+                                            ),
+                                            borderRadius: BorderRadius.circular(8.r),
                                           ),
-                                          Center(
-                                            child: 'Add Farm'.toText(
-                                              fontSize: 14,
-                                              translate: false,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.colorPrimary,
+                                          child: Padding(
+                                            padding: REdgeInsets.symmetric(
+                                              vertical: 20.0,
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  'assets/vectors/location.svg',
+                                                  height: 50.sp,
+                                                  width: 50.sp,
+                                                ),
+                                                Center(
+                                                  child: 'Add Farm'.toText(
+                                                    fontSize: 14,
+                                                    translate: false,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.colorPrimary,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              : ListView.builder(
-                                itemCount: controller.farmLocations.length,
+                                    ) : ListView.builder(
+                                itemCount:
+                                    controller
+                                        .currentFarmLocationCoordinates
+                                        .length,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xffF5F6F7),
-                                        ),
-                                        child: Padding(
-                                          padding: REdgeInsets.symmetric(
-                                            horizontal: 12.0,
-                                            vertical: 14.0,
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/vectors/addFarmer.svg',
-                                                height: 36.w,
-                                                width: 36.w,
-                                                fit: BoxFit.scaleDown,
-                                              ),
-                                              SizedBox(width: 9.w),
-                                              Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  'Farm Location Added'.toText(
-                                                    translate: false,
-                                                    fontSize: 14,
-                                                  ),
-                                                ],
-                                              ),
-                                              const Spacer(),
-                                              Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      controller
-                                                          .removeCoordinatePoint(
-                                                            index,
-                                                          );
-                                                    },
-                                                    child: SvgPicture.asset(
-                                                      'assets/images/cancel.svg',
-                                                      height: 24.w,
-                                                      width: 24.w,
-                                                      fit: BoxFit.scaleDown,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 10.h),
-                                    ],
+                                  final coordinate =
+                                      controller
+                                          .currentFarmLocationCoordinates[index];
+                                  return Points(
+                                    lat: coordinate.latitude!.toStringAsFixed(
+                                      6,
+                                    ),
+                                    long: coordinate.longitude!.toStringAsFixed(
+                                      6,
+                                    ),
+                                    delete: () {
+                                      controller
+                                          .onDeleteFarmLocationCoordinates(
+                                            index,
+                                          );
+                                    },
+                                    showIcon: true,
+                                    point: index + 1,
                                   );
                                 },
                               ),
+                          16.verticalSpace,
                         ],
                       ),
                     ),
@@ -957,7 +963,7 @@ class RegisterFarmerView extends StatelessWidget
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           DottedBorder(
-                            color: const Color(0xff1D925D),
+                            color: AppColors.primaryGreen,
                             radius: Radius.circular(8.r),
                             strokeWidth: 2,
                             dashPattern: const [10, 6],

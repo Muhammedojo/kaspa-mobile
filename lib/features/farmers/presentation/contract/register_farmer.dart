@@ -25,7 +25,8 @@ abstract class RegisterFarmerControllerContract {
   void onSelectNokRelationship(String? newValue);
   void onSelectBank(Bank newValue);
   void removeCoordinatePoint(int position);
-  void onAddFarmFarmLocation({int? selectedFarmLocationIndex});
+  void onAddFarmLocation(BuildContext context);
+  bool get isFetchingLocation;
   void onGetFarmLocationCoordinates(
     double latitude,
     double longitude,
@@ -33,11 +34,7 @@ abstract class RegisterFarmerControllerContract {
     StateSetter setStateModal,
   );
   void onAddFarmLocationCoordinates(StateSetter setStateModal);
-  void onDeleteFarmLocationCoordinates(
-    int coordinatePosition,
-    StateSetter setStateModal,
-  );
-  void onSaveFarmLocation({int? selectedFarmLocationIndex});
+  void onDeleteFarmLocationCoordinates(int index);
   Set<Polygon> farmPolygonsBasedOnFarmLocations = HashSet<Polygon>();
 
   late TextEditingController firstNameController;
@@ -52,10 +49,12 @@ abstract class RegisterFarmerControllerContract {
   late TextEditingController nokNameController;
   late TextEditingController nokPhoneNumberController;
   late TextEditingController nokAddressController;
+  late TextEditingController farmAddressController;
   late TextEditingController nokRelationshipController;
   late TextEditingController bankController;
   late TextEditingController ageController;
   late TextEditingController imageController;
+  TextEditingController? lat, long;
 
   late bool hasSubmitted;
   late double estimatedHectaresOfLand;

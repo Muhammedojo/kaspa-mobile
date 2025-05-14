@@ -18,7 +18,7 @@ subprojects {
             plugins.hasPlugin("com.android.library")) {
             // In Kotlin DSL, we need to use extensions for android configuration
             configure<com.android.build.gradle.BaseExtension> {
-                compileSdkVersion(34)
+                compileSdkVersion(35)
                 buildToolsVersion = "34.0.0"
             }
         }

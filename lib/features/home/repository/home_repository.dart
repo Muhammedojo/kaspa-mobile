@@ -27,7 +27,15 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getCropList(endpoint);
 
- 
+  @override
+  Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data) =>
+      apiServices.createMarket(data);
+
+       @override
+  Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(Market data) =>
+      apiServices.createMarketPrice(data);
+
+
 
   @override
   Future<Either<Failure, ApiResponse<List<Cooperative>>>> getCooperativeList({
