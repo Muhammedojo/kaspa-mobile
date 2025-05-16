@@ -41,9 +41,11 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageBar(onTap: () {
-           //   pushTo(FarmerRegistrationWithStepper(), context);
-            }),
+            PageBar(
+              onTap: () {
+                //   pushTo(FarmerRegistrationWithStepper(), context);
+              },
+            ),
             24.verticalSpace,
             Expanded(
               child: Padding(
@@ -55,20 +57,25 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
                     SearchBarWidget(
                       hint: 'search_for_a_farmer',
                       onTextChanged: (text) {
-                        controller.updateSearchStatus(text != null && text.isNotEmpty);
-                        if (text != null && text.isNotEmpty) {
-                          controller.searchFarmer(text);
-                        }
+                        final String currentQuery = text ?? "";
+                        final bool isQueryPresent = currentQuery.isNotEmpty;
+
+                        controller.updateSearchStatus(isQueryPresent);
+                        controller.searchFarmer(currentQuery);
                       },
                       searchController: controller.searchController,
-                      onClearSearch: () => controller.onClearSearch(), isSearching: controller.isSearching,
+                      onClearSearch: () => controller.onClearSearch(),
+                      isSearching: controller.isSearching,
                     ),
-                     16.verticalSpace,
+                    16.verticalSpace,
                     Expanded(
                       child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
                         builder: (context, state) {
                           if (state is FarmerListLoading) {
-                            return ErrorWidgets(title: "empty".tr(), message: '');
+                            return ErrorWidgets(
+                              title: "empty".tr(),
+                              message: '',
+                            );
                           }
                           if (state is FarmerListLoaded) {
                             return state.dataList.isEmpty

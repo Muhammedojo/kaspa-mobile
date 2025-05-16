@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
+import '../data/model/dashboard_data.dart';
 import '../data/model/forgot_password.dart';
 import '../data/model/insight.dart';
 import '../data/model/login.dart';
@@ -117,6 +118,32 @@ class ApiServicesImpl implements ApiServices {
       null,
       headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
     );
+  }
+
+    @override
+  Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<DashboardData>>(
+        endpoint ?? dashboardFarmerEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.dashboard = currentDateTime();
+          lastRequestTime.dashboardUrl = realUri;
+
+                   final dashboard = DashboardData.fromJson(data as Map<String, dynamic>);
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return [dashboard];
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
   }
 
   @override

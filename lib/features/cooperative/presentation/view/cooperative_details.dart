@@ -71,7 +71,7 @@ class CooperativeDetailsView extends StatelessWidget
                           color: AppColors.accentText,
                           fontWeight: FontWeight.w600,
                         ),
-                        'Approved'.toText(
+                        (controller.cooperative.head ?? 'Not Available').toText(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           translate: false,
@@ -87,7 +87,7 @@ class CooperativeDetailsView extends StatelessWidget
                           color: AppColors.accentText,
                           fontWeight: FontWeight.w600,
                         ),
-                        '${controller.cooperative.secretary}'.toText(
+                        (controller.cooperative.secretary ?? 'Not Available').toText(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           translate: false,
@@ -103,7 +103,7 @@ class CooperativeDetailsView extends StatelessWidget
                           color: AppColors.accentText,
                           fontWeight: FontWeight.w600,
                         ),
-                        '${controller.cooperative.lga?.name}'.toText(
+                        (controller.cooperative.lga?.name ?? 'Not Available').toText(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           translate: false,
@@ -119,7 +119,7 @@ class CooperativeDetailsView extends StatelessWidget
                           color: AppColors.accentText,
                           fontWeight: FontWeight.w600,
                         ),
-                        '${controller.cooperative.ward?.name}'.toText(
+                        (controller.cooperative.ward?.name ?? 'Not Available').toText(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           translate: false,
@@ -135,7 +135,7 @@ class CooperativeDetailsView extends StatelessWidget
                           color: AppColors.accentText,
                           fontWeight: FontWeight.w600,
                         ),
-                        '${controller.cooperative.dateOfIncorporation}'.toText(
+                        (controller.cooperative.dateOfIncorporation ?? 'Not Available').toText(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           translate: false,
@@ -151,7 +151,7 @@ class CooperativeDetailsView extends StatelessWidget
                           color: AppColors.accentText,
                           fontWeight: FontWeight.w600,
                         ),
-                        '${controller.cooperative.certificate?.fileName}'
+                        (controller.cooperative.certificate?.fileName ?? 'Not Available')
                             .toText(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,

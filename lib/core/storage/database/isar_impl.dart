@@ -8,6 +8,7 @@ import 'package:kaspa/core/data/model/market.dart';
 import 'package:kaspa/core/data/model/ward.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../data/model/cooperative.dart';
+import '../../data/model/dashboard_data.dart';
 import '../../data/model/insight.dart';
 import '../../data/model/market_data.dart';
 import '../../data/model/product.dart';
@@ -32,6 +33,7 @@ class IsarImpl implements DatabaseStorage {
           BankSchema,
           CropSchema,
           CooperativeSchema,
+          DashboardDataSchema,
           FarmerSchema,
           LgaSchema,
           LivestockSchema,
@@ -102,7 +104,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-   @override
+  @override
   Future<List<Farmer>> getFarmer() {
     if (!_isar.isOpen) {
       return Future.value(<Farmer>[]);
@@ -130,7 +132,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-   @override
+  @override
   Future<List<Product>> getProduct() {
     if (!_isar.isOpen) {
       return Future.value(<Product>[]);
@@ -214,17 +216,31 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-    @override
+  @override
   Future<List<Insight>> getInsight() {
     if (!_isar.isOpen) {
       return Future.value(<Insight>[]);
     }
     try {
-      final wards = _isar.insights.where().findAllSync();
-      return Future.value(wards);
+      final insights = _isar.insights.where().findAllSync();
+      return Future.value(insights);
     } catch (e) {
       debugPrint("Error retrieving insights: $e");
       return Future.value(<Insight>[]);
+    }
+  }
+
+  @override
+  Future<List<DashboardData>> getDashboard() {
+    if (!_isar.isOpen) {
+      return Future.value(<DashboardData>[]);
+    }
+    try {
+      final dashboards = _isar.dashboardDatas.where().findAllSync();
+      return Future.value(dashboards);
+    } catch (e) {
+      debugPrint("Error retrieving dashboards: $e");
+      return Future.value(<DashboardData>[]);
     }
   }
 
@@ -278,7 +294,19 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-   @override
+  @override
+  Future<void> saveDashboard(List<DashboardData> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.dashboardDatas.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving dashboard: $e");
+    }
+  }
+
+  @override
   Future<void> saveInsight(List<Insight> objectList) async {
     if (!_isar.isOpen) {
       return;
@@ -290,7 +318,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-   @override
+  @override
   Future<void> saveFarmer(List<Farmer> objectList) async {
     if (!_isar.isOpen) {
       return;
@@ -314,9 +342,8 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-   @override
+  @override
   Future<void> saveProduct(List<Product> objectList) async {
-     
     if (!_isar.isOpen) {
       return;
     }
@@ -387,7 +414,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-    @override
+  @override
   Future<void> saveWeather(List<Weather> objectList) async {
     if (!_isar.isOpen) {
       return;

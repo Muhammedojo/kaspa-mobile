@@ -15,6 +15,7 @@ import 'features/auth/presentation/bloc/user/user_cubit.dart';
 import 'features/farmers/presentation/bloc/bloc.dart';
 import 'features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import 'features/home/presentation/bloc/bloc.dart';
+import 'features/home/presentation/bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
 import 'features/home/presentation/bloc/insight/insight_cubit.dart';
 import 'features/home/presentation/bloc/market/cubit.dart';
 import 'features/home/presentation/bloc/market_price/cubit.dart';
@@ -63,6 +64,10 @@ class Kaspa extends StatelessWidget {
         ),
         BlocProvider(
           create:
+              (context) => AppInitializer.instanceLocator.get<DashboardCubit>(),
+        ),
+        BlocProvider(
+          create:
               (context) =>
                   AppInitializer.instanceLocator.get<ForgotPasswordCubit>(),
         ),
@@ -74,10 +79,10 @@ class Kaspa extends StatelessWidget {
           create: (context) => AppInitializer.instanceLocator.get<LgaCubit>(),
         ),
 
- BlocProvider(
-          create: (context) => AppInitializer.instanceLocator.get<InsightCubit>(),
+        BlocProvider(
+          create:
+              (context) => AppInitializer.instanceLocator.get<InsightCubit>(),
         ),
-
 
         BlocProvider(
           create:

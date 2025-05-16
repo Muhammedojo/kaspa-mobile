@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/dashboard_data.dart';
 import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
@@ -35,6 +36,15 @@ abstract class IHomeRepository {
   Future<void> saveCrop(List<Crop> cropList);
 
   Future<List<Crop>> getCrop();
+
+   //DASHBOARD CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList({
+    String? endpoint,
+  });
+
+  Future<void> saveDashboard(List<DashboardData> dashboardList);
+
+  Future<List<DashboardData>> getDashboard();
 
   //INSIGHT CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({

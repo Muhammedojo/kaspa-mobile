@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import '../data/model/dashboard_data.dart';
 import '../data/model/forgot_password.dart';
 import '../data/model/insight.dart';
 import '../data/model/login.dart';
@@ -35,6 +36,10 @@ abstract class ApiServices {
   );
 
   Future<Either<Failure, ApiResponse<List<Cooperative>>>> getCooperativeList(
+    String? endpoint,
+  );
+
+    Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList(
     String? endpoint,
   );
 

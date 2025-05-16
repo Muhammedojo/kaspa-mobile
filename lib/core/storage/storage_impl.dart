@@ -1,6 +1,7 @@
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
+import '../data/model/dashboard_data.dart';
 import '../data/model/farmer.dart';
 import '../data/model/insight.dart';
 import '../data/model/last_request_time.dart';
@@ -78,6 +79,9 @@ class LocalStorageImpl implements LocalStorage {
       databaseStorage.getCooperative();
 
   @override
+  Future<List<DashboardData>> getDashboard() => databaseStorage.getDashboard();
+
+  @override
   Future<List<Farmer>> getFarmer() => databaseStorage.getFarmer();
 
   @override
@@ -120,6 +124,10 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveCooperative(List<Cooperative> objectList) =>
       databaseStorage.saveCooperative(objectList);
+
+  @override
+  Future<void> saveDashboard(List<DashboardData> objectList) =>
+      databaseStorage.saveDashboard(objectList);
 
   @override
   Future<void> saveFarmer(List<Farmer> objectList) =>

@@ -10,6 +10,7 @@ import '../../../../core/resources/vectors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../../core/component/pages_bar.dart';
 import '../../../auth/presentation/bloc/user/cubit.dart';
+import '../bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
 import '../bloc/weather/cubit.dart';
 import '../contract/homepage.dart';
 import '../widget/forecast_card.dart';
@@ -215,7 +216,94 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                       ),
                     ),
                     16.verticalSpace,
-                    CardContainerWidget(
+                  
+                      BlocBuilder<DashboardCubit, DashboardState>(
+                          builder: (context, stateBloc) {
+                            if (stateBloc is DashboardLoaded) {
+                              return 
+                             CardContainerWidget(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              'farmer_summary'.toText(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ],
+                          ),
+                          10.verticalSpace,
+                          const Divider(),
+                          12.verticalSpace,
+                          Row(
+                            children: [
+                              (stateBloc.dashboardList.isNotEmpty ? '${stateBloc.dashboardList[0].farmers.total}' : '0').toText(
+                                fontSize: 24,
+                                translate: false,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              8.horizontalSpace,
+                              'farmers_registered'.toText(
+                                fontSize: 12,
+                                color: AppColors.accentText,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ],
+                          ),
+                          8.verticalSpace,
+                          Row(
+                            children: [
+                              '23,000'.toText(
+                                fontSize: 10,
+                                translate: false,
+                                color: AppColors.brown,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              8.horizontalSpace,
+                              'Unverified Farmers (45%)'.toText(
+                                fontSize: 10,
+                                color: AppColors.accentText,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ],
+                          ),
+                          LinearProgressIndicator(
+                            value: 0.45,
+                            minHeight: 8,
+                            borderRadius: BorderRadius.circular(4.r),
+                            backgroundColor: AppColors.brown.withAlpha(
+                              ((0.4 * 255).toInt()),
+                            ),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.brown,
+                            ),
+                          ),
+                          8.verticalSpace,
+                          const Divider(),
+                          10.verticalSpace,
+                          Row(
+                            children: [
+                              '690 Profile Issues'.toText(
+                                fontSize: 10,
+                                translate: false,
+                                color: AppColors.burntRed,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              8.horizontalSpace,
+                              'tap_to_view'.toText(
+                                fontSize: 10,
+                                color: AppColors.accentText,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              SvgPicture.asset(AppIcon.rightArrow),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                 
+                            }
+                           return CardContainerWidget(
                       child: Column(
                         children: [
                           Row(
@@ -294,7 +382,13 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                           ),
                         ],
                       ),
-                    ),
+                    );
+                 
+                          },
+                        ),
+                  
+                   
+                 
                   ],
                 ),
               ),

@@ -8,6 +8,7 @@ const resetPasswordEndpoint = "auth/password/change";
 const usersListEndpoint = "users";
 const createUserEndpoint = "users";
 const farmersListEndpoint = "farmers";
+const dashboardFarmerEndpoint = "dashboard/farmers";
 const registerFarmerEndpoint = "farmers";
 const cooperativeListEndpoint = "cooperatives";
 const createCooperativeEndpoint = "cooperatives";

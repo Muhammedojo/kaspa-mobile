@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kaspa/features/farmers/presentation/widget/custom_tile.dart';
+import '../../../../features/farmers/presentation/widget/custom_tile.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
@@ -92,15 +92,40 @@ class FarmerDetailsView extends StatelessWidget
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "Date of Birth:".toText(
+                                "age".toText(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
                                   child: (controller.farmer.age ??
                                           'Not available')
-                                      .toText(translate: false, fontSize: 14),
+                                      .toText(
+                                        translate: false,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            12.verticalSpace,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                "gender".toText(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                8.horizontalSpace,
+                                Expanded(
+                                  child: (controller.farmer.gender ??
+                                          'Not specified')
+                                      .toText(
+                                        translate: false,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                 ),
                               ],
                             ),
@@ -108,15 +133,40 @@ class FarmerDetailsView extends StatelessWidget
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "Gender:".toText(
+                                "NIN".toText(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w600,
+                                  translate: false,
+                                  fontWeight: FontWeight.w500,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.gender ??
+                                  child: (controller.farmer.nin ??
+                                          'Not available')
+                                      .toText(
+                                        translate: false,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            12.verticalSpace,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                "address".toText(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                8.horizontalSpace,
+                                Expanded(
+                                  child: (controller.farmer.address ??
                                           'Not specified')
-                                      .toText(translate: false, fontSize: 14),
+                                      .toText(
+                                        translate: false,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                 ),
                               ],
                             ),
@@ -132,13 +182,13 @@ class FarmerDetailsView extends StatelessWidget
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "Date of Birth:".toText(
+                                "NOK Name".toText(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.age ??
+                                  child: (controller.farmer.nokName ??
                                           'Not available')
                                       .toText(translate: false, fontSize: 14),
                                 ),
@@ -148,7 +198,60 @@ class FarmerDetailsView extends StatelessWidget
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "Gender:".toText(
+                                "NOK Relationship".toText(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                8.horizontalSpace,
+                                Expanded(
+                                  child: (controller.farmer.nokRelationship ??
+                                          'Not specified')
+                                      .toText(translate: false, fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            12.verticalSpace,
+                            Row(
+                              children: [
+                                "NOK address".toText(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                8.horizontalSpace,
+                                Expanded(
+                                  child: (controller.farmer.nokAddress ??
+                                          'Not specified')
+                                      .toText(translate: false, fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      16.verticalSpace,
+                      CustomTile(
+                        title: "Financial details",
+                        body: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                "wallet_balance".toText(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                8.horizontalSpace,
+                                Expanded(
+                                  child: (controller.farmer.lastName ??
+                                          'NGN 60,000.00')
+                                      .toText(translate: false, fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            12.verticalSpace,
+                            Row(
+                              children: [
+                                "credit_score".toText(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -160,94 +263,103 @@ class FarmerDetailsView extends StatelessWidget
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                  16.verticalSpace,
-                     CustomTile(
-                        title: "Financial details", 
-                        body: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                            12.verticalSpace,
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "Date of Birth:".toText(
+                                "account_details".toText(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
-                                Expanded(
-                                  child: (controller.farmer.age ?? 'Not available').toText(
-                                    translate: false,
-                                    fontSize: 14,
-                                  ),
+                                Column(
+                                  children: [
+                                    (controller.farmer.accountNumber ??
+                                            'Not specified')
+                                        .toText(translate: false, fontSize: 14),
+                                    (controller.farmer.accountName ??
+                                            'Not specified')
+                                        .toText(translate: false, fontSize: 14),
+                                    ('UBA').toText(
+                                      translate: false,
+                                      fontSize: 14,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            12.verticalSpace,
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                "Gender:".toText(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600, 
-                                ),
-                                8.horizontalSpace,
-                                Expanded(
-                                  child: (controller.farmer.gender ?? 'Not specified').toText(
-                                    translate: false,
-                                    fontSize: 14,
-                                  ),
-                                ),
+                                // Expanded(
+                                //   child: (controller.farmer.gender ?? 'Not specified').toText(
+                                //     translate: false,
+                                //     fontSize: 14,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],
                         ),
                       ),
                       16.verticalSpace,
-                         CustomTile(
-                        title: "Farmer's Loan", 
+                      CustomTile(
+                        title: "Farmer's Loan",
                         body: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                             Row(
                               children: [
-                                "Date of Birth:".toText(
+                                "wallet_balance".toText(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.age ?? 'Not available').toText(
-                                    translate: false,
-                                    fontSize: 14,
-                                  ),
+                                  child: (controller.farmer.lastName ??
+                                          'NGN 60,000.00')
+                                      .toText(translate: false, fontSize: 14),
                                 ),
                               ],
                             ),
                             12.verticalSpace,
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "Gender:".toText(
+                                "credit_score".toText(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w600, 
+                                  fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.gender ?? 'Not specified').toText(
-                                    translate: false,
-                                    fontSize: 14,
-                                  ),
+                                  child: (controller.farmer.gender ??
+                                          'Not specified')
+                                      .toText(translate: false, fontSize: 14),
                                 ),
                               ],
                             ),
+                            12.verticalSpace,
+                            Row(
+                              children: [
+                                "account_details".toText(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                8.horizontalSpace,
+                                Column(
+                                  children: [
+                                    (controller.farmer.accountNumber ??
+                                            'Not specified')
+                                        .toText(translate: false, fontSize: 14),
+                                    (controller.farmer.accountName ??
+                                            'Not specified')
+                                        .toText(translate: false, fontSize: 14),
+                                    ('UBA').toText(
+                                      translate: false,
+                                      fontSize: 14,
+                                    ),
+                                  ],
+                                ),
+                              
+                              ],
+                            ),
+                          
                           ],
                         ),
                       ),
-                      
                     ],
                   ),
                 ),
