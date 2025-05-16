@@ -102,4 +102,18 @@ class _CreateMarketScreenState extends State<CreateMarketScreen>
       }
     }
   }
+
+  @override
+  void clearScreen() {
+    setState(() {
+      nameController.clear();
+      addressController.clear();
+      sizeController.clear();
+      marketDaysController.clear();
+      marketTypeController.clear();
+      selectedLga = null;
+      selectedWard = null;
+    });
+
+  }
 }

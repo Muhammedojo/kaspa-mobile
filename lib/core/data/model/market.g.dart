@@ -52,35 +52,60 @@ const MarketSchema = CollectionSchema(
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
-    r'marketDays': PropertySchema(
+    r'lgaId': PropertySchema(
       id: 7,
+      name: r'lgaId',
+      type: IsarType.long,
+    ),
+    r'marketDays': PropertySchema(
+      id: 8,
       name: r'marketDays',
       type: IsarType.string,
     ),
+    r'marketId': PropertySchema(
+      id: 9,
+      name: r'marketId',
+      type: IsarType.long,
+    ),
     r'marketType': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'marketType',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'name',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 10,
+      id: 12,
       name: r'pk',
       type: IsarType.long,
     ),
+    r'price': PropertySchema(
+      id: 13,
+      name: r'price',
+      type: IsarType.double,
+    ),
+    r'productId': PropertySchema(
+      id: 14,
+      name: r'productId',
+      type: IsarType.long,
+    ),
     r'size': PropertySchema(
-      id: 11,
+      id: 15,
       name: r'size',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 12,
+      id: 16,
       name: r'updated',
       type: IsarType.string,
+    ),
+    r'wardId': PropertySchema(
+      id: 17,
+      name: r'wardId',
+      type: IsarType.long,
     )
   },
   estimateSize: _marketEstimateSize,
@@ -232,12 +257,17 @@ void _marketSerialize(
   writer.writeString(offsets[4], object.errorMessage);
   writer.writeBool(offsets[5], object.hasSynced);
   writer.writeString(offsets[6], object.lastPulledTime);
-  writer.writeString(offsets[7], object.marketDays);
-  writer.writeString(offsets[8], object.marketType);
-  writer.writeString(offsets[9], object.name);
-  writer.writeLong(offsets[10], object.pk);
-  writer.writeString(offsets[11], object.size);
-  writer.writeString(offsets[12], object.updated);
+  writer.writeLong(offsets[7], object.lgaId);
+  writer.writeString(offsets[8], object.marketDays);
+  writer.writeLong(offsets[9], object.marketId);
+  writer.writeString(offsets[10], object.marketType);
+  writer.writeString(offsets[11], object.name);
+  writer.writeLong(offsets[12], object.pk);
+  writer.writeDouble(offsets[13], object.price);
+  writer.writeLong(offsets[14], object.productId);
+  writer.writeString(offsets[15], object.size);
+  writer.writeString(offsets[16], object.updated);
+  writer.writeLong(offsets[17], object.wardId);
 }
 
 Market _marketDeserialize(
@@ -255,12 +285,17 @@ Market _marketDeserialize(
   object.hasSynced = reader.readBoolOrNull(offsets[5]);
   object.id = id;
   object.lastPulledTime = reader.readStringOrNull(offsets[6]);
-  object.marketDays = reader.readStringOrNull(offsets[7]);
-  object.marketType = reader.readStringOrNull(offsets[8]);
-  object.name = reader.readStringOrNull(offsets[9]);
-  object.pk = reader.readLong(offsets[10]);
-  object.size = reader.readStringOrNull(offsets[11]);
-  object.updated = reader.readStringOrNull(offsets[12]);
+  object.lgaId = reader.readLongOrNull(offsets[7]);
+  object.marketDays = reader.readStringOrNull(offsets[8]);
+  object.marketId = reader.readLongOrNull(offsets[9]);
+  object.marketType = reader.readStringOrNull(offsets[10]);
+  object.name = reader.readStringOrNull(offsets[11]);
+  object.pk = reader.readLong(offsets[12]);
+  object.price = reader.readDoubleOrNull(offsets[13]);
+  object.productId = reader.readLongOrNull(offsets[14]);
+  object.size = reader.readStringOrNull(offsets[15]);
+  object.updated = reader.readStringOrNull(offsets[16]);
+  object.wardId = reader.readLongOrNull(offsets[17]);
   return object;
 }
 
@@ -286,17 +321,27 @@ P _marketDeserializeProp<P>(
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 10:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
+      return (reader.readLong(offset)) as P;
+    case 13:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 14:
+      return (reader.readLongOrNull(offset)) as P;
+    case 15:
       return (reader.readStringOrNull(offset)) as P;
+    case 16:
+      return (reader.readStringOrNull(offset)) as P;
+    case 17:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -1687,6 +1732,74 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lgaId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lgaId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lgaId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lgaId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lgaId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lgaId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterFilterCondition> marketDaysIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1829,6 +1942,75 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'marketDays',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'marketId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'marketId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'marketId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'marketId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'marketId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> marketIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'marketId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -2176,6 +2358,153 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterFilterCondition> priceIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'price',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> priceIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'price',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> priceEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'price',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> priceGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'price',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> priceLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'price',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> priceBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'price',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> productIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'productId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> productIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'productId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> productIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'productId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> productIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'productId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> productIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'productId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> productIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'productId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterFilterCondition> sizeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2466,6 +2795,75 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'wardId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension MarketQueryObject on QueryBuilder<Market, Market, QFilterCondition> {}
@@ -2557,6 +2955,18 @@ extension MarketQuerySortBy on QueryBuilder<Market, Market, QSortBy> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterSortBy> sortByLgaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByLgaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterSortBy> sortByMarketDays() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marketDays', Sort.asc);
@@ -2566,6 +2976,18 @@ extension MarketQuerySortBy on QueryBuilder<Market, Market, QSortBy> {
   QueryBuilder<Market, Market, QAfterSortBy> sortByMarketDaysDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marketDays', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByMarketId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByMarketIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketId', Sort.desc);
     });
   }
 
@@ -2605,6 +3027,30 @@ extension MarketQuerySortBy on QueryBuilder<Market, Market, QSortBy> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterSortBy> sortByPrice() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByPriceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByProductId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'productId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByProductIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'productId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterSortBy> sortBySize() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'size', Sort.asc);
@@ -2626,6 +3072,18 @@ extension MarketQuerySortBy on QueryBuilder<Market, Market, QSortBy> {
   QueryBuilder<Market, Market, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updated', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> sortByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
     });
   }
 }
@@ -2727,6 +3185,18 @@ extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterSortBy> thenByLgaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByLgaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterSortBy> thenByMarketDays() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marketDays', Sort.asc);
@@ -2736,6 +3206,18 @@ extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
   QueryBuilder<Market, Market, QAfterSortBy> thenByMarketDaysDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marketDays', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByMarketId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByMarketIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'marketId', Sort.desc);
     });
   }
 
@@ -2775,6 +3257,30 @@ extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterSortBy> thenByPrice() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByPriceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByProductId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'productId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByProductIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'productId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterSortBy> thenBySize() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'size', Sort.asc);
@@ -2796,6 +3302,18 @@ extension MarketQuerySortThenBy on QueryBuilder<Market, Market, QSortThenBy> {
   QueryBuilder<Market, Market, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updated', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterSortBy> thenByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
     });
   }
 }
@@ -2850,10 +3368,22 @@ extension MarketQueryWhereDistinct on QueryBuilder<Market, Market, QDistinct> {
     });
   }
 
+  QueryBuilder<Market, Market, QDistinct> distinctByLgaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lgaId');
+    });
+  }
+
   QueryBuilder<Market, Market, QDistinct> distinctByMarketDays(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'marketDays', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByMarketId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'marketId');
     });
   }
 
@@ -2877,6 +3407,18 @@ extension MarketQueryWhereDistinct on QueryBuilder<Market, Market, QDistinct> {
     });
   }
 
+  QueryBuilder<Market, Market, QDistinct> distinctByPrice() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'price');
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByProductId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'productId');
+    });
+  }
+
   QueryBuilder<Market, Market, QDistinct> distinctBySize(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2888,6 +3430,12 @@ extension MarketQueryWhereDistinct on QueryBuilder<Market, Market, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updated', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Market, Market, QDistinct> distinctByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'wardId');
     });
   }
 }
@@ -2941,9 +3489,21 @@ extension MarketQueryProperty on QueryBuilder<Market, Market, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Market, int?, QQueryOperations> lgaIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lgaId');
+    });
+  }
+
   QueryBuilder<Market, String?, QQueryOperations> marketDaysProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'marketDays');
+    });
+  }
+
+  QueryBuilder<Market, int?, QQueryOperations> marketIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'marketId');
     });
   }
 
@@ -2965,6 +3525,18 @@ extension MarketQueryProperty on QueryBuilder<Market, Market, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Market, double?, QQueryOperations> priceProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'price');
+    });
+  }
+
+  QueryBuilder<Market, int?, QQueryOperations> productIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'productId');
+    });
+  }
+
   QueryBuilder<Market, String?, QQueryOperations> sizeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'size');
@@ -2974,6 +3546,12 @@ extension MarketQueryProperty on QueryBuilder<Market, Market, QQueryProperty> {
   QueryBuilder<Market, String?, QQueryOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updated');
+    });
+  }
+
+  QueryBuilder<Market, int?, QQueryOperations> wardIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'wardId');
     });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kaspa/core/data/model/market.dart';
-import '../../../../core/data/model/model.dart';
+import '../../../../core/data/model/market.dart';
+import '../../../../core/data/model/market_data.dart';
 import '../../../../core/data/model/product.dart';
 import '../../../home/presentation/bloc/market/cubit.dart';
 import '../contract/create_market_price.dart';
@@ -69,7 +69,7 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
   void logPrice() async {
     if (formKey.currentState!.validate()) {
       if (selectedCrop != null && selectedMarket != null) {
-        Market marketPrice = Market();
+        MarketData marketPrice = MarketData();
         marketPrice.price =
             double.tryParse(priceController.text) ?? 0.0; 
         marketPrice.productId = selectedCrop!.pk;
@@ -79,5 +79,15 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
         priceController.clear();
       }
     }
+  }
+
+  @override
+  void clearScreen() {
+    setState(() {
+      priceController.clear();
+      selectedCrop = null;
+      selectedMarket = null;
+      
+    });
   }
 }

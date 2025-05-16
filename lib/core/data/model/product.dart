@@ -29,13 +29,10 @@ class Product {
 
 Product _$ProductFromJson(Map<String, dynamic> json) {
   var obj = Product();
-debugPrint('Product here1');
   obj.pk = json[KEY_PK];
   obj.name = json[KEY_NAME];
- 
   obj.type = json[KEY_PRODUCT_TYPE];
   obj.variety = json[KEY_VARIETY];
- debugPrint('Product here3');
   return obj;
 }
 

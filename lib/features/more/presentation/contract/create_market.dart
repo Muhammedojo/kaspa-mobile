@@ -20,6 +20,7 @@ abstract class CreateMarketControllerContract {
   late Lga? selectedLga;
 
   void createMarket();
+  void clearScreen();
 }
 
 abstract class CreateMarketViewContract extends BaseViewContract {}

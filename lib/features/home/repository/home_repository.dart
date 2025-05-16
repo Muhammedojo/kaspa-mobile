@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
@@ -32,7 +33,7 @@ class HomeRepository implements IHomeRepository {
       apiServices.createMarket(data);
 
        @override
-  Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(Market data) =>
+  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(MarketData data) =>
       apiServices.createMarketPrice(data);
 
 
@@ -41,6 +42,12 @@ class HomeRepository implements IHomeRepository {
   Future<Either<Failure, ApiResponse<List<Cooperative>>>> getCooperativeList({
     String? endpoint,
   }) => apiServices.getCooperativeList(endpoint);
+
+    @override
+  Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({
+    String? endpoint,
+  }) => apiServices.getInsightList(endpoint);
+
 
   @override
   Future<Either<Failure, ApiResponse<List<Lga>>>> getLgaList({
@@ -89,6 +96,10 @@ class HomeRepository implements IHomeRepository {
 
   @override
   Future<List<Crop>> getCrop() => localStorage.getCrop();
+
+
+ @override
+  Future<List<Insight>> getInsight() => localStorage.getInsight();
 
 
   @override
@@ -141,6 +152,10 @@ class HomeRepository implements IHomeRepository {
   Future<void> saveProduct(List<Product> productList) => localStorage.saveProduct(productList);
   
  
+ @override
+  Future<void> saveInsight(List<Insight> insightList) => localStorage.saveInsight(insightList);
+  
+
   @override
   Future<void> saveUser(List<User> usersList) =>
       localStorage.saveUser(usersList);

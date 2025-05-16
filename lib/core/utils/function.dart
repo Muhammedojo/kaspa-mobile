@@ -22,7 +22,9 @@ class Utils {
 
   static customAppBar(
     BuildContext context,
-    String title, {
+    String title,
+    bool? showMore,
+    Function()? onTapAction, {
     GestureTapCallback? onPressed,
   }) {
     return AppBar(
@@ -35,10 +37,24 @@ class Utils {
         child: SvgPicture.asset(
           AppIcon.pop,
           fit: BoxFit.scaleDown,
-          height: 30.w,
-          width: 30.w,
+          height: 32.sp,
+          width: 32.sp,
         ),
       ),
+      actions: <Widget>[
+        showMore == true
+            ? InkWell(
+              onTap:  onTapAction ,
+              child: SvgPicture.asset(
+                AppIcon.more,
+                fit: BoxFit.scaleDown,
+                height: 32.sp,
+                width: 32.sp,
+              ),
+            )
+            : SizedBox.shrink(),
+            12.horizontalSpace
+      ],
     );
   }
 
@@ -56,11 +72,15 @@ class Utils {
     );
   }
 
-    static bool isDuplicateCoordinate(List<Coordinates> existingCoordinates,
-      Coordinates newCoordinate) {
-    return existingCoordinates.any((coord) =>
-        coord.latitude == newCoordinate.latitude &&
-        coord.longitude == newCoordinate.longitude);
+  static bool isDuplicateCoordinate(
+    List<Coordinates> existingCoordinates,
+    Coordinates newCoordinate,
+  ) {
+    return existingCoordinates.any(
+      (coord) =>
+          coord.latitude == newCoordinate.latitude &&
+          coord.longitude == newCoordinate.longitude,
+    );
   }
 
   static showToastWarning(
@@ -91,7 +111,7 @@ class Utils {
     );
   }
 
-   static hideLoading(BuildContext context) {
+  static hideLoading(BuildContext context) {
     return context.loaderOverlay.hide();
   }
 

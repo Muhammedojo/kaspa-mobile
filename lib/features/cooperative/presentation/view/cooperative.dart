@@ -12,6 +12,7 @@ import '../../../farmers/presentation/controller/register_farmer.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../contract/cooperative.dart';
 import '../controller/cooperative_details.dart';
+import '../controller/register_cooperative.dart';
 import '../widget/cooperative_card.dart';
 
 class CooperativeView extends StatelessWidget
@@ -26,7 +27,7 @@ class CooperativeView extends StatelessWidget
       backgroundColor: AppColors.primaryBackground,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryGreen,
-        onPressed: () => pushTo(RegisterFarmerScreen(), context),
+        onPressed: () => pushTo(RegisterCooperativeScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
       ),
       body: _body(),

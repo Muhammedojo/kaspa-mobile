@@ -27,6 +27,7 @@ import '../../features/farmers/repository/farmer_repository.dart';
 import '../../features/farmers/repository/farmer_repository_contract.dart';
 import '../../features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import '../../features/home/presentation/bloc/bloc.dart';
+import '../../features/home/presentation/bloc/insight/insight_cubit.dart';
 import '../../features/home/presentation/bloc/market/cubit.dart';
 import '../../features/home/presentation/bloc/market_price/cubit.dart';
 import '../../features/home/presentation/bloc/product/cubit.dart';
@@ -154,6 +155,13 @@ class AppInitializer {
 
      instanceLocator.registerLazySingleton<ProductCubit>(
       () => ProductCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+      instanceLocator.registerLazySingleton<InsightCubit>(
+      () => InsightCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),

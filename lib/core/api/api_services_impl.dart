@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import '../data/model/forgot_password.dart';
+import '../data/model/insight.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
@@ -285,6 +286,32 @@ class ApiServicesImpl implements ApiServices {
   }
 
   @override
+  Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Insight>>(
+        endpoint ?? dashboardEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.insight = currentDateTime();
+          lastRequestTime.insightUrl = realUri;
+
+                   final insight = Insight.fromJson(data as Map<String, dynamic>);
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return [insight];
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList(
     String? endpoint,
   ) async {
@@ -348,12 +375,12 @@ class ApiServicesImpl implements ApiServices {
   }
 
    @override
-  Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(
-      Market data) {
-    return apiClient.request<Market>(
+  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(
+      MarketData data) {
+    return apiClient.request<MarketData>(
       logMarketPriceEndpoint,
       MethodType.post,
-      (data, {String? realUri}) => Market.fromJson(data),
+      (data, {String? realUri}) => MarketData.fromJson(data),
       data.toJson(),
     );
   }

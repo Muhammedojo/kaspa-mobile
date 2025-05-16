@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import '../../features/cooperative/presentation/controller/cooperative_details.dart';
+import '../../features/cooperative/presentation/controller/register_cooperative.dart';
 import '../../features/farmers/presentation/controller/register_farmer.dart';
 import '../../features/cooperative/presentation/controller/cooperative.dart';
 import '../../features/auth/presentation/controller/privacy_policy.dart';
@@ -13,13 +15,13 @@ import '../../features/farmers/presentation/controller/farmer.dart';
 import '../../features/home/presentation/controller/home.dart';
 import '../../features/home/presentation/controller/homepage.dart';
 import '../../features/insights/presentation/controller/insight.dart';
+import '../data/model/cooperative.dart';
 import '../utils/global_variables.dart';
 import 'route_constant.dart';
 
 class AppRouter {
- 
   static final GoRouter router = GoRouter(
-    navigatorKey:GlobalVariables.rootNavigatorKey,
+    navigatorKey: GlobalVariables.rootNavigatorKey,
     initialLocation: "/",
     routes: [
       GoRoute(
@@ -27,32 +29,33 @@ class AppRouter {
         name: RouteConstant.splash,
         builder: (context, state) => const SplashScreen(),
       ),
-       GoRoute(
+      GoRoute(
         path: '/${RouteConstant.authOption}',
         name: RouteConstant.authOption,
         builder: (context, state) => const AuthOptionScreen(),
       ),
-       GoRoute(
+      GoRoute(
         path: '/${RouteConstant.resetPassword}',
         name: RouteConstant.resetPassword,
         builder: (context, state) => const ResetPasswordScreen(),
       ),
-       GoRoute(
+      GoRoute(
         path: '/${RouteConstant.resetCode}',
         name: RouteConstant.resetCode,
-        builder: (context, state) => const ResetCodeScreen(email: '', token: '',),
+        builder:
+            (context, state) => const ResetCodeScreen(email: '', token: ''),
       ),
-       GoRoute(
+      GoRoute(
         path: '/${RouteConstant.changePassword}',
         name: RouteConstant.changePassword,
         builder: (context, state) => const ChangePasswordScreen(),
       ),
-        GoRoute(
+      GoRoute(
         path: '/${RouteConstant.terms}',
         name: RouteConstant.terms,
         builder: (context, state) => const TermsScreen(),
       ),
-         GoRoute(
+      GoRoute(
         path: '/${RouteConstant.privacyPolicy}',
         name: RouteConstant.privacyPolicy,
         builder: (context, state) => const PrivacyPolicyScreen(),
@@ -110,7 +113,29 @@ class AppRouter {
                 pageBuilder:
                     (context, state) =>
                         const NoTransitionPage(child: CooperativeScreen()),
-                routes: [],
+                routes: [
+                  GoRoute(
+                    path: '/${RouteConstant.registerCooperative}',
+                    name: RouteConstant.registerCooperative,
+                    pageBuilder:
+                        (context, state) => NoTransitionPage(
+                          child: RegisterCooperativeScreen(
+                          
+                          ),
+                        ),
+                  ),
+                  GoRoute(
+                    path: '/${RouteConstant.cooperativeDetails}',
+                    name: RouteConstant.cooperativeDetails,
+                    pageBuilder:
+                        (context, state) => NoTransitionPage(
+                          child: CooperativeDetailsScreen(
+                            cooperative: Cooperative(),
+                           
+                          ),
+                        ),
+                  ),
+                ],
               ),
             ],
           ),

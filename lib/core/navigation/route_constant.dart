@@ -8,9 +8,12 @@ class RouteConstant {
   static const forgotPassword = "forgot_password";
   static const changePassword = "change_password";
   static const farmer = "farmer";
+  static const farmerDetails = "farmer_details";
   static const agronomy = "agronomy";
   static const insight = "insight";
   static const cooperative = "cooperative";
+  static const registerCooperative = "register_cooperative";
+  static const cooperativeDetails = "cooperative_details";
   static const terms = "terms";
   static const privacyPolicy = "privacy_policy";
   static const registerFarmer = "register_farmer";

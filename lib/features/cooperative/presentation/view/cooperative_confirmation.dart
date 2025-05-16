@@ -3,12 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
-import '../contract/farmer_confirmation.dart';
+import '../contract/cooperative_confirmation.dart';
 
-class FarmerConfirmationView extends StatelessWidget implements FarmerConfirmationViewContract {
-  const FarmerConfirmationView({super.key, required this.controller});
+class CooperativeConfirmationView extends StatelessWidget
+    implements CooperativeConfirmationViewContract {
+  const CooperativeConfirmationView({super.key, required this.controller});
 
-  final FarmerConfirmationControllerContract controller;
+  final CooperativeConfirmationControllerContract controller;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +26,16 @@ class FarmerConfirmationView extends StatelessWidget implements FarmerConfirmati
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           Utils.customAppBar(context, 'farmer_details',false,(){}),
+            Utils.customAppBar(
+              context,
+              'cooperative_confirmation_details',
+              false,
+              (){}
+            ),
             24.verticalSpace,
-        
           ],
         ),
       ),
     );
- 
   }
 }

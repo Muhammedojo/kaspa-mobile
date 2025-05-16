@@ -1,9 +1,9 @@
 import 'package:isar/isar.dart';
-import 'package:kaspa/core/data/model/bank_detail.dart';
-import 'package:kaspa/core/data/model/cooperative.dart';
-import 'package:kaspa/core/data/model/nok_details.dart';
+import '../../../core/data/model/bank_detail.dart';
+import '../../../core/data/model/cooperative.dart';
+import '../../../core/data/model/nok_details.dart';
 import '../../utils/const.dart';
-import 'farm.dart';
+import 'insight.dart';
 import 'lga.dart';
 import 'ward.dart';
 
@@ -30,6 +30,8 @@ class Farmer {
   String? nokPhoneNumber = "";
   String? nokAddress = "";
   String? nokRelationship = "";
+
+  @ignore
   List<dynamic>? farmLand = [];
 
   int? wardId = 0;
@@ -40,13 +42,10 @@ class Farmer {
   String? registrationDate = "";
   String? phoneNumber = "";
 
+  @ignore
   List<Map<String, dynamic>>? farms;
 
-  @ignore
-  Cooperative? cooperative;
-
-  // @ignore
-  // Farm? farms;
+  CooperativeData? cooperative;
 
   @ignore
   NokDetails? nokDetails;
@@ -54,11 +53,9 @@ class Farmer {
   @ignore
   BankDetail? bankDetails;
 
-  @ignore
-  Lga? lga;
+  LgaData? lga;
 
-  @ignore
-  Ward? ward;
+  WardData? ward;
 
   List<int>? livestock = [];
   List<int>? crop = [];
@@ -96,11 +93,11 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   }
 
   if (json.containsKey(KEY_LGA) && json[KEY_LGA] != null) {
-    obj.lga = Lga.fromJson(json[KEY_LGA]);
+    obj.lga = LgaData.fromJson(json[KEY_LGA]);
   }
 
   if (json.containsKey(KEY_WARD) && json[KEY_WARD] != null) {
-    obj.ward = Ward.fromJson(json[KEY_WARD]);
+    obj.ward = WardData.fromJson(json[KEY_WARD]);
   }
 
   if (json.containsKey(KEY_FARMS) && json[KEY_FARMS] != null) {
@@ -114,7 +111,7 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   }
 
   if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
-    obj.cooperative = Cooperative.fromJson(json[KEY_COOPERATIVE]);
+    obj.cooperative = CooperativeData.fromJson(json[KEY_COOPERATIVE]);
   }
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
   obj.livestock = json[KEY_LIVESTOCK];

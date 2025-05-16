@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
@@ -35,6 +36,15 @@ abstract class IHomeRepository {
 
   Future<List<Crop>> getCrop();
 
+  //INSIGHT CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({
+    String? endpoint,
+  });
+
+  Future<void> saveInsight(List<Insight> cropList);
+
+  Future<List<Insight>> getInsight();
+
   //LGA CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Lga>>>> getLgaList({
     String? endpoint,
@@ -62,8 +72,7 @@ abstract class IHomeRepository {
 
   Future<List<MarketData>> getMarketPrice();
 
-    Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(Market data);
-
+  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(MarketData data);
 
   //MARKET CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList({

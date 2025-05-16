@@ -2,6 +2,7 @@ import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
 import '../data/model/farmer.dart';
+import '../data/model/insight.dart';
 import '../data/model/last_request_time.dart';
 import '../data/model/lga.dart';
 import '../data/model/livestock.dart';
@@ -37,14 +38,15 @@ abstract class DatabaseStorage {
   Future<List<Cooperative>> getCooperative();
   Future<List<Farmer>> getFarmer();
   Future<List<Lga>> getLga();
-   Future<List<Product>> getProduct();
+  Future<List<Product>> getProduct();
   Future<List<Livestock>> getLivestock();
   Future<List<User>> getUser();
   Future<List<Ward>> getWard();
   Future<List<Market>> getMarket();
   Future<List<MarketData>> getMarketPrice();
   Future<List<Weather>> getWeather();
-
+  Future<List<Insight>> getInsight();
+  Future<void> saveInsight(List<Insight> objectList);
   Future<void> saveBank(List<Bank> objectList);
   Future<void> saveCrop(List<Crop> objectList);
   Future<void> saveCooperative(List<Cooperative> objectList);

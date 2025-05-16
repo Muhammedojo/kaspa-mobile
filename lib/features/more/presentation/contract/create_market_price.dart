@@ -15,6 +15,7 @@ abstract class CreateMarketPriceControllerContract {
   late Market? selectedMarket;
 
  void logPrice();
+ void clearScreen();
   
 }
 

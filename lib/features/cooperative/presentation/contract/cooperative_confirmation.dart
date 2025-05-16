@@ -1,8 +1,8 @@
 import '../../../../core/data/model/cooperative.dart';
 import '../../../../core/utils/contract.dart';
 
-abstract class CooperativeDetailsControllerContract {
+abstract class CooperativeConfirmationControllerContract {
   late Cooperative cooperative;
 }
 
-abstract class CooperativeDetailsViewContract extends BaseViewContract {}
+abstract class CooperativeConfirmationViewContract extends BaseViewContract {}

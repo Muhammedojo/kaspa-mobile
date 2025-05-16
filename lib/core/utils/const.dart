@@ -13,9 +13,6 @@ const REG_EXP_DIGITS = r'^(?=.*?[0-9])';
 const REG_EXP_SPECIAL_CHARACTERS = r'^(?=.*?[!@#\$&*~?./`])';
 const REG_EXP_PASSWORD_LENGTH = r'^.{8,}$';
 
-const ROLE_REGISTRAR = "fmard_admin";
-const ROLE_AGRO_DEALER = "warehouse_manager";
-const ROLE_AGRO_DEALER_ADMIN = "agro_dealer_admin";
 const ROLE_STATE_AGENT = "state_agent";
 const ROLE_LGA_AGENT = "lga_agent";
 
@@ -243,7 +240,6 @@ const KEY_ROLE = "role";
 const KEY_ROLES = "roles";
 const KEY_PHONE_NUMBER = "phone_number";
 const KEY_RELATIONSHIP = "relationship";
-const KEY_AGRO_DEALER_PHONE_NUMBER = "agro_dealer_number";
 const KEY_UNITS_PER_FARMER = "units_per_farmer";
 const KEY_PRODUCT_UNIT = "product_unit";
 const KEY_IS_OTP_VALID = "is_otp_valid";
@@ -257,7 +253,6 @@ const KEY_NUMBER_OF_BAGS_PURCHASED = "number_of_bags_purchased";
 const KEY_UNITS_PURCHASED = "units_purchased";
 const KEY_BAGS_PURCHASED = "bags_purchased";
 const KEY_USER_PERMISSIONS = "user_permissions";
-const KEY_AGRO_DEALER = "agro_dealer";
 const KEY_WAREHOUSE_NAME = "warehouse_name";
 const KEY_WAREHOUSE_ADDRESS = "warehouse_address";
 const KEY_MANAGER_FIRST_NAME = "manager_first_name";

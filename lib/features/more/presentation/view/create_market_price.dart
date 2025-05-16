@@ -33,7 +33,7 @@ class CreateMarketPriceView extends StatelessWidget
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Utils.customAppBar(context, 'log_market_price'),
+                Utils.customAppBar(context, 'log_market_price',false,(){}),
                 25.verticalSpace,
                 'product'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(
@@ -49,7 +49,7 @@ class CreateMarketPriceView extends StatelessWidget
                                 'choose_an_option'.tr(),
                                 '',
                               ),
-            
+
                           items:
                               state.productList
                                   .where((product) => product.type == 'Crop')
@@ -90,12 +90,14 @@ class CreateMarketPriceView extends StatelessWidget
                                 'choose_an_option'.tr(),
                                 '',
                               ),
-            
+
                           items:
                               state.marketList.map((e) {
                                 return DropdownMenuItem(
                                   value: e,
-                                  child: (e.name ?? '').toText(translate: false),
+                                  child: (e.name ?? '').toText(
+                                    translate: false,
+                                  ),
                                 );
                               }).toList(),
                           onChanged: (newValue) {
@@ -133,28 +135,34 @@ class CreateMarketPriceView extends StatelessWidget
                   ),
                 ),
                 50.verticalSpace,
-                  BlocListener<MarketCubit, MarketState>(
+                BlocListener<MarketCubit, MarketState>(
                   listener: (context, state) {
                     if (state is MarketLoading) {
                       Utils.showLoading(context);
-                    } else if (state is CreateMarketSuccess) { Utils.hideLoading(context);
+                    } else if (state is LogMarketPriceSuccess) {
+                      Utils.hideLoading(context);
+                      controller.clearScreen();
                       Utils.showToastSuccess(
                         context,
                         'price_logged_successfully'.tr(),
                         '',
                         () {
-                        //  Navigator.pop(context);
+                       Navigator.pop(context);
                         },
                       );
-                    } else if (state is MarketFailure) { 
+                    } else if (state is MarketFailure) {
                       Utils.hideLoading(context);
-                      Utils.showToastError(context, state.error.toString(), '', () {});
-                    } 
-                 else { 
+                      Utils.showToastError(
+                        context,
+                        state.error.toString(),
+                        '',
+                        () {},
+                      );
+                    } else {
                       Utils.hideLoading(context);
-                     }
-                   },
-            
+                    }
+                  },
+
                   child: ButtonWidget(
                     label: 'log_price',
                     onPressed: () => controller.logPrice(),

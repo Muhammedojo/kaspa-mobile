@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../contract/cooperative.dart';
 import '../view/cooperative.dart';
 

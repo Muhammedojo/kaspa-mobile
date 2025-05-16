@@ -1,12 +1,10 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:kaspa/core/navigation/navigator.dart';
-import 'package:kaspa/core/utils/global_variables.dart';
+import '../../../../core/utils/global_variables.dart';
 import '../../../../core/data/model/farm_coordinate.dart';
 import '../../../../core/data/model/farm_location.dart';
 import '../../../../core/data/model/model.dart';
@@ -17,7 +15,6 @@ import '../../../../core/utils/function.dart';
 import '../bloc/create_farmer/create_farmer_cubit.dart';
 import '../contract/register_farmer.dart';
 import '../view/register_farmer.dart';
-import '../widget/farm_location_modal.dart';
 import '../widget/farmer_details_preview.dart';
 
 class RegisterFarmerScreen extends StatefulWidget {
@@ -390,7 +387,6 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     }
   }
 
-
   @override
   void onAddFarmLocation(BuildContext context) async {
     if (_isFetchingLocation) return;
@@ -414,19 +410,24 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
             timeLimit: const Duration(seconds: 15),
           );
 
-          // Consider re-enabling duplicate check if needed
-          // final newCoordinate = Coordinates(latitude: position.latitude, longitude: position.longitude);
-          // if (Utils.isDuplicateCoordinate(currentFarmLocationCoordinates, newCoordinate)) {
-          //   if (mounted) {
-          //     Utils.showToastError(
-          //       context, // Use passed context
-          //       'Multiple Coordinate Detected',
-          //       'close',
-          //       () {},
-          //     );
-          //   }
-          //   return;
-          // }
+          final newCoordinate = Coordinates(
+            latitude: position.latitude,
+            longitude: position.longitude,
+          );
+          if (Utils.isDuplicateCoordinate(
+            currentFarmLocationCoordinates,
+            newCoordinate,
+          )) {
+            if (mounted) {
+              Utils.showToastError(
+                this.context,
+                'Multiple Coordinate Detected',
+                'close',
+                () {},
+              );
+            }
+            return;
+          }
 
           if (mounted) {
             setState(() {
@@ -525,9 +526,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     farmer.registrationDate = formattedToday.toString();
     farmer.crop = [selectedCrops!.pk];
     farmer.livestock = [selectedLivestock!.pk];
-   // farmer.farmLand = [];
+    // farmer.farmLand = [];
 
- List<Map<String, dynamic>> farmsPayload = [];
+    List<Map<String, dynamic>> farmsPayload = [];
     if (currentFarmLocationCoordinates.isNotEmpty) {
       // Ensure there are enough points for a polygon (as per your existing validation)
       // if (currentFarmLocationCoordinates.length < 4) {
@@ -537,16 +538,16 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       //     '',
       //     () {},
       //   );
-        // Potentially return or handle this error appropriately
-        // For now, we'll proceed but the polygon might be invalid for the backend
+      // Potentially return or handle this error appropriately
+      // For now, we'll proceed but the polygon might be invalid for the backend
 
-     // }
+      // }
 
-      List<List<double>> polygonRing = currentFarmLocationCoordinates
-          .map((coord) => [coord.longitude!, coord.latitude!])
-          .toList();
+      List<List<double>> polygonRing =
+          currentFarmLocationCoordinates
+              .map((coord) => [coord.longitude!, coord.latitude!])
+              .toList();
 
-      // Ensure the polygon is closed (first and last points are the same)
       if (polygonRing.isNotEmpty &&
           (polygonRing.first.first != polygonRing.last.first ||
               polygonRing.first.last != polygonRing.last.last)) {
@@ -554,24 +555,20 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       }
 
       Map<String, dynamic> farmData = {
-        "address": farmAddressController.text, // Assuming farmer's address is the farm address
-        "ward_id": selectedWard?.pk, // Assuming farm is in the farmer's ward
-        "size_in_ha": estimatedHectaresOfLand, // Assuming this is for the current farm
-        "ownership_type": "Owned", // Placeholder - this needs to be captured if required
-        "longitude": currentFarmLocationCoordinates.first.longitude, // Representative point
-        "latitude": currentFarmLocationCoordinates.first.latitude,   // Representative point
+        "address": farmAddressController.text,
+        "ward_id": selectedWard?.pk,
+        "size_in_ha": estimatedHectaresOfLand,
+        "ownership_type": "Owned",
+        "longitude": currentFarmLocationCoordinates.first.longitude,
+        "latitude": currentFarmLocationCoordinates.first.latitude,
         "polygon": {
-          "coordinates": [polygonRing] // GeoJSON format: Array of rings
-        }
+          "coordinates": [polygonRing],
+        },
       };
       farmsPayload.add(farmData);
     }
 
-    // Assuming your Farmer model has a field `farms` or `farmLand` that maps to "farms" in JSON
-    farmer.farms = farmsPayload; // Or farmer.farmLand = farmsPayload;
-    // --- End of Add Farm Coordinates Data ---
-
-
+    farmer.farms = farmsPayload;
 
     GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
   }

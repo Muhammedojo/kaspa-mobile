@@ -15,6 +15,8 @@ import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/product/cubit.dart';
+import '../bloc/create_farmer/create_farmer_cubit.dart';
+import '../bloc/create_farmer/create_farmer_state.dart';
 import '../contract/register_farmer.dart';
 import '../widget/points.dart';
 
@@ -28,7 +30,32 @@ class RegisterFarmerView extends StatelessWidget
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      body: _body(context),
+      body: BlocListener<CreateFarmerCubit, CreateFarmerState>(
+        listener: (context, state) {
+          if (state is CreateFarmerLoading) {
+            Utils.showLoading(context);
+          } else if (state is CreateFarmerSuccess) {
+            Utils.hideLoading(context);
+            controller.clearScreen();
+            Utils.showToastSuccess(
+              context,
+              'farmer_registered_successfully'
+                  .tr(),
+              'Click to continue', 
+              () {
+                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
+              },
+            );
+          } else if (state is CreateFarmerFailure) {
+            Utils.hideLoading(context);
+            Utils.showToastError(context, state.error.toString(), '', () {});
+          }
+        },
+        child: _body(context),
+      ),
+
+
     );
   }
 
@@ -47,7 +74,7 @@ class RegisterFarmerView extends StatelessWidget
             ),
             Positioned.fill(
               child: Column(
-                children: [Utils.customAppBar(context, 'register_farmer')],
+                children: [Utils.customAppBar(context, 'register_farmer',false,(){})],
               ),
             ),
             Positioned.fill(
@@ -89,7 +116,6 @@ class RegisterFarmerView extends StatelessWidget
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                    
                           'name'.toText(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -408,6 +434,7 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
+                         
                           80.verticalSpace,
                         ],
                       ),
@@ -831,7 +858,7 @@ class RegisterFarmerView extends StatelessWidget
                           ),
 
                           16.verticalSpace,
-                                Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               'farm'.toText(
@@ -857,7 +884,7 @@ class RegisterFarmerView extends StatelessWidget
                                     : InkWell(
                                       onTap:
                                           controller.isFetchingLocation
-                                              ? null 
+                                              ? null
                                               : () => controller
                                                   .onAddFarmLocation(context),
                                       child: Icon(
@@ -868,54 +895,63 @@ class RegisterFarmerView extends StatelessWidget
                             ],
                           ),
                           5.verticalSpace,
-                        controller.currentFarmLocationCoordinates.isEmpty
+                          controller.currentFarmLocationCoordinates.isEmpty
                               ? controller.isFetchingLocation
                                   ? Center(
-                                      child: Padding(
-                                      padding: REdgeInsets.symmetric(vertical: 50.0),
-                                      child: CircularProgressIndicator(color: AppColors.colorPrimary),
-                                    ))
+                                    child: Padding(
+                                      padding: REdgeInsets.symmetric(
+                                        vertical: 50.0,
+                                      ),
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.colorPrimary,
+                                      ),
+                                    ),
+                                  )
                                   : InkWell(
-                                      onTap: controller.isFetchingLocation
-                                          ? null 
-                                          : () => controller.onAddFarmLocation(context),
-                                      child: DottedBorder(
-                                        color: AppColors.primaryGreen,
-                                        radius: Radius.circular(8.r),
-                                        strokeWidth: 2,
-                                        dashPattern: const [10, 6],
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primaryGreen.withAlpha(
-                                              (0.1 * 255).toInt(),
-                                            ),
-                                            borderRadius: BorderRadius.circular(8.r),
+                                    onTap:
+                                        controller.isFetchingLocation
+                                            ? null
+                                            : () => controller
+                                                .onAddFarmLocation(context),
+                                    child: DottedBorder(
+                                      color: AppColors.primaryGreen,
+                                      radius: Radius.circular(8.r),
+                                      strokeWidth: 2,
+                                      dashPattern: const [10, 6],
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryGreen
+                                              .withAlpha((0.1 * 255).toInt()),
+                                          borderRadius: BorderRadius.circular(
+                                            8.r,
                                           ),
-                                          child: Padding(
-                                            padding: REdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  'assets/vectors/location.svg',
-                                                  height: 50.sp,
-                                                  width: 50.sp,
+                                        ),
+                                        child: Padding(
+                                          padding: REdgeInsets.symmetric(
+                                            vertical: 20.0,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/vectors/location.svg',
+                                                height: 50.sp,
+                                                width: 50.sp,
+                                              ),
+                                              Center(
+                                                child: 'Add Farm'.toText(
+                                                  fontSize: 14,
+                                                  translate: false,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: AppColors.colorPrimary,
                                                 ),
-                                                Center(
-                                                  child: 'Add Farm'.toText(
-                                                    fontSize: 14,
-                                                    translate: false,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: AppColors.colorPrimary,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ) : ListView.builder(
+                                    ),
+                                  )
+                              : ListView.builder(
                                 itemCount:
                                     controller
                                         .currentFarmLocationCoordinates
@@ -1033,7 +1069,10 @@ class RegisterFarmerView extends StatelessWidget
                                 width: 150.sp,
                                 height: 58.sp,
                                 child: ButtonWidget(
-                                  label: 'next',
+                                  label:
+                                      controller.currentStep == 4
+                                          ? 'submit'.tr()
+                                          : 'next'.tr(),
                                   onPressed: () => controller.next(context),
                                 ),
                               ),

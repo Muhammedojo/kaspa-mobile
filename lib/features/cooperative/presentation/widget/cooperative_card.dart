@@ -16,7 +16,8 @@ class CooperativeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return  InkWell(
       onTap: onTap,
-      child: CardContainerWidget(child: Row(
+      child: CardContainerWidget(child:
+       Row(
         children: [
          SvgPicture.asset('assets/vectors/coops.svg'),
          8.horizontalSpace,
@@ -31,5 +32,6 @@ class CooperativeCard extends StatelessWidget {
          'verified'.toText(fontSize: 12,fontWeight: FontWeight.w400,color: AppColors.colorPrimary,translate: false)
         ],
       )));
+  
   }
 }

@@ -19,6 +19,7 @@ class _CooperativeDetailsScreenState extends State<CooperativeDetailsScreen>
   @override
   void initState() {
     super.initState();
+    cooperative = widget.cooperative;
     view = CooperativeDetailsView(controller: this);
   }
 
@@ -31,4 +32,7 @@ class _CooperativeDetailsScreenState extends State<CooperativeDetailsScreen>
   Widget build(BuildContext context) {
     return view.build(context);
   }
+
+  @override
+  Cooperative cooperative = Cooperative();
 }

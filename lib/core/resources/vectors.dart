@@ -15,4 +15,6 @@ class AppIcon {
   static const String location = 'assets/vectors/location.svg';
   static const String addFarmer = 'assets/vectors/addFarmer.svg';
   static const String pop = 'assets/vectors/popIcon.svg';
+  static const String more = 'assets/vectors/moreOption.svg';
+  
 }

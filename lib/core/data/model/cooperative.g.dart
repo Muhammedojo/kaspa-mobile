@@ -68,25 +68,37 @@ const CooperativeSchema = CollectionSchema(
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
+    r'lga': PropertySchema(
       id: 10,
+      name: r'lga',
+      type: IsarType.object,
+      target: r'LgaData',
+    ),
+    r'name': PropertySchema(
+      id: 11,
       name: r'name',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'pk',
       type: IsarType.long,
     ),
     r'secretary': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'secretary',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'updated',
       type: IsarType.string,
+    ),
+    r'ward': PropertySchema(
+      id: 15,
+      name: r'ward',
+      type: IsarType.object,
+      target: r'WardData',
     )
   },
   estimateSize: _cooperativeEstimateSize,
@@ -149,7 +161,11 @@ const CooperativeSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {r'Certificate': CertificateSchema},
+  embeddedSchemas: {
+    r'LgaData': LgaDataSchema,
+    r'WardData': WardDataSchema,
+    r'Certificate': CertificateSchema
+  },
   getId: _cooperativeGetId,
   getLinks: _cooperativeGetLinks,
   attach: _cooperativeAttach,
@@ -213,6 +229,13 @@ int _cooperativeEstimateSize(
     }
   }
   {
+    final value = object.lga;
+    if (value != null) {
+      bytesCount += 3 +
+          LgaDataSchema.estimateSize(value, allOffsets[LgaData]!, allOffsets);
+    }
+  }
+  {
     final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -228,6 +251,13 @@ int _cooperativeEstimateSize(
     final value = object.updated;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.ward;
+    if (value != null) {
+      bytesCount += 3 +
+          WardDataSchema.estimateSize(value, allOffsets[WardData]!, allOffsets);
     }
   }
   return bytesCount;
@@ -254,10 +284,22 @@ void _cooperativeSerialize(
   writer.writeBool(offsets[7], object.hasSynced);
   writer.writeString(offsets[8], object.head);
   writer.writeString(offsets[9], object.lastPulledTime);
-  writer.writeString(offsets[10], object.name);
-  writer.writeLong(offsets[11], object.pk);
-  writer.writeString(offsets[12], object.secretary);
-  writer.writeString(offsets[13], object.updated);
+  writer.writeObject<LgaData>(
+    offsets[10],
+    allOffsets,
+    LgaDataSchema.serialize,
+    object.lga,
+  );
+  writer.writeString(offsets[11], object.name);
+  writer.writeLong(offsets[12], object.pk);
+  writer.writeString(offsets[13], object.secretary);
+  writer.writeString(offsets[14], object.updated);
+  writer.writeObject<WardData>(
+    offsets[15],
+    allOffsets,
+    WardDataSchema.serialize,
+    object.ward,
+  );
 }
 
 Cooperative _cooperativeDeserialize(
@@ -282,10 +324,20 @@ Cooperative _cooperativeDeserialize(
   object.head = reader.readStringOrNull(offsets[8]);
   object.id = id;
   object.lastPulledTime = reader.readStringOrNull(offsets[9]);
-  object.name = reader.readStringOrNull(offsets[10]);
-  object.pk = reader.readLong(offsets[11]);
-  object.secretary = reader.readStringOrNull(offsets[12]);
-  object.updated = reader.readStringOrNull(offsets[13]);
+  object.lga = reader.readObjectOrNull<LgaData>(
+    offsets[10],
+    LgaDataSchema.deserialize,
+    allOffsets,
+  );
+  object.name = reader.readStringOrNull(offsets[11]);
+  object.pk = reader.readLong(offsets[12]);
+  object.secretary = reader.readStringOrNull(offsets[13]);
+  object.updated = reader.readStringOrNull(offsets[14]);
+  object.ward = reader.readObjectOrNull<WardData>(
+    offsets[15],
+    WardDataSchema.deserialize,
+    allOffsets,
+  );
   return object;
 }
 
@@ -321,13 +373,25 @@ P _cooperativeDeserializeProp<P>(
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectOrNull<LgaData>(
+        offset,
+        LgaDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 11:
-      return (reader.readLong(offset)) as P;
-    case 12:
       return (reader.readStringOrNull(offset)) as P;
+    case 12:
+      return (reader.readLong(offset)) as P;
     case 13:
       return (reader.readStringOrNull(offset)) as P;
+    case 14:
+      return (reader.readStringOrNull(offset)) as P;
+    case 15:
+      return (reader.readObjectOrNull<WardData>(
+        offset,
+        WardDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -2083,6 +2147,22 @@ extension CooperativeQueryFilter
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> lgaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lga',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> lgaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lga',
+      ));
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2589,6 +2669,23 @@ extension CooperativeQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> wardIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'ward',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      wardIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'ward',
+      ));
+    });
+  }
 }
 
 extension CooperativeQueryObject
@@ -2597,6 +2694,20 @@ extension CooperativeQueryObject
       FilterQuery<Certificate> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'certificate');
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> lga(
+      FilterQuery<LgaData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'lga');
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> ward(
+      FilterQuery<WardData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'ward');
     });
   }
 }
@@ -3115,6 +3226,12 @@ extension CooperativeQueryProperty
     });
   }
 
+  QueryBuilder<Cooperative, LgaData?, QQueryOperations> lgaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lga');
+    });
+  }
+
   QueryBuilder<Cooperative, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
@@ -3136,6 +3253,12 @@ extension CooperativeQueryProperty
   QueryBuilder<Cooperative, String?, QQueryOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updated');
+    });
+  }
+
+  QueryBuilder<Cooperative, WardData?, QQueryOperations> wardProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ward');
     });
   }
 }

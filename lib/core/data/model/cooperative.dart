@@ -2,7 +2,9 @@ import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/certificate.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import '../../utils/const.dart';
+import 'insight.dart';
 import 'lga.dart';
+import 'ward.dart';
 
 part 'cooperative.g.dart';
 
@@ -18,9 +20,10 @@ class Cooperative extends GeneralModel {
   String? code = "";
   String? secretary = "";
 
-  @ignore
-  Lga? lga;
-  
+  LgaData? lga;
+
+  WardData? ward;
+
   String? dateOfIncorporation = "";
 
   Certificate? certificate;
@@ -39,9 +42,13 @@ Cooperative _$CooperativeFromJson(Map<String, dynamic> json) {
   obj.pk = json[KEY_PK];
   obj.name = json[KEY_NAME];
   if (json.containsKey(KEY_LGA) && json[KEY_LGA] != null) {
-    obj.lga = Lga.fromJson(json[KEY_LGA]);
+    obj.lga = LgaData.fromJson(json[KEY_LGA]);
   }
-  
+
+  if (json.containsKey(KEY_WARD) && json[KEY_WARD] != null) {
+    obj.ward = WardData.fromJson(json[KEY_WARD]);
+  }
+
   obj.head = json[KEY_HEAD];
   obj.secretary = json[KEY_SECRETARY];
   obj.dateOfIncorporation = json[KEY_DATE_OF_INCORPORATION];

@@ -6,6 +6,7 @@ import '../../../../../core/api/api.dart';
 import '../../../../../core/api/exceptions/api_exception.dart';
 import '../../../../../core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/data/model/market.dart';
+import '../../../../../core/data/model/market_data.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../repository/home_repository_contract.dart';
@@ -102,26 +103,47 @@ class MarketCubit extends Cubit<MarketState> {
     try {
       emit(MarketLoading());
       final response = await repository.createMarket(data);
-      response.fold((l) => emit(MarketFailure(l)), (r) async {
-        GetIt.I.get<ApiRequestBloc>().add(
-          ApiRequestTriggered(apiRequestList: [marketListEndpoint]),
-        );
-        emit(MarketLoaded([]));
+
+      response.fold((failure) => emit(MarketFailure(failure)), (
+        apiResponse,
+      ) async {
+        if (apiResponse.data != null) {
+          emit(CreateMarketSuccess(apiResponse.data!));
+
+          GetIt.I.get<ApiRequestBloc>().add(
+            ApiRequestTriggered(apiRequestList: [marketListEndpoint]),
+          );
+        } else {
+          emit(
+            MarketFailure(
+              UnknownFailure(message: "Market creation returned no data"),
+            ),
+          );
+        }
       });
     } on Error catch (e) {
       emit(MarketFailure(UnknownFailure(message: e.toString())));
     }
   }
 
-  addMarketPrice(Market data) async {
+  addMarketPrice(MarketData data) async {
     try {
       emit(MarketLoading());
       final response = await repository.createMarketPrice(data);
       response.fold((l) => emit(MarketFailure(l)), (r) async {
-        GetIt.I.get<ApiRequestBloc>().add(
-          ApiRequestTriggered(apiRequestList: [marketPriceListEndpoint]),
-        );
-        emit(CreateMarketSuccess());
+        if (r.data != null) {
+          emit(LogMarketPriceSuccess(r.data!));
+
+          GetIt.I.get<ApiRequestBloc>().add(
+            ApiRequestTriggered(apiRequestList: [marketPriceListEndpoint]),
+          );
+        } else {
+          emit(
+            MarketFailure(
+              UnknownFailure(message: "Market price creation returned no data"),
+            ),
+          );
+        }
       });
     } on Error catch (e) {
       emit(MarketFailure(UnknownFailure(message: e.toString())));

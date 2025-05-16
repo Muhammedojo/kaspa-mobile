@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import '../data/model/forgot_password.dart';
+import '../data/model/insight.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
@@ -59,6 +60,10 @@ abstract class ApiServices {
     String? endpoint,
   );
 
+    Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList(
+    String? endpoint,
+  );
+
   Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList(
     String? endpoint,
   );
@@ -75,5 +80,5 @@ abstract class ApiServices {
 
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
 
-  Future<Either<Failure, ApiResponse<Market>>> createMarketPrice(Market data);
+  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(MarketData data);
 }

@@ -17,80 +17,143 @@ const FarmerSchema = CollectionSchema(
   name: r'Farmer',
   id: 6642196998099944333,
   properties: {
-    r'address': PropertySchema(
+    r'accountName': PropertySchema(
       id: 0,
+      name: r'accountName',
+      type: IsarType.string,
+    ),
+    r'accountNumber': PropertySchema(
+      id: 1,
+      name: r'accountNumber',
+      type: IsarType.string,
+    ),
+    r'address': PropertySchema(
+      id: 2,
       name: r'address',
       type: IsarType.string,
     ),
     r'age': PropertySchema(
-      id: 1,
+      id: 3,
       name: r'age',
       type: IsarType.string,
     ),
+    r'bankId': PropertySchema(
+      id: 4,
+      name: r'bankId',
+      type: IsarType.long,
+    ),
     r'bvn': PropertySchema(
-      id: 2,
+      id: 5,
       name: r'bvn',
       type: IsarType.string,
     ),
+    r'cooperative': PropertySchema(
+      id: 6,
+      name: r'cooperative',
+      type: IsarType.object,
+      target: r'CooperativeData',
+    ),
+    r'cooperativeCode': PropertySchema(
+      id: 7,
+      name: r'cooperativeCode',
+      type: IsarType.string,
+    ),
     r'crop': PropertySchema(
-      id: 3,
+      id: 8,
       name: r'crop',
       type: IsarType.longList,
     ),
     r'firstName': PropertySchema(
-      id: 4,
+      id: 9,
       name: r'firstName',
       type: IsarType.string,
     ),
     r'folioId': PropertySchema(
-      id: 5,
+      id: 10,
       name: r'folioId',
       type: IsarType.string,
     ),
     r'gender': PropertySchema(
-      id: 6,
+      id: 11,
       name: r'gender',
       type: IsarType.string,
     ),
     r'lastName': PropertySchema(
-      id: 7,
+      id: 12,
       name: r'lastName',
       type: IsarType.string,
     ),
+    r'lga': PropertySchema(
+      id: 13,
+      name: r'lga',
+      type: IsarType.object,
+      target: r'LgaData',
+    ),
     r'livestock': PropertySchema(
-      id: 8,
+      id: 14,
       name: r'livestock',
       type: IsarType.longList,
     ),
     r'nin': PropertySchema(
-      id: 9,
+      id: 15,
       name: r'nin',
       type: IsarType.string,
     ),
+    r'nokAddress': PropertySchema(
+      id: 16,
+      name: r'nokAddress',
+      type: IsarType.string,
+    ),
+    r'nokName': PropertySchema(
+      id: 17,
+      name: r'nokName',
+      type: IsarType.string,
+    ),
+    r'nokPhoneNumber': PropertySchema(
+      id: 18,
+      name: r'nokPhoneNumber',
+      type: IsarType.string,
+    ),
+    r'nokRelationship': PropertySchema(
+      id: 19,
+      name: r'nokRelationship',
+      type: IsarType.string,
+    ),
     r'otherNames': PropertySchema(
-      id: 10,
+      id: 20,
       name: r'otherNames',
       type: IsarType.string,
     ),
     r'phoneNumber': PropertySchema(
-      id: 11,
+      id: 21,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 12,
+      id: 22,
       name: r'pk',
       type: IsarType.long,
     ),
     r'registrationDate': PropertySchema(
-      id: 13,
+      id: 23,
       name: r'registrationDate',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 14,
+      id: 24,
       name: r'title',
       type: IsarType.string,
+    ),
+    r'ward': PropertySchema(
+      id: 25,
+      name: r'ward',
+      type: IsarType.object,
+      target: r'WardData',
+    ),
+    r'wardId': PropertySchema(
+      id: 26,
+      name: r'wardId',
+      type: IsarType.long,
     )
   },
   estimateSize: _farmerEstimateSize,
@@ -114,7 +177,11 @@ const FarmerSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {
+    r'CooperativeData': CooperativeDataSchema,
+    r'LgaData': LgaDataSchema,
+    r'WardData': WardDataSchema
+  },
   getId: _farmerGetId,
   getLinks: _farmerGetLinks,
   attach: _farmerAttach,
@@ -127,6 +194,18 @@ int _farmerEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.accountName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.accountNumber;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.address;
     if (value != null) {
@@ -141,6 +220,20 @@ int _farmerEstimateSize(
   }
   {
     final value = object.bvn;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.cooperative;
+    if (value != null) {
+      bytesCount += 3 +
+          CooperativeDataSchema.estimateSize(
+              value, allOffsets[CooperativeData]!, allOffsets);
+    }
+  }
+  {
+    final value = object.cooperativeCode;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -176,6 +269,13 @@ int _farmerEstimateSize(
     }
   }
   {
+    final value = object.lga;
+    if (value != null) {
+      bytesCount += 3 +
+          LgaDataSchema.estimateSize(value, allOffsets[LgaData]!, allOffsets);
+    }
+  }
+  {
     final value = object.livestock;
     if (value != null) {
       bytesCount += 3 + value.length * 8;
@@ -183,6 +283,30 @@ int _farmerEstimateSize(
   }
   {
     final value = object.nin;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.nokAddress;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.nokName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.nokPhoneNumber;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.nokRelationship;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -211,6 +335,13 @@ int _farmerEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.ward;
+    if (value != null) {
+      bytesCount += 3 +
+          WardDataSchema.estimateSize(value, allOffsets[WardData]!, allOffsets);
+    }
+  }
   return bytesCount;
 }
 
@@ -220,21 +351,48 @@ void _farmerSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.address);
-  writer.writeString(offsets[1], object.age);
-  writer.writeString(offsets[2], object.bvn);
-  writer.writeLongList(offsets[3], object.crop);
-  writer.writeString(offsets[4], object.firstName);
-  writer.writeString(offsets[5], object.folioId);
-  writer.writeString(offsets[6], object.gender);
-  writer.writeString(offsets[7], object.lastName);
-  writer.writeLongList(offsets[8], object.livestock);
-  writer.writeString(offsets[9], object.nin);
-  writer.writeString(offsets[10], object.otherNames);
-  writer.writeString(offsets[11], object.phoneNumber);
-  writer.writeLong(offsets[12], object.pk);
-  writer.writeString(offsets[13], object.registrationDate);
-  writer.writeString(offsets[14], object.title);
+  writer.writeString(offsets[0], object.accountName);
+  writer.writeString(offsets[1], object.accountNumber);
+  writer.writeString(offsets[2], object.address);
+  writer.writeString(offsets[3], object.age);
+  writer.writeLong(offsets[4], object.bankId);
+  writer.writeString(offsets[5], object.bvn);
+  writer.writeObject<CooperativeData>(
+    offsets[6],
+    allOffsets,
+    CooperativeDataSchema.serialize,
+    object.cooperative,
+  );
+  writer.writeString(offsets[7], object.cooperativeCode);
+  writer.writeLongList(offsets[8], object.crop);
+  writer.writeString(offsets[9], object.firstName);
+  writer.writeString(offsets[10], object.folioId);
+  writer.writeString(offsets[11], object.gender);
+  writer.writeString(offsets[12], object.lastName);
+  writer.writeObject<LgaData>(
+    offsets[13],
+    allOffsets,
+    LgaDataSchema.serialize,
+    object.lga,
+  );
+  writer.writeLongList(offsets[14], object.livestock);
+  writer.writeString(offsets[15], object.nin);
+  writer.writeString(offsets[16], object.nokAddress);
+  writer.writeString(offsets[17], object.nokName);
+  writer.writeString(offsets[18], object.nokPhoneNumber);
+  writer.writeString(offsets[19], object.nokRelationship);
+  writer.writeString(offsets[20], object.otherNames);
+  writer.writeString(offsets[21], object.phoneNumber);
+  writer.writeLong(offsets[22], object.pk);
+  writer.writeString(offsets[23], object.registrationDate);
+  writer.writeString(offsets[24], object.title);
+  writer.writeObject<WardData>(
+    offsets[25],
+    allOffsets,
+    WardDataSchema.serialize,
+    object.ward,
+  );
+  writer.writeLong(offsets[26], object.wardId);
 }
 
 Farmer _farmerDeserialize(
@@ -244,22 +402,46 @@ Farmer _farmerDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Farmer();
-  object.address = reader.readStringOrNull(offsets[0]);
-  object.age = reader.readStringOrNull(offsets[1]);
-  object.bvn = reader.readStringOrNull(offsets[2]);
-  object.crop = reader.readLongList(offsets[3]);
-  object.firstName = reader.readStringOrNull(offsets[4]);
-  object.folioId = reader.readStringOrNull(offsets[5]);
-  object.gender = reader.readStringOrNull(offsets[6]);
+  object.accountName = reader.readStringOrNull(offsets[0]);
+  object.accountNumber = reader.readStringOrNull(offsets[1]);
+  object.address = reader.readStringOrNull(offsets[2]);
+  object.age = reader.readStringOrNull(offsets[3]);
+  object.bankId = reader.readLongOrNull(offsets[4]);
+  object.bvn = reader.readStringOrNull(offsets[5]);
+  object.cooperative = reader.readObjectOrNull<CooperativeData>(
+    offsets[6],
+    CooperativeDataSchema.deserialize,
+    allOffsets,
+  );
+  object.cooperativeCode = reader.readStringOrNull(offsets[7]);
+  object.crop = reader.readLongList(offsets[8]);
+  object.firstName = reader.readStringOrNull(offsets[9]);
+  object.folioId = reader.readStringOrNull(offsets[10]);
+  object.gender = reader.readStringOrNull(offsets[11]);
   object.id = id;
-  object.lastName = reader.readStringOrNull(offsets[7]);
-  object.livestock = reader.readLongList(offsets[8]);
-  object.nin = reader.readStringOrNull(offsets[9]);
-  object.otherNames = reader.readStringOrNull(offsets[10]);
-  object.phoneNumber = reader.readStringOrNull(offsets[11]);
-  object.pk = reader.readLong(offsets[12]);
-  object.registrationDate = reader.readStringOrNull(offsets[13]);
-  object.title = reader.readStringOrNull(offsets[14]);
+  object.lastName = reader.readStringOrNull(offsets[12]);
+  object.lga = reader.readObjectOrNull<LgaData>(
+    offsets[13],
+    LgaDataSchema.deserialize,
+    allOffsets,
+  );
+  object.livestock = reader.readLongList(offsets[14]);
+  object.nin = reader.readStringOrNull(offsets[15]);
+  object.nokAddress = reader.readStringOrNull(offsets[16]);
+  object.nokName = reader.readStringOrNull(offsets[17]);
+  object.nokPhoneNumber = reader.readStringOrNull(offsets[18]);
+  object.nokRelationship = reader.readStringOrNull(offsets[19]);
+  object.otherNames = reader.readStringOrNull(offsets[20]);
+  object.phoneNumber = reader.readStringOrNull(offsets[21]);
+  object.pk = reader.readLong(offsets[22]);
+  object.registrationDate = reader.readStringOrNull(offsets[23]);
+  object.title = reader.readStringOrNull(offsets[24]);
+  object.ward = reader.readObjectOrNull<WardData>(
+    offsets[25],
+    WardDataSchema.deserialize,
+    allOffsets,
+  );
+  object.wardId = reader.readLongOrNull(offsets[26]);
   return object;
 }
 
@@ -277,13 +459,17 @@ P _farmerDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readLongList(offset)) as P;
-    case 4:
       return (reader.readStringOrNull(offset)) as P;
+    case 4:
+      return (reader.readLongOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectOrNull<CooperativeData>(
+        offset,
+        CooperativeDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
@@ -295,11 +481,43 @@ P _farmerDeserializeProp<P>(
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 13:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectOrNull<LgaData>(
+        offset,
+        LgaDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 14:
+      return (reader.readLongList(offset)) as P;
+    case 15:
       return (reader.readStringOrNull(offset)) as P;
+    case 16:
+      return (reader.readStringOrNull(offset)) as P;
+    case 17:
+      return (reader.readStringOrNull(offset)) as P;
+    case 18:
+      return (reader.readStringOrNull(offset)) as P;
+    case 19:
+      return (reader.readStringOrNull(offset)) as P;
+    case 20:
+      return (reader.readStringOrNull(offset)) as P;
+    case 21:
+      return (reader.readStringOrNull(offset)) as P;
+    case 22:
+      return (reader.readLong(offset)) as P;
+    case 23:
+      return (reader.readStringOrNull(offset)) as P;
+    case 24:
+      return (reader.readStringOrNull(offset)) as P;
+    case 25:
+      return (reader.readObjectOrNull<WardData>(
+        offset,
+        WardDataSchema.deserialize,
+        allOffsets,
+      )) as P;
+    case 26:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -543,6 +761,299 @@ extension FarmerQueryWhere on QueryBuilder<Farmer, Farmer, QWhereClause> {
 }
 
 extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'accountName',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'accountName',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'accountName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'accountName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'accountName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'accountName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'accountName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'accountName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'accountName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'accountName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'accountName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'accountName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'accountNumber',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'accountNumber',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'accountNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'accountNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'accountNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'accountNumber',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'accountNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'accountNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'accountNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'accountNumber',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> accountNumberIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'accountNumber',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      accountNumberIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'accountNumber',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterFilterCondition> addressIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -833,6 +1344,75 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> bankIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'bankId',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> bankIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'bankId',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> bankIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'bankId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> bankIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'bankId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> bankIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'bankId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> bankIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'bankId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterFilterCondition> bvnIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -972,6 +1552,171 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'bvn',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'cooperative',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'cooperative',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'cooperativeCode',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      cooperativeCodeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'cooperativeCode',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cooperativeCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      cooperativeCodeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'cooperativeCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'cooperativeCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'cooperativeCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'cooperativeCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'cooperativeCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'cooperativeCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'cooperativeCode',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperativeCodeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cooperativeCode',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      cooperativeCodeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'cooperativeCode',
         value: '',
       ));
     });
@@ -1782,6 +2527,22 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> lgaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lga',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> lgaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lga',
+      ));
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterFilterCondition> livestockIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2076,6 +2837,595 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'nin',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nokAddress',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nokAddress',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokAddress',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nokAddress',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nokAddress',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nokAddress',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'nokAddress',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'nokAddress',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'nokAddress',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'nokAddress',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokAddress',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokAddressIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'nokAddress',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nokName',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nokName',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nokName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nokName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nokName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'nokName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'nokName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'nokName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'nokName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'nokName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nokPhoneNumber',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      nokPhoneNumberIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nokPhoneNumber',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nokPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nokPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nokPhoneNumber',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'nokPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'nokPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'nokPhoneNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'nokPhoneNumber',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokPhoneNumberIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokPhoneNumber',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      nokPhoneNumberIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'nokPhoneNumber',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nokRelationship',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      nokRelationshipIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nokRelationship',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokRelationship',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      nokRelationshipGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nokRelationship',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nokRelationship',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nokRelationship',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'nokRelationship',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'nokRelationship',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'nokRelationship',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'nokRelationship',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> nokRelationshipIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nokRelationship',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      nokRelationshipIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'nokRelationship',
         value: '',
       ));
     });
@@ -2721,13 +4071,143 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'ward',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'ward',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> wardIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'wardId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
-extension FarmerQueryObject on QueryBuilder<Farmer, Farmer, QFilterCondition> {}
+extension FarmerQueryObject on QueryBuilder<Farmer, Farmer, QFilterCondition> {
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> cooperative(
+      FilterQuery<CooperativeData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'cooperative');
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> lga(
+      FilterQuery<LgaData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'lga');
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> ward(
+      FilterQuery<WardData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'ward');
+    });
+  }
+}
 
 extension FarmerQueryLinks on QueryBuilder<Farmer, Farmer, QFilterCondition> {}
 
 extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByAccountName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByAccountNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByAccountNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountNumber', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByAccountNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountNumber', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByAddress() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'address', Sort.asc);
@@ -2752,6 +4232,18 @@ extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByBankId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bankId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByBankIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bankId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByBvn() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'bvn', Sort.asc);
@@ -2761,6 +4253,18 @@ extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
   QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByBvnDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'bvn', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByCooperativeCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cooperativeCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByCooperativeCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cooperativeCode', Sort.desc);
     });
   }
 
@@ -2824,6 +4328,54 @@ extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokAddress', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokAddress', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokPhoneNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokPhoneNumber', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokPhoneNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokPhoneNumber', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokRelationship() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokRelationship', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByNokRelationshipDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokRelationship', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByOtherNames() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'otherNames', Sort.asc);
@@ -2883,9 +4435,45 @@ extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
+    });
+  }
 }
 
 extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAccountName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAccountNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAccountNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountNumber', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAccountNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'accountNumber', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByAddress() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'address', Sort.asc);
@@ -2910,6 +4498,18 @@ extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByBankId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bankId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByBankIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bankId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByBvn() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'bvn', Sort.asc);
@@ -2919,6 +4519,18 @@ extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
   QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByBvnDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'bvn', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByCooperativeCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cooperativeCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByCooperativeCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cooperativeCode', Sort.desc);
     });
   }
 
@@ -2994,6 +4606,54 @@ extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokAddress', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokAddress', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokPhoneNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokPhoneNumber', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokPhoneNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokPhoneNumber', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokRelationship() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokRelationship', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByNokRelationshipDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nokRelationship', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByOtherNames() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'otherNames', Sort.asc);
@@ -3053,9 +4713,36 @@ extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
+    });
+  }
 }
 
 extension FarmerQueryWhereDistinct on QueryBuilder<Farmer, Farmer, QDistinct> {
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByAccountName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'accountName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByAccountNumber(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'accountNumber',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QDistinct> distinctByAddress(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -3070,10 +4757,24 @@ extension FarmerQueryWhereDistinct on QueryBuilder<Farmer, Farmer, QDistinct> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByBankId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'bankId');
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QDistinct> distinctByBvn(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'bvn', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByCooperativeCode(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'cooperativeCode',
+          caseSensitive: caseSensitive);
     });
   }
 
@@ -3124,6 +4825,36 @@ extension FarmerQueryWhereDistinct on QueryBuilder<Farmer, Farmer, QDistinct> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByNokAddress(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nokAddress', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByNokName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nokName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByNokPhoneNumber(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nokPhoneNumber',
+          caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByNokRelationship(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nokRelationship',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QDistinct> distinctByOtherNames(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -3158,12 +4889,30 @@ extension FarmerQueryWhereDistinct on QueryBuilder<Farmer, Farmer, QDistinct> {
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'wardId');
+    });
+  }
 }
 
 extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
   QueryBuilder<Farmer, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> accountNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'accountName');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> accountNumberProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'accountNumber');
     });
   }
 
@@ -3179,9 +4928,28 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Farmer, int?, QQueryOperations> bankIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'bankId');
+    });
+  }
+
   QueryBuilder<Farmer, String?, QQueryOperations> bvnProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'bvn');
+    });
+  }
+
+  QueryBuilder<Farmer, CooperativeData?, QQueryOperations>
+      cooperativeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'cooperative');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> cooperativeCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'cooperativeCode');
     });
   }
 
@@ -3215,6 +4983,12 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Farmer, LgaData?, QQueryOperations> lgaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lga');
+    });
+  }
+
   QueryBuilder<Farmer, List<int>?, QQueryOperations> livestockProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'livestock');
@@ -3224,6 +4998,30 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
   QueryBuilder<Farmer, String?, QQueryOperations> ninProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nin');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> nokAddressProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nokAddress');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> nokNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nokName');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> nokPhoneNumberProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nokPhoneNumber');
+    });
+  }
+
+  QueryBuilder<Farmer, String?, QQueryOperations> nokRelationshipProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nokRelationship');
     });
   }
 
@@ -3254,6 +5052,18 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
   QueryBuilder<Farmer, String?, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
+    });
+  }
+
+  QueryBuilder<Farmer, WardData?, QQueryOperations> wardProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ward');
+    });
+  }
+
+  QueryBuilder<Farmer, int?, QQueryOperations> wardIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'wardId');
     });
   }
 }
