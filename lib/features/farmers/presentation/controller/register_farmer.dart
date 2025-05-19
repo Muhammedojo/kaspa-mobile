@@ -119,6 +119,10 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   Crop? selectedCrop;
 
   @override
+  List<Product> selectedCropsList = [];
+
+
+  @override
   late ImagePicker picker;
 
   @override
@@ -220,7 +224,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   }
 
   @override
-  void onSelectBank(Bank newValue) {
+  void onSelectBank(Bank? newValue) {
     setState(() {
       selectedBank = newValue;
     });
@@ -317,7 +321,10 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   @override
   void onSelectLga(Lga? newValue) {
     setState(() {
-      selectedLga = newValue!;
+       if (selectedLga?.pk != newValue?.pk) {
+        selectedWard = null;
+      }
+      selectedLga = newValue;
     });
   }
 
@@ -329,16 +336,24 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   @override
   void onSelectLivestock(Product? newValue) {
     setState(() {
-      selectedLivestock = newValue!;
+      selectedLivestock = newValue;
     });
   }
 
   @override
   void onSelectCrops(Product? newValue) {
     setState(() {
-      selectedCrops = newValue!;
+      selectedCrops = newValue;
     });
   }
+
+  @override
+  void updateSelectedCrops(List<Product> crops) {
+    setState(() {
+      selectedCropsList = crops;
+    });
+  }
+
 
   @override
   void onGetFarmLocationCoordinates(
@@ -477,7 +492,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   @override
   void onSelectCrop(Crop? newValue) {
     setState(() {
-      selectedCrop = newValue!;
+      selectedCrop = newValue;
     });
   }
 
@@ -579,14 +594,14 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   @override
   void onSelectNokRelationship(String? newValue) {
     setState(() {
-      selectedNokRelationship = newValue!;
+      selectedNokRelationship = newValue;
     });
   }
 
   @override
   void onSelectWard(Ward? newValue) {
     setState(() {
-      selectedWard = newValue!;
+      selectedWard = newValue;
     });
   }
 }

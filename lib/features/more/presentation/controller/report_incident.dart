@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kaspa/core/data/model/lga.dart';
+import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/ward.dart';
-import '../../../home/presentation/bloc/market/cubit.dart';
 import '../contract/report_incident.dart';
 import '../view/report_incident.dart';
 
@@ -98,7 +96,7 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
         market.lgaId = selectedLga!.pk;
         market.wardId = selectedWard!.pk;
 
-        context.read<MarketCubit>().createMarket(market);
+      //  context.read<MarketCubit>().createMarket(market);
       }
     }
   }

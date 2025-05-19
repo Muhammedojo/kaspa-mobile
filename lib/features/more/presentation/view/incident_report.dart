@@ -7,6 +7,7 @@ import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/component/pages_bar.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/theme/colors.dart';
+import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/incident_report/incident_report_cubit.dart';
@@ -29,18 +30,18 @@ class IncidentReportView extends StatelessWidget
         onPressed: () => pushTo(ReportIncidentScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
       ),
-      body: _body(),
+      body: _body(context),
     );
   }
 
-  Widget _body() {
+  Widget _body(context) {
     return Container(
       decoration: Styles.colorComboDecoration(),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageBar(onTap: () {}),
+            Utils.customAppBar(context, 'incident_report', false, () {}),
             20.verticalSpace,
             Expanded(
               child: Padding(
@@ -53,20 +54,6 @@ class IncidentReportView extends StatelessWidget
                       color: AppColors.accentText,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                    ),
-                    SearchBarWidget(
-                      hint: 'search_for_an_incident_report',
-                      onTextChanged: (text) {
-                        controller.updateSearchStatus(
-                          text != null && text.isNotEmpty,
-                        );
-                        if (text != null && text.isNotEmpty) {
-                          controller.searchCooperative(text);
-                        }
-                      },
-                      searchController: controller.searchController,
-                      onClearSearch: () => controller.onClearSearch(),
-                      isSearching: controller.isSearching,
                     ),
                     16.verticalSpace,
                     Expanded(

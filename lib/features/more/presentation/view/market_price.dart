@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/utils/function.dart';
 import '../../../../features/more/presentation/controller/create_market_price.dart';
 import '../../../../core/component/search_bar_widget.dart';
 import '../../../../core/utils/extensions.dart';
@@ -29,18 +30,18 @@ class MarketPriceView extends StatelessWidget
         onPressed: () => pushTo(CreateMarketPriceScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
       ),
-      body: _body(),
+      body: _body(context),
     );
   }
 
-  Widget _body() {
+  Widget _body(context) {
     return Container(
       decoration: Styles.colorComboDecoration(),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageBar(onTap: () {}),
+            Utils.customAppBar(context, 'price_updates', false, () {}),
             20.verticalSpace,
             Expanded(
               child: Padding(
@@ -48,31 +49,13 @@ class MarketPriceView extends StatelessWidget
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    'cooperatives'.toText(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    2.verticalSpace,
-                    "Here’s a list of cooperatives on KASPA".toText(
+                    "Here’s a list of price updates".toText(
                       translate: false,
                       color: AppColors.accentText,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
-                    SearchBarWidget(
-                      hint: 'search_for_a_cooperative',
-                      onTextChanged: (text) {
-                        controller.updateSearchStatus(
-                          text != null && text.isNotEmpty,
-                        );
-                        if (text != null && text.isNotEmpty) {
-                          controller.searchCooperative(text);
-                        }
-                      },
-                      searchController: controller.searchController,
-                      onClearSearch: () => controller.onClearSearch(),
-                      isSearching: controller.isSearching,
-                    ),
+
                     16.verticalSpace,
                     Expanded(
                       child: BlocBuilder<MarketPriceCubit, MarketPriceState>(
@@ -83,7 +66,7 @@ class MarketPriceView extends StatelessWidget
                           if (state is MarketPriceLoaded) {
                             return state.marketPriceList.isEmpty
                                 ? ErrorWidgets(
-                                  message: 'market_price_list_empty',
+                                  message: 'market_price_empty',
                                 )
                                 : ListView.separated(
                                   itemCount: state.marketPriceList.length,

@@ -8,6 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/button.dart';
+import '../../../../core/data/model/lga.dart';
+import '../../../../core/data/model/product.dart';
+import '../../../../core/data/model/ward.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../../core/theme/colors.dart';
@@ -404,8 +407,8 @@ class RegisterFarmerView extends StatelessWidget
                                           );
                                         }).toList(),
                                     value: controller.selectedLga,
-                                    onChanged: (newValue) {
-                                      controller.onSelectLga(newValue!);
+                                    onChanged: (Lga? newValue) {
+                                      controller.onSelectLga(newValue);
                                     },
                                   );
                                 }
@@ -428,42 +431,68 @@ class RegisterFarmerView extends StatelessWidget
                             padding: REdgeInsets.only(top: 5.0),
                             child: BlocBuilder<WardCubit, WardState>(
                               builder: (context, state) {
+                                List<Ward> filteredWards = [];
+                                String hintText = 'choose_an_option'.tr();
+                                bool isDisabled = false;
                                 if (state is WardLoaded) {
-                                  return DropdownButtonFormField(
-                                    icon: 'arrowDown'.toSvg(),
-                                    style: Styles.x14dp_4A4A4A(14.0.sp),
-                                    decoration:
-                                        Styles.textFormFieldDecorationBorderWithBackground(
-                                          'choose_an_option'.tr(),
-                                          '',
-                                        ),
-
-                                    items:
+                                  if (controller.selectedLga == null) {
+                                    hintText = 'select_lga_first'.tr();
+                                    isDisabled = true;
+                                  } else {
+                                    filteredWards =
                                         state.dataList
                                             .where(
-                                              (e) =>
-                                                  controller.selectedLga!.pk ==
-                                                  e.pk,
-                                            )
-                                            .map((e) {
-                                              return DropdownMenuItem(
-                                                value: e,
-                                                child: (e.name!).toText(
-                                                  translate: false,
-                                                ),
-                                              );
-                                            })
-                                            .toList(),
-                                    value: controller.selectedWard,
-                                    onChanged: (newValue) {
-                                      controller.onSelectWard(newValue!);
-                                    },
-                                  );
+                                              (ward) =>
+                                                  ward.lga?.id ==
+                                                  controller.selectedLga!.pk,
+                                            ) 
+                                            .toList();
+                                    if (filteredWards.isEmpty) {
+                                      hintText = 'no_wards_available'.tr();
+                                      isDisabled = true;
+                                    }
+                                  }
+                                } else if (state is WardLoading) {
+                                  hintText = 'loading_wards'.tr();
+                                  isDisabled = true;
+                                } else {
+                                  // WardFailure or initial state
+                                  hintText = 'wards_not_loaded'.tr();
+                                  isDisabled = true;
                                 }
-                                return DropdownButtonFormField(
+                                final Ward? currentSelectedWard =
+                                    filteredWards.any(
+                                          (w) =>
+                                              w.pk ==
+                                              controller.selectedWard?.pk,
+                                        )
+                                        ? controller.selectedWard
+                                        : null;
+
+                                return DropdownButtonFormField<Ward>(
+                                  icon: 'arrowDown'.toSvg(),
                                   style: Styles.x14dp_4A4A4A(14.0.sp),
-                                  items: [],
-                                  onChanged: (_) {},
+                                  decoration:
+                                      Styles.textFormFieldDecorationBorderWithBackground(
+                                        hintText,
+                                        '',
+                                      ),
+                                  items:
+                                      filteredWards.map((e) {
+                                        return DropdownMenuItem<Ward>(
+                                          value: e,
+                                          child: (e.name ?? '').toText(
+                                            translate: false,
+                                          ),
+                                        );
+                                      }).toList(),
+                                  value: currentSelectedWard,
+                                  onChanged:
+                                      isDisabled
+                                          ? null
+                                          : (Ward? newValue) {
+                                            controller.onSelectWard(newValue);
+                                          },
                                 );
                               },
                             ),
@@ -595,7 +624,7 @@ class RegisterFarmerView extends StatelessWidget
                           Padding(
                             padding: REdgeInsets.only(top: 5.0),
                             child: DropdownButtonFormField<String>(
-                              validator: ValidationBuilder().required().build(),
+                              validator: ValidationBuilder().build(),
                               borderRadius: const BorderRadius.all(Radius.zero),
                               value: controller.selectedNokRelationship,
                               onChanged: (newValue) {
@@ -857,43 +886,81 @@ class RegisterFarmerView extends StatelessWidget
                           Padding(
                             padding: REdgeInsets.only(top: 5.0),
                             child: BlocBuilder<ProductCubit, ProductState>(
-                              builder: (context, state) {
-                                if (state is ProductLoaded) {
-                                  return DropdownButtonFormField(
-                                    icon: 'arrowDown'.toSvg(),
-                                    style: Styles.x14dp_4A4A4A(14.0.sp),
-                                    decoration:
-                                        Styles.textFormFieldDecorationBorderWithBackground(
-                                          'choose_an_option'.tr(),
-                                          '',
-                                        ),
-
-                                    items:
-                                        state.productList
-                                            .where(
-                                              (product) =>
-                                                  product.type == 'Crop',
-                                            )
-                                            .map((e) {
-                                              return DropdownMenuItem(
-                                                value: e,
-                                                child: (e.name ?? '').toText(
-                                                  translate: false,
-                                                ),
-                                              );
-                                            })
-                                            .toList(),
-                                    onChanged: (newValue) {
-                                      controller.onSelectCrops(newValue!);
-                                    },
+                              builder: (context, productState) {
+                                if (productState is ProductLoaded) {
+                                  return _buildCropSelector(
+                                    context,
+                                    productState,
                                   );
                                 }
-                                return DropdownButtonFormField(
-                                  style: Styles.x14dp_4A4A4A(14.0.sp),
-                                  items: [],
-                                  onChanged: (_) {},
+                                // Fallback for other states (e.g., loading, error)
+                                return Container(
+                                  width: double.infinity,
+                                  padding: REdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 16.0,
+                                  ),
+            //                       decoration: BoxDecoration( // Use BoxDecoration instead of InputDecoration
+            // color: AppColors.primaryBackground, // Assuming this is the background color from your style
+            // border: Border.all( // Assuming this is the border from your style
+            //   color: AppColors.accentText.withOpacity(0.3), // Adjust color based on your Styles definition
+            //   width: 1.0, // Adjust width based on your Styles definition
+            // ),
+            // borderRadius: BorderRadius.circular(8.r), // Adjust radius based on your Styles definition
+            
+            //                           ),
+                                  child: Text(
+                                    productState is ProductLoading
+                                        ? 'loading_crops'.tr()
+                                        : 'crops_not_available'.tr(),
+                                    style: Styles.x14dp_4A4A4A(
+                                      14.0.sp,
+                                    ).copyWith(
+                                      color: AppColors.accentText.withOpacity(
+                                        0.7,
+                                      ),
+                                    ),
+                                  ),
                                 );
                               },
+
+                              // builder: (context, state) {
+                              //   if (state is ProductLoaded) {
+                              //     return DropdownButtonFormField(
+                              //       icon: 'arrowDown'.toSvg(),
+                              //       style: Styles.x14dp_4A4A4A(14.0.sp),
+                              //       decoration:
+                              //           Styles.textFormFieldDecorationBorderWithBackground(
+                              //             'choose_an_option'.tr(),
+                              //             '',
+                              //           ),
+
+                              //       items:
+                              //           state.productList
+                              //               .where(
+                              //                 (product) =>
+                              //                     product.type == 'Crop',
+                              //               )
+                              //               .map((e) {
+                              //                 return DropdownMenuItem(
+                              //                   value: e,
+                              //                   child: (e.name ?? '').toText(
+                              //                     translate: false,
+                              //                   ),
+                              //                 );
+                              //               })
+                              //               .toList(),
+                              //       onChanged: (newValue) {
+                              //         controller.onSelectCrops(newValue!);
+                              //       },
+                              //     );
+                              //   }
+                              //   return DropdownButtonFormField(
+                              //     style: Styles.x14dp_4A4A4A(14.0.sp),
+                              //     items: [],
+                              //     onChanged: (_) {},
+                              //   );
+                              // },
                             ),
                           ),
 
@@ -947,7 +1014,8 @@ class RegisterFarmerView extends StatelessWidget
                                       ),
                                     ),
                                   )
-                                  : InkWell(
+                                  :
+                                   InkWell(
                                     onTap:
                                         controller.isFetchingLocation
                                             ? null
@@ -991,6 +1059,7 @@ class RegisterFarmerView extends StatelessWidget
                                       ),
                                     ),
                                   )
+                            
                               : ListView.builder(
                                 itemCount:
                                     controller
@@ -1128,6 +1197,147 @@ class RegisterFarmerView extends StatelessWidget
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCropSelector(BuildContext context, ProductLoaded productState) {
+    final availableCrops =
+        productState.productList.where((p) => p.type == 'Crop').toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: REdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          decoration: Styles.textFormFieldDecorationBorderWithBackground(
+            '',
+            '', // No hint text needed here
+            // isEnabled: false, // To give a form field appearance
+          ),
+          child:
+              controller.selectedCropsList.isEmpty
+                  ? Padding(
+                    padding: REdgeInsets.symmetric(
+                      vertical: 8.0,
+                    ), // Match DropdownButtonFormField's internal padding
+                    child: 'choose_an_option'.toText(
+                      color: AppColors.accentText.withOpacity(0.7),
+                    ),
+                  )
+                  : Wrap(
+                    spacing: 6.0,
+                    runSpacing: 6.0,
+                    children:
+                        controller.selectedCropsList.map((crop) {
+                          return Chip(
+                            label: Text(
+                              crop.name ?? 'Unknown Crop',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            onDeleted: () {
+                              final newList = List<Product>.from(
+                                controller.selectedCropsList,
+                              );
+                              newList.removeWhere((c) => c.pk == crop.pk);
+                              controller.updateSelectedCrops(newList);
+                            },
+                            deleteIconColor: AppColors.colorPrimary,
+                            backgroundColor: AppColors.primaryGreen.withOpacity(
+                              0.1,
+                            ),
+                            padding: REdgeInsets.all(4.0),
+                          );
+                        }).toList(),
+                  ),
+        ),
+        5.verticalSpace,
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {
+              _showMultiSelectCropDialog(
+                context,
+                availableCrops,
+                controller.selectedCropsList,
+                (newSelection) {
+                  controller.updateSelectedCrops(newSelection);
+                },
+              );
+            },
+            child: Text(
+              controller.selectedCropsList.isEmpty
+                  ? 'select_crops'.tr()
+                  : 'edit_selection'.tr(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showMultiSelectCropDialog(
+    BuildContext context,
+    List<Product> allCrops,
+    List<Product> initiallySelectedCrops,
+    Function(List<Product>) onSelectionConfirmed,
+  ) {
+    List<Product> tempSelectedCrops = List<Product>.from(
+      initiallySelectedCrops,
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setStateDialog) {
+            return AlertDialog(
+              title: Text('select_crops'.tr()),
+              content: Container(
+                width: double.maxFinite,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: allCrops.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final crop = allCrops[index];
+                    final bool isSelected = tempSelectedCrops.any(
+                      (selected) => selected.pk == crop.pk,
+                    );
+                    return CheckboxListTile(
+                      title: Text(crop.name ?? 'Unknown Crop'),
+                      value: isSelected,
+                      onChanged: (bool? value) {
+                        setStateDialog(() {
+                          if (value == true) {
+                            if (!isSelected) tempSelectedCrops.add(crop);
+                          } else {
+                            tempSelectedCrops.removeWhere(
+                              (selected) => selected.pk == crop.pk,
+                            );
+                          }
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('cancel'.tr()),
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                ),
+                TextButton(
+                  child: Text('ok'.tr()),
+                  onPressed: () {
+                    onSelectionConfirmed(tempSelectedCrops);
+                    Navigator.of(dialogContext).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

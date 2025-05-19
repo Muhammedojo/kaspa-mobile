@@ -34,7 +34,7 @@ class CreateFarmVisitView extends StatelessWidget
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Utils.customAppBar(context, 'log_farm_visit',false,(){}),
+                Utils.customAppBar(context, 'new_farm_visit',false,(){}),
                 25.verticalSpace,
                 'product'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(

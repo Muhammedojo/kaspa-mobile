@@ -17,13 +17,14 @@ abstract class RegisterFarmerControllerContract {
   late GlobalKey<FormState> formKey5;
 
   void onSelectGender(String? newValue);
-  void onSelectLga(Lga newValue);
-  void onSelectLivestock(Product livestock);
-  void onSelectCrops(Product crops);
-  void onSelectCrop(Crop crop);
-  void onSelectWard(Ward newValue);
+  void onSelectLga(Lga? newValue);
+  void onSelectLivestock(Product? livestock);
+  void onSelectCrops(Product? crops);
+  void updateSelectedCrops(List<Product> crops);
+  void onSelectCrop(Crop? crop);
+  void onSelectWard(Ward? newValue);
   void onSelectNokRelationship(String? newValue);
-  void onSelectBank(Bank newValue);
+  void onSelectBank(Bank? newValue);
   void removeCoordinatePoint(int position);
   void onAddFarmLocation(BuildContext context);
   bool get isFetchingLocation;
@@ -72,6 +73,8 @@ abstract class RegisterFarmerControllerContract {
   late FarmLocation currentFarmLocation;
   late ImagePicker picker;
   late List<Coordinates> currentFarmLocationCoordinates = [];
+
+  late List<Product> selectedCropsList = [];
 
   late int currentStep;
   late GlobalKey<FormState> formKey;

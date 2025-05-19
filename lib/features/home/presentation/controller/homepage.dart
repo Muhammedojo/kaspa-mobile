@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kaspa/features/more/presentation/controller/market_price.dart';
+import '../../../../features/more/presentation/controller/farm_visit.dart';
+import '../../../../../features/more/presentation/controller/incident_report.dart';
 import '../../../../core/navigation/navigator.dart';
-import 'package:kaspa/features/more/presentation/controller/create_market.dart';
-import 'package:kaspa/features/more/presentation/controller/create_market_price.dart';
+import '../../../../../features/more/presentation/controller/create_market_price.dart';
 import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/storage/istorage.dart';
 import '../../../auth/presentation/bloc/user/user_cubit.dart';
@@ -65,22 +67,22 @@ class _HomePageScreenState extends State<HomePageScreen>
 
   @override
   void registerFarmer() {
-    pushTo( RegisterFarmerScreen(), context);
+    pushTo(RegisterFarmerScreen(), context);
   }
 
   @override
   void farmVisit() {
-    pushTo( CreateMarketScreen(), context);
+    pushTo(FarmVisitScreen(), context);
   }
 
   @override
   void priceUpdate() {
-    pushTo( CreateMarketPriceScreen(), context);
+    pushTo(MarketPriceScreen(), context);
   }
 
   @override
   void report() {
-    pushTo( RegisterFarmerScreen(), context);
+    pushTo(IncidentReportScreen(), context);
   }
 
   @override

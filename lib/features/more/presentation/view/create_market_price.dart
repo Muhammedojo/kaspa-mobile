@@ -34,7 +34,7 @@ class CreateMarketPriceView extends StatelessWidget
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Utils.customAppBar(context, 'log_market_price',false,(){}),
+                Utils.customAppBar(context, 'new_price_update',false,(){}),
                 25.verticalSpace,
                 'product'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(

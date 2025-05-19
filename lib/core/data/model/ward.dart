@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import '../../utils/const.dart';
+import 'insight.dart';
 import 'lga.dart';
 
 part 'ward.g.dart';
@@ -14,8 +15,8 @@ class Ward extends GeneralModel {
 
   String? name = "";
 
-  @ignore
-  Lga? lga;
+ 
+  LgaData? lga;
 
   Ward();
 
@@ -29,9 +30,7 @@ Ward _$WardFromJson(Map<String, dynamic> json) {
 
   obj.pk = json[KEY_PK] ?? 0;
   obj.name = json[KEY_NAME];
-  if (json.containsKey(KEY_LGA) && json[KEY_LGA] != null) {
-    obj.lga = Lga.fromJson(json[KEY_LGA]);
-  }
+ obj.lga = json[KEY_LGA] != null ? LgaData.fromJson(json[KEY_LGA]) : null;
   obj.created = json[KEY_CREATED_AT];
   obj.updated = json[KEY_UPDATED_AT];
 
@@ -40,7 +39,6 @@ Ward _$WardFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$WardToJson(Ward obj) => <String, dynamic>{
   KEY_NAME: obj.name,
-  KEY_LGA: obj.lga?.toJson(),
   KEY_PK: obj.pk,
   KEY_CREATED_AT: obj.created,
   KEY_UPDATED_AT: obj.updated,
