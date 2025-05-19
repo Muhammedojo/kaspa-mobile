@@ -3,8 +3,6 @@ import 'package:kaspa/core/data/model/certificate.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import '../../utils/const.dart';
 import 'insight.dart';
-import 'lga.dart';
-import 'ward.dart';
 
 part 'cooperative.g.dart';
 

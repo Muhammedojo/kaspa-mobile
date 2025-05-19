@@ -1,6 +1,8 @@
 import 'package:fpdart/fpdart.dart';
+import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/forgot_password.dart';
+import '../data/model/incident_report.dart';
 import '../data/model/insight.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
@@ -32,6 +34,10 @@ abstract class ApiServices {
   );
 
   Future<Either<Failure, ApiResponse<List<Crop>>>> getCropList(
+    String? endpoint,
+  );
+
+  Future<Either<Failure, ApiResponse<List<CropCalendar>>>> getCropCalendarList(
     String? endpoint,
   );
 
@@ -69,6 +75,10 @@ abstract class ApiServices {
     String? endpoint,
   );
 
+    Future<Either<Failure, ApiResponse<List<IncidentReport>>>> getIncidentList(
+    String? endpoint,
+  );
+
   Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList(
     String? endpoint,
   );
@@ -86,4 +96,6 @@ abstract class ApiServices {
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
 
   Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(MarketData data);
+
+  Future<Either<Failure, ApiResponse<IncidentReport>>> logIncident(IncidentReport data);
 }

@@ -22,6 +22,8 @@ class GlobalVariables {
     "Aunty",
     "Son",
     "Daughter",
+    "Husband",
+    "Wife"
   ];
 
   static Set<String> selectedSyncItems = {};

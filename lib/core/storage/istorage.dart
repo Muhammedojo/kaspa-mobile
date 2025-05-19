@@ -1,8 +1,10 @@
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
+import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/farmer.dart';
+import '../data/model/incident_report.dart';
 import '../data/model/insight.dart';
 import '../data/model/last_request_time.dart';
 import '../data/model/lga.dart';
@@ -36,8 +38,9 @@ abstract class DatabaseStorage {
   Future<void> closeDb();
   Future<List<Bank>> getBank();
   Future<List<Crop>> getCrop();
+  Future<List<CropCalendar>> getCropCalendar();
   Future<List<Cooperative>> getCooperative();
-    Future<List<DashboardData>> getDashboard();
+  Future<List<DashboardData>> getDashboard();
   Future<List<Farmer>> getFarmer();
   Future<List<Lga>> getLga();
   Future<List<Product>> getProduct();
@@ -48,9 +51,13 @@ abstract class DatabaseStorage {
   Future<List<MarketData>> getMarketPrice();
   Future<List<Weather>> getWeather();
   Future<List<Insight>> getInsight();
+  Future<List<IncidentReport>> getIncident();
+
   Future<void> saveInsight(List<Insight> objectList);
+  Future<void> saveIncident(List<IncidentReport> objectList);
   Future<void> saveBank(List<Bank> objectList);
   Future<void> saveCrop(List<Crop> objectList);
+  Future<void> saveCropCalendar(List<CropCalendar> objectList);
   Future<void> saveCooperative(List<Cooperative> objectList);
   Future<void> saveDashboard(List<DashboardData> objectList);
   Future<void> saveFarmer(List<Farmer> objectList);

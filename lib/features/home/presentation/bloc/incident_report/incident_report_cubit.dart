@@ -1,48 +1,49 @@
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import '../../../../../core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/api/api.dart';
 import '../../../../../core/api/exceptions/api_exception.dart';
-import '../../../../../core/api/exceptions/contracts/failure.dart';
-import '../../../../../core/data/model/market.dart';
+import '../../../../../core/data/model/incident_report.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../repository/home_repository_contract.dart';
 import '../api_request/api_request_bloc.dart';
 import '../api_request/api_request_state.dart';
 
-part 'market_state.dart';
+part 'incident_report_state.dart';
 
-class MarketCubit extends Cubit<MarketState> {
+class IncidentCubit extends Cubit<IncidentState> {
   final IHomeRepository repository;
   final LocalStorage databaseManager;
-  MarketCubit({required this.repository, required this.databaseManager})
-    : super(MarketLoading());
+  IncidentCubit({required this.repository, required this.databaseManager})
+    : super(IncidentLoading());
 
   int currentPulledCount = 0;
 
-  loadMarket({String? url}) async {
+  loadIncident({String? url}) async {
     try {
-      emit(MarketLoading());
+      emit(IncidentLoading());
       final response =
           url != null && url.isNotEmpty
-              ? await repository.getMarketList(endpoint: url)
-              : await repository.getMarketList();
+              ? await repository.getIncidentList(endpoint: url)
+              : await repository.getIncidentList();
 
       final state =
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
-      if (state is ApiRequestStateCompleted) {
-        loadMarketsFromDb();
+            if (state is ApiRequestStateCompleted) {
+        loadIncidentsFromDb();
       } else {
         response.fold(
           (l) {
             GlobalVariables.rootNavigatorKey.currentContext!
                 .read<ApiRequestBloc>()
                 .add(ApiRequestCompleted());
-            loadMarketsFromDb();
+            loadIncidentsFromDb();
           },
           (r) async {
             currentPulledCount += r.data?.length ?? 0;
@@ -55,14 +56,14 @@ class MarketCubit extends Cubit<MarketState> {
                 .read<ApiRequestBloc>()
                 .add(
                   ApiRequestLoading(
-                    identifier: marketListEndpoint,
+                    identifier: incidentReportListEndpoint,
                     progress: progressPercent,
                   ),
                 );
 
-            saveMarketsToDb(r.data ?? []);
+            saveIncidentsToDb(r.data ?? []);
             if (r.nextUrl != null && (r.nextUrl ?? "").isNotEmpty) {
-              loadMarket(url: r.nextUrl);
+              loadIncident(url: r.nextUrl);
             } else {
               GlobalVariables.rootNavigatorKey.currentContext!
                   .read<ApiRequestBloc>()
@@ -75,55 +76,50 @@ class MarketCubit extends Cubit<MarketState> {
       GlobalVariables.rootNavigatorKey.currentContext!
           .read<ApiRequestBloc>()
           .add(ApiRequestCompleted());
-      loadMarketsFromDb();
+      loadIncidentsFromDb();
       debugPrint(e.toString());
     }
   }
 
-  loadMarketsFromDb() async {
+    loadIncidentsFromDb() async {
     try {
-      final response = await repository.getMarket();
-      emit(MarketLoaded(response));
+      final response = await repository.getIncident();
+      emit(IncidentLoaded(response));
     } catch (e) {
-      emit(MarketNotLoaded());
+      emit(IncidentNotLoaded());
     }
   }
 
-  saveMarketsToDb(List<Market> marketList) async {
+    logIncidentReport(IncidentReport data) async {
     try {
-      await repository.saveMarket(marketList);
-      loadMarketsFromDb();
-    } on Error catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  createMarket(Market data) async {
-    try {
-      emit(MarketLoading());
-      final response = await repository.createMarket(data);
-
-      response.fold((failure) => emit(MarketFailure(failure)), (
-        apiResponse,
-      ) async {
-        if (apiResponse.data != null) {
-          emit(CreateMarketSuccess(apiResponse.data!));
+      emit(IncidentLoading());
+      final response = await repository.logIncident(data);
+      response.fold((l) => emit(IncidentFailure(l)), (r) async {
+        if (r.data != null) {
+          emit(ReportIncidentSuccess(r.data!));
 
           GetIt.I.get<ApiRequestBloc>().add(
-            ApiRequestTriggered(apiRequestList: [marketListEndpoint]),
+            ApiRequestTriggered(apiRequestList: [incidentReportListEndpoint]),
           );
         } else {
           emit(
-            MarketFailure(
-              UnknownFailure(message: "Market creation returned no data"),
+            IncidentFailure(
+              UnknownFailure(message: "Market price creation returned no data"),
             ),
           );
         }
       });
     } on Error catch (e) {
-      emit(MarketFailure(UnknownFailure(message: e.toString())));
+      emit(IncidentFailure(UnknownFailure(message: e.toString())));
     }
   }
 
-
+  saveIncidentsToDb(List<IncidentReport> incidentList) async {
+    try {
+      await repository.saveIncident(incidentList);
+      loadIncidentsFromDb();
+    } on Error catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 }

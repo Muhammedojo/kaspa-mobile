@@ -1,8 +1,10 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../../../../../core/api/api.dart';
+import '../../../../../core/api/exceptions/api_exception.dart';
+import '../../../../../core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/data/model/market_data.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
@@ -32,7 +34,7 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
-            if (state is ApiRequestStateCompleted) {
+      if (state is ApiRequestStateCompleted) {
         loadMarketPricesFromDb();
       } else {
         response.fold(
@@ -78,7 +80,7 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
     }
   }
 
-    loadMarketPricesFromDb() async {
+  loadMarketPricesFromDb() async {
     try {
       final response = await repository.getMarketPrice();
       emit(MarketPriceLoaded(response));
@@ -93,6 +95,30 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
       loadMarketPricesFromDb();
     } on Error catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  addMarketPrice(MarketData data) async {
+    try {
+      emit(MarketPriceLoading());
+      final response = await repository.createMarketPrice(data);
+      response.fold((l) => emit(MarketPriceFailure(l)), (r) async {
+        if (r.data != null) {
+          emit(CreateMarketPriceSuccess(r.data!));
+
+          GetIt.I.get<ApiRequestBloc>().add(
+            ApiRequestTriggered(apiRequestList: [marketPriceListEndpoint]),
+          );
+        } else {
+          emit(
+            MarketPriceFailure(
+              UnknownFailure(message: "Market price creation returned no data"),
+            ),
+          );
+        }
+      });
+    } on Error catch (e) {
+      emit(MarketPriceFailure(UnknownFailure(message: e.toString())));
     }
   }
 }

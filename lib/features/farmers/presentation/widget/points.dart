@@ -30,7 +30,7 @@ class _PointsState extends State<Points> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.brown),
-        color: AppColors.brown.withOpacity(0.05),
+        color: AppColors.brown.withAlpha((0.05 * 255).toInt()),
       ),
       margin: EdgeInsets.only(bottom: 12.h),
       padding: REdgeInsets.symmetric(horizontal: 16, vertical: 8),

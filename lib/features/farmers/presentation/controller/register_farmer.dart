@@ -406,8 +406,10 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
           permission == LocationPermission.always) {
         try {
           Position position = await Geolocator.getCurrentPosition(
-            locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
-            timeLimit: const Duration(seconds: 15),
+            locationSettings: LocationSettings(
+              accuracy: LocationAccuracy.high,
+              timeLimit: const Duration(seconds: 15),
+            ),
           );
 
           final newCoordinate = Coordinates(
@@ -484,7 +486,8 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     final formattedToday = DateFormat('yyyy-MM-dd').format(today);
 
     return FarmerConfirmation(
-      name: firstNameController.text,
+      fName: firstNameController.text,
+      lName: lastNameController.text,
       age: ageController.text,
       proceed: () {
         saveFarmer();

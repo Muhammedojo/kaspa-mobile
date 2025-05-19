@@ -2,7 +2,6 @@ import 'package:isar/isar.dart';
 import '../../../core/data/model/general_model.dart';
 import '../../utils/const.dart';
 import 'market.dart';
-import 'product.dart';
 import 'product_data.dart';
 
 part 'market_data.g.dart';

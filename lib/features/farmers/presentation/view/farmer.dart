@@ -79,7 +79,10 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
                           }
                           if (state is FarmerListLoaded) {
                             return state.dataList.isEmpty
-                                ? ErrorWidgets(message: 'farmer_list_empty')
+                                ? ErrorWidgets(
+                                  title: 'farmer_list_empty',
+                                  message: '',
+                                )
                                 : ListView.separated(
                                   itemCount: state.dataList.length,
                                   physics:

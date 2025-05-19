@@ -23,14 +23,6 @@ class MarketLoaded extends MarketState {
   String toString() => 'MarketLoaded { Market: $marketList }';
 }
 
-class LogMarketPriceSuccess extends MarketState {
-  final MarketData marketData;
-  const LogMarketPriceSuccess(this.marketData);
-
-  @override
-  List<Object> get props => [marketData];
-}
-
 class CreateMarketSuccess extends MarketState {
   final Market market;
   const CreateMarketSuccess(this.market);

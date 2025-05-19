@@ -7,6 +7,8 @@ class LastRequestTime {
   String? cropUrl;
   String? cooperative;
   String? cooperativeUrl;
+  String? cropCalendar;
+  String? cropCalendarUrl;
   String? lga;
   String? lgaUrl;
   String? livestock;
@@ -23,6 +25,8 @@ class LastRequestTime {
   String? productUrl;
   String? insight;
   String? insightUrl;
+  String? incident;
+  String? incidentUrl;
   String? marketPrice;
   String? marketPriceUrl;
   String? weather;
@@ -47,6 +51,8 @@ LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
   obj.cropUrl = json['cropUrl'];
   obj.cooperative = json['cooperative'];
   obj.cooperativeUrl = json['cooperativeUrl'];
+  obj.cropCalendar = json['cropCalendar'];
+  obj.cropCalendarUrl = json['cropCalendarUrl'];
   obj.lga = json['lga'];
   obj.lgaUrl = json['lgaUrl'];
   obj.livestock = json['livestock'];
@@ -57,6 +63,8 @@ LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
   obj.productUrl = json['productUrl'];
   obj.insight = json['insight'];
   obj.insightUrl = json['insightUrl'];
+  obj.incident = json['incident'];
+  obj.incidentUrl = json['incidentUrl'];
   obj.dashboard = json['dashboard'];
   obj.dashboardUrl = json['dashboardUrl'];
   obj.state = json['state'];
@@ -81,6 +89,8 @@ Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
       KEY_BANK_URL: obj.bankUrl,
       KEY_CROP: obj.crop,
       KEY_CROP_URL: obj.cropUrl,
+      KEY_CROP_CALENDAR: obj.cropCalendar,
+      KEY_CROP_CALENDAR_URL: obj.cropCalendarUrl,
       KEY_COOPERATIVE: obj.cooperative,
       KEY_COOPERATIVE_URL: obj.cooperativeUrl,
       KEY_LGA: obj.lga,
@@ -93,6 +103,8 @@ Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
       KEY_PRODUCT_URL: obj.productUrl,
       KEY_INSIGHT: obj.insight,
       KEY_INSIGHT_URL: obj.insightUrl,
+      KEY_INCIDENT: obj.incident,
+      KEY_INCIDENT_URL: obj.incidentUrl,
       KEY_DASHBOARD: obj.dashboard,
       KEY_DASHBOARD_URL: obj.dashboardUrl,
       KEY_STATE: obj.state,

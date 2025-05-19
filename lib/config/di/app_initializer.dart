@@ -27,7 +27,9 @@ import '../../features/farmers/repository/farmer_repository.dart';
 import '../../features/farmers/repository/farmer_repository_contract.dart';
 import '../../features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import '../../features/home/presentation/bloc/bloc.dart';
+import '../../features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
 import '../../features/home/presentation/bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
+import '../../features/home/presentation/bloc/incident_report/incident_report_cubit.dart';
 import '../../features/home/presentation/bloc/insight/insight_cubit.dart';
 import '../../features/home/presentation/bloc/market/cubit.dart';
 import '../../features/home/presentation/bloc/market_price/cubit.dart';
@@ -129,6 +131,13 @@ class AppInitializer {
       ),
     );
 
+      instanceLocator.registerLazySingleton<CropCalendarCubit>(
+      () => CropCalendarCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
     instanceLocator.registerLazySingleton<CooperativeCubit>(
       () => CooperativeCubit(
         repository: instanceLocator(),
@@ -163,6 +172,13 @@ class AppInitializer {
 
      instanceLocator.registerLazySingleton<ProductCubit>(
       () => ProductCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+       instanceLocator.registerLazySingleton<IncidentCubit>(
+      () => IncidentCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),

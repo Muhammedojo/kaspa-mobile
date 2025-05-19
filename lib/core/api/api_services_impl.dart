@@ -1,7 +1,9 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
+import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/forgot_password.dart';
+import '../data/model/incident_report.dart';
 import '../data/model/insight.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
@@ -92,6 +94,27 @@ class ApiServicesImpl implements ApiServices {
         final cropList = (data as List).map((e) => Crop.fromJson(e)).toList();
         GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
         return cropList;
+      },
+      null,
+      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+    );
+  }
+
+    @override
+  Future<Either<Failure, ApiResponse<List<CropCalendar>>>> getCropCalendarList(
+    String? endpoint,
+  ) async {
+    var lastRequestTime =
+        await GetIt.I.get<LocalStorage>().getLastRequestTime();
+    return apiClient.request<List<CropCalendar>>(
+      endpoint ?? cropCalendarListEndpoint,
+      MethodType.get,
+      (data, {String? realUri}) {
+        lastRequestTime.cropCalendar = currentDateTime();
+        lastRequestTime.cropCalendarUrl = realUri;
+        final cropCalendarList = (data as List).map((e) => CropCalendar.fromJson(e)).toList();
+        GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+        return cropCalendarList;
       },
       null,
       headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
@@ -338,6 +361,33 @@ class ApiServicesImpl implements ApiServices {
     }
   }
 
+    @override
+  Future<Either<Failure, ApiResponse<List<IncidentReport>>>> getIncidentList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<IncidentReport>>(
+        endpoint ?? incidentReportListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.incident = currentDateTime();
+          lastRequestTime.incidentUrl = realUri;
+
+          final incidentList =
+              (data as List).map((e) => IncidentReport.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return incidentList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
   @override
   Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList(
     String? endpoint,
@@ -397,6 +447,17 @@ class ApiServicesImpl implements ApiServices {
       createMarketEndpoint,
       MethodType.post,
       (data, {String? realUri}) => Market.fromJson(data),
+      data.toJson(),
+    );
+  }
+
+    @override
+  Future<Either<Failure, ApiResponse<IncidentReport>>> logIncident(
+      IncidentReport data) {
+    return apiClient.request<IncidentReport>(
+      createIncidentReportEndpoint,
+      MethodType.post,
+      (data, {String? realUri}) => IncidentReport.fromJson(data),
       data.toJson(),
     );
   }

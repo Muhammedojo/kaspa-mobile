@@ -39,11 +39,10 @@ class RegisterFarmerView extends StatelessWidget
             controller.clearScreen();
             Utils.showToastSuccess(
               context,
-              'farmer_registered_successfully'
-                  .tr(),
-              'Click to continue', 
+              'farmer_registered_successfully'.tr(),
+              'Click to continue',
               () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
             );
@@ -54,8 +53,6 @@ class RegisterFarmerView extends StatelessWidget
         },
         child: _body(context),
       ),
-
-
     );
   }
 
@@ -74,7 +71,9 @@ class RegisterFarmerView extends StatelessWidget
             ),
             Positioned.fill(
               child: Column(
-                children: [Utils.customAppBar(context, 'register_farmer',false,(){})],
+                children: [
+                  Utils.customAppBar(context, 'register_farmer', false, () {}),
+                ],
               ),
             ),
             Positioned.fill(
@@ -116,7 +115,7 @@ class RegisterFarmerView extends StatelessWidget
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          'name'.toText(
+                          'first_name'.toText(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -134,6 +133,31 @@ class RegisterFarmerView extends StatelessWidget
                               decoration:
                                   Styles.textFormFieldDecorationBorderWithBackground(
                                     'Muhammad',
+                                    '',
+                                    check: false,
+                                  ),
+                              onChanged: (value) {},
+                            ),
+                          ),
+                          16.verticalSpace,
+                          'last_name'.toText(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: TextFormField(
+                              controller: controller.lastNameController,
+                              style: Styles.x14dp_4A4A4A(14.0.sp),
+                              maxLines: 1,
+                              validator: ValidationBuilder().required().build(),
+                              keyboardType: TextInputType.name,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              decoration:
+                                  Styles.textFormFieldDecorationBorderWithBackground(
+                                    'Ojo',
                                     '',
                                     check: false,
                                   ),
@@ -288,10 +312,9 @@ class RegisterFarmerView extends StatelessWidget
                                       ValidationBuilder()
                                           .required()
                                           .phone()
+                                          .maxLength(11)
+                                          .minLength(10)
                                           .build(),
-                                  // onChanged: (value) {
-                                  //   //controller.validateAndSetPhoneNumber(value);
-                                  // },
                                 ),
                               ),
                             ],
@@ -309,8 +332,11 @@ class RegisterFarmerView extends StatelessWidget
                               controller: controller.ninController,
                               style: Styles.x14dp_4A4A4A(14.0.sp),
                               maxLines: 1,
-
-                              validator: ValidationBuilder().required().build(),
+                              validator:
+                                  ValidationBuilder()
+                                      .maxLength(11)
+                                      .minLength(11)
+                                      .build(),
                               keyboardType: TextInputType.number,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -411,15 +437,23 @@ class RegisterFarmerView extends StatelessWidget
                                           'choose_an_option'.tr(),
                                           '',
                                         ),
+
                                     items:
-                                        state.dataList.map((e) {
-                                          return DropdownMenuItem(
-                                            value: e,
-                                            child: (e.name!).toText(
-                                              translate: false,
-                                            ),
-                                          );
-                                        }).toList(),
+                                        state.dataList
+                                            .where(
+                                              (e) =>
+                                                  controller.selectedLga!.pk ==
+                                                  e.pk,
+                                            )
+                                            .map((e) {
+                                              return DropdownMenuItem(
+                                                value: e,
+                                                child: (e.name!).toText(
+                                                  translate: false,
+                                                ),
+                                              );
+                                            })
+                                            .toList(),
                                     value: controller.selectedWard,
                                     onChanged: (newValue) {
                                       controller.onSelectWard(newValue!);
@@ -434,7 +468,7 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
-                         
+
                           80.verticalSpace,
                         ],
                       ),
@@ -543,6 +577,8 @@ class RegisterFarmerView extends StatelessWidget
                                       ValidationBuilder()
                                           .required()
                                           .phone()
+                                          .maxLength(11)
+                                          .minLength(10)
                                           .build(),
                                   // onChanged: (value) {
                                   //   //controller.validateAndSetPhoneNumber(value);
@@ -654,7 +690,8 @@ class RegisterFarmerView extends StatelessWidget
                               controller: controller.bvnController,
                               style: Styles.x14dp_4A4A4A(14.0.sp),
                               maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
+                              validator:
+                                  ValidationBuilder(optional: true).build(),
                               keyboardType: TextInputType.name,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -679,7 +716,8 @@ class RegisterFarmerView extends StatelessWidget
                               controller: controller.accountNumberController,
                               style: Styles.x14dp_4A4A4A(14.0.sp),
                               maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
+                              validator:
+                                  ValidationBuilder(optional: true).build(),
                               keyboardType: TextInputType.name,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -704,7 +742,8 @@ class RegisterFarmerView extends StatelessWidget
                               controller: controller.accountNameController,
                               style: Styles.x14dp_4A4A4A(14.0.sp),
                               maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
+                              validator:
+                                  ValidationBuilder(optional: true).build(),
                               keyboardType: TextInputType.name,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -747,7 +786,8 @@ class RegisterFarmerView extends StatelessWidget
                               controller: controller.farmAddressController,
                               style: Styles.x14dp_4A4A4A(14.0.sp),
                               maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
+                              validator:
+                                  ValidationBuilder(optional: true).build(),
                               keyboardType: TextInputType.name,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,

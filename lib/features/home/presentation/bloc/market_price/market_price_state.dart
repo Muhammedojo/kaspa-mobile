@@ -1,7 +1,5 @@
 part of 'market_price_cubit.dart';
 
-
-
 sealed class MarketPriceState extends Equatable {
   const MarketPriceState();
 
@@ -25,8 +23,16 @@ class MarketPriceLoaded extends MarketPriceState {
 
 class MarketPriceNotLoaded extends MarketPriceState {}
 
+class CreateMarketPriceSuccess extends MarketPriceState {
+  final MarketData marketPrice;
+  const CreateMarketPriceSuccess(this.marketPrice);
+
+  @override
+  List<Object> get props => [marketPrice];
+}
+
 class MarketPriceFailure extends MarketPriceState {
-  final String error;
+  final Failure error;
 
   const MarketPriceFailure(this.error);
 

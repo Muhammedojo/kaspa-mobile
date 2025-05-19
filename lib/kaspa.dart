@@ -15,7 +15,9 @@ import 'features/auth/presentation/bloc/user/user_cubit.dart';
 import 'features/farmers/presentation/bloc/bloc.dart';
 import 'features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import 'features/home/presentation/bloc/bloc.dart';
+import 'features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
 import 'features/home/presentation/bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
+import 'features/home/presentation/bloc/incident_report/incident_report_cubit.dart';
 import 'features/home/presentation/bloc/insight/insight_cubit.dart';
 import 'features/home/presentation/bloc/market/cubit.dart';
 import 'features/home/presentation/bloc/market_price/cubit.dart';
@@ -64,6 +66,11 @@ class Kaspa extends StatelessWidget {
         ),
         BlocProvider(
           create:
+              (context) =>
+                  AppInitializer.instanceLocator.get<CropCalendarCubit>(),
+        ),
+        BlocProvider(
+          create:
               (context) => AppInitializer.instanceLocator.get<DashboardCubit>(),
         ),
         BlocProvider(
@@ -82,6 +89,11 @@ class Kaspa extends StatelessWidget {
         BlocProvider(
           create:
               (context) => AppInitializer.instanceLocator.get<InsightCubit>(),
+        ),
+
+        BlocProvider(
+          create:
+              (context) => AppInitializer.instanceLocator.get<IncidentCubit>(),
         ),
 
         BlocProvider(

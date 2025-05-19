@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/market_data.dart';
 import '../../../../core/data/model/product.dart';
-import '../../../home/presentation/bloc/market/cubit.dart';
+import '../../../home/presentation/bloc/market_price/cubit.dart';
 import '../contract/create_market_price.dart';
 import '../view/create_market_price.dart';
 
@@ -75,7 +75,7 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
         marketPrice.productId = selectedCrop!.pk;
         marketPrice.marketId = selectedMarket!.pk;
 
-        context.read<MarketCubit>().addMarketPrice(marketPrice);
+        context.read<MarketPriceCubit>().addMarketPrice(marketPrice);
         priceController.clear();
       }
     }

@@ -1,7 +1,9 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
+import '../../../core/data/model/incident_report.dart';
 import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
@@ -30,6 +32,11 @@ class HomeRepository implements IHomeRepository {
   }) => apiServices.getCropList(endpoint);
 
   @override
+  Future<Either<Failure, ApiResponse<List<CropCalendar>>>> getCropCalendarList({
+    String? endpoint,
+  }) => apiServices.getCropCalendarList(endpoint);
+
+  @override
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data) =>
       apiServices.createMarket(data);
 
@@ -52,6 +59,16 @@ class HomeRepository implements IHomeRepository {
   Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({
     String? endpoint,
   }) => apiServices.getInsightList(endpoint);
+
+  @override
+  Future<Either<Failure, ApiResponse<List<IncidentReport>>>> getIncidentList({
+    String? endpoint,
+  }) => apiServices.getIncidentList(endpoint);
+
+  @override
+  Future<Either<Failure, ApiResponse<IncidentReport>>> logIncident(
+    IncidentReport data,
+  ) => apiServices.logIncident(data);
 
   @override
   Future<Either<Failure, ApiResponse<List<Lga>>>> getLgaList({
@@ -101,10 +118,17 @@ class HomeRepository implements IHomeRepository {
   Future<List<Crop>> getCrop() => localStorage.getCrop();
 
   @override
+  Future<List<CropCalendar>> getCropCalendar() =>
+      localStorage.getCropCalendar();
+
+  @override
   Future<List<DashboardData>> getDashboard() => localStorage.getDashboard();
 
   @override
   Future<List<Insight>> getInsight() => localStorage.getInsight();
+
+  @override
+  Future<List<IncidentReport>> getIncident() => localStorage.getIncident();
 
   @override
   Future<List<Cooperative>> getCooperative() => localStorage.getCooperative();
@@ -135,8 +159,13 @@ class HomeRepository implements IHomeRepository {
   //SAVE LOCAL STORAGE CALLS
   @override
   Future<void> saveBank(List<Bank> bankList) => localStorage.saveBank(bankList);
+
   @override
   Future<void> saveCrop(List<Crop> cropList) => localStorage.saveCrop(cropList);
+
+  @override
+  Future<void> saveCropCalendar(List<CropCalendar> cropCalendarList) =>
+      localStorage.saveCropCalendar(cropCalendarList);
 
   @override
   Future<void> saveCooperative(List<Cooperative> cooperativeList) =>
@@ -162,6 +191,10 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveInsight(List<Insight> insightList) =>
       localStorage.saveInsight(insightList);
+
+  @override
+  Future<void> saveIncident(List<IncidentReport> incidentList) =>
+      localStorage.saveIncident(incidentList);
 
   @override
   Future<void> saveUser(List<User> usersList) =>

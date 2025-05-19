@@ -1,7 +1,9 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
+import '../../../core/data/model/incident_report.dart';
 import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
@@ -37,7 +39,16 @@ abstract class IHomeRepository {
 
   Future<List<Crop>> getCrop();
 
-   //DASHBOARD CUBIT CALLS
+  //CROP CALENDAR CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<CropCalendar>>>> getCropCalendarList({
+    String? endpoint,
+  });
+
+  Future<void> saveCropCalendar(List<CropCalendar> cropCalendarList);
+
+  Future<List<CropCalendar>> getCropCalendar();
+
+  //DASHBOARD CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList({
     String? endpoint,
   });
@@ -54,6 +65,19 @@ abstract class IHomeRepository {
   Future<void> saveInsight(List<Insight> cropList);
 
   Future<List<Insight>> getInsight();
+
+  //INCIDENT CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<IncidentReport>>>> getIncidentList({
+    String? endpoint,
+  });
+
+  Future<void> saveIncident(List<IncidentReport> cropList);
+
+  Future<List<IncidentReport>> getIncident();
+
+  Future<Either<Failure, ApiResponse<IncidentReport>>> logIncident(
+    IncidentReport data,
+  );
 
   //LGA CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Lga>>>> getLgaList({
@@ -82,7 +106,9 @@ abstract class IHomeRepository {
 
   Future<List<MarketData>> getMarketPrice();
 
-  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(MarketData data);
+  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(
+    MarketData data,
+  );
 
   //MARKET CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Market>>>> getMarketList({

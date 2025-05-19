@@ -9,16 +9,16 @@ import '../../../../core/navigation/navigator.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
-import '../contract/cooperative.dart';
-import '../controller/cooperative_details.dart';
-import '../controller/register_cooperative.dart';
-import '../widget/cooperative_card.dart';
+import '../../../home/presentation/bloc/incident_report/incident_report_cubit.dart';
+import '../contract/incident_report.dart';
+import '../controller/report_incident.dart';
+import '../widget/report_widget.dart';
 
-class CooperativeView extends StatelessWidget
-    implements CooperativeViewContract {
-  const CooperativeView({super.key, required this.controller});
+class IncidentReportView extends StatelessWidget
+    implements IncidentReportViewContract {
+  const IncidentReportView({super.key, required this.controller});
 
-  final CooperativeControllerContract controller;
+  final IncidentReportControllerContract controller;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CooperativeView extends StatelessWidget
       backgroundColor: AppColors.primaryBackground,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryGreen,
-        onPressed: () => pushTo(RegisterCooperativeScreen(), context),
+        onPressed: () => pushTo(ReportIncidentScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
       ),
       body: _body(),
@@ -48,71 +48,63 @@ class CooperativeView extends StatelessWidget
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    'cooperatives'.toText(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    2.verticalSpace,
-                    "Here’s a list of cooperatives on KASPA".toText(
+                    "Here’s a list of incident reports".toText(
                       translate: false,
                       color: AppColors.accentText,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
-                     SearchBarWidget(
-                      hint: 'search_for_a_cooperative',
+                    SearchBarWidget(
+                      hint: 'search_for_an_incident_report',
                       onTextChanged: (text) {
-                        controller.updateSearchStatus(text != null && text.isNotEmpty);
+                        controller.updateSearchStatus(
+                          text != null && text.isNotEmpty,
+                        );
                         if (text != null && text.isNotEmpty) {
                           controller.searchCooperative(text);
                         }
                       },
                       searchController: controller.searchController,
-                      onClearSearch: () => controller.onClearSearch(), isSearching: controller.isSearching,
+                      onClearSearch: () => controller.onClearSearch(),
+                      isSearching: controller.isSearching,
                     ),
                     16.verticalSpace,
                     Expanded(
-                      child: BlocBuilder<CooperativeCubit, CooperativeState>(
+                      child: BlocBuilder<IncidentCubit, IncidentState>(
                         builder: (context, state) {
-                          if (state is CooperativeLoading) {
-                            return 
-                            ErrorWidgets(title: "empty", message: '');
-                               
-                         
+                          if (state is IncidentLoading) {
+                            return ErrorWidgets(title: "empty", message: '');
                           }
-                          if (state is CooperativeLoaded) {
-                            return state.cooperativeList.isEmpty
-                                ? ErrorWidgets(
-                                  message: 'cooperative_list_empty',
-                                )
-                                : 
-                                ListView.separated(
-                                  itemCount: state.cooperativeList.length,
+                          if (state is IncidentLoaded) {
+                            return state.incidentList.isEmpty
+                                ? ErrorWidgets(message: 'no_incident_logged')
+                                : ListView.separated(
+                                  itemCount: state.incidentList.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
-                                    return CooperativeCard(
-                                      cooperative: state.cooperativeList[index],
-                                      onTap:
-                                          () => pushTo(
-                                            CooperativeDetailsScreen(
-                                              cooperative:
-                                                  state.cooperativeList[index],
-                                            ),
-                                            context,
-                                          ),
+                                    return ReportCard(
+                                      data: state.incidentList[index],
+                                      onTap: () {
+                                        // pushTo(
+                                        //   CooperativeDetailsScreen(
+                                        //     cooperative:
+                                        //         state.cooperativeList[index],
+                                        //   ),
+                                        //   context,
+                                        // );
+                                      },
                                     );
                                   },
                                   separatorBuilder:
                                       (BuildContext context, int index) =>
                                           12.verticalSpace,
                                 );
-                         
                           }
                           if (state is CooperativeFailure) {
                             return ErrorWidgets(
                               title: "Error",
-                              message: state.error,
+                              message: state.toString(),
                             );
                           }
                           return const SizedBox.shrink();

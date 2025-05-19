@@ -1,48 +1,46 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import '../../../../../core/api/api.dart';
-import '../../../../../core/api/exceptions/api_exception.dart';
 import '../../../../../core/api/exceptions/contracts/failure.dart';
-import '../../../../../core/data/model/market.dart';
+import '../../../../../core/data/model/crop_calendar.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../repository/home_repository_contract.dart';
 import '../api_request/api_request_bloc.dart';
 import '../api_request/api_request_state.dart';
 
-part 'market_state.dart';
+part 'crop_calendar_state.dart';
 
-class MarketCubit extends Cubit<MarketState> {
+class CropCalendarCubit extends Cubit<CropCalendarState> {
   final IHomeRepository repository;
   final LocalStorage databaseManager;
-  MarketCubit({required this.repository, required this.databaseManager})
-    : super(MarketLoading());
+  CropCalendarCubit({required this.databaseManager, required this.repository})
+    : super(CropCalendarLoading());
 
   int currentPulledCount = 0;
 
-  loadMarket({String? url}) async {
+  loadCropCalendar({String? url}) async {
     try {
-      emit(MarketLoading());
+      emit(CropCalendarLoading());
       final response =
           url != null && url.isNotEmpty
-              ? await repository.getMarketList(endpoint: url)
-              : await repository.getMarketList();
+              ? await repository.getCropCalendarList(endpoint: url)
+              : await repository.getCropCalendarList();
 
       final state =
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
       if (state is ApiRequestStateCompleted) {
-        loadMarketsFromDb();
+        loadCropCalendarsFromDb();
       } else {
         response.fold(
           (l) {
             GlobalVariables.rootNavigatorKey.currentContext!
                 .read<ApiRequestBloc>()
                 .add(ApiRequestCompleted());
-            loadMarketsFromDb();
+            loadCropCalendarsFromDb();
           },
           (r) async {
             currentPulledCount += r.data?.length ?? 0;
@@ -55,14 +53,14 @@ class MarketCubit extends Cubit<MarketState> {
                 .read<ApiRequestBloc>()
                 .add(
                   ApiRequestLoading(
-                    identifier: marketListEndpoint,
+                    identifier: cropListEndpoint,
                     progress: progressPercent,
                   ),
                 );
 
-            saveMarketsToDb(r.data ?? []);
+            saveCropCalendarsToDb(r.data ?? []);
             if (r.nextUrl != null && (r.nextUrl ?? "").isNotEmpty) {
-              loadMarket(url: r.nextUrl);
+              loadCropCalendar(url: r.nextUrl);
             } else {
               GlobalVariables.rootNavigatorKey.currentContext!
                   .read<ApiRequestBloc>()
@@ -75,55 +73,27 @@ class MarketCubit extends Cubit<MarketState> {
       GlobalVariables.rootNavigatorKey.currentContext!
           .read<ApiRequestBloc>()
           .add(ApiRequestCompleted());
-      loadMarketsFromDb();
+      loadCropCalendarsFromDb();
       debugPrint(e.toString());
     }
   }
 
-  loadMarketsFromDb() async {
+  loadCropCalendarsFromDb() async {
     try {
-      final response = await repository.getMarket();
-      emit(MarketLoaded(response));
+      final response = await repository.getCropCalendar();
+      emit(CropCalendarLoaded(response));
     } catch (e) {
-      emit(MarketNotLoaded());
+      emit(CropCalendarNotLoaded());
     }
   }
 
-  saveMarketsToDb(List<Market> marketList) async {
+  saveCropCalendarsToDb(List<CropCalendar> cropCalendarList) async {
     try {
-      await repository.saveMarket(marketList);
-      loadMarketsFromDb();
+      await repository.saveCropCalendar(cropCalendarList);
+      loadCropCalendarsFromDb();
     } on Error catch (e) {
       debugPrint(e.toString());
     }
   }
-
-  createMarket(Market data) async {
-    try {
-      emit(MarketLoading());
-      final response = await repository.createMarket(data);
-
-      response.fold((failure) => emit(MarketFailure(failure)), (
-        apiResponse,
-      ) async {
-        if (apiResponse.data != null) {
-          emit(CreateMarketSuccess(apiResponse.data!));
-
-          GetIt.I.get<ApiRequestBloc>().add(
-            ApiRequestTriggered(apiRequestList: [marketListEndpoint]),
-          );
-        } else {
-          emit(
-            MarketFailure(
-              UnknownFailure(message: "Market creation returned no data"),
-            ),
-          );
-        }
-      });
-    } on Error catch (e) {
-      emit(MarketFailure(UnknownFailure(message: e.toString())));
-    }
-  }
-
 
 }

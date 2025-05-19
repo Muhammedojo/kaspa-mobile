@@ -6,7 +6,8 @@ import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
 
 class FarmerConfirmation extends StatelessWidget {
-  final String name;
+  final String fName;
+  final String lName;
   final String age;
   final String gender;
   final String phone;
@@ -21,7 +22,8 @@ class FarmerConfirmation extends StatelessWidget {
 
   const FarmerConfirmation({
     super.key,
-    required this.name,
+    required this.fName,
+       required this.lName,
     required this.age,
     required this.gender,
     required this.phone,
@@ -111,7 +113,8 @@ class FarmerConfirmation extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 6.h),
-                    HorizontalWidget(value: name, label: 'name'),
+                    HorizontalWidget(value: fName, label: 'first_name'),
+                     HorizontalWidget(value: lName, label: 'last_name'),
                     HorizontalWidget(value: age, label: 'age'),
                     HorizontalWidget(value: gender, label: 'gender'),
                     HorizontalWidget(value: phone, label: 'phone_number'),

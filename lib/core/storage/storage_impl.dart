@@ -1,8 +1,10 @@
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
+import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/farmer.dart';
+import '../data/model/incident_report.dart';
 import '../data/model/insight.dart';
 import '../data/model/last_request_time.dart';
 import '../data/model/lga.dart';
@@ -74,6 +76,9 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<List<Crop>> getCrop() => databaseStorage.getCrop();
 
+    @override
+  Future<List<CropCalendar>> getCropCalendar() => databaseStorage.getCropCalendar();
+
   @override
   Future<List<Cooperative>> getCooperative() =>
       databaseStorage.getCooperative();
@@ -92,6 +97,9 @@ class LocalStorageImpl implements LocalStorage {
 
   @override
   Future<List<Insight>> getInsight() => databaseStorage.getInsight();
+
+  @override
+  Future<List<IncidentReport>> getIncident() => databaseStorage.getIncident();
 
   @override
   Future<List<User>> getUser() => databaseStorage.getUser();
@@ -121,6 +129,10 @@ class LocalStorageImpl implements LocalStorage {
   Future<void> saveCrop(List<Crop> objectList) =>
       databaseStorage.saveCrop(objectList);
 
+        @override
+  Future<void> saveCropCalendar(List<CropCalendar> objectList) =>
+      databaseStorage.saveCropCalendar(objectList);
+
   @override
   Future<void> saveCooperative(List<Cooperative> objectList) =>
       databaseStorage.saveCooperative(objectList);
@@ -140,6 +152,10 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveInsight(List<Insight> objectList) =>
       databaseStorage.saveInsight(objectList);
+
+  @override
+  Future<void> saveIncident(List<IncidentReport> objectList) =>
+      databaseStorage.saveIncident(objectList);
 
   @override
   Future<void> saveProduct(List<Product> objectList) =>

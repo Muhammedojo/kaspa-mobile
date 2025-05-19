@@ -1,11 +1,8 @@
 import 'package:isar/isar.dart';
 import '../../../core/data/model/bank_detail.dart';
-import '../../../core/data/model/cooperative.dart';
 import '../../../core/data/model/nok_details.dart';
 import '../../utils/const.dart';
 import 'insight.dart';
-import 'lga.dart';
-import 'ward.dart';
 
 part 'farmer.g.dart';
 

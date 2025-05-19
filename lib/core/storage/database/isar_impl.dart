@@ -8,7 +8,9 @@ import 'package:kaspa/core/data/model/market.dart';
 import 'package:kaspa/core/data/model/ward.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../data/model/cooperative.dart';
+import '../../data/model/crop_calendar.dart';
 import '../../data/model/dashboard_data.dart';
+import '../../data/model/incident_report.dart';
 import '../../data/model/insight.dart';
 import '../../data/model/market_data.dart';
 import '../../data/model/product.dart';
@@ -32,6 +34,7 @@ class IsarImpl implements DatabaseStorage {
         [
           BankSchema,
           CropSchema,
+          CropCalendarSchema,
           CooperativeSchema,
           DashboardDataSchema,
           FarmerSchema,
@@ -39,6 +42,7 @@ class IsarImpl implements DatabaseStorage {
           LivestockSchema,
           MarketSchema,
           MarketDataSchema,
+          IncidentReportSchema,
           InsightSchema,
           ProductSchema,
           WardSchema,
@@ -87,6 +91,20 @@ class IsarImpl implements DatabaseStorage {
     } catch (e) {
       debugPrint("Error retrieving crops: $e");
       return Future.value(<Crop>[]);
+    }
+  }
+
+    @override
+  Future<List<CropCalendar>> getCropCalendar() {
+    if (!_isar.isOpen) {
+      return Future.value(<CropCalendar>[]);
+    }
+    try {
+      final cropCalendars = _isar.cropCalendars.where().findAllSync();
+      return Future.value(cropCalendars);
+    } catch (e) {
+      debugPrint("Error retrieving crop calendars: $e");
+      return Future.value(<CropCalendar>[]);
     }
   }
 
@@ -231,6 +249,20 @@ class IsarImpl implements DatabaseStorage {
   }
 
   @override
+  Future<List<IncidentReport>> getIncident() {
+    if (!_isar.isOpen) {
+      return Future.value(<IncidentReport>[]);
+    }
+    try {
+      final incidents = _isar.incidentReports.where().findAllSync();
+      return Future.value(incidents);
+    } catch (e) {
+      debugPrint("Error retrieving incidents: $e");
+      return Future.value(<IncidentReport>[]);
+    }
+  }
+
+  @override
   Future<List<DashboardData>> getDashboard() {
     if (!_isar.isOpen) {
       return Future.value(<DashboardData>[]);
@@ -283,6 +315,18 @@ class IsarImpl implements DatabaseStorage {
   }
 
   @override
+  Future<void> saveCropCalendar(List<CropCalendar> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.cropCalendars.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving crop calendars: $e");
+    }
+  }
+
+  @override
   Future<void> saveCooperative(List<Cooperative> objectList) async {
     if (!_isar.isOpen) {
       return;
@@ -303,6 +347,18 @@ class IsarImpl implements DatabaseStorage {
       await _isar.writeTxn(() => _isar.dashboardDatas.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving dashboard: $e");
+    }
+  }
+
+  @override
+  Future<void> saveIncident(List<IncidentReport> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.incidentReports.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving incident report: $e");
     }
   }
 
