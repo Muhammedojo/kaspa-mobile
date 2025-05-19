@@ -11,6 +11,7 @@ class RouteConstant {
   static const farmerDetails = "farmer_details";
   static const agronomy = "agronomy";
   static const insight = "insight";
+  static const calendar = "calendar";
   static const cooperative = "cooperative";
   static const registerCooperative = "register_cooperative";
   static const cooperativeDetails = "cooperative_details";

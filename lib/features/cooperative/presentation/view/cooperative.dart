@@ -52,13 +52,7 @@ class CooperativeView extends StatelessWidget
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                     ),
-                    2.verticalSpace,
-                    "Here’s a list of cooperatives on KASPA".toText(
-                      translate: false,
-                      color: AppColors.accentText,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                 
                      SearchBarWidget(
                       hint: 'search_for_a_cooperative',
                       onTextChanged: (text) {

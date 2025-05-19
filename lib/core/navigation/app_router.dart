@@ -14,7 +14,7 @@ import '../../features/auth/presentation/controller/splash.dart';
 import '../../features/farmers/presentation/controller/farmer.dart';
 import '../../features/home/presentation/controller/home.dart';
 import '../../features/home/presentation/controller/homepage.dart';
-import '../../features/insights/presentation/controller/insight.dart';
+import '../../features/calendar/presentation/controller/calendar.dart';
 import '../data/model/cooperative.dart';
 import '../utils/global_variables.dart';
 import 'route_constant.dart';
@@ -140,14 +140,14 @@ class AppRouter {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: GlobalVariables.shellNavigatorInsightKey,
+            navigatorKey: GlobalVariables.shellNavigatorCalendarKey,
             routes: [
               GoRoute(
-                path: '/${RouteConstant.insight}',
-                name: RouteConstant.insight,
+                path: '/${RouteConstant.calendar}',
+                name: RouteConstant.calendar,
                 pageBuilder:
                     (context, state) =>
-                        const NoTransitionPage(child: InsightScreen()),
+                        const NoTransitionPage(child: CalendarScreen()),
                 routes: [],
               ),
             ],

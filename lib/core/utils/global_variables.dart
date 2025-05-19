@@ -23,18 +23,13 @@ class GlobalVariables {
     "Son",
     "Daughter",
     "Husband",
-    "Wife"
+    "Wife",
   ];
 
   static Set<String> selectedSyncItems = {};
   static Set<String> pulledSyncItems = {};
 
   Login? currentUser;
-
-  static final rootNavigatorKey = GlobalKey<NavigatorState>();
-  static final shellNavigatorHomeKey = GlobalKey<NavigatorState>(
-    debugLabel: 'Home',
-  );
 
   var syncItemList = <String>[
     livestockListEndpoint,
@@ -72,13 +67,18 @@ class GlobalVariables {
     bankListEndpoint: KEY_BANK,
   };
 
+  static final rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final shellNavigatorHomeKey = GlobalKey<NavigatorState>(
+    debugLabel: 'Home',
+  );
+
   static final shellNavigatorFarmerKey = GlobalKey<NavigatorState>(
     debugLabel: 'Farmer',
   );
   static final shellNavigatorCooperativeKey = GlobalKey<NavigatorState>(
     debugLabel: 'Cooperative',
   );
-  static final shellNavigatorInsightKey = GlobalKey<NavigatorState>(
-    debugLabel: 'Insight',
+  static final shellNavigatorCalendarKey = GlobalKey<NavigatorState>(
+    debugLabel: 'Calendar',
   );
 }

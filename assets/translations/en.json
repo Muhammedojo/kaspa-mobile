@@ -22,7 +22,9 @@
     "new_price_update":"New Price Update",
     "cooperative_details":"Cooperative Details",
     "head":"Head",
+  
     "title":"Title",
+    "no_incident_logged":"No Incidents Reports Yet.",
     "supporting_documents":"Supporting Documents",
     "brief_description":"Brief Description",
     "incident_report":"Incident Reports",

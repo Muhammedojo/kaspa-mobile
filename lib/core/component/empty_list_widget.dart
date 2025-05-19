@@ -32,8 +32,8 @@ class ErrorWidgets extends StatelessWidget {
           title.isNotEmpty ? title.toText(fontSize: 16, fontWeight: FontWeight.w700) : const SizedBox.shrink(),
           8.verticalSpace,
           message.toText(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
                 textAlign: TextAlign.center,
           ),
         ],

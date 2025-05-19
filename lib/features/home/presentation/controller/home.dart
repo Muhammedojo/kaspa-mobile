@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../features/calendar/presentation/controller/calendar.dart';
 import '../../../../core/utils/global_variables.dart';
 import '../../../cooperative/presentation/controller/cooperative.dart';
 import '../../../farmers/presentation/controller/farmer.dart';
-import '../../../insights/presentation/controller/insight.dart';
 import '../bloc/api_request/api_request_bloc.dart';
 import '../contract/home.dart';
 import '../view/home.dart';
@@ -30,8 +30,8 @@ class _HomeScreenState extends State<HomeScreen>
     HomePageScreen(),
     FarmerScreen(),
     CooperativeScreen(),
-    InsightScreen(),
-    InsightScreen(),
+    CalendarScreen(),
+    CooperativeScreen(),
   ];
 
   @override
