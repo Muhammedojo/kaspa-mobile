@@ -5,7 +5,9 @@ import '../../../../../core/api/api.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../../farmers/presentation/bloc/bloc.dart';
 import '../bloc.dart';
+import '../crop_calendar/crop_calendar_cubit.dart';
 import '../farmer_dashboard/farmer_dashboard_cubit.dart';
+import '../incident_report/incident_report_cubit.dart';
 import '../insight/insight_cubit.dart';
 import '../market/cubit.dart';
 import '../market_price/cubit.dart';
@@ -147,6 +149,10 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<InsightCubit>().loadInsight();
         break;
 
+          case incidentReportListEndpoint:
+        AppInitializer.instanceLocator.get<IncidentCubit>().loadIncident();
+        break;
+
           case dashboardFarmerEndpoint:
         AppInitializer.instanceLocator.get<DashboardCubit>().loadDashboard();
         break;
@@ -167,6 +173,10 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
 
       case cropListEndpoint:
         AppInitializer.instanceLocator.get<CropCubit>().loadCrop();
+        break;
+
+        case cropCalendarListEndpoint:
+        AppInitializer.instanceLocator.get<CropCalendarCubit>().loadCropCalendar();
         break;
 
       // case usersListEndpoint:
