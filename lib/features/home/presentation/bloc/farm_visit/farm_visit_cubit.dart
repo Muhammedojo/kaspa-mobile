@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:kaspa/core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/api/api.dart';
 import '../../../../../core/api/exceptions/api_exception.dart';
-import '../../../../../core/data/model/cooperative.dart';
 import '../../../../../core/data/model/farm_visit.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';

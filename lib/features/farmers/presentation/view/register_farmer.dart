@@ -445,7 +445,7 @@ class RegisterFarmerView extends StatelessWidget
                                               (ward) =>
                                                   ward.lga?.id ==
                                                   controller.selectedLga!.pk,
-                                            ) 
+                                            )
                                             .toList();
                                     if (filteredWards.isEmpty) {
                                       hintText = 'no_wards_available'.tr();
@@ -900,15 +900,15 @@ class RegisterFarmerView extends StatelessWidget
                                     horizontal: 12.0,
                                     vertical: 16.0,
                                   ),
-            //                       decoration: BoxDecoration( // Use BoxDecoration instead of InputDecoration
-            // color: AppColors.primaryBackground, // Assuming this is the background color from your style
-            // border: Border.all( // Assuming this is the border from your style
-            //   color: AppColors.accentText.withOpacity(0.3), // Adjust color based on your Styles definition
-            //   width: 1.0, // Adjust width based on your Styles definition
-            // ),
-            // borderRadius: BorderRadius.circular(8.r), // Adjust radius based on your Styles definition
-            
-            //                           ),
+                                  //                       decoration: BoxDecoration( // Use BoxDecoration instead of InputDecoration
+                                  // color: AppColors.primaryBackground, // Assuming this is the background color from your style
+                                  // border: Border.all( // Assuming this is the border from your style
+                                  //   color: AppColors.accentText.withOpacity(0.3), // Adjust color based on your Styles definition
+                                  //   width: 1.0, // Adjust width based on your Styles definition
+                                  // ),
+                                  // borderRadius: BorderRadius.circular(8.r), // Adjust radius based on your Styles definition
+
+                                  //                           ),
                                   child: Text(
                                     productState is ProductLoading
                                         ? 'loading_crops'.tr()
@@ -916,8 +916,8 @@ class RegisterFarmerView extends StatelessWidget
                                     style: Styles.x14dp_4A4A4A(
                                       14.0.sp,
                                     ).copyWith(
-                                      color: AppColors.accentText.withOpacity(
-                                        0.7,
+                                      color: AppColors.accentText.withAlpha(
+                                        (0.7 * 255).toInt(),
                                       ),
                                     ),
                                   ),
@@ -1014,8 +1014,7 @@ class RegisterFarmerView extends StatelessWidget
                                       ),
                                     ),
                                   )
-                                  :
-                                   InkWell(
+                                  : InkWell(
                                     onTap:
                                         controller.isFetchingLocation
                                             ? null
@@ -1059,7 +1058,6 @@ class RegisterFarmerView extends StatelessWidget
                                       ),
                                     ),
                                   )
-                            
                               : ListView.builder(
                                 itemCount:
                                     controller
@@ -1222,7 +1220,7 @@ class RegisterFarmerView extends StatelessWidget
                       vertical: 8.0,
                     ), // Match DropdownButtonFormField's internal padding
                     child: 'choose_an_option'.toText(
-                      color: AppColors.accentText.withOpacity(0.7),
+                      color: AppColors.accentText.withAlpha((0.7 * 255).toInt())
                     ),
                   )
                   : Wrap(
@@ -1243,9 +1241,7 @@ class RegisterFarmerView extends StatelessWidget
                               controller.updateSelectedCrops(newList);
                             },
                             deleteIconColor: AppColors.colorPrimary,
-                            backgroundColor: AppColors.primaryGreen.withOpacity(
-                              0.1,
-                            ),
+                            backgroundColor: AppColors.primaryGreen.withAlpha((0.1 * 255).toInt()),
                             padding: REdgeInsets.all(4.0),
                           );
                         }).toList(),
@@ -1293,7 +1289,7 @@ class RegisterFarmerView extends StatelessWidget
           builder: (BuildContext context, StateSetter setStateDialog) {
             return AlertDialog(
               title: Text('select_crops'.tr()),
-              content: Container(
+              content: SizedBox(
                 width: double.maxFinite,
                 child: ListView.builder(
                   shrinkWrap: true,

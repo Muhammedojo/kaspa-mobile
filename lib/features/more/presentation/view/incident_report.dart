@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/component/search_bar_widget.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/empty_list_widget.dart';
-import '../../../../core/component/pages_bar.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
