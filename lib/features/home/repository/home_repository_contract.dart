@@ -3,6 +3,7 @@ import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
+import '../../../core/data/model/farm_visit.dart';
 import '../../../core/data/model/incident_report.dart';
 import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
@@ -29,6 +30,10 @@ abstract class IHomeRepository {
   Future<void> saveCooperative(List<Cooperative> cooperativeList);
 
   Future<List<Cooperative>> getCooperative();
+
+   Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(
+    Cooperative data,
+  );
 
   //CROP CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Crop>>>> getCropList({
@@ -65,6 +70,19 @@ abstract class IHomeRepository {
   Future<void> saveInsight(List<Insight> cropList);
 
   Future<List<Insight>> getInsight();
+
+   //FARM VISIT CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList({
+    String? endpoint,
+  });
+
+  Future<void> saveFarmVisit(List<FarmVisit> farmVisitList);
+
+  Future<List<FarmVisit>> getFarmVisit();
+
+  Future<Either<Failure, ApiResponse<FarmVisit>>> createFarmVisit(
+    FarmVisit data,
+  );
 
   //INCIDENT CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<IncidentReport>>>> getIncidentList({

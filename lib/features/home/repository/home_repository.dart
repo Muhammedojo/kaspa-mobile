@@ -3,6 +3,7 @@ import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
+import '../../../core/data/model/farm_visit.dart';
 import '../../../core/data/model/incident_report.dart';
 import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
@@ -50,10 +51,28 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getCooperativeList(endpoint);
 
+   @override
+  Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(
+    Cooperative data,
+  ) => apiServices.createCooperative(data);
+
+
   @override
   Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList({
     String? endpoint,
   }) => apiServices.getDashboardList(endpoint);
+
+   @override
+  Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList({
+    String? endpoint,
+  }) => apiServices.getFarmVisitList(endpoint);
+
+
+    @override
+  Future<Either<Failure, ApiResponse<FarmVisit>>> createFarmVisit(
+    FarmVisit data,
+  ) => apiServices.createFarmVisit(data);
+
 
   @override
   Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({
@@ -124,6 +143,9 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<DashboardData>> getDashboard() => localStorage.getDashboard();
 
+   @override
+  Future<List<FarmVisit>> getFarmVisit() => localStorage.getFarmVisit();
+
   @override
   Future<List<Insight>> getInsight() => localStorage.getInsight();
 
@@ -174,6 +196,11 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveDashboard(List<DashboardData> dashboardList) =>
       localStorage.saveDashboard(dashboardList);
+
+        @override
+  Future<void> saveFarmVisit(List<FarmVisit> farmVisitList) =>
+      localStorage.saveFarmVisit(farmVisitList);
+
 
   @override
   Future<void> saveLga(List<Lga> lgaList) => localStorage.saveLga(lgaList);

@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
+import '../data/model/farm_visit.dart';
 import '../data/model/forgot_password.dart';
 import '../data/model/incident_report.dart';
 import '../data/model/insight.dart';
@@ -53,6 +54,10 @@ abstract class ApiServices {
     String? endpoint,
   );
 
+   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList(
+    String? endpoint,
+  );
+
   Future<Either<Failure, ApiResponse<List<Lga>>>> getLgaList(String? endpoint);
 
   Future<Either<Failure, ApiResponse<List<Livestock>>>> getLivestockList(
@@ -95,7 +100,11 @@ abstract class ApiServices {
 
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
 
+  Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(Cooperative data);
+
   Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(MarketData data);
 
   Future<Either<Failure, ApiResponse<IncidentReport>>> logIncident(IncidentReport data);
+
+  Future<Either<Failure, ApiResponse<FarmVisit>>> createFarmVisit(FarmVisit data);
 }

@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../data/model/cooperative.dart';
 import '../../data/model/crop_calendar.dart';
 import '../../data/model/dashboard_data.dart';
+import '../../data/model/farm_visit.dart';
 import '../../data/model/incident_report.dart';
 import '../../data/model/insight.dart';
 import '../../data/model/market_data.dart';
@@ -38,6 +39,7 @@ class IsarImpl implements DatabaseStorage {
           CooperativeSchema,
           DashboardDataSchema,
           FarmerSchema,
+          FarmVisitSchema,
           LgaSchema,
           LivestockSchema,
           MarketSchema,
@@ -94,7 +96,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-    @override
+  @override
   Future<List<CropCalendar>> getCropCalendar() {
     if (!_isar.isOpen) {
       return Future.value(<CropCalendar>[]);
@@ -133,6 +135,20 @@ class IsarImpl implements DatabaseStorage {
     } catch (e) {
       debugPrint("Error retrieving farmers: $e");
       return Future.value(<Farmer>[]);
+    }
+  }
+
+  @override
+  Future<List<FarmVisit>> getFarmVisit() {
+    if (!_isar.isOpen) {
+      return Future.value(<FarmVisit>[]);
+    }
+    try {
+      final farmVisit = _isar.farmVisits.where().findAllSync();
+      return Future.value(farmVisit);
+    } catch (e) {
+      debugPrint("Error retrieving farm visit: $e");
+      return Future.value(<FarmVisit>[]);
     }
   }
 
@@ -347,6 +363,18 @@ class IsarImpl implements DatabaseStorage {
       await _isar.writeTxn(() => _isar.dashboardDatas.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving dashboard: $e");
+    }
+  }
+
+  @override
+  Future<void> saveFarmVisit(List<FarmVisit> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.farmVisits.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving farm visit: $e");
     }
   }
 

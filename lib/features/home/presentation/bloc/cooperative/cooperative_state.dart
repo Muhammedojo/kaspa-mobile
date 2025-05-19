@@ -24,8 +24,16 @@ class CooperativeLoaded extends CooperativeState {
 
 class CooperativeNotLoaded extends CooperativeState {}
 
+class CreateCooperativeSuccess extends CooperativeState {
+  final Cooperative cooperative;
+  const CreateCooperativeSuccess(this.cooperative);
+
+  @override
+  List<Object> get props => [cooperative];
+}
+
 class CooperativeFailure extends CooperativeState {
-  final String error;
+  final Failure error;
 
   const CooperativeFailure(this.error);
 

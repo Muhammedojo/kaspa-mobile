@@ -3,6 +3,7 @@ import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
+import '../data/model/farm_visit.dart';
 import '../data/model/farmer.dart';
 import '../data/model/incident_report.dart';
 import '../data/model/insight.dart';
@@ -42,6 +43,7 @@ abstract class DatabaseStorage {
   Future<List<Cooperative>> getCooperative();
   Future<List<DashboardData>> getDashboard();
   Future<List<Farmer>> getFarmer();
+  Future<List<FarmVisit>> getFarmVisit();
   Future<List<Lga>> getLga();
   Future<List<Product>> getProduct();
   Future<List<Livestock>> getLivestock();
@@ -61,6 +63,7 @@ abstract class DatabaseStorage {
   Future<void> saveCooperative(List<Cooperative> objectList);
   Future<void> saveDashboard(List<DashboardData> objectList);
   Future<void> saveFarmer(List<Farmer> objectList);
+  Future<void> saveFarmVisit(List<FarmVisit> objectList);
   Future<void> saveLga(List<Lga> objectList);
   Future<void> saveLivestock(List<Livestock> objectList);
   Future<void> saveWard(List<Ward> objectList);

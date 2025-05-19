@@ -2,47 +2,48 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kaspa/core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/api/api.dart';
 import '../../../../../core/api/exceptions/api_exception.dart';
-import '../../../../../core/api/exceptions/contracts/failure.dart';
-import '../../../../../core/data/model/market_data.dart';
+import '../../../../../core/data/model/cooperative.dart';
+import '../../../../../core/data/model/farm_visit.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../repository/home_repository_contract.dart';
 import '../api_request/api_request_bloc.dart';
 import '../api_request/api_request_state.dart';
 
-part 'market_price_state.dart';
+part 'farm_visit_state.dart';
 
-class MarketPriceCubit extends Cubit<MarketPriceState> {
+class FarmVisitCubit extends Cubit<FarmVisitState> {
   final IHomeRepository repository;
   final LocalStorage databaseManager;
-  MarketPriceCubit({required this.repository, required this.databaseManager})
-    : super(MarketPriceLoading());
+  FarmVisitCubit({required this.repository, required this.databaseManager})
+    : super(FarmVisitLoading());
 
   int currentPulledCount = 0;
 
-  loadMarketPrice({String? url}) async {
+  loadFarmVisit({String? url}) async {
     try {
-      emit(MarketPriceLoading());
+      emit(FarmVisitLoading());
       final response =
           url != null && url.isNotEmpty
-              ? await repository.getMarketPriceList(endpoint: url)
-              : await repository.getMarketPriceList();
+              ? await repository.getFarmVisitList(endpoint: url)
+              : await repository.getFarmVisitList();
 
       final state =
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
       if (state is ApiRequestStateCompleted) {
-        loadMarketPricesFromDb();
+        loadFarmVisitsFromDb();
       } else {
         response.fold(
           (l) {
             GlobalVariables.rootNavigatorKey.currentContext!
                 .read<ApiRequestBloc>()
                 .add(ApiRequestCompleted());
-            loadMarketPricesFromDb();
+            loadFarmVisitsFromDb();
           },
           (r) async {
             currentPulledCount += r.data?.length ?? 0;
@@ -55,14 +56,14 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
                 .read<ApiRequestBloc>()
                 .add(
                   ApiRequestLoading(
-                    identifier: marketPriceListEndpoint,
+                    identifier: farmVisitListEndpoint,
                     progress: progressPercent,
                   ),
                 );
 
-            saveMarketPricesToDb(r.data ?? []);
+            saveFarmVisitsToDb(r.data ?? []);
             if (r.nextUrl != null && (r.nextUrl ?? "").isNotEmpty) {
-              loadMarketPrice(url: r.nextUrl);
+              loadFarmVisit(url: r.nextUrl);
             } else {
               GlobalVariables.rootNavigatorKey.currentContext!
                   .read<ApiRequestBloc>()
@@ -75,51 +76,50 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
       GlobalVariables.rootNavigatorKey.currentContext!
           .read<ApiRequestBloc>()
           .add(ApiRequestCompleted());
-      loadMarketPricesFromDb();
+      loadFarmVisitsFromDb();
       debugPrint(e.toString());
     }
   }
 
-  loadMarketPricesFromDb() async {
+  loadFarmVisitsFromDb() async {
     try {
-      final response = await repository.getMarketPrice();
-      emit(MarketPriceLoaded(response));
+      final response = await repository.getFarmVisit();
+      emit(FarmVisitLoaded(response));
     } catch (e) {
-      emit(MarketPriceNotLoaded());
+      emit(FarmVisitNotLoaded());
     }
   }
 
-  saveMarketPricesToDb(List<MarketData> marketPriceList) async {
+  saveFarmVisitsToDb(List<FarmVisit> farmVisitList) async {
     try {
-      await repository.saveMarketPrice(marketPriceList);
-      loadMarketPricesFromDb();
+      await repository.saveFarmVisit(farmVisitList);
+      loadFarmVisitsFromDb();
     } on Error catch (e) {
       debugPrint(e.toString());
     }
   }
 
-  addMarketPrice(MarketData data) async {
+  createFarmVisit(FarmVisit data) async {
     try {
-      emit(MarketPriceLoading());
-      final response = await repository.createMarketPrice(data);
-      response.fold((l) => emit(MarketPriceFailure(l)), (r) async {
+      emit(FarmVisitLoading());
+      final response = await repository.createFarmVisit(data);
+      response.fold((l) => emit(FarmVisitFailure(l)), (r) async {
         if (r.data != null) {
-          emit(CreateMarketPriceSuccess(r.data!));
+          emit(CreateVisitSuccess(r.data!));
 
           GetIt.I.get<ApiRequestBloc>().add(
-            ApiRequestTriggered(apiRequestList: [marketPriceListEndpoint]),
+            ApiRequestTriggered(apiRequestList: [farmVisitListEndpoint]),
           );
         } else {
           emit(
-            MarketPriceFailure(
-              UnknownFailure(message: "Market price creation returned no data"),
+            FarmVisitFailure(
+              UnknownFailure(message: "Farm visit creation returned no data"),
             ),
           );
         }
       });
     } on Error catch (e) {
-      emit(MarketPriceFailure(UnknownFailure(message: e.toString())));
+      emit(FarmVisitFailure(UnknownFailure(message: e.toString())));
     }
   }
-
 }
