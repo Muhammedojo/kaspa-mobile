@@ -39,6 +39,7 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
               child: Padding(
                 padding: REdgeInsets.symmetric(horizontal: 12.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     'crop_calendar'.toText(
                       fontSize: 18,

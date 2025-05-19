@@ -2,6 +2,7 @@ import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import '../../utils/const.dart';
 import 'product.dart';
+import 'product_data.dart';
 
 part 'crop.g.dart';
 
@@ -14,8 +15,7 @@ class Crop extends GeneralModel {
 
   String? name = "";
 
-  @ignore
-  Product? product;
+  ProductData? product;
 
   String? variety = "";
   String? unit = "";
@@ -32,7 +32,7 @@ Crop _$CropFromJson(Map<String, dynamic> json) {
   obj.name = json[KEY_NAME];
   obj.variety = json[KEY_VARIETY];
   obj.unit = json[KEY_UNIT];
-  obj.product = Product.fromJson(json[KEY_PRODUCT]);
+  obj.product = ProductData.fromJson(json[KEY_PRODUCT]);
   obj.created = json[KEY_CREATED_AT];
   obj.updated = json[KEY_UPDATED_AT];
 
