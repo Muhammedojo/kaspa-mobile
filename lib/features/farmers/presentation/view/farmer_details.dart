@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../../core/resources/vectors.dart';
 import '../../../../features/farmers/presentation/widget/custom_tile.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
@@ -28,7 +30,13 @@ class FarmerDetailsView extends StatelessWidget
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Utils.customAppBar(context, 'farmer_details', true, () {}),
+          Utils.customAppBar(
+              context,
+              'farmer_details',
+              true,
+              () => Navigator.of(context).pop(),
+              actions: [_buildActionsMenu(context)],
+            ),
             24.verticalSpace,
             Expanded(
               child: Padding(
@@ -370,4 +378,134 @@ class FarmerDetailsView extends StatelessWidget
       ),
     );
   }
+
+  Widget _buildActionsMenu(BuildContext context) {
+    const String editAction = 'edit';
+    const String deleteAction = 'delete';
+
+    return PopupMenuButton<String>(
+      icon: SvgPicture.asset(AppIcon.more),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0.r)),
+      onSelected: (String item) {
+        switch (item) {
+          case editAction:
+            debugPrint('Edit cooperative selected');
+            break;
+          case deleteAction:
+            debugPrint('Delete cooperative selected');
+
+            break;
+        }
+      },
+      itemBuilder:
+          (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: editAction,
+              child: Row(
+                children: [
+                   SvgPicture.asset(
+                    AppIcon.edit,
+                    height: 14.sp,
+                    width: 14.sp,
+                  ),
+                  8.horizontalSpace,
+                  "Edit farmer's details".toText(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.accentText,
+                    translate: false,
+                  ),
+                ],
+              ),
+            ),
+            const PopupMenuDivider(),
+            PopupMenuItem<String>(
+              value: deleteAction,
+              child: Row(
+                children: [
+                    SvgPicture.asset(
+                    AppIcon.farm,
+                    height: 14.sp,
+                    width: 14.sp,
+                  ),
+                  8.horizontalSpace,
+                  "View farm location".toText(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                color: AppColors.accentText,
+                    translate: false,
+                  ),
+                ],
+              ),
+            ),
+     
+
+            const PopupMenuDivider(),
+            PopupMenuItem<String>(
+              value: deleteAction,
+              child: Row(
+                children: [
+                   SvgPicture.asset(
+                    AppIcon.money,
+                    height: 14.sp,
+                    width: 14.sp,
+                  ),
+                  8.horizontalSpace,
+                  "View transaction history".toText(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                   color: AppColors.accentText,
+                    translate: false,
+                  ),
+                ],
+              ),
+            ),
+                const PopupMenuDivider(),
+            PopupMenuItem<String>(
+              value: deleteAction,
+              child: Row(
+                children: [
+                    SvgPicture.asset(
+                    AppIcon.blacklist,
+                    height: 14.sp,
+                    width: 14.sp,
+                  ),
+                  8.horizontalSpace,
+                  "Suspend from cooperative".toText(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  color: AppColors.accentText,
+                    translate: false,
+                  ),
+                ],
+              ),
+            ),
+
+            const PopupMenuDivider(),
+            PopupMenuItem<String>(
+              value: deleteAction,
+              child: Row(
+                children: [
+                    SvgPicture.asset(
+                    AppIcon.blacklist,
+                    height: 14.sp,
+                    width: 14.sp,
+                  ),
+                  8.horizontalSpace,
+                  "Blacklist farmer".toText(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  color: AppColors.accentText,
+                    translate: false,
+                  ),
+                ],
+              ),
+            ),
+
+        
+          ],
+    );
+  }
+
 }

@@ -20,11 +20,12 @@ abstract class ReportIncidentControllerContract {
   late Ward? selectedWard;
   late Lga? selectedLga;
 
+
   final picker = ImagePicker();
 
   late List<File> imageFileList = [];
 
-  Future<void> getImage(ImageSource source, TextEditingController controller);
+  Future<void> getImage(ImageSource source);
 
   void reportIncident();
   void removeImage(int index);

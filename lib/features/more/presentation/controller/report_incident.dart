@@ -29,6 +29,7 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
     titleController = TextEditingController();
     descriptionController = TextEditingController();
     imageController = TextEditingController();
+    
 
     view = ReportIncidentView(controller: this);
   }
@@ -51,7 +52,7 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
 
   @override
   final picker = ImagePicker();
-
+ 
   @override
   void onSelectWard(Ward? newValue) {
     setState(() {
@@ -101,23 +102,19 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
   @override
   Future<void> getImage(
     ImageSource source,
-    TextEditingController controller,
   ) async {
     try {
       final pickedFile = await picker.pickImage(source: source);
 
       if (pickedFile != null && pickedFile.path.isNotEmpty) {
-        try {
+    
           setState(() {
-            controller.text = pickedFile.path;
             imageFileList.add(File(pickedFile.path));
           });
-        } catch (e) {
-          // Handle face detection errors gracefully
-        }
+     
       }
     } catch (e) {
-      // Handle image picking errors gracefully
+      debugPrint(e.toString());
     }
   }
 

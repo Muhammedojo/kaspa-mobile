@@ -214,16 +214,12 @@ class ReportIncidentView extends StatelessWidget
                           ],
                         );
                       }),
-              SizedBox(
-                height: 10.h,
-              ),
-
-                  5.verticalSpace,
+                  10.verticalSpace,
                   InkWell(
                     onTap: () {
                       controller.getImage(
-                        ImageSource.camera,
-                        controller.imageController,
+                        ImageSource.camera
+                       
                       );
                     },
                     child: DottedBorder(
@@ -312,6 +308,7 @@ class ReportIncidentView extends StatelessWidget
                       onPressed: () => controller.reportIncident(),
                     ),
                   ),
+               
                 ],
               ),
             ),

@@ -1,18 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:kaspa/core/data/model/lga.dart';
 import 'package:kaspa/core/data/model/ward.dart';
 import '../../../../core/data/model/cooperative.dart';
 import '../contract/register_cooperative.dart';
 import '../view/register_cooperative.dart';
 
-
 class RegisterCooperativeScreen extends StatefulWidget {
   final Cooperative? cooperative;
   const RegisterCooperativeScreen({super.key, this.cooperative});
 
   @override
-  State<RegisterCooperativeScreen> createState() => _RegisterCooperativeScreenState();
+  State<RegisterCooperativeScreen> createState() =>
+      _RegisterCooperativeScreenState();
 }
 
 class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
@@ -27,6 +31,9 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
     nameController = TextEditingController();
     certificateNumberController = TextEditingController();
     doiController = TextEditingController();
+    selectedLga = null;
+    selectedWard = null;
+    imageController = TextEditingController();
     picker = ImagePicker();
     cooperative = widget.cooperative;
     view = RegisterCooperativeView(controller: this);
@@ -45,11 +52,17 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   @override
   Cooperative? cooperative = Cooperative();
 
+   @override
+  List<File> imageFileList = [];
+
   @override
   late TextEditingController certificateNumberController;
 
   @override
   late TextEditingController doiController;
+
+   @override
+  late TextEditingController imageController;
 
   @override
   late GlobalKey<FormState> formKey;
@@ -70,25 +83,82 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   Ward? selectedWard;
 
   @override
-  void back() {
- 
+  void back() {}
+
+   @override
+  Future<void> getImage(
+    ImageSource source,
+  ) async {
+    try {
+      final pickedFile = await picker.pickImage(source: source);
+
+      if (pickedFile != null && pickedFile.path.isNotEmpty) {
+        try {
+          setState(() {
+       
+            imageFileList.add(File(pickedFile.path));
+          });
+        } catch (e) {
+          // Handle face detection errors gracefully
+        }
+      }
+    } catch (e) {
+     debugPrint(e.toString());
+    }
+  }
+
+  @override
+  void removeImage(int index) {
+    imageFileList.removeAt(index);
+    setState(() {});
+  }
+
+  @override
+  Future<void> selectDate(BuildContext context) async {
+    selectDateOfBirth(context);
+  }
+  final dateFormat = DateFormat(
+      "dd-MM-yyyy",
+      Platform.localeName);
+
+  void selectDateOfBirth(context) {
+    DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime(1900, 1, 1),
+      maxTime: DateTime.now().subtract(const Duration(days: 5840)),
+
+      onChanged: (date) {
+        String dateString = dateFormat.format(date);
+        doiController.text = dateString;
+      },
+      onConfirm: (date) {
+        String dateString = dateFormat.format(date);
+        doiController.text = dateString;
+      },
+      currentTime:
+          doiController.text.trim().isNotEmpty
+              ? DateTime.parse(doiController.text.trim())
+              : DateTime.now(),
+      locale: LocaleType.en,
+    );
   }
 
   @override
   void clearScreen() {
-   setState(() {
-     nameController.clear();
-     certificateNumberController.clear();
-     doiController.clear();
-     selectedLga = null;
-     selectedWard = null;
-     hasSubmitted = false;
-   });
+    setState(() {
+      nameController.clear();
+      certificateNumberController.clear();
+      doiController.clear();
+      selectedLga = null;
+      selectedWard = null;
+      hasSubmitted = false;
+    });
   }
 
   @override
   void onSelectLga(Lga? newValue) {
-     setState(() {
+    setState(() {
       selectedLga = newValue!;
     });
   }
@@ -101,7 +171,5 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   }
 
   @override
-  void saveCooperative() async{
-   
-  }
+  void saveCooperative() async {}
 }

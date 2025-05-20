@@ -20,20 +20,38 @@ class Utils {
     );
   }
 
-  static customAppBar(
+  static AppBar customAppBar(
     BuildContext context,
     String title,
     bool? showMore,
     Function()? onTapAction, {
     GestureTapCallback? onPressed,
+    List<Widget>? actions,
   }) {
+    List<Widget> effectiveActions = [];
+
+    if (actions != null && actions.isNotEmpty) {
+      effectiveActions.addAll(actions);
+    } else if (showMore == true) {
+      effectiveActions.add(
+        InkWell(
+          onTap: onTapAction,
+          child: SvgPicture.asset(
+            AppIcon.more,
+            fit: BoxFit.scaleDown,
+            height: 32.sp,
+            width: 32.sp,
+          ),
+        ),
+      );
+    }
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
       title: title.toText(fontSize: 14, fontWeight: FontWeight.w700),
       leading: InkWell(
-        onTap: () => Navigator.pop(context),
+        onTap: onPressed ?? () => Navigator.pop(context),
         child: SvgPicture.asset(
           AppIcon.pop,
           fit: BoxFit.scaleDown,
@@ -41,20 +59,7 @@ class Utils {
           width: 32.sp,
         ),
       ),
-      actions: <Widget>[
-        showMore == true
-            ? InkWell(
-              onTap:  onTapAction ,
-              child: SvgPicture.asset(
-                AppIcon.more,
-                fit: BoxFit.scaleDown,
-                height: 32.sp,
-                width: 32.sp,
-              ),
-            )
-            : SizedBox.shrink(),
-            12.horizontalSpace
-      ],
+      actions: effectiveActions.isEmpty ? null : effectiveActions,
     );
   }
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,16 +18,21 @@ abstract class RegisterCooperativeControllerContract {
   late bool hasSubmitted;
   late Lga? selectedLga;
   late Ward? selectedWard;
-  late ImagePicker picker;
   late TextEditingController nameController;
   late TextEditingController doiController;
   late TextEditingController certificateNumberController;
+  late TextEditingController imageController;
 
-   void clearScreen();
-   void saveCooperative();
-   void back();
+  final picker = ImagePicker();
+  void removeImage(int index);
+  late List<File> imageFileList = [];
 
+  Future<void> getImage(ImageSource source);
 
+  void clearScreen();
+  Future<void> selectDate(BuildContext context);
+  void saveCooperative();
+  void back();
 }
 
 abstract class RegisterCooperativeViewContract extends BaseViewContract {}
