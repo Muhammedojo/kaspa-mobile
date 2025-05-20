@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../../core/data/model/incident_report.dart';
 import '../../../../core/data/model/lga.dart';
-import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/ward.dart';
+import '../../../home/presentation/bloc/incident_report/incident_report_cubit.dart';
 import '../contract/report_incident.dart';
 import '../view/report_incident.dart';
 
@@ -22,11 +26,9 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
     super.initState();
 
     formKey = GlobalKey<FormState>();
-    nameController = TextEditingController();
-    addressController = TextEditingController();
-    sizeController = TextEditingController();
-    marketDaysController = TextEditingController();
-    marketTypeController = TextEditingController();
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    imageController = TextEditingController();
 
     view = ReportIncidentView(controller: this);
   }
@@ -34,11 +36,8 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
   @override
   void dispose() {
     super.dispose();
-    nameController.dispose();
-    addressController.dispose();
-    sizeController.dispose();
-    marketDaysController.dispose();
-    marketTypeController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
   }
 
   @override
@@ -46,6 +45,12 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
 
   @override
   Lga? selectedLga;
+
+  @override
+  List<File> imageFileList = [];
+
+  @override
+  final picker = ImagePicker();
 
   @override
   void onSelectWard(Ward? newValue) {
@@ -70,49 +75,65 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
   late GlobalKey<FormState> formKey;
 
   @override
-  late TextEditingController nameController;
-  @override
-  late TextEditingController addressController;
-  @override
-  late TextEditingController sizeController;
-  @override
-  late TextEditingController marketDaysController;
-  @override
-  late TextEditingController marketTypeController;
+  late TextEditingController imageController;
 
   @override
-  void reportIncident() async{
+  late TextEditingController titleController;
+  @override
+  late TextEditingController descriptionController;
+
+  @override
+  void reportIncident() async {
     if (formKey.currentState!.validate()) {
       if (selectedLga != null && selectedWard != null) {
-        Market market = Market();
-        market.name = nameController.text;
-        market.address = addressController.text;
-        market.size = 'Large';
-        //sizeController.text;
-        market.marketDays = 'Tuesdays';
-        //marketDaysController.text;
-       // market.marketType = 'Test';
-        //marketTypeController.text;
-        market.lgaId = selectedLga!.pk;
-        market.wardId = selectedWard!.pk;
+        IncidentReport report = IncidentReport();
+        // report.image = imageFileList;
+        report.description = descriptionController.text;
+        report.title = titleController.text;
+        report.lgaId = selectedLga?.pk;
+        report.wardId = selectedWard?.pk;
 
-      //  context.read<MarketCubit>().createMarket(market);
+        context.read<IncidentCubit>().logIncidentReport(report);
       }
     }
   }
 
   @override
+  Future<void> getImage(
+    ImageSource source,
+    TextEditingController controller,
+  ) async {
+    try {
+      final pickedFile = await picker.pickImage(source: source);
+
+      if (pickedFile != null && pickedFile.path.isNotEmpty) {
+        try {
+          setState(() {
+            controller.text = pickedFile.path;
+            imageFileList.add(File(pickedFile.path));
+          });
+        } catch (e) {
+          // Handle face detection errors gracefully
+        }
+      }
+    } catch (e) {
+      // Handle image picking errors gracefully
+    }
+  }
+
+  @override
+  void removeImage(int index) {
+    imageFileList.removeAt(index);
+    setState(() {});
+  }
+ 
+  @override
   void clearScreen() {
     setState(() {
-      nameController.clear();
-      addressController.clear();
-      sizeController.clear();
-      marketDaysController.clear();
-      marketTypeController.clear();
+      titleController.clear();
+      descriptionController.clear();
       selectedLga = null;
       selectedWard = null;
     });
-
   }
-  
 }

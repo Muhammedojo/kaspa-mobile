@@ -1210,17 +1210,16 @@ class RegisterFarmerView extends StatelessWidget
           padding: REdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           decoration: Styles.textFormFieldDecorationBorderWithBackground(
             '',
-            '', // No hint text needed here
-            // isEnabled: false, // To give a form field appearance
+            '',
           ),
           child:
               controller.selectedCropsList.isEmpty
                   ? Padding(
-                    padding: REdgeInsets.symmetric(
-                      vertical: 8.0,
-                    ), // Match DropdownButtonFormField's internal padding
+                    padding: REdgeInsets.symmetric(vertical: 8.0),
                     child: 'choose_an_option'.toText(
-                      color: AppColors.accentText.withAlpha((0.7 * 255).toInt())
+                      color: AppColors.accentText.withAlpha(
+                        (0.7 * 255).toInt(),
+                      ),
                     ),
                   )
                   : Wrap(
@@ -1241,7 +1240,9 @@ class RegisterFarmerView extends StatelessWidget
                               controller.updateSelectedCrops(newList);
                             },
                             deleteIconColor: AppColors.colorPrimary,
-                            backgroundColor: AppColors.primaryGreen.withAlpha((0.1 * 255).toInt()),
+                            backgroundColor: AppColors.primaryGreen.withAlpha(
+                              (0.1 * 255).toInt(),
+                            ),
                             padding: REdgeInsets.all(4.0),
                           );
                         }).toList(),

@@ -5,13 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:kaspa/core/utils/extensions.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/button.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
-import '../../../home/presentation/bloc/market/cubit.dart';
+import '../../../home/presentation/bloc/incident_report/incident_report_cubit.dart';
 import '../contract/report_incident.dart';
 
 class ReportIncidentView extends StatelessWidget
@@ -48,7 +49,7 @@ class ReportIncidentView extends StatelessWidget
                   Padding(
                     padding: REdgeInsets.only(top: 5.0),
                     child: TextFormField(
-                      controller: controller.nameController,
+                      controller: controller.titleController,
                       style: Styles.x14dp_4A4A4A(14.0.sp),
                       maxLines: 1,
                       validator: ValidationBuilder().required().build(),
@@ -150,7 +151,7 @@ class ReportIncidentView extends StatelessWidget
                   Padding(
                     padding: REdgeInsets.only(top: 5.0),
                     child: TextFormField(
-                      controller: controller.addressController,
+                      controller: controller.descriptionController,
                       style: Styles.x14dp_4A4A4A(14.0.sp),
                       maxLines: 3,
                       validator: ValidationBuilder().required().build(),
@@ -172,10 +173,59 @@ class ReportIncidentView extends StatelessWidget
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
+                    controller.imageFileList.isEmpty
+                  ? const SizedBox.shrink()
+                  : GridView.builder(
+                      itemCount: controller.imageFileList.length,
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              child: Image.file(
+                                controller.imageFileList[index],
+                                width: 160.w,
+                                height: 160.h,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              top: 0.0.sp,
+                              right: 0.0.sp,
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.removeImage(index);
+                                },
+                                child: Icon(
+                                  Icons.cancel,
+                                  color: Colors.black,
+                                  size: 24.0.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+              SizedBox(
+                height: 10.h,
+              ),
 
                   5.verticalSpace,
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      controller.getImage(
+                        ImageSource.camera,
+                        controller.imageController,
+                      );
+                    },
                     child: DottedBorder(
                       color: AppColors.primaryGreen,
                       radius: Radius.circular(8.r),
@@ -199,7 +249,10 @@ class ReportIncidentView extends StatelessWidget
                                 width: 50.sp,
                               ),
                               Padding(
-                                padding: REdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
+                                padding: REdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 8,
+                                ),
                                 child: RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
@@ -227,22 +280,22 @@ class ReportIncidentView extends StatelessWidget
                   ),
 
                   30.verticalSpace,
-                  BlocListener<MarketCubit, MarketState>(
+                  BlocListener<IncidentCubit, IncidentState>(
                     listener: (context, state) {
-                      if (state is MarketLoading) {
+                      if (state is IncidentLoading) {
                         Utils.showLoading(context);
-                      } else if (state is CreateMarketSuccess) {
+                      } else if (state is ReportIncidentSuccess) {
                         Utils.hideLoading(context);
                         controller.clearScreen();
                         Utils.showToastSuccess(
                           context,
-                          'market_created_successfully'.tr(),
-                          'create_new_market',
+                          'incident_reported_successfully'.tr(),
+                          '',
                           () {
                             Navigator.pop(context);
                           },
                         );
-                      } else if (state is MarketFailure) {
+                      } else if (state is IncidentFailure) {
                         Utils.hideLoading(context);
                         Utils.showToastError(
                           context,

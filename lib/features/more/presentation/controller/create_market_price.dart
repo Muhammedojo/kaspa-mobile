@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/market_data.dart';
 import '../../../../core/data/model/product.dart';
@@ -26,6 +27,7 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
     view = CreateMarketPriceView(controller: this);
     formKey = GlobalKey<FormState>();
     priceController = TextEditingController();
+    volumeController = TextEditingController();
   }
 
   @override
@@ -33,6 +35,9 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
     super.dispose();
     priceController.dispose();
   }
+
+  @override
+  Lga? selectedLga;
 
   @override
   Product? selectedCrop;
@@ -48,6 +53,13 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
   }
 
   @override
+  void onSelectLga(Lga? newValue) {
+    setState(() {
+      selectedLga = newValue!;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return view.build(context);
   }
@@ -57,6 +69,9 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
 
   @override
   late TextEditingController priceController;
+
+  @override
+  late TextEditingController volumeController;
 
   @override
   void onSelectMarket(Market? newValue) {
@@ -70,8 +85,7 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
     if (formKey.currentState!.validate()) {
       if (selectedCrop != null && selectedMarket != null) {
         MarketData marketPrice = MarketData();
-        marketPrice.price =
-            double.tryParse(priceController.text) ?? 0.0; 
+        marketPrice.price = double.tryParse(priceController.text) ?? 0.0;
         marketPrice.productId = selectedCrop!.pk;
         marketPrice.marketId = selectedMarket!.pk;
 
@@ -87,7 +101,6 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
       priceController.clear();
       selectedCrop = null;
       selectedMarket = null;
-      
     });
   }
 }

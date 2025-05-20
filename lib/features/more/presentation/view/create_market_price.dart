@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:kaspa/core/component/button.dart';
-import 'package:kaspa/core/utils/extensions.dart';
+import '../../../../core/component/button.dart';
+import '../../../../core/utils/extensions.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
+import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/market/cubit.dart';
 import '../../../home/presentation/bloc/market_price/cubit.dart';
 import '../../../home/presentation/bloc/product/cubit.dart';
@@ -34,9 +35,53 @@ class CreateMarketPriceView extends StatelessWidget
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Utils.customAppBar(context, 'new_price_update',false,(){}),
+                Utils.customAppBar(context, 'new_price_update', false, () {}),
                 25.verticalSpace,
-                'product'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                'LGA'.toText(
+                  fontSize: 14,
+                  translate: false,
+                  fontWeight: FontWeight.w600,
+                ),
+                Padding(
+                  padding: REdgeInsets.only(top: 5.0),
+                  child: BlocBuilder<LgaCubit, LgaState>(
+                    builder: (context, state) {
+                      if (state is LgaLoaded) {
+                        return DropdownButtonFormField(
+                          icon: 'arrowDown'.toSvg(),
+                          style: Styles.x14dp_4A4A4A(14.0.sp),
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                'Choose the option',
+                                '',
+                              ),
+                          items:
+                              state.dataList.map((e) {
+                                return DropdownMenuItem(
+                                  value: e,
+                                  child: (e.name!).toText(translate: false),
+                                );
+                              }).toList(),
+                          value: controller.selectedLga,
+                          onChanged: (newValue) {
+                            controller.onSelectLga(newValue!);
+                          },
+                        );
+                      }
+                      return DropdownButtonFormField(
+                        style: Styles.x14dp_4A4A4A(14.0.sp),
+                        items: [],
+                        onChanged: (_) {},
+                      );
+                    },
+                  ),
+                ),
+                16.verticalSpace,
+                'Commodity/Livestock'.toText(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  translate: false,
+                ),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
                   child: BlocBuilder<ProductCubit, ProductState>(
@@ -52,17 +97,14 @@ class CreateMarketPriceView extends StatelessWidget
                               ),
 
                           items:
-                              state.productList
-                                  .where((product) => product.type == 'Crop')
-                                  .map((e) {
-                                    return DropdownMenuItem(
-                                      value: e,
-                                      child: (e.name ?? '').toText(
-                                        translate: false,
-                                      ),
-                                    );
-                                  })
-                                  .toList(),
+                              state.productList.map((e) {
+                                return DropdownMenuItem(
+                                  value: e,
+                                  child: (e.name ?? '').toText(
+                                    translate: false,
+                                  ),
+                                );
+                              }).toList(),
                           onChanged: (newValue) {
                             controller.onSelectCrop(newValue!);
                           },
@@ -135,6 +177,32 @@ class CreateMarketPriceView extends StatelessWidget
                     onChanged: (value) {},
                   ),
                 ),
+                16.verticalSpace,
+                'Volume(optional)'.toText(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  translate: false,
+                ),
+                Padding(
+                  padding: REdgeInsets.only(top: 5.0),
+                  child: TextFormField(
+                    controller: controller.volumeController,
+                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                    maxLines: 1,
+                    validator: ValidationBuilder().required().build(),
+                    keyboardType: TextInputType.number,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    textInputAction: TextInputAction.next,
+                    decoration:
+                        Styles.textFormFieldDecorationBorderWithBackground(
+                          '1000',
+                          '',
+                          check: false,
+                        ),
+                    onChanged: (value) {},
+                  ),
+                ),
+
                 50.verticalSpace,
                 BlocListener<MarketPriceCubit, MarketPriceState>(
                   listener: (context, state) {
@@ -148,7 +216,7 @@ class CreateMarketPriceView extends StatelessWidget
                         'price_logged_successfully'.tr(),
                         '',
                         () {
-                       Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                       );
                     } else if (state is MarketFailure) {

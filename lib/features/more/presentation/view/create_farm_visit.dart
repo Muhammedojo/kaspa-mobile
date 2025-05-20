@@ -7,9 +7,10 @@ import '../../../../core/component/button.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
+import '../../../farmers/presentation/bloc/bloc.dart';
+import '../../../farmers/presentation/bloc/get_farmer/get_farmer_state.dart';
+import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
 import '../../../home/presentation/bloc/market/cubit.dart';
-import '../../../home/presentation/bloc/market_price/cubit.dart';
-import '../../../home/presentation/bloc/product/cubit.dart';
 import '../contract/create_farm_visit.dart';
 
 class CreateFarmVisitView extends StatelessWidget
@@ -36,12 +37,12 @@ class CreateFarmVisitView extends StatelessWidget
               children: [
                 Utils.customAppBar(context, 'new_farm_visit',false,(){}),
                 25.verticalSpace,
-                'product'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                'farmer'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
-                  child: BlocBuilder<ProductCubit, ProductState>(
+                  child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
                     builder: (context, state) {
-                      if (state is ProductLoaded) {
+                      if (state is FarmerListLoaded) {
                         return DropdownButtonFormField(
                           icon: 'arrowDown'.toSvg(),
                           style: Styles.x14dp_4A4A4A(14.0.sp),
@@ -52,19 +53,19 @@ class CreateFarmVisitView extends StatelessWidget
                               ),
 
                           items:
-                              state.productList
-                                  .where((product) => product.type == 'Crop')
+                              state.dataList
+                            
                                   .map((e) {
                                     return DropdownMenuItem(
                                       value: e,
-                                      child: (e.name ?? '').toText(
+                                      child: ('${e.firstName} ${e.lastName}').toText(
                                         translate: false,
                                       ),
                                     );
                                   })
                                   .toList(),
                           onChanged: (newValue) {
-                            controller.onSelectCrop(newValue!);
+                            controller.onSelectFarmer(newValue!);
                           },
                         );
                       }
@@ -136,22 +137,22 @@ class CreateFarmVisitView extends StatelessWidget
                   ),
                 ),
                 50.verticalSpace,
-                BlocListener<MarketPriceCubit, MarketPriceState>(
+                BlocListener<FarmVisitCubit, FarmVisitState>(
                   listener: (context, state) {
-                    if (state is MarketPriceLoading) {
+                    if (state is FarmVisitLoading) {
                       Utils.showLoading(context);
-                    } else if (state is CreateMarketPriceSuccess) {
+                    } else if (state is CreateVisitSuccess) {
                       Utils.hideLoading(context);
                       controller.clearScreen();
                       Utils.showToastSuccess(
                         context,
-                        'price_logged_successfully'.tr(),
+                        'visit_logged_successfully'.tr(),
                         '',
                         () {
                        Navigator.pop(context);
                         },
                       );
-                    } else if (state is MarketFailure) {
+                    } else if (state is FarmVisitFailure) {
                       Utils.hideLoading(context);
                       Utils.showToastError(
                         context,
@@ -165,8 +166,8 @@ class CreateFarmVisitView extends StatelessWidget
                   },
 
                   child: ButtonWidget(
-                    label: 'log_price',
-                    onPressed: () => controller.logPrice(),
+                    label: 'submit',
+                    onPressed: () => controller.logVisit(),
                   ),
                 ),
               ],

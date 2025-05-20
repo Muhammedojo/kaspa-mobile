@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/data/model/farm_visit.dart';
+import '../../../../core/data/model/farmer.dart';
 import '../../../../core/data/model/market.dart';
-import '../../../../core/data/model/market_data.dart';
 import '../../../../core/data/model/product.dart';
-import '../../../home/presentation/bloc/market_price/cubit.dart';
+import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
 import '../contract/create_farm_visit.dart';
 import '../view/create_farm_visit.dart';
 
@@ -12,8 +13,7 @@ class CreateFarmVisitScreen extends StatefulWidget {
   const CreateFarmVisitScreen({super.key});
 
   @override
-  State<CreateFarmVisitScreen> createState() =>
-      _CreateFarmVisitScreenState();
+  State<CreateFarmVisitScreen> createState() => _CreateFarmVisitScreenState();
 }
 
 class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
@@ -38,12 +38,22 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   Product? selectedCrop;
 
   @override
+  Farmer? selectedFarmer;
+
+  @override
   Market? selectedMarket;
 
   @override
   void onSelectCrop(Product? newValue) {
     setState(() {
       selectedCrop = newValue!;
+    });
+  }
+
+  @override
+  void onSelectFarmer(Farmer? newValue) {
+    setState(() {
+      selectedFarmer = newValue!;
     });
   }
 
@@ -66,17 +76,13 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   }
 
   @override
-  void logPrice() async {
+  void logVisit() async {
     if (formKey.currentState!.validate()) {
       if (selectedCrop != null && selectedMarket != null) {
-        MarketData marketPrice = MarketData();
-        marketPrice.price =
-            double.tryParse(priceController.text) ?? 0.0; 
-        marketPrice.productId = selectedCrop!.pk;
-        marketPrice.marketId = selectedMarket!.pk;
+        FarmVisit visit = FarmVisit();
+        visit.farmerId = selectedFarmer?.pk;
 
-        context.read<MarketPriceCubit>().addMarketPrice(marketPrice);
-        priceController.clear();
+        context.read<FarmVisitCubit>().createFarmVisit(visit);
       }
     }
   }
@@ -87,7 +93,6 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
       priceController.clear();
       selectedCrop = null;
       selectedMarket = null;
-      
     });
   }
 }
