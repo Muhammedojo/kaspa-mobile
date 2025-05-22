@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
+import 'package:path/path.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/farm_visit.dart';
@@ -336,7 +338,7 @@ class ApiServicesImpl implements ApiServices {
     }
   }
 
-    @override
+  @override
   Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList(
     String? endpoint,
   ) async {
@@ -350,8 +352,7 @@ class ApiServicesImpl implements ApiServices {
           lastRequestTime.plot = currentDateTime();
           lastRequestTime.plotUrl = realUri;
 
-          final plotList =
-              (data as List).map((e) => Plot.fromJson(e)).toList();
+          final plotList = (data as List).map((e) => Plot.fromJson(e)).toList();
           GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
           return plotList;
         },
@@ -532,12 +533,23 @@ class ApiServicesImpl implements ApiServices {
   @override
   Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(
     Cooperative data,
-  ) {
+  ) async {
+    FormData formData = FormData.fromMap({
+      KEY_CODE: data.code,
+      KEY_NAME: data.name,
+      KEY_DOI: data.doi,
+      KEY_LGA_ID: data.lgaId,
+      if (data.file != null && data.file!.isNotEmpty)
+        KEY_FILE: await MultipartFile.fromFile(
+          data.file!,
+          filename: basename(data.file!),
+        ),
+    });
     return apiClient.request<Cooperative>(
       createCooperativeEndpoint,
       MethodType.post,
       (data, {String? realUri}) => Cooperative.fromJson(data),
-      data.toJson(),
+      formData,
     );
   }
 

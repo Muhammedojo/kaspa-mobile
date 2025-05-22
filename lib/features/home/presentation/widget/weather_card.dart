@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaspa/core/theme/colors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 
-import '../../../../core/data/model/weather.dart';
+import '../../../../core/data/model/insight.dart';
 import '../../../../core/resources/vectors.dart';
 
 class WeatherCard extends StatelessWidget {
-  final Weather weather;
-  const WeatherCard({super.key, required this.weather});
+  final Insight insight;
+  const WeatherCard({super.key, required this.insight});
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +50,14 @@ class WeatherCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      '${weather.tempMean}°C'.toText(
+                      '${insight.weather.tempMean}°C'.toText(
                         translate: false,
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                       ),
                       SizedBox(width: 8), // Add some spacing
 
-                       '${weather.tempMax}°/${weather.tempMin}°'.toText(
+                       '${insight.weather.tempMax}°/${insight.weather.tempMin}°'.toText(
                         translate: false,
                         fontSize: 12,
                         color: AppColors.accentText,
@@ -67,7 +67,7 @@ class WeatherCard extends StatelessWidget {
                     ],
                   ),
 
-                  'Sunrise - ${_formatTimeDisplay(weather.sunrise)}AM | Sunset - ${_formatTimeDisplay(weather.sunset)}PM'
+                  'Sunrise - ${_formatTimeDisplay(insight.weather.sunrise)}AM | Sunset - ${_formatTimeDisplay(insight.weather.sunset)}PM'
                       .toText(
                         translate: false,
                         fontSize: 10,
@@ -85,7 +85,7 @@ class WeatherCard extends StatelessWidget {
             children: [
               _buildWeatherDetail('-- hPa', 'Pressure'),
               _buildWeatherDetail('--%', 'Humidity'),
-              _buildWeatherDetail('${weather.windSpeedMax}km/h', 'Wind'),
+              _buildWeatherDetail('${insight.weather.windSpeedMax}km/h', 'Wind'),
               _buildWeatherDetail('--°C', 'Soil Temp'),
             ],
           ),

@@ -19,6 +19,7 @@ class Cooperative extends GeneralModel {
   String? doi = "";
   int? lgaId = 0;
   int? wardId = 0;
+  String? file;
   String? secretary = "";
   String? certificateNumber = "";
 
@@ -71,6 +72,7 @@ Map<String, dynamic> _$CooperativeToJson(Cooperative obj) => <String, dynamic>{
   KEY_DATE_OF_INCORPORATION: obj.dateOfIncorporation,
   KEY_CERTIFICATE: obj.certificate,
   KEY_PK: obj.pk,
+  KEY_FILE: obj.file,
   KEY_CERTIFICATE_NUMBER: obj.certificateNumber,
   KEY_WARD_ID: obj.wardId,
   KEY_CREATED_AT: obj.created,

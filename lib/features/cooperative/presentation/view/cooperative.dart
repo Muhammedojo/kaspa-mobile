@@ -52,35 +52,35 @@ class CooperativeView extends StatelessWidget
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                     ),
-                 
-                     SearchBarWidget(
+
+                    SearchBarWidget(
                       hint: 'search_for_a_cooperative',
                       onTextChanged: (text) {
-                        controller.updateSearchStatus(text != null && text.isNotEmpty);
+                        controller.updateSearchStatus(
+                          text != null && text.isNotEmpty,
+                        );
                         if (text != null && text.isNotEmpty) {
                           controller.searchCooperative(text);
                         }
                       },
                       searchController: controller.searchController,
-                      onClearSearch: () => controller.onClearSearch(), isSearching: controller.isSearching,
+                      onClearSearch: () => controller.onClearSearch(),
+                      isSearching: controller.isSearching,
                     ),
                     16.verticalSpace,
+
                     Expanded(
                       child: BlocBuilder<CooperativeCubit, CooperativeState>(
                         builder: (context, state) {
                           if (state is CooperativeLoading) {
-                            return 
-                            ErrorWidgets(title: "empty", message: '');
-                               
-                         
+                            return ErrorWidgets(title: "empty", message: '');
                           }
                           if (state is CooperativeLoaded) {
                             return state.cooperativeList.isEmpty
                                 ? ErrorWidgets(
                                   message: 'cooperative_list_empty',
                                 )
-                                : 
-                                ListView.separated(
+                                : ListView.separated(
                                   itemCount: state.cooperativeList.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -101,7 +101,6 @@ class CooperativeView extends StatelessWidget
                                       (BuildContext context, int index) =>
                                           12.verticalSpace,
                                 );
-                         
                           }
                           if (state is CooperativeFailure) {
                             return ErrorWidgets(

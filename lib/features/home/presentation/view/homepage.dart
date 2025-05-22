@@ -11,7 +11,7 @@ import '../../../../core/utils/styles.dart';
 import '../../../../core/component/pages_bar.dart';
 import '../../../auth/presentation/bloc/user/cubit.dart';
 import '../bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
-import '../bloc/weather/cubit.dart';
+import '../bloc/insight/insight_cubit.dart';
 import '../contract/homepage.dart';
 import '../widget/forecast_card.dart';
 import '../widget/weather_card.dart';
@@ -70,45 +70,25 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                       child: PageView(
                         controller: controller.pageController,
                         children: [
-                          BlocBuilder<WeatherCubit, WeatherState>(
+                          BlocBuilder<InsightCubit, InsightState>(
                             builder: (context, state) {
-                              if (state is WeatherLoading) {
+                              if (state is InsightLoading) {
                                 return Center(
                                   child: CircularProgressIndicator(
                                     color: AppColors.colorPrimary,
                                   ),
                                 );
                               }
-                              if (state is WeatherLoaded) {
-                                final today = '2025-05-13';
-                                //DateTime.now();
-                                // final formattedToday = DateFormat(
-                                //   'yyyy-MM-dd',
-                                // ).format(today);
-                                final filteredWeatherList =
-                                    state.weatherList.where((weather) {
-                                      return weather.lgaId == 2 &&
-                                          weather.date == today;
-                                    }).toList();
-                                if (filteredWeatherList.isEmpty) {
+                              if (state is InsightLoaded) {
+                                if (state.insightList.isEmpty) {
                                   return ErrorWidgets(
                                     message:
                                         'Weather data not available for your location.',
                                   );
                                 }
-                                return ListView.separated(
-                                  itemCount: filteredWeatherList.length,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return WeatherCard(
-                                      weather: filteredWeatherList[index],
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          12.verticalSpace,
-                                );
+                                final currentWeatherData = state.insightList[0];
+
+                                return WeatherCard(insight: currentWeatherData);
                               }
 
                               return ErrorWidgets(
@@ -216,179 +196,176 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                       ),
                     ),
                     16.verticalSpace,
-                  
-                      BlocBuilder<DashboardCubit, DashboardState>(
-                          builder: (context, stateBloc) {
-                            if (stateBloc is DashboardLoaded) {
-                              return 
-                             CardContainerWidget(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              'farmer_summary'.toText(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ],
-                          ),
-                          10.verticalSpace,
-                          const Divider(),
-                          12.verticalSpace,
-                          Row(
-                            children: [
-                              (stateBloc.dashboardList.isNotEmpty ? '${stateBloc.dashboardList[0].farmers.total}' : '0').toText(
-                                fontSize: 24,
-                                translate: false,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              8.horizontalSpace,
-                              'farmers_registered'.toText(
-                                fontSize: 12,
-                                color: AppColors.accentText,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
-                          8.verticalSpace,
-                          Row(
-                            children: [
-                              '23,000'.toText(
-                                fontSize: 10,
-                                translate: false,
-                                color: AppColors.brown,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              8.horizontalSpace,
-                              'Unverified Farmers (45%)'.toText(
-                                fontSize: 10,
-                                color: AppColors.accentText,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
-                          LinearProgressIndicator(
-                            value: 0.45,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(4.r),
-                            backgroundColor: AppColors.brown.withAlpha(
-                              ((0.4 * 255).toInt()),
+
+                    BlocBuilder<DashboardCubit, DashboardState>(
+                      builder: (context, stateBloc) {
+                        if (stateBloc is DashboardLoaded) {
+                          return CardContainerWidget(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    'farmer_summary'.toText(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ],
+                                ),
+                                10.verticalSpace,
+                                const Divider(),
+                                12.verticalSpace,
+                                Row(
+                                  children: [
+                                    (stateBloc.dashboardList.isNotEmpty
+                                            ? '${stateBloc.dashboardList[0].farmers.total}'
+                                            : '0')
+                                        .toText(
+                                          fontSize: 24,
+                                          translate: false,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                    8.horizontalSpace,
+                                    'farmers_registered'.toText(
+                                      fontSize: 12,
+                                      color: AppColors.accentText,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                                8.verticalSpace,
+                                Row(
+                                  children: [
+                                    '23,000'.toText(
+                                      fontSize: 10,
+                                      translate: false,
+                                      color: AppColors.brown,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    8.horizontalSpace,
+                                    'Unverified Farmers (45%)'.toText(
+                                      fontSize: 10,
+                                      color: AppColors.accentText,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                                LinearProgressIndicator(
+                                  value: 0.45,
+                                  minHeight: 8,
+                                  borderRadius: BorderRadius.circular(4.r),
+                                  backgroundColor: AppColors.brown.withAlpha(
+                                    ((0.4 * 255).toInt()),
+                                  ),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.brown,
+                                  ),
+                                ),
+                                8.verticalSpace,
+                                const Divider(),
+                                10.verticalSpace,
+                                Row(
+                                  children: [
+                                    '690 Profile Issues'.toText(
+                                      fontSize: 10,
+                                      translate: false,
+                                      color: AppColors.burntRed,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    8.horizontalSpace,
+                                    'tap_to_view'.toText(
+                                      fontSize: 10,
+                                      color: AppColors.accentText,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    SvgPicture.asset(AppIcon.rightArrow),
+                                  ],
+                                ),
+                              ],
                             ),
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.brown,
-                            ),
-                          ),
-                          8.verticalSpace,
-                          const Divider(),
-                          10.verticalSpace,
-                          Row(
+                          );
+                        }
+                        return CardContainerWidget(
+                          child: Column(
                             children: [
-                              '690 Profile Issues'.toText(
-                                fontSize: 10,
-                                translate: false,
-                                color: AppColors.burntRed,
-                                fontWeight: FontWeight.w700,
+                              Row(
+                                children: [
+                                  'farmer_summary'.toText(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ],
                               ),
-                              8.horizontalSpace,
-                              'tap_to_view'.toText(
-                                fontSize: 10,
-                                color: AppColors.accentText,
-                                fontWeight: FontWeight.w700,
+                              10.verticalSpace,
+                              const Divider(),
+                              12.verticalSpace,
+                              Row(
+                                children: [
+                                  '23,000,987'.toText(
+                                    fontSize: 24,
+                                    translate: false,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                  8.horizontalSpace,
+                                  'farmers_registered'.toText(
+                                    fontSize: 12,
+                                    color: AppColors.accentText,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ],
                               ),
-                              SvgPicture.asset(AppIcon.rightArrow),
+                              8.verticalSpace,
+                              Row(
+                                children: [
+                                  '23,000'.toText(
+                                    fontSize: 10,
+                                    translate: false,
+                                    color: AppColors.brown,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  8.horizontalSpace,
+                                  'Unverified Farmers (45%)'.toText(
+                                    fontSize: 10,
+                                    color: AppColors.accentText,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                              LinearProgressIndicator(
+                                value: 0.45,
+                                minHeight: 8,
+                                borderRadius: BorderRadius.circular(4.r),
+                                backgroundColor: AppColors.brown.withAlpha(
+                                  ((0.4 * 255).toInt()),
+                                ),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColors.brown,
+                                ),
+                              ),
+                              8.verticalSpace,
+                              const Divider(),
+                              10.verticalSpace,
+                              Row(
+                                children: [
+                                  '690 Profile Issues'.toText(
+                                    fontSize: 10,
+                                    translate: false,
+                                    color: AppColors.burntRed,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  8.horizontalSpace,
+                                  'tap_to_view'.toText(
+                                    fontSize: 10,
+                                    color: AppColors.accentText,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  SvgPicture.asset(AppIcon.rightArrow),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                    );
-                 
-                            }
-                           return CardContainerWidget(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              'farmer_summary'.toText(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ],
-                          ),
-                          10.verticalSpace,
-                          const Divider(),
-                          12.verticalSpace,
-                          Row(
-                            children: [
-                              '23,000,987'.toText(
-                                fontSize: 24,
-                                translate: false,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              8.horizontalSpace,
-                              'farmers_registered'.toText(
-                                fontSize: 12,
-                                color: AppColors.accentText,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
-                          8.verticalSpace,
-                          Row(
-                            children: [
-                              '23,000'.toText(
-                                fontSize: 10,
-                                translate: false,
-                                color: AppColors.brown,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              8.horizontalSpace,
-                              'Unverified Farmers (45%)'.toText(
-                                fontSize: 10,
-                                color: AppColors.accentText,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
-                          LinearProgressIndicator(
-                            value: 0.45,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(4.r),
-                            backgroundColor: AppColors.brown.withAlpha(
-                              ((0.4 * 255).toInt()),
-                            ),
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.brown,
-                            ),
-                          ),
-                          8.verticalSpace,
-                          const Divider(),
-                          10.verticalSpace,
-                          Row(
-                            children: [
-                              '690 Profile Issues'.toText(
-                                fontSize: 10,
-                                translate: false,
-                                color: AppColors.burntRed,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              8.horizontalSpace,
-                              'tap_to_view'.toText(
-                                fontSize: 10,
-                                color: AppColors.accentText,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              SvgPicture.asset(AppIcon.rightArrow),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                 
-                          },
-                        ),
-                  
-                   
-                 
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

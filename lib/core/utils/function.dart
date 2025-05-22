@@ -67,7 +67,7 @@ class Utils {
     BuildContext context,
     String message,
     String title,
-    VoidCallback onTap,
+    Function() onTap,
   ) {
     showDialog(
       context: context,

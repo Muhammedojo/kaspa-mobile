@@ -16,12 +16,13 @@ class ApiRequestStateLoading extends ApiRequestState {
   final Set<String> pulledEndPoints;
   final int cooperativeId;
 
-  const ApiRequestStateLoading(
-      {required this.identifier,
-      required this.progress,
-      required this.totalCompleted,
-      required this.pulledEndPoints,
-      required this.cooperativeId});
+  const ApiRequestStateLoading({
+    required this.identifier,
+    required this.progress,
+    required this.totalCompleted,
+    required this.pulledEndPoints,
+    required this.cooperativeId,
+  });
 
   @override
   List<Object> get props => [identifier, progress];
@@ -33,11 +34,12 @@ class ApiRequestStateProgress extends ApiRequestState {
   final double totalCompleted;
   final int cooperativeId;
 
-  const ApiRequestStateProgress(
-      {required this.identifier,
-      required this.progress,
-      required this.totalCompleted,
-      required this.cooperativeId});
+  const ApiRequestStateProgress({
+    required this.identifier,
+    required this.progress,
+    required this.totalCompleted,
+    required this.cooperativeId,
+  });
 
   @override
   List<Object> get props => [identifier];

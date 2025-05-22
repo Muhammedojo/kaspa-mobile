@@ -186,7 +186,7 @@ class RegisterCooperativeView extends StatelessWidget
                   Padding(
                     padding: REdgeInsets.only(top: 5.0),
                     child: TextFormField(
-                      controller: controller.nameController,
+                      controller: controller.certificateNumberController,
                       style: Styles.x14dp_4A4A4A(14.0.sp),
                       maxLines: 1,
                       validator: ValidationBuilder().required().build(),
@@ -320,8 +320,9 @@ class RegisterCooperativeView extends StatelessWidget
                         Utils.showToastSuccess(
                           context,
                           'cooperative_created_successfully'.tr(),
-                          '',
+                          'Go to Cooperative List',
                           () {
+                            Navigator.of(context, rootNavigator: true).pop();
                             Navigator.pop(context);
                           },
                         );

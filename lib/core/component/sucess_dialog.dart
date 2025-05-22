@@ -7,7 +7,7 @@ import '../theme/colors.dart';
 class SuccessDialogWidget extends StatelessWidget {
   final String? message;
   final String? title;
-  final VoidCallback onTap;
+  final Function() onTap;
   const SuccessDialogWidget({
     super.key,
     required this.message,

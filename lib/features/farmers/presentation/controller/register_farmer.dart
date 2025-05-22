@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -120,7 +122,6 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
   @override
   List<Product> selectedCropsList = [];
-
 
   @override
   late ImagePicker picker;
@@ -321,7 +322,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   @override
   void onSelectLga(Lga? newValue) {
     setState(() {
-       if (selectedLga?.pk != newValue?.pk) {
+      if (selectedLga?.pk != newValue?.pk) {
         selectedWard = null;
       }
       selectedLga = newValue;
@@ -353,7 +354,6 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       selectedCropsList = crops;
     });
   }
-
 
   @override
   void onGetFarmLocationCoordinates(
@@ -505,6 +505,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       lName: lastNameController.text,
       age: ageController.text,
       proceed: () {
+        Navigator.of(context).pop();
         saveFarmer();
       },
       gender: '$selectedGender',
@@ -532,34 +533,34 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     farmer.lastName = lastNameController.text;
     farmer.accountNumber = accountNumberController.text;
     farmer.accountName = accountNameController.text;
-    farmer.bankId = selectedBank!.pk;
+    farmer.bankId = selectedBank?.pk ?? 0;
     farmer.nin = ninController.text;
     farmer.nokName = nokNameController.text;
     farmer.nokAddress = nokAddressController.text;
     farmer.nokPhoneNumber = nokPhoneNumberController.text;
     farmer.nokRelationship = selectedNokRelationship.toString();
     farmer.gender = selectedGender.toString();
+
     farmer.phoneNumber = phoneNumberController.text;
-    farmer.wardId = selectedWard!.pk;
+    farmer.wardId = selectedWard?.pk;
+
     farmer.registrationDate = formattedToday.toString();
-    farmer.crop = [selectedCrops!.pk];
-    farmer.livestock = [selectedLivestock!.pk];
-    // farmer.farmLand = [];
+
+    farmer.crop =
+        selectedCropsList
+            .where((crop) => crop.pk != null)
+            .map((crop) => crop.pk)
+            .toList();
+
+    if (selectedLivestock != null && selectedLivestock!.pk != null) {
+      farmer.livestock = [selectedLivestock!.pk];
+    } else {
+      farmer.livestock = [];
+    }
 
     List<Map<String, dynamic>> farmsPayload = [];
     if (currentFarmLocationCoordinates.isNotEmpty) {
-      // Ensure there are enough points for a polygon (as per your existing validation)
-      // if (currentFarmLocationCoordinates.length < 4) {
-      //   Utils.showToastError(
-      //     context, // Assuming context is available here
-      //     "Minimum of 4 farm points are required to save farm details.",
-      //     '',
-      //     () {},
-      //   );
-      // Potentially return or handle this error appropriately
-      // For now, we'll proceed but the polygon might be invalid for the backend
 
-      // }
 
       List<List<double>> polygonRing =
           currentFarmLocationCoordinates

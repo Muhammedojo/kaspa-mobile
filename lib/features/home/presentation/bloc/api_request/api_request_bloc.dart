@@ -42,12 +42,9 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
       cooperativeId = event.cooperativeId ?? 0;
       isCurrentlyRequestingFromServer = true;
       currentEndpointPulled = apiRequestList.first;
-      // debugPrint("first api request list: $apiRequestList");
       add(ApiRequestSyncStarted());
     } else {
       apiRequestList.addAll(event.apiRequestList);
-
-      //debugPrint("subsequent api request list: $apiRequestList");
     }
   }
 
@@ -95,7 +92,6 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
     if (apiRequestList.isNotEmpty) {
       String currentApiRequest = apiRequestList.first;
       currentEndpointPulled = currentApiRequest;
-      // debugPrint("after request is completed api request list: $apiRequestList");
       _triggerApiCalling(currentApiRequest);
     } else {
       currentEndpointPulled = "";
@@ -122,7 +118,6 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
     cooperativeId = 0;
     GlobalVariables.selectedSyncItems.clear();
     GlobalVariables.pulledSyncItems.clear();
-    // debugPrint("sync completed......");
     emit(ApiRequestStateCompleted());
   }
 

@@ -43,10 +43,10 @@ class RegisterFarmerView extends StatelessWidget
             Utils.showToastSuccess(
               context,
               'farmer_registered_successfully'.tr(),
-              'Click to continue',
+              "Go to Farmer's List",
               () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.of(context, rootNavigator: true).pop();
+                Navigator.pop(context);
               },
             );
           } else if (state is CreateFarmerFailure) {
@@ -893,22 +893,13 @@ class RegisterFarmerView extends StatelessWidget
                                     productState,
                                   );
                                 }
-                                // Fallback for other states (e.g., loading, error)
                                 return Container(
                                   width: double.infinity,
                                   padding: REdgeInsets.symmetric(
                                     horizontal: 12.0,
                                     vertical: 16.0,
                                   ),
-                                  //                       decoration: BoxDecoration( // Use BoxDecoration instead of InputDecoration
-                                  // color: AppColors.primaryBackground, // Assuming this is the background color from your style
-                                  // border: Border.all( // Assuming this is the border from your style
-                                  //   color: AppColors.accentText.withOpacity(0.3), // Adjust color based on your Styles definition
-                                  //   width: 1.0, // Adjust width based on your Styles definition
-                                  // ),
-                                  // borderRadius: BorderRadius.circular(8.r), // Adjust radius based on your Styles definition
 
-                                  //                           ),
                                   child: Text(
                                     productState is ProductLoading
                                         ? 'loading_crops'.tr()
@@ -923,44 +914,6 @@ class RegisterFarmerView extends StatelessWidget
                                   ),
                                 );
                               },
-
-                              // builder: (context, state) {
-                              //   if (state is ProductLoaded) {
-                              //     return DropdownButtonFormField(
-                              //       icon: 'arrowDown'.toSvg(),
-                              //       style: Styles.x14dp_4A4A4A(14.0.sp),
-                              //       decoration:
-                              //           Styles.textFormFieldDecorationBorderWithBackground(
-                              //             'choose_an_option'.tr(),
-                              //             '',
-                              //           ),
-
-                              //       items:
-                              //           state.productList
-                              //               .where(
-                              //                 (product) =>
-                              //                     product.type == 'Crop',
-                              //               )
-                              //               .map((e) {
-                              //                 return DropdownMenuItem(
-                              //                   value: e,
-                              //                   child: (e.name ?? '').toText(
-                              //                     translate: false,
-                              //                   ),
-                              //                 );
-                              //               })
-                              //               .toList(),
-                              //       onChanged: (newValue) {
-                              //         controller.onSelectCrops(newValue!);
-                              //       },
-                              //     );
-                              //   }
-                              //   return DropdownButtonFormField(
-                              //     style: Styles.x14dp_4A4A4A(14.0.sp),
-                              //     items: [],
-                              //     onChanged: (_) {},
-                              //   );
-                              // },
                             ),
                           ),
 
@@ -1208,10 +1161,12 @@ class RegisterFarmerView extends StatelessWidget
         Container(
           width: double.infinity,
           padding: REdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-          decoration: Styles.textFormFieldDecorationBorderWithBackground(
-            '',
-            '',
+          decoration: BoxDecoration(
+            color: AppColors.lightGrey,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.bgGreen, width: 1.0),
           ),
+
           child:
               controller.selectedCropsList.isEmpty
                   ? Padding(
@@ -1262,11 +1217,13 @@ class RegisterFarmerView extends StatelessWidget
                 },
               );
             },
-            child: Text(
-              controller.selectedCropsList.isEmpty
-                  ? 'select_crops'.tr()
-                  : 'edit_selection'.tr(),
-            ),
+            child: (controller.selectedCropsList.isEmpty
+                    ? 'select_crops'.tr()
+                    : 'edit_selection'.tr())
+                .toText(
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.colorPrimary,
+                ),
           ),
         ),
       ],
@@ -1289,7 +1246,10 @@ class RegisterFarmerView extends StatelessWidget
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setStateDialog) {
             return AlertDialog(
-              title: Text('select_crops'.tr()),
+              title: 'select_crops'.toText(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
               content: SizedBox(
                 width: double.maxFinite,
                 child: ListView.builder(
@@ -1301,7 +1261,8 @@ class RegisterFarmerView extends StatelessWidget
                       (selected) => selected.pk == crop.pk,
                     );
                     return CheckboxListTile(
-                      title: Text(crop.name ?? 'Unknown Crop'),
+                      title: (crop.name ?? 'Unknown Crop').toText(),
+
                       value: isSelected,
                       onChanged: (bool? value) {
                         setStateDialog(() {
@@ -1320,11 +1281,19 @@ class RegisterFarmerView extends StatelessWidget
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text('cancel'.tr()),
+                  child: 'cancel'.toText(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+
                   onPressed: () => Navigator.of(dialogContext).pop(),
                 ),
                 TextButton(
-                  child: Text('ok'.tr()),
+                  child: 'done'.toText(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+
                   onPressed: () {
                     onSelectionConfirmed(tempSelectedCrops);
                     Navigator.of(dialogContext).pop();

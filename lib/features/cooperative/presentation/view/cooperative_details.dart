@@ -7,6 +7,7 @@ import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../contract/cooperative_details.dart';
+import '../widget/coop_pattern_cont.dart';
 
 class CooperativeDetailsView extends StatelessWidget
     implements CooperativeDetailsViewContract {
@@ -69,6 +70,8 @@ class CooperativeDetailsView extends StatelessWidget
                         ),
                       ],
                     ),
+                    24.verticalSpace,
+                    CooperativeDetailsCard(),
                     24.verticalSpace,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,11 +210,7 @@ class CooperativeDetailsView extends StatelessWidget
               value: editAction,
               child: Row(
                 children: [
-                   SvgPicture.asset(
-                    AppIcon.edit,
-                    height: 14.sp,
-                    width: 14.sp,
-                  ),
+                  SvgPicture.asset(AppIcon.edit, height: 14.sp, width: 14.sp),
                   8.horizontalSpace,
                   "Edit cooperative's details".toText(
                     fontSize: 12,
@@ -227,16 +226,12 @@ class CooperativeDetailsView extends StatelessWidget
               value: deleteAction,
               child: Row(
                 children: [
-                    SvgPicture.asset(
-                    AppIcon.people,
-                    height: 14.sp,
-                    width: 14.sp,
-                  ),
+                  SvgPicture.asset(AppIcon.people, height: 14.sp, width: 14.sp),
                   8.horizontalSpace,
                   "View members list".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
@@ -247,16 +242,12 @@ class CooperativeDetailsView extends StatelessWidget
               value: deleteAction,
               child: Row(
                 children: [
-               SvgPicture.asset(
-                    AppIcon.people,
-                    height: 14.sp,
-                    width: 14.sp,
-                  ),
+                  SvgPicture.asset(AppIcon.people, height: 14.sp, width: 14.sp),
                   8.horizontalSpace,
                   "Update executive member".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                   color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
@@ -268,16 +259,12 @@ class CooperativeDetailsView extends StatelessWidget
               value: deleteAction,
               child: Row(
                 children: [
-                   SvgPicture.asset(
-                    AppIcon.money,
-                    height: 14.sp,
-                    width: 14.sp,
-                  ),
+                  SvgPicture.asset(AppIcon.money, height: 14.sp, width: 14.sp),
                   8.horizontalSpace,
                   "View transaction history".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                   color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
@@ -289,7 +276,7 @@ class CooperativeDetailsView extends StatelessWidget
               value: deleteAction,
               child: Row(
                 children: [
-                    SvgPicture.asset(
+                  SvgPicture.asset(
                     AppIcon.blacklist,
                     height: 14.sp,
                     width: 14.sp,
@@ -298,16 +285,13 @@ class CooperativeDetailsView extends StatelessWidget
                   "Blacklist cooperative".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                  color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
               ),
             ),
-
-        
           ],
     );
   }
-
 }

@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kaspa/core/data/model/lga.dart';
 import 'package:kaspa/core/data/model/ward.dart';
 import '../../../../core/data/model/cooperative.dart';
+import '../../../../core/utils/date_utils.dart';
+import '../../../home/presentation/bloc/bloc.dart';
 import '../contract/register_cooperative.dart';
 import '../view/register_cooperative.dart';
 
@@ -94,6 +97,7 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
         try {
           setState(() {
             imageFileList.add(File(pickedFile.path));
+            imageController = pickedFile.path as TextEditingController;
           });
         } catch (e) {
           // Handle face detection errors gracefully
@@ -115,7 +119,7 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
     selectDateOfBirth(context);
   }
 
-  final dateFormat = DateFormat("dd-MM-yyyy", Platform.localeName);
+  final dateFormat = DateFormat("yyyy-MM-dd", Platform.localeName);
 
   void selectDateOfBirth(context) {
     DatePicker.showDatePicker(
@@ -166,19 +170,25 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
     });
   }
 
+    String generateTempFolioId() {
+    return "CID-${selectedWard?.pk}-${DateAndTimeUtil.getCurrentTimeStamp()}";
+  }
+
   @override
   void saveCooperative() async {
+      var code = generateTempFolioId();
     if (formKey.currentState!.validate()) {
-    
       if (imageFileList.isNotEmpty) {
         Cooperative cooperative = Cooperative();
+        cooperative.code = code;
         cooperative.name = nameController.text;
         cooperative.certificateNumber = certificateNumberController.text;
         cooperative.doi = doiController.text;
         cooperative.lgaId = selectedLga?.pk;
         cooperative.wardId = selectedWard?.pk;
+        cooperative.file = imageController.text;
 
-
+        GetIt.I.get<CooperativeCubit>().createCooperative(cooperative);
       }
     }
   }
