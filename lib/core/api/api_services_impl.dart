@@ -10,6 +10,7 @@ import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/plot.dart';
 import '../data/model/product.dart';
 import '../data/model/weather.dart';
 import '../storage/istorage.dart';
@@ -326,6 +327,33 @@ class ApiServicesImpl implements ApiServices {
               (data as List).map((e) => Market.fromJson(e)).toList();
           GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
           return marketList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
+    @override
+  Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Plot>>(
+        endpoint ?? plotListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.plot = currentDateTime();
+          lastRequestTime.plotUrl = realUri;
+
+          final plotList =
+              (data as List).map((e) => Plot.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return plotList;
         },
         null,
         headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},

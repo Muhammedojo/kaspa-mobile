@@ -9,6 +9,7 @@ import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
+import '../../../core/data/model/plot.dart';
 import '../../../core/data/model/product.dart';
 import '../../../core/data/model/weather.dart';
 
@@ -138,6 +139,15 @@ abstract class IHomeRepository {
   Future<List<Market>> getMarket();
 
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
+
+   //PLOT CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList({
+    String? endpoint,
+  });
+
+  Future<void> savePlot(List<Plot> plotList);
+
+  Future<List<Plot>> getPlot();
 
   //PRODUCT CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Product>>>> getProductList({

@@ -1,21 +1,15 @@
 import 'package:flutter/foundation.dart';
-import 'package:kaspa/core/data/model/bank.dart';
-import 'package:kaspa/core/data/model/crop.dart';
-import 'package:kaspa/core/data/model/farmer.dart';
-import 'package:kaspa/core/data/model/lga.dart';
-import 'package:kaspa/core/data/model/livestock.dart';
-import 'package:kaspa/core/data/model/market.dart';
-import 'package:kaspa/core/data/model/ward.dart';
+import '../../../../core/data/model/market.dart';
+import '../../../../core/data/model/plot.dart';
 import 'package:path_provider/path_provider.dart';
-import '../../data/model/cooperative.dart';
 import '../../data/model/crop_calendar.dart';
 import '../../data/model/dashboard_data.dart';
 import '../../data/model/farm_visit.dart';
 import '../../data/model/incident_report.dart';
 import '../../data/model/insight.dart';
 import '../../data/model/market_data.dart';
+import '../../data/model/model.dart';
 import '../../data/model/product.dart';
-import '../../data/model/user.dart';
 import '../../data/model/weather.dart';
 import '../istorage.dart';
 import 'package:isar/isar.dart';
@@ -47,6 +41,7 @@ class IsarImpl implements DatabaseStorage {
           IncidentReportSchema,
           InsightSchema,
           ProductSchema,
+          PlotSchema,
           WardSchema,
           WeatherSchema,
           UserSchema,
@@ -163,6 +158,20 @@ class IsarImpl implements DatabaseStorage {
     } catch (e) {
       debugPrint("Error retrieving lgas: $e");
       return Future.value(<Lga>[]);
+    }
+  }
+
+  @override
+  Future<List<Plot>> getPlot() {
+    if (!_isar.isOpen) {
+      return Future.value(<Plot>[]);
+    }
+    try {
+      final plots = _isar.plots.where().findAllSync();
+      return Future.value(plots);
+    } catch (e) {
+      debugPrint("Error retrieving plots: $e");
+      return Future.value(<Plot>[]);
     }
   }
 
@@ -423,6 +432,18 @@ class IsarImpl implements DatabaseStorage {
       await _isar.writeTxn(() => _isar.lgas.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving lga: $e");
+    }
+  }
+
+    @override
+  Future<void> savePlot(List<Plot> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.plots.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving plot: $e");
     }
   }
 

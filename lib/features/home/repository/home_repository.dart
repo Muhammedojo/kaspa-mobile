@@ -9,6 +9,7 @@ import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
+import '../../../core/data/model/plot.dart';
 import '../../../core/data/model/product.dart';
 import '../../../core/data/model/weather.dart';
 import '../../../core/storage/istorage.dart';
@@ -51,28 +52,25 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getCooperativeList(endpoint);
 
-   @override
+  @override
   Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(
     Cooperative data,
   ) => apiServices.createCooperative(data);
-
 
   @override
   Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList({
     String? endpoint,
   }) => apiServices.getDashboardList(endpoint);
 
-   @override
+  @override
   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList({
     String? endpoint,
   }) => apiServices.getFarmVisitList(endpoint);
 
-
-    @override
+  @override
   Future<Either<Failure, ApiResponse<FarmVisit>>> createFarmVisit(
     FarmVisit data,
   ) => apiServices.createFarmVisit(data);
-
 
   @override
   Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({
@@ -110,6 +108,11 @@ class HomeRepository implements IHomeRepository {
   }) => apiServices.getMarketList(endpoint);
 
   @override
+  Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList({
+    String? endpoint,
+  }) => apiServices.getPlotList(endpoint);
+
+  @override
   Future<Either<Failure, ApiResponse<List<Product>>>> getProductList({
     String? endpoint,
   }) => apiServices.getProductList(endpoint);
@@ -143,7 +146,7 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<DashboardData>> getDashboard() => localStorage.getDashboard();
 
-   @override
+  @override
   Future<List<FarmVisit>> getFarmVisit() => localStorage.getFarmVisit();
 
   @override
@@ -166,6 +169,9 @@ class HomeRepository implements IHomeRepository {
 
   @override
   Future<List<Ward>> getWard() => localStorage.getWard();
+
+  @override
+  Future<List<Plot>> getPlot() => localStorage.getPlot();
 
   @override
   Future<List<Product>> getProduct() => localStorage.getProduct();
@@ -197,10 +203,9 @@ class HomeRepository implements IHomeRepository {
   Future<void> saveDashboard(List<DashboardData> dashboardList) =>
       localStorage.saveDashboard(dashboardList);
 
-        @override
+  @override
   Future<void> saveFarmVisit(List<FarmVisit> farmVisitList) =>
       localStorage.saveFarmVisit(farmVisitList);
-
 
   @override
   Future<void> saveLga(List<Lga> lgaList) => localStorage.saveLga(lgaList);
@@ -214,6 +219,9 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveProduct(List<Product> productList) =>
       localStorage.saveProduct(productList);
+
+  @override
+  Future<void> savePlot(List<Plot> plotList) => localStorage.savePlot(plotList);
 
   @override
   Future<void> saveInsight(List<Insight> insightList) =>

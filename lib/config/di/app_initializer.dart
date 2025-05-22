@@ -34,6 +34,7 @@ import '../../features/home/presentation/bloc/incident_report/incident_report_cu
 import '../../features/home/presentation/bloc/insight/insight_cubit.dart';
 import '../../features/home/presentation/bloc/market/cubit.dart';
 import '../../features/home/presentation/bloc/market_price/cubit.dart';
+import '../../features/home/presentation/bloc/plot/plot_cubit.dart';
 import '../../features/home/presentation/bloc/product/cubit.dart';
 import '../../features/home/presentation/bloc/weather/cubit.dart';
 import '../../features/home/repository/home_repository.dart';
@@ -179,6 +180,13 @@ class AppInitializer {
 
      instanceLocator.registerLazySingleton<ProductCubit>(
       () => ProductCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+      instanceLocator.registerLazySingleton<PlotCubit>(
+      () => PlotCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),

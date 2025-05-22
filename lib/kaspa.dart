@@ -22,6 +22,7 @@ import 'features/home/presentation/bloc/incident_report/incident_report_cubit.da
 import 'features/home/presentation/bloc/insight/insight_cubit.dart';
 import 'features/home/presentation/bloc/market/cubit.dart';
 import 'features/home/presentation/bloc/market_price/cubit.dart';
+import 'features/home/presentation/bloc/plot/plot_cubit.dart';
 import 'features/home/presentation/bloc/product/cubit.dart';
 import 'features/home/presentation/bloc/weather/cubit.dart';
 
@@ -74,7 +75,7 @@ class Kaspa extends StatelessWidget {
           create:
               (context) => AppInitializer.instanceLocator.get<DashboardCubit>(),
         ),
-         BlocProvider(
+        BlocProvider(
           create:
               (context) => AppInitializer.instanceLocator.get<FarmVisitCubit>(),
         ),
@@ -99,6 +100,10 @@ class Kaspa extends StatelessWidget {
         BlocProvider(
           create:
               (context) => AppInitializer.instanceLocator.get<IncidentCubit>(),
+        ),
+
+        BlocProvider(
+          create: (context) => AppInitializer.instanceLocator.get<PlotCubit>(),
         ),
 
         BlocProvider(

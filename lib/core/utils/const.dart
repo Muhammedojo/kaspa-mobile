@@ -374,7 +374,8 @@ const KEY_TOTAL_BALANCE = "total_balance";
 const KEY_SUBSIDY_EARNED = "subsidy_earned";
 const KEY_LANGUAGE_CODE = "language_code";
 const KEY_USERNAME = "username";
-
+const KEY_PLOT = "plot";
+const KEY_PLOT_URL = "plot_url";
 const KEY_OPEN_POSITIONS = "open positions";
 const KEY_PRODUCT = "product";
 const KEY_PRODUCT_URL = "product_url";

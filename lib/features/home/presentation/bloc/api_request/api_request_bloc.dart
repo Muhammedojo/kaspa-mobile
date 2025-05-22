@@ -11,6 +11,7 @@ import '../incident_report/incident_report_cubit.dart';
 import '../insight/insight_cubit.dart';
 import '../market/cubit.dart';
 import '../market_price/cubit.dart';
+import '../plot/plot_cubit.dart';
 import '../product/cubit.dart';
 import '../weather/cubit.dart';
 import 'api_request_state.dart';
@@ -67,7 +68,6 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
       ),
     );
   }
-  
 
   void _onApiRequestProgress(
     ApiRequestProgress event,
@@ -145,20 +145,24 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<BankCubit>().loadBank();
         break;
 
-         case dashboardEndpoint:
+      case dashboardEndpoint:
         AppInitializer.instanceLocator.get<InsightCubit>().loadInsight();
         break;
 
-          case incidentReportListEndpoint:
+      case incidentReportListEndpoint:
         AppInitializer.instanceLocator.get<IncidentCubit>().loadIncident();
         break;
 
-          case dashboardFarmerEndpoint:
+      case dashboardFarmerEndpoint:
         AppInitializer.instanceLocator.get<DashboardCubit>().loadDashboard();
         break;
 
-        case productListEndpoint:
+      case productListEndpoint:
         AppInitializer.instanceLocator.get<ProductCubit>().loadProduct();
+        break;
+
+      case plotListEndpoint:
+        AppInitializer.instanceLocator.get<PlotCubit>().loadPlot();
         break;
 
       case cooperativeListEndpoint:
@@ -175,8 +179,10 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<CropCubit>().loadCrop();
         break;
 
-        case cropCalendarListEndpoint:
-        AppInitializer.instanceLocator.get<CropCalendarCubit>().loadCropCalendar();
+      case cropCalendarListEndpoint:
+        AppInitializer.instanceLocator
+            .get<CropCalendarCubit>()
+            .loadCropCalendar();
         break;
 
       // case usersListEndpoint:

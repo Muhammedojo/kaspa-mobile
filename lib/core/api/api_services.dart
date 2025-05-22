@@ -9,6 +9,7 @@ import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/plot.dart';
 import '../data/model/product.dart';
 import '../data/model/weather.dart';
 import 'exceptions/contracts/failure.dart';
@@ -46,7 +47,7 @@ abstract class ApiServices {
     String? endpoint,
   );
 
-    Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList(
+  Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList(
     String? endpoint,
   );
 
@@ -54,7 +55,7 @@ abstract class ApiServices {
     String? endpoint,
   );
 
-   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList(
+  Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList(
     String? endpoint,
   );
 
@@ -72,15 +73,19 @@ abstract class ApiServices {
     String? endpoint,
   );
 
+  Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList(
+    String? endpoint,
+  );
+
   Future<Either<Failure, ApiResponse<List<Product>>>> getProductList(
     String? endpoint,
   );
 
-    Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList(
+  Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList(
     String? endpoint,
   );
 
-    Future<Either<Failure, ApiResponse<List<IncidentReport>>>> getIncidentList(
+  Future<Either<Failure, ApiResponse<List<IncidentReport>>>> getIncidentList(
     String? endpoint,
   );
 
@@ -100,11 +105,19 @@ abstract class ApiServices {
 
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
 
-  Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(Cooperative data);
+  Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(
+    Cooperative data,
+  );
 
-  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(MarketData data);
+  Future<Either<Failure, ApiResponse<MarketData>>> createMarketPrice(
+    MarketData data,
+  );
 
-  Future<Either<Failure, ApiResponse<IncidentReport>>> logIncident(IncidentReport data);
+  Future<Either<Failure, ApiResponse<IncidentReport>>> logIncident(
+    IncidentReport data,
+  );
 
-  Future<Either<Failure, ApiResponse<FarmVisit>>> createFarmVisit(FarmVisit data);
+  Future<Either<Failure, ApiResponse<FarmVisit>>> createFarmVisit(
+    FarmVisit data,
+  );
 }

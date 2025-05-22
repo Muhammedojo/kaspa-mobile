@@ -14,6 +14,7 @@ const cooperativeListEndpoint = "cooperatives";
 const createCooperativeEndpoint = "cooperatives";
 const updateCooperativesEndpoint = "cooperatives/";
 const cropListEndpoint = "crops";
+const plotListEndpoint = "plots";
 const farmVisitListEndpoint = "farm-visits";
 const createFarmVisitEndpoint = "farm-visits";
 const cropCalendarListEndpoint = "crop-calendar";
