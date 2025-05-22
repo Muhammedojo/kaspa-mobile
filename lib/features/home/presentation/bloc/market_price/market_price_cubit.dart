@@ -92,7 +92,7 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
   saveMarketPricesToDb(List<MarketData> marketPriceList) async {
     try {
       await repository.saveMarketPrice(marketPriceList);
-      loadMarketPricesFromDb();
+      await loadMarketPricesFromDb();
     } on Error catch (e) {
       debugPrint(e.toString());
     }

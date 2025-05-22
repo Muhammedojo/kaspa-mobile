@@ -78,12 +78,10 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   @override
   void logVisit() async {
     if (formKey.currentState!.validate()) {
-      if (selectedCrop != null && selectedMarket != null) {
-        FarmVisit visit = FarmVisit();
-        visit.farmerId = selectedFarmer?.pk;
+      FarmVisit visit = FarmVisit();
+      visit.farmerId = selectedFarmer?.pk;
 
-        context.read<FarmVisitCubit>().createFarmVisit(visit);
-      }
+      context.read<FarmVisitCubit>().createFarmVisit(visit);
     }
   }
 
