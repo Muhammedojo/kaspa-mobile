@@ -20,7 +20,7 @@ class CropCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SvgPicture.asset(AppIcon.sun),
-        (data.product?.product?.name ?? 'Maize').toText(fontSize: 14,fontWeight: FontWeight.w700,translate: false),
+        (data.product?.name ?? 'Maize').toText(fontSize: 14,fontWeight: FontWeight.w700,translate: false),
         (data.variety ?? '').toText(fontSize: 12,fontWeight: FontWeight.w500,translate: false)
        ],)));
   

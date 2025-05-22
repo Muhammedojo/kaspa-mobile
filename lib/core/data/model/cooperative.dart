@@ -16,7 +16,11 @@ class Cooperative extends GeneralModel {
   String? name = "";
   String? head = "";
   String? code = "";
+  String? doi = "";
+  int? lgaId = 0;
+  int? wardId = 0;
   String? secretary = "";
+  String? certificateNumber = "";
 
   LgaData? lga;
 
@@ -61,9 +65,14 @@ Cooperative _$CooperativeFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$CooperativeToJson(Cooperative obj) => <String, dynamic>{
   KEY_NAME: obj.name,
-  KEY_LGA: obj.lga,
+  KEY_LGA_ID: obj.lgaId,
   KEY_HEAD: obj.head,
   KEY_SECRETARY: obj.secretary,
   KEY_DATE_OF_INCORPORATION: obj.dateOfIncorporation,
   KEY_CERTIFICATE: obj.certificate,
+  KEY_PK: obj.pk,
+  KEY_CERTIFICATE_NUMBER: obj.certificateNumber,
+  KEY_WARD_ID: obj.wardId,
+  KEY_CREATED_AT: obj.created,
+  KEY_UPDATED_AT: obj.updated,
 };

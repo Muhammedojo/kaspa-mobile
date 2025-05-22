@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
+import 'package:kaspa/core/data/model/insight.dart';
 import '../../utils/const.dart';
-import 'product.dart';
 
 part 'crop_calendar.g.dart';
 
@@ -14,15 +14,15 @@ class CropCalendar extends GeneralModel {
 
   String? name = "";
 
-  @ignore
-  Product? product;
+  ProductObject? product;
 
   String? variety = "";
   String? unit = "";
 
   CropCalendar();
 
-  factory CropCalendar.fromJson(Map<String, dynamic> json) => _$CropCalendarFromJson(json);
+  factory CropCalendar.fromJson(Map<String, dynamic> json) =>
+      _$CropCalendarFromJson(json);
 }
 
 CropCalendar _$CropCalendarFromJson(Map<String, dynamic> json) {
@@ -32,7 +32,7 @@ CropCalendar _$CropCalendarFromJson(Map<String, dynamic> json) {
   obj.name = json[KEY_NAME];
   obj.variety = json[KEY_VARIETY];
   obj.unit = json[KEY_UNIT];
-  obj.product = Product.fromJson(json[KEY_PRODUCT]);
+  obj.product = ProductObject.fromJson(json[KEY_PRODUCT]);
   obj.created = json[KEY_CREATED_AT];
   obj.updated = json[KEY_UPDATED_AT];
 

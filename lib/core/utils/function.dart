@@ -63,14 +63,15 @@ class Utils {
     );
   }
 
-  static showToastSuccess(
+  static void showToastSuccess(
     BuildContext context,
     String message,
     String title,
-    Function() onTap,
+    VoidCallback onTap,
   ) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder:
           (BuildContext context) =>
               SuccessDialogWidget(message: message, title: title, onTap: onTap),

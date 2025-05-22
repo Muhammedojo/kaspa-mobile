@@ -57,18 +57,24 @@ const CropSchema = CollectionSchema(
       name: r'pk',
       type: IsarType.long,
     ),
-    r'unit': PropertySchema(
+    r'product': PropertySchema(
       id: 8,
+      name: r'product',
+      type: IsarType.object,
+      target: r'ProductObject',
+    ),
+    r'unit': PropertySchema(
+      id: 9,
       name: r'unit',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'updated',
       type: IsarType.string,
     ),
     r'variety': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'variety',
       type: IsarType.string,
     )
@@ -133,7 +139,7 @@ const CropSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'ProductObject': ProductObjectSchema},
   getId: _cropGetId,
   getLinks: _cropGetLinks,
   attach: _cropAttach,
@@ -177,6 +183,14 @@ int _cropEstimateSize(
     }
   }
   {
+    final value = object.product;
+    if (value != null) {
+      bytesCount += 3 +
+          ProductObjectSchema.estimateSize(
+              value, allOffsets[ProductObject]!, allOffsets);
+    }
+  }
+  {
     final value = object.unit;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -211,9 +225,15 @@ void _cropSerialize(
   writer.writeString(offsets[5], object.lastPulledTime);
   writer.writeString(offsets[6], object.name);
   writer.writeLong(offsets[7], object.pk);
-  writer.writeString(offsets[8], object.unit);
-  writer.writeString(offsets[9], object.updated);
-  writer.writeString(offsets[10], object.variety);
+  writer.writeObject<ProductObject>(
+    offsets[8],
+    allOffsets,
+    ProductObjectSchema.serialize,
+    object.product,
+  );
+  writer.writeString(offsets[9], object.unit);
+  writer.writeString(offsets[10], object.updated);
+  writer.writeString(offsets[11], object.variety);
 }
 
 Crop _cropDeserialize(
@@ -232,9 +252,14 @@ Crop _cropDeserialize(
   object.lastPulledTime = reader.readStringOrNull(offsets[5]);
   object.name = reader.readStringOrNull(offsets[6]);
   object.pk = reader.readLong(offsets[7]);
-  object.unit = reader.readStringOrNull(offsets[8]);
-  object.updated = reader.readStringOrNull(offsets[9]);
-  object.variety = reader.readStringOrNull(offsets[10]);
+  object.product = reader.readObjectOrNull<ProductObject>(
+    offsets[8],
+    ProductObjectSchema.deserialize,
+    allOffsets,
+  );
+  object.unit = reader.readStringOrNull(offsets[9]);
+  object.updated = reader.readStringOrNull(offsets[10]);
+  object.variety = reader.readStringOrNull(offsets[11]);
   return object;
 }
 
@@ -262,10 +287,16 @@ P _cropDeserializeProp<P>(
     case 7:
       return (reader.readLong(offset)) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectOrNull<ProductObject>(
+        offset,
+        ProductObjectSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
+      return (reader.readStringOrNull(offset)) as P;
+    case 11:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1697,6 +1728,22 @@ extension CropQueryFilter on QueryBuilder<Crop, Crop, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Crop, Crop, QAfterFilterCondition> productIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'product',
+      ));
+    });
+  }
+
+  QueryBuilder<Crop, Crop, QAfterFilterCondition> productIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'product',
+      ));
+    });
+  }
+
   QueryBuilder<Crop, Crop, QAfterFilterCondition> unitIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2130,7 +2177,14 @@ extension CropQueryFilter on QueryBuilder<Crop, Crop, QFilterCondition> {
   }
 }
 
-extension CropQueryObject on QueryBuilder<Crop, Crop, QFilterCondition> {}
+extension CropQueryObject on QueryBuilder<Crop, Crop, QFilterCondition> {
+  QueryBuilder<Crop, Crop, QAfterFilterCondition> product(
+      FilterQuery<ProductObject> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'product');
+    });
+  }
+}
 
 extension CropQueryLinks on QueryBuilder<Crop, Crop, QFilterCondition> {}
 
@@ -2544,6 +2598,12 @@ extension CropQueryProperty on QueryBuilder<Crop, Crop, QQueryProperty> {
   QueryBuilder<Crop, int, QQueryOperations> pkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pk');
+    });
+  }
+
+  QueryBuilder<Crop, ProductObject?, QQueryOperations> productProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'product');
     });
   }
 

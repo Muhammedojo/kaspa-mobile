@@ -23,82 +23,102 @@ const CooperativeSchema = CollectionSchema(
       type: IsarType.object,
       target: r'Certificate',
     ),
-    r'code': PropertySchema(
+    r'certificateNumber': PropertySchema(
       id: 1,
+      name: r'certificateNumber',
+      type: IsarType.string,
+    ),
+    r'code': PropertySchema(
+      id: 2,
       name: r'code',
       type: IsarType.string,
     ),
     r'created': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'created',
       type: IsarType.string,
     ),
     r'createdInEpsilon': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'createdInEpsilon',
       type: IsarType.long,
     ),
     r'createdOffline': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'createdOffline',
       type: IsarType.string,
     ),
     r'dateOfIncorporation': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'dateOfIncorporation',
       type: IsarType.string,
     ),
+    r'doi': PropertySchema(
+      id: 7,
+      name: r'doi',
+      type: IsarType.string,
+    ),
     r'errorMessage': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'errorMessage',
       type: IsarType.string,
     ),
     r'hasSynced': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'hasSynced',
       type: IsarType.bool,
     ),
     r'head': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'head',
       type: IsarType.string,
     ),
     r'lastPulledTime': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
     r'lga': PropertySchema(
-      id: 10,
+      id: 12,
       name: r'lga',
       type: IsarType.object,
       target: r'LgaData',
     ),
+    r'lgaId': PropertySchema(
+      id: 13,
+      name: r'lgaId',
+      type: IsarType.long,
+    ),
     r'name': PropertySchema(
-      id: 11,
+      id: 14,
       name: r'name',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 12,
+      id: 15,
       name: r'pk',
       type: IsarType.long,
     ),
     r'secretary': PropertySchema(
-      id: 13,
+      id: 16,
       name: r'secretary',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 14,
+      id: 17,
       name: r'updated',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 15,
+      id: 18,
       name: r'ward',
       type: IsarType.object,
       target: r'WardData',
+    ),
+    r'wardId': PropertySchema(
+      id: 19,
+      name: r'wardId',
+      type: IsarType.long,
     )
   },
   estimateSize: _cooperativeEstimateSize,
@@ -187,6 +207,12 @@ int _cooperativeEstimateSize(
     }
   }
   {
+    final value = object.certificateNumber;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.code;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -206,6 +232,12 @@ int _cooperativeEstimateSize(
   }
   {
     final value = object.dateOfIncorporation;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.doi;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -275,31 +307,35 @@ void _cooperativeSerialize(
     CertificateSchema.serialize,
     object.certificate,
   );
-  writer.writeString(offsets[1], object.code);
-  writer.writeString(offsets[2], object.created);
-  writer.writeLong(offsets[3], object.createdInEpsilon);
-  writer.writeString(offsets[4], object.createdOffline);
-  writer.writeString(offsets[5], object.dateOfIncorporation);
-  writer.writeString(offsets[6], object.errorMessage);
-  writer.writeBool(offsets[7], object.hasSynced);
-  writer.writeString(offsets[8], object.head);
-  writer.writeString(offsets[9], object.lastPulledTime);
+  writer.writeString(offsets[1], object.certificateNumber);
+  writer.writeString(offsets[2], object.code);
+  writer.writeString(offsets[3], object.created);
+  writer.writeLong(offsets[4], object.createdInEpsilon);
+  writer.writeString(offsets[5], object.createdOffline);
+  writer.writeString(offsets[6], object.dateOfIncorporation);
+  writer.writeString(offsets[7], object.doi);
+  writer.writeString(offsets[8], object.errorMessage);
+  writer.writeBool(offsets[9], object.hasSynced);
+  writer.writeString(offsets[10], object.head);
+  writer.writeString(offsets[11], object.lastPulledTime);
   writer.writeObject<LgaData>(
-    offsets[10],
+    offsets[12],
     allOffsets,
     LgaDataSchema.serialize,
     object.lga,
   );
-  writer.writeString(offsets[11], object.name);
-  writer.writeLong(offsets[12], object.pk);
-  writer.writeString(offsets[13], object.secretary);
-  writer.writeString(offsets[14], object.updated);
+  writer.writeLong(offsets[13], object.lgaId);
+  writer.writeString(offsets[14], object.name);
+  writer.writeLong(offsets[15], object.pk);
+  writer.writeString(offsets[16], object.secretary);
+  writer.writeString(offsets[17], object.updated);
   writer.writeObject<WardData>(
-    offsets[15],
+    offsets[18],
     allOffsets,
     WardDataSchema.serialize,
     object.ward,
   );
+  writer.writeLong(offsets[19], object.wardId);
 }
 
 Cooperative _cooperativeDeserialize(
@@ -314,30 +350,34 @@ Cooperative _cooperativeDeserialize(
     CertificateSchema.deserialize,
     allOffsets,
   );
-  object.code = reader.readStringOrNull(offsets[1]);
-  object.created = reader.readStringOrNull(offsets[2]);
-  object.createdInEpsilon = reader.readLongOrNull(offsets[3]);
-  object.createdOffline = reader.readStringOrNull(offsets[4]);
-  object.dateOfIncorporation = reader.readStringOrNull(offsets[5]);
-  object.errorMessage = reader.readStringOrNull(offsets[6]);
-  object.hasSynced = reader.readBoolOrNull(offsets[7]);
-  object.head = reader.readStringOrNull(offsets[8]);
+  object.certificateNumber = reader.readStringOrNull(offsets[1]);
+  object.code = reader.readStringOrNull(offsets[2]);
+  object.created = reader.readStringOrNull(offsets[3]);
+  object.createdInEpsilon = reader.readLongOrNull(offsets[4]);
+  object.createdOffline = reader.readStringOrNull(offsets[5]);
+  object.dateOfIncorporation = reader.readStringOrNull(offsets[6]);
+  object.doi = reader.readStringOrNull(offsets[7]);
+  object.errorMessage = reader.readStringOrNull(offsets[8]);
+  object.hasSynced = reader.readBoolOrNull(offsets[9]);
+  object.head = reader.readStringOrNull(offsets[10]);
   object.id = id;
-  object.lastPulledTime = reader.readStringOrNull(offsets[9]);
+  object.lastPulledTime = reader.readStringOrNull(offsets[11]);
   object.lga = reader.readObjectOrNull<LgaData>(
-    offsets[10],
+    offsets[12],
     LgaDataSchema.deserialize,
     allOffsets,
   );
-  object.name = reader.readStringOrNull(offsets[11]);
-  object.pk = reader.readLong(offsets[12]);
-  object.secretary = reader.readStringOrNull(offsets[13]);
-  object.updated = reader.readStringOrNull(offsets[14]);
+  object.lgaId = reader.readLongOrNull(offsets[13]);
+  object.name = reader.readStringOrNull(offsets[14]);
+  object.pk = reader.readLong(offsets[15]);
+  object.secretary = reader.readStringOrNull(offsets[16]);
+  object.updated = reader.readStringOrNull(offsets[17]);
   object.ward = reader.readObjectOrNull<WardData>(
-    offsets[15],
+    offsets[18],
     WardDataSchema.deserialize,
     allOffsets,
   );
+  object.wardId = reader.readLongOrNull(offsets[19]);
   return object;
 }
 
@@ -359,39 +399,47 @@ P _cooperativeDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readLongOrNull(offset)) as P;
-    case 4:
       return (reader.readStringOrNull(offset)) as P;
+    case 4:
+      return (reader.readLongOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 10:
+      return (reader.readStringOrNull(offset)) as P;
+    case 11:
+      return (reader.readStringOrNull(offset)) as P;
+    case 12:
       return (reader.readObjectOrNull<LgaData>(
         offset,
         LgaDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 11:
-      return (reader.readStringOrNull(offset)) as P;
-    case 12:
-      return (reader.readLong(offset)) as P;
     case 13:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 14:
       return (reader.readStringOrNull(offset)) as P;
     case 15:
+      return (reader.readLong(offset)) as P;
+    case 16:
+      return (reader.readStringOrNull(offset)) as P;
+    case 17:
+      return (reader.readStringOrNull(offset)) as P;
+    case 18:
       return (reader.readObjectOrNull<WardData>(
         offset,
         WardDataSchema.deserialize,
         allOffsets,
       )) as P;
+    case 19:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -908,6 +956,160 @@ extension CooperativeQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'certificate',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'certificateNumber',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'certificateNumber',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'certificateNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'certificateNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'certificateNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'certificateNumber',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'certificateNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'certificateNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'certificateNumber',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'certificateNumber',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'certificateNumber',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      certificateNumberIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'certificateNumber',
+        value: '',
       ));
     });
   }
@@ -1594,6 +1796,153 @@ extension CooperativeQueryFilter
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'doi',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'doi',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'doi',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'doi',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'doi',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'doi',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'doi',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'doi',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'doi',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'doi',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> doiIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'doi',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      doiIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'doi',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
       errorMessageIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -2163,6 +2512,77 @@ extension CooperativeQueryFilter
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> lgaIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lgaId',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      lgaIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lgaId',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> lgaIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lgaId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      lgaIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lgaId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> lgaIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lgaId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> lgaIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lgaId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2686,6 +3106,77 @@ extension CooperativeQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> wardIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      wardIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> wardIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      wardIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> wardIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> wardIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'wardId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension CooperativeQueryObject
@@ -2717,6 +3208,20 @@ extension CooperativeQueryLinks
 
 extension CooperativeQuerySortBy
     on QueryBuilder<Cooperative, Cooperative, QSortBy> {
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy>
+      sortByCertificateNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'certificateNumber', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy>
+      sortByCertificateNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'certificateNumber', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'code', Sort.asc);
@@ -2782,6 +3287,18 @@ extension CooperativeQuerySortBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByDoi() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'doi', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByDoiDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'doi', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByErrorMessage() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'errorMessage', Sort.asc);
@@ -2832,6 +3349,18 @@ extension CooperativeQuerySortBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByLgaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByLgaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -2879,10 +3408,36 @@ extension CooperativeQuerySortBy
       return query.addSortBy(r'updated', Sort.desc);
     });
   }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
+    });
+  }
 }
 
 extension CooperativeQuerySortThenBy
     on QueryBuilder<Cooperative, Cooperative, QSortThenBy> {
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy>
+      thenByCertificateNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'certificateNumber', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy>
+      thenByCertificateNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'certificateNumber', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'code', Sort.asc);
@@ -2948,6 +3503,18 @@ extension CooperativeQuerySortThenBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByDoi() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'doi', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByDoiDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'doi', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByErrorMessage() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'errorMessage', Sort.asc);
@@ -3010,6 +3577,18 @@ extension CooperativeQuerySortThenBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByLgaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByLgaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lgaId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -3057,10 +3636,30 @@ extension CooperativeQuerySortThenBy
       return query.addSortBy(r'updated', Sort.desc);
     });
   }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
+    });
+  }
 }
 
 extension CooperativeQueryWhereDistinct
     on QueryBuilder<Cooperative, Cooperative, QDistinct> {
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByCertificateNumber(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'certificateNumber',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByCode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -3098,6 +3697,13 @@ extension CooperativeQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByDoi(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'doi', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByErrorMessage(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -3123,6 +3729,12 @@ extension CooperativeQueryWhereDistinct
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastPulledTime',
           caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByLgaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lgaId');
     });
   }
 
@@ -3152,6 +3764,12 @@ extension CooperativeQueryWhereDistinct
       return query.addDistinctBy(r'updated', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'wardId');
+    });
+  }
 }
 
 extension CooperativeQueryProperty
@@ -3166,6 +3784,13 @@ extension CooperativeQueryProperty
       certificateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'certificate');
+    });
+  }
+
+  QueryBuilder<Cooperative, String?, QQueryOperations>
+      certificateNumberProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'certificateNumber');
     });
   }
 
@@ -3201,6 +3826,12 @@ extension CooperativeQueryProperty
     });
   }
 
+  QueryBuilder<Cooperative, String?, QQueryOperations> doiProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'doi');
+    });
+  }
+
   QueryBuilder<Cooperative, String?, QQueryOperations> errorMessageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'errorMessage');
@@ -3232,6 +3863,12 @@ extension CooperativeQueryProperty
     });
   }
 
+  QueryBuilder<Cooperative, int?, QQueryOperations> lgaIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lgaId');
+    });
+  }
+
   QueryBuilder<Cooperative, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
@@ -3259,6 +3896,12 @@ extension CooperativeQueryProperty
   QueryBuilder<Cooperative, WardData?, QQueryOperations> wardProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'ward');
+    });
+  }
+
+  QueryBuilder<Cooperative, int?, QQueryOperations> wardIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'wardId');
     });
   }
 }

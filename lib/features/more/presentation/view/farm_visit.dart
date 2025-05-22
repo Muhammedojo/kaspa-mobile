@@ -63,8 +63,7 @@ class FarmVisitView extends StatelessWidget implements FarmVisitViewContract {
                             return state.farmVisitList.isEmpty
                                 ? ErrorWidgets(message: 'visit_list_empty')
                                 : ListView.separated(
-                                  itemCount: 3,
-                                  //state.marketPriceList.length
+                                  itemCount: state.farmVisitList.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {

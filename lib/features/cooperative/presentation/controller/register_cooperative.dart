@@ -52,7 +52,7 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   @override
   Cooperative? cooperative = Cooperative();
 
-   @override
+  @override
   List<File> imageFileList = [];
 
   @override
@@ -61,7 +61,7 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   @override
   late TextEditingController doiController;
 
-   @override
+  @override
   late TextEditingController imageController;
 
   @override
@@ -85,17 +85,14 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   @override
   void back() {}
 
-   @override
-  Future<void> getImage(
-    ImageSource source,
-  ) async {
+  @override
+  Future<void> getImage(ImageSource source) async {
     try {
       final pickedFile = await picker.pickImage(source: source);
 
       if (pickedFile != null && pickedFile.path.isNotEmpty) {
         try {
           setState(() {
-       
             imageFileList.add(File(pickedFile.path));
           });
         } catch (e) {
@@ -103,7 +100,7 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
         }
       }
     } catch (e) {
-     debugPrint(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -117,9 +114,8 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   Future<void> selectDate(BuildContext context) async {
     selectDateOfBirth(context);
   }
-  final dateFormat = DateFormat(
-      "dd-MM-yyyy",
-      Platform.localeName);
+
+  final dateFormat = DateFormat("dd-MM-yyyy", Platform.localeName);
 
   void selectDateOfBirth(context) {
     DatePicker.showDatePicker(
@@ -171,5 +167,19 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   }
 
   @override
-  void saveCooperative() async {}
+  void saveCooperative() async {
+    if (formKey.currentState!.validate()) {
+    
+      if (imageFileList.isNotEmpty) {
+        Cooperative cooperative = Cooperative();
+        cooperative.name = nameController.text;
+        cooperative.certificateNumber = certificateNumberController.text;
+        cooperative.doi = doiController.text;
+        cooperative.lgaId = selectedLga?.pk;
+        cooperative.wardId = selectedWard?.pk;
+
+
+      }
+    }
+  }
 }

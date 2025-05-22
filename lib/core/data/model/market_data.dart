@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import '../../../core/data/model/general_model.dart';
 import '../../utils/const.dart';
+import 'insight.dart';
 import 'market.dart';
 import 'product_data.dart';
 
@@ -13,17 +14,18 @@ class MarketData extends GeneralModel {
   @Index(unique: true)
   late int pk = 0;
 
-  @ignore
-  Market? market;
+  MarketObject? market;
 
   @ignore
   ProductData? product;
 
   int? marketId;
   int? productId;
+  int? lgaId;
 
   double? price;
   String? date;
+  String? volume;
 
   MarketData();
 
@@ -38,17 +40,10 @@ MarketData _$MarketDataFromJson(Map<String, dynamic> json) {
 
   obj.pk = json[KEY_PK] as int;
 
-  if (json[KEY_MARKET] != null && json[KEY_MARKET] is Map<String, dynamic>) {
-    obj.market = Market.fromJson(json[KEY_MARKET] as Map<String, dynamic>);
-    obj.marketId = obj.market?.pk;
-  } else if (json.containsKey(KEY_MARKET_ID)) {
-    obj.marketId = json[KEY_MARKET_ID] as int?;
-  }
+  obj.market = MarketObject.fromJson(json[KEY_MARKET]);
 
   if (json[KEY_PRODUCT] != null && json[KEY_PRODUCT] is Map<String, dynamic>) {
-    obj.product = ProductData.fromJson(
-      json[KEY_PRODUCT] as Map<String, dynamic>,
-    );
+    obj.product = ProductData.fromJson(json[KEY_PRODUCT]);
 
     obj.productId = obj.product?.product?.pk;
   } else if (json.containsKey(KEY_PRODUCT_ID)) {
@@ -60,8 +55,10 @@ MarketData _$MarketDataFromJson(Map<String, dynamic> json) {
   } else {
     obj.price = null;
   }
+  obj.volume = json[KEY_VOLUME];
+  obj.lgaId = json[KEY_LGA_ID];
 
-  obj.date = json[KEY_DATE] as String?;
+  obj.date = json[KEY_DATE];
 
   return obj;
 }
@@ -71,4 +68,6 @@ Map<String, dynamic> _$MarketDataToJson(MarketData obj) => <String, dynamic>{
   KEY_MARKET_ID: obj.marketId,
   KEY_PRODUCT_ID: obj.productId,
   KEY_DATE: obj.date,
+  KEY_VOLUME: obj.volume,
+  KEY_LGA_ID: obj.lgaId,
 };

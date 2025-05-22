@@ -47,18 +47,24 @@ const WardSchema = CollectionSchema(
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
+    r'lga': PropertySchema(
       id: 6,
+      name: r'lga',
+      type: IsarType.object,
+      target: r'LgaData',
+    ),
+    r'name': PropertySchema(
+      id: 7,
       name: r'name',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'pk',
       type: IsarType.long,
     ),
     r'updated': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'updated',
       type: IsarType.string,
     )
@@ -123,7 +129,7 @@ const WardSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'LgaData': LgaDataSchema},
   getId: _wardGetId,
   getLinks: _wardGetLinks,
   attach: _wardAttach,
@@ -161,6 +167,13 @@ int _wardEstimateSize(
     }
   }
   {
+    final value = object.lga;
+    if (value != null) {
+      bytesCount += 3 +
+          LgaDataSchema.estimateSize(value, allOffsets[LgaData]!, allOffsets);
+    }
+  }
+  {
     final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -187,9 +200,15 @@ void _wardSerialize(
   writer.writeString(offsets[3], object.errorMessage);
   writer.writeBool(offsets[4], object.hasSynced);
   writer.writeString(offsets[5], object.lastPulledTime);
-  writer.writeString(offsets[6], object.name);
-  writer.writeLong(offsets[7], object.pk);
-  writer.writeString(offsets[8], object.updated);
+  writer.writeObject<LgaData>(
+    offsets[6],
+    allOffsets,
+    LgaDataSchema.serialize,
+    object.lga,
+  );
+  writer.writeString(offsets[7], object.name);
+  writer.writeLong(offsets[8], object.pk);
+  writer.writeString(offsets[9], object.updated);
 }
 
 Ward _wardDeserialize(
@@ -206,9 +225,14 @@ Ward _wardDeserialize(
   object.hasSynced = reader.readBoolOrNull(offsets[4]);
   object.id = id;
   object.lastPulledTime = reader.readStringOrNull(offsets[5]);
-  object.name = reader.readStringOrNull(offsets[6]);
-  object.pk = reader.readLong(offsets[7]);
-  object.updated = reader.readStringOrNull(offsets[8]);
+  object.lga = reader.readObjectOrNull<LgaData>(
+    offsets[6],
+    LgaDataSchema.deserialize,
+    allOffsets,
+  );
+  object.name = reader.readStringOrNull(offsets[7]);
+  object.pk = reader.readLong(offsets[8]);
+  object.updated = reader.readStringOrNull(offsets[9]);
   return object;
 }
 
@@ -232,10 +256,16 @@ P _wardDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectOrNull<LgaData>(
+        offset,
+        LgaDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 7:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
+      return (reader.readLong(offset)) as P;
+    case 9:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1471,6 +1501,22 @@ extension WardQueryFilter on QueryBuilder<Ward, Ward, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Ward, Ward, QAfterFilterCondition> lgaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lga',
+      ));
+    });
+  }
+
+  QueryBuilder<Ward, Ward, QAfterFilterCondition> lgaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lga',
+      ));
+    });
+  }
+
   QueryBuilder<Ward, Ward, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1812,7 +1858,13 @@ extension WardQueryFilter on QueryBuilder<Ward, Ward, QFilterCondition> {
   }
 }
 
-extension WardQueryObject on QueryBuilder<Ward, Ward, QFilterCondition> {}
+extension WardQueryObject on QueryBuilder<Ward, Ward, QFilterCondition> {
+  QueryBuilder<Ward, Ward, QAfterFilterCondition> lga(FilterQuery<LgaData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'lga');
+    });
+  }
+}
 
 extension WardQueryLinks on QueryBuilder<Ward, Ward, QFilterCondition> {}
 
@@ -2152,6 +2204,12 @@ extension WardQueryProperty on QueryBuilder<Ward, Ward, QQueryProperty> {
   QueryBuilder<Ward, String?, QQueryOperations> lastPulledTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastPulledTime');
+    });
+  }
+
+  QueryBuilder<Ward, LgaData?, QQueryOperations> lgaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lga');
     });
   }
 

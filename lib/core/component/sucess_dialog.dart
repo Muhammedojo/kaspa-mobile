@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaspa/core/resources/images.dart';
-import 'package:kaspa/core/resources/vectors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 import '../theme/colors.dart';
 
@@ -48,16 +46,7 @@ class SuccessDialogWidget extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SvgPicture.asset(
-                      AppIcon.cancel,
-                      height: 32.sp,
-                      width: 32.sp,
-                    ),
-                  ),
+             
                 ],
               ),
             ),

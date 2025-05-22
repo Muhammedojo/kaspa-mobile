@@ -149,6 +149,49 @@ class WeatherData {
   }
 }
 
+
+
+@embedded
+class ProductObject {
+  int? id;
+  String? name;
+  String? productType;
+
+  ProductObject({this.id, this.name, this.productType});
+
+  factory ProductObject.fromJson(Map<String, dynamic> json) {
+    return ProductObject(
+      id: json['id'],
+      name: json['name'],
+      productType: json['product_type'],
+    );
+  }
+}
+
+@embedded
+class MarketObject {
+  int? id;
+  String? name;
+  String? address;
+  String? marketType;
+  String? size;
+  String? marketDays;
+
+
+  MarketObject({this.id, this.name, this.address,this.marketType,this.size,this.marketDays});
+
+  factory MarketObject.fromJson(Map<String, dynamic> json) {
+    return MarketObject(
+      id: json['id'],
+      name: json['name'],
+      address: json['address'],
+      marketType: json['market_type'],
+      size: json['size'],
+      marketDays: json['market_days'],
+    );
+  }
+}
+
 @embedded
 class FarmerPlots {
   double? totalHectares;

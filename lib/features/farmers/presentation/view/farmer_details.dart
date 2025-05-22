@@ -30,7 +30,7 @@ class FarmerDetailsView extends StatelessWidget
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Utils.customAppBar(
+            Utils.customAppBar(
               context,
               'farmer_details',
               true,
@@ -310,7 +310,7 @@ class FarmerDetailsView extends StatelessWidget
                         body: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Row(
+                            Row(
                               children: [
                                 "wallet_balance".toText(
                                   fontSize: 14,
@@ -361,10 +361,8 @@ class FarmerDetailsView extends StatelessWidget
                                     ),
                                   ],
                                 ),
-                              
                               ],
                             ),
-                          
                           ],
                         ),
                       ),
@@ -404,11 +402,7 @@ class FarmerDetailsView extends StatelessWidget
               value: editAction,
               child: Row(
                 children: [
-                   SvgPicture.asset(
-                    AppIcon.edit,
-                    height: 14.sp,
-                    width: 14.sp,
-                  ),
+                  SvgPicture.asset(AppIcon.edit, height: 14.sp, width: 14.sp),
                   8.horizontalSpace,
                   "Edit farmer's details".toText(
                     fontSize: 12,
@@ -424,49 +418,40 @@ class FarmerDetailsView extends StatelessWidget
               value: deleteAction,
               child: Row(
                 children: [
-                    SvgPicture.asset(
-                    AppIcon.farm,
-                    height: 14.sp,
-                    width: 14.sp,
-                  ),
+                  SvgPicture.asset(AppIcon.farm, height: 14.sp, width: 14.sp),
                   8.horizontalSpace,
                   "View farm location".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
               ),
             ),
-     
 
             const PopupMenuDivider(),
             PopupMenuItem<String>(
               value: deleteAction,
               child: Row(
                 children: [
-                   SvgPicture.asset(
-                    AppIcon.money,
-                    height: 14.sp,
-                    width: 14.sp,
-                  ),
+                  SvgPicture.asset(AppIcon.money, height: 14.sp, width: 14.sp),
                   8.horizontalSpace,
                   "View transaction history".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                   color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
               ),
             ),
-                const PopupMenuDivider(),
+            const PopupMenuDivider(),
             PopupMenuItem<String>(
               value: deleteAction,
               child: Row(
                 children: [
-                    SvgPicture.asset(
+                  SvgPicture.asset(
                     AppIcon.blacklist,
                     height: 14.sp,
                     width: 14.sp,
@@ -475,7 +460,7 @@ class FarmerDetailsView extends StatelessWidget
                   "Suspend from cooperative".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                  color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
@@ -487,7 +472,7 @@ class FarmerDetailsView extends StatelessWidget
               value: deleteAction,
               child: Row(
                 children: [
-                    SvgPicture.asset(
+                  SvgPicture.asset(
                     AppIcon.blacklist,
                     height: 14.sp,
                     width: 14.sp,
@@ -496,16 +481,13 @@ class FarmerDetailsView extends StatelessWidget
                   "Blacklist farmer".toText(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                  color: AppColors.accentText,
+                    color: AppColors.accentText,
                     translate: false,
                   ),
                 ],
               ),
             ),
-
-        
           ],
     );
   }
-
 }

@@ -6,7 +6,6 @@ import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/card_container_widget.dart';
 
-
 class FarmVisitCard extends StatelessWidget {
   final FarmVisit data;
   final Function() onTap;
@@ -19,8 +18,6 @@ class FarmVisitCard extends StatelessWidget {
       child: CardContainerWidget(
         child: Row(
           children: [
-            SvgPicture.asset('assets/vectors/coops.svg'),
-            8.horizontalSpace,
             Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,11 +35,15 @@ class FarmVisitCard extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            'verified'.toText(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: AppColors.colorPrimary,
-              translate: false,
+            Column(
+              children: [
+                'verified'.toText(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.colorPrimary,
+                  translate: false,
+                ),
+              ],
             ),
           ],
         ),

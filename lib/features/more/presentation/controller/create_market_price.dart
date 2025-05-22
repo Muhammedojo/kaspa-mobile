@@ -88,6 +88,8 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
         marketPrice.price = double.tryParse(priceController.text) ?? 0.0;
         marketPrice.productId = selectedCrop!.pk;
         marketPrice.marketId = selectedMarket!.pk;
+        marketPrice.volume = volumeController.text;
+        marketPrice.lgaId = selectedLga!.pk;
 
         context.read<MarketPriceCubit>().addMarketPrice(marketPrice);
         priceController.clear();

@@ -39,7 +39,7 @@ class RegisterCooperativeView extends StatelessWidget
             key: controller.formKey,
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Utils.customAppBar(
                     context,
@@ -271,7 +271,7 @@ class RegisterCooperativeView extends StatelessWidget
                         child: Padding(
                           padding: REdgeInsets.symmetric(vertical: 20.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               SvgPicture.asset(
                                 'assets/vectors/document.svg',

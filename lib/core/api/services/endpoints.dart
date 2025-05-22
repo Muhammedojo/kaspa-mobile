@@ -1,5 +1,5 @@
 const liveMode = bool.fromEnvironment("mode", defaultValue: false);
-const baseUrl = liveMode ? "https://kaspa.effing.cloud" : "https://kaspa.effing.cloud";
+const baseUrl = liveMode ? "https://5fb2-154-113-120-30.ngrok-free.app"  : "https://5fb2-154-113-120-30.ngrok-free.app";
 const baseApi = "$baseUrl/api/v1/";
 
 const loginEndpoint = "auth/login";

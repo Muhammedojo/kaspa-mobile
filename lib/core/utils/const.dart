@@ -94,6 +94,7 @@ const KEY_MARKET_TYPE = "market_type";
 const KEY_SECRETARY = "secretary";
 const KEY_DATE_OF_INCORPORATION = "doi";
 const KEY_CERTIFICATE = "certificate";
+const KEY_CERTIFICATE_NUMBER = "certificate_number";
 const KEY_NOK_NAME = "nok_name";
 const KEY_NOK_PHONE = "nok_phone";
 const KEY_NOK_RELATIONSHIP = "nok_relationship";

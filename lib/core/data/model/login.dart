@@ -10,7 +10,7 @@ class Login {
   String? userType;
 
   String? token;
-  List<int>? roles;
+  List<String>? roles;
   List<String>? permissions = [];
   String? status;
   String? registrationDate;
@@ -39,11 +39,11 @@ Login _$LoginFromJson(Map<String, dynamic> json) {
   obj.username = json[KEY_USERNAME];
   obj.userType = json[KEY_USER_TYPE];
 
-  List<int> roles = [];
+  List<String> roles = [];
   if (json.containsKey(KEY_ROLES)) {
     var list = json[KEY_ROLES] as List;
-    for (var int in list) {
-      roles.add(int);
+    for (var String in list) {
+      roles.add(String);
     }
   }
   obj.roles = roles;

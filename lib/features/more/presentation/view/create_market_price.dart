@@ -189,7 +189,7 @@ class CreateMarketPriceView extends StatelessWidget
                     controller: controller.volumeController,
                     style: Styles.x14dp_4A4A4A(14.0.sp),
                     maxLines: 1,
-                    validator: ValidationBuilder().required().build(),
+                    validator: ValidationBuilder(optional: true).build(),
                     keyboardType: TextInputType.number,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     textInputAction: TextInputAction.next,
