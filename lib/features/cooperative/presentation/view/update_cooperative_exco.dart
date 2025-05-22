@@ -28,7 +28,7 @@ class UpdateCooperativeExcoView extends StatelessWidget
           children: [
             Utils.customAppBar(
               context,
-              'cooperative_confirmation_details',
+              'update_cooperative_exco',
               false,
               (){}
             ),

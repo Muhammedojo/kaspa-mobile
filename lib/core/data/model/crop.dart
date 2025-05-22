@@ -2,7 +2,6 @@ import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import 'package:kaspa/core/data/model/insight.dart';
 import '../../utils/const.dart';
-import 'product_data.dart';
 
 part 'crop.g.dart';
 

@@ -55,6 +55,7 @@ class MarketPriceView extends StatelessWidget
                     ),
 
                     16.verticalSpace,
+                  
                     Expanded(
                       child: BlocBuilder<MarketPriceCubit, MarketPriceState>(
                         builder: (context, state) {
@@ -99,6 +100,7 @@ class MarketPriceView extends StatelessWidget
                         },
                       ),
                     ),
+                  
                   ],
                 ),
               ),

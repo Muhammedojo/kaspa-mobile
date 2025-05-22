@@ -22,5 +22,7 @@ class AppIcon {
   static const String people = 'assets/vectors/people.svg';
   static const String money = 'assets/vectors/money.svg';
   static const String blacklist = 'assets/vectors/blacklist.svg';
-    static const String farm = 'assets/vectors/farm.svg';
+  static const String farm = 'assets/vectors/farm.svg';
+  static const String crop = 'assets/vectors/crop.svg';
+  static const String livestock = 'assets/vectors/livestock.svg';
 }

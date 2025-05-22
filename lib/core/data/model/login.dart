@@ -42,8 +42,8 @@ Login _$LoginFromJson(Map<String, dynamic> json) {
   List<String> roles = [];
   if (json.containsKey(KEY_ROLES)) {
     var list = json[KEY_ROLES] as List;
-    for (var String in list) {
-      roles.add(String);
+    for (var string in list) {
+      roles.add(string);
     }
   }
   obj.roles = roles;

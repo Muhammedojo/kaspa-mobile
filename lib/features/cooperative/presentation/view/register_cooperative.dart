@@ -308,9 +308,9 @@ class RegisterCooperativeView extends StatelessWidget
                       ),
                     ),
                   ),
-                
-                30.verticalSpace,
-                       BlocListener<CooperativeCubit, CooperativeState>(
+
+                  30.verticalSpace,
+                  BlocListener<CooperativeCubit, CooperativeState>(
                     listener: (context, state) {
                       if (state is CooperativeLoading) {
                         Utils.showLoading(context);
@@ -342,8 +342,6 @@ class RegisterCooperativeView extends StatelessWidget
                       onPressed: () => controller.saveCooperative(),
                     ),
                   ),
-               
-                
                 ],
               ),
             ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/card_container_widget.dart';
@@ -9,7 +8,7 @@ import '../../../../core/data/model/market_data.dart';
 class MarketPriceCard extends StatelessWidget {
   final MarketData data;
   final Function() onTap;
-  const MarketPriceCard({super.key, required this.data, required this.onTap});
+  const MarketPriceCard({super.key,required this.data, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +17,21 @@ class MarketPriceCard extends StatelessWidget {
       child: CardContainerWidget(
         child: Row(
           children: [
-            SvgPicture.asset('assets/vectors/coops.svg'),
+            // data!.isCrop()
+            //     ? SvgPicture.asset(AppIcon.crop)
+            //     :
+                 Image.asset('assets/images/crop.png'),
             8.horizontalSpace,
             Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                '${data.market?.name}'.toText(
+                (data.product?.product?.name ?? 'Maize').toText(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   translate: false,
                 ),
-                '0 Members'.toText(
+                (data.market?.name ?? 'Kaspa Market').toText(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   translate: false,
@@ -37,11 +39,22 @@ class MarketPriceCard extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            'verified'.toText(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: AppColors.colorPrimary,
-              translate: false,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                'NGN ${data.price ?? 0.0}'.toText(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.colorPrimary,
+                  translate: false,
+                ),
+               ' ${data.date ?? '2025-01-01'}'.toText(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  translate: false,
+                ),
+              ],
             ),
           ],
         ),

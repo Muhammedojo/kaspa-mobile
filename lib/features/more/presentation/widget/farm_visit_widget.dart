@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/data/model/farm_visit.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';

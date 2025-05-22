@@ -1,5 +1,7 @@
 import 'package:isar/isar.dart';
 
+import '../../utils/const.dart';
+
 part 'insight.g.dart';
 
 @Collection()
@@ -164,6 +166,26 @@ class ProductObject {
       id: json['id'],
       name: json['name'],
       productType: json['product_type'],
+    );
+  }
+}
+
+@embedded
+class NestedProductObject {
+  int? id;
+  ProductObject? product;
+  String? variety;
+  String? unit;
+
+  NestedProductObject({this.id, this.product, this.variety, this.unit});
+
+  factory NestedProductObject.fromJson(Map<String, dynamic> json) {
+    return NestedProductObject(
+      id: json['id'],
+      product: ProductObject.fromJson(json[KEY_PRODUCT]),
+      variety: json['variety'],
+      unit: json['unit'],
+
     );
   }
 }

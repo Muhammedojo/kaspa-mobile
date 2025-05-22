@@ -2,8 +2,6 @@ import 'package:isar/isar.dart';
 import '../../../core/data/model/general_model.dart';
 import '../../utils/const.dart';
 import 'insight.dart';
-import 'market.dart';
-import 'product_data.dart';
 
 part 'market_data.g.dart';
 
@@ -16,8 +14,7 @@ class MarketData extends GeneralModel {
 
   MarketObject? market;
 
-  @ignore
-  ProductData? product;
+  NestedProductObject? product;
 
   int? marketId;
   int? productId;
@@ -26,6 +23,8 @@ class MarketData extends GeneralModel {
   double? price;
   String? date;
   String? volume;
+
+  bool isCrop() => product?.product?.productType == 'Crop' ? true : false;
 
   MarketData();
 
@@ -43,9 +42,7 @@ MarketData _$MarketDataFromJson(Map<String, dynamic> json) {
   obj.market = MarketObject.fromJson(json[KEY_MARKET]);
 
   if (json[KEY_PRODUCT] != null && json[KEY_PRODUCT] is Map<String, dynamic>) {
-    obj.product = ProductData.fromJson(json[KEY_PRODUCT]);
-
-    obj.productId = obj.product?.product?.pk;
+    obj.product = NestedProductObject.fromJson(json[KEY_PRODUCT]);
   } else if (json.containsKey(KEY_PRODUCT_ID)) {
     obj.productId = json[KEY_PRODUCT_ID] as int?;
   }
