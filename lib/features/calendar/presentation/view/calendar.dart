@@ -32,6 +32,40 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              controller.showFixedTabs
+                  ? Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: SafeArea(
+                        child: Column(
+                          children: [
+                            Container(
+                              color: Colors.transparent,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  12.horizontalSpace,
+                                  'Crops currently in season'.toText(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            _buildTabBar(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                  : SizedBox.shrink(),
               Expanded(
                 child: CustomScrollView(
                   controller: controller.scrollController,
@@ -41,9 +75,9 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                       elevation: 0,
                       floating: false,
                       pinned: false,
-                      title: 'Crop Calendar'.toText(),
+                      title: 'Crop Calendar'.toText(fontSize: 14, fontWeight: FontWeight.w700),
                       centerTitle: true,
-                      actions: [SvgPicture.asset(AppIcon.cal)],
+                      actions: [SvgPicture.asset(AppIcon.calendar)],
                     ),
 
                     SliverToBoxAdapter(
@@ -101,6 +135,10 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
 
                     SliverList(
                       delegate: SliverChildListDelegate([
+                        CropCard(data: Crop(), onTap: () {}),
+                        CropCard(data: Crop(), onTap: () {}),
+                        CropCard(data: Crop(), onTap: () {}),
+                        CropCard(data: Crop(), onTap: () {}),
                         CropCard(data: Crop(), onTap: () {}),
                         CropCard(data: Crop(), onTap: () {}),
                         CropCard(data: Crop(), onTap: () {}),

@@ -6,6 +6,7 @@ class AppIcon {
   static const String cancel = 'assets/vectors/cancel.svg';
   static const String filter = 'assets/vectors/filter.svg';
   static const String cal = 'assets/vectors/cal.svg';
+    static const String calendar = 'assets/vectors/calendar.svg';
   static const String warning = 'assets/vectors/warning.svg';
   static const String sun = 'assets/vectors/sun.svg';
   static const String farmVisit = 'assets/vectors/farmVisit.svg';
