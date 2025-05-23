@@ -27,129 +27,133 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
     return Container(
       decoration: Styles.colorComboDecoration(),
       child: SafeArea(
-        child: Padding(
-          padding: REdgeInsets.symmetric(horizontal: 14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              controller.showFixedTabs
-                  ? Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
+        child: Stack(
+          children: [
+            Padding(
+              padding: REdgeInsets.symmetric(horizontal: 14.0),
+              child: CustomScrollView(
+                controller: controller.scrollController,
+                slivers: [
+                  SliverAppBar(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    floating: false,
+                    pinned: false,
+                    title: 'Crop Calendar'.toText(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      translate: false,
+                    ),
+                    centerTitle: true,
+                    actions: [SvgPicture.asset(AppIcon.calendar)],
+                  ),
+
+                  SliverToBoxAdapter(
                     child: Container(
                       color: Colors.transparent,
-                      child: SafeArea(
-                        child: Column(
-                          children: [
-                            Container(
-                              color: Colors.transparent,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
+                      padding: REdgeInsets.symmetric(vertical: 8),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SvgPicture.asset(AppIcon.left),
+                              'May 2025'.toText(
+                                translate: false,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  12.horizontalSpace,
-                                  'Crops currently in season'.toText(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ],
+                              SvgPicture.asset(AppIcon.right),
+                            ],
+                          ),
+                          16.verticalSpace,
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildCalendarDay('Thu', '22', false),
+                              _buildCalendarDay('Fri', '23', true),
+                              _buildCalendarDay('Sat', '24', false),
+                              _buildCalendarDay('Sun', '25', false),
+                              _buildCalendarDay('Mon', '26', false),
+                              _buildCalendarDay('Tue', '27', false),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: REdgeInsets.all(16),
+                      child: 'Crops currently in season'.toText(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        translate: false,
+                      ),
+                    ),
+                  ),
+
+                  if (!controller.showFixedTabs)
+                    SliverToBoxAdapter(child: _buildTabBar()),
+
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                      CropCard(data: Crop(), onTap: () {}),
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+            if (controller.showFixedTabs)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  color: AppColors.bgGreen.withAlpha((0.93 * 255).toInt()),
+                  child: SafeArea(
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.transparent,
+                          padding: REdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              12.horizontalSpace,
+                              'Crops currently in season'.toText(
+                                fontSize: 14,
+                                translate: false,
+                                fontWeight: FontWeight.w700,
                               ),
-                            ),
-                            _buildTabBar(),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
+                        _buildTabBar(),
+                      ],
                     ),
-                  )
-                  : SizedBox.shrink(),
-              Expanded(
-                child: CustomScrollView(
-                  controller: controller.scrollController,
-                  slivers: [
-                    SliverAppBar(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      floating: false,
-                      pinned: false,
-                      title: 'Crop Calendar'.toText(fontSize: 14, fontWeight: FontWeight.w700),
-                      centerTitle: true,
-                      actions: [SvgPicture.asset(AppIcon.calendar)],
-                    ),
-
-                    SliverToBoxAdapter(
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: REdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.chevron_left),
-                                  onPressed: () {},
-                                ),
-
-                                'May 2025'.toText(),
-                                IconButton(
-                                  icon: Icon(Icons.chevron_right),
-                                  onPressed: () {},
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildCalendarDay('Thu', '22', false),
-                                _buildCalendarDay('Fri', '23', true),
-                                _buildCalendarDay('Sat', '24', false),
-                                _buildCalendarDay('Sun', '25', false),
-                                _buildCalendarDay('Mon', '26', false),
-                                _buildCalendarDay('Tue', '27', false),
-                              ],
-                            ),
-                            SizedBox(height: 24),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: REdgeInsets.all(16),
-                        child: 'Crops currently in season'.toText(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-
-                    if (!controller.showFixedTabs)
-                      SliverToBoxAdapter(child: _buildTabBar()),
-
-                    SliverList(
-                      delegate: SliverChildListDelegate([
-                        CropCard(data: Crop(), onTap: () {}),
-                        CropCard(data: Crop(), onTap: () {}),
-                        CropCard(data: Crop(), onTap: () {}),
-                        CropCard(data: Crop(), onTap: () {}),
-                        CropCard(data: Crop(), onTap: () {}),
-                        CropCard(data: Crop(), onTap: () {}),
-                        CropCard(data: Crop(), onTap: () {}),
-                        CropCard(data: Crop(), onTap: () {}),
-                      ]),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );
@@ -160,7 +164,11 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
       width: 50,
       height: 60,
       decoration: BoxDecoration(
-        color: isSelected ? Colors.green : Colors.transparent,
+        border: Border.all(
+          color: isSelected ? Colors.green : Colors.white,
+          width: 2,
+        ),
+        color: isSelected ? Colors.green : Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

@@ -31,12 +31,16 @@ class CropCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                (data.name ?? 'Maize').toText(
+                (
+                  //data.name ??
+                 'Maize').toText(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
                 4.horizontalSpace,
-                (data.variety ?? 'Suwan-1').toText(
+                (
+                  //data.variety ??
+                  'Suwan-1').toText(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),

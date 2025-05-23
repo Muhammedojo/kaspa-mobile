@@ -32,8 +32,14 @@ class _HomePageScreenState extends State<HomePageScreen>
 
   @override
   void initState() {
-    context.read<UserCubit>().getUser;
     super.initState();
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) { 
+        context.read<UserCubit>().getUser;
+      }
+    });
+    
     pageController.addListener(() {
       int next = pageController.page!.round();
       if (currentPage != next) {

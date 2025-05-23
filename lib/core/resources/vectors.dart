@@ -26,4 +26,6 @@ class AppIcon {
   static const String farm = 'assets/vectors/farm.svg';
   static const String crop = 'assets/vectors/crop.svg';
   static const String livestock = 'assets/vectors/livestock.svg';
+   static const String right = 'assets/vectors/right.svg';
+    static const String left = 'assets/vectors/left.svg';
 }
