@@ -208,13 +208,14 @@ class CreateMarketPriceView extends StatelessWidget
                   listener: (context, state) {
                     if (state is MarketPriceLoading) {
                       Utils.showLoading(context);
-                    } else if (state is CreateMarketPriceSuccess) {
+                    } 
+                    else if (state is CreateMarketPriceSuccess) {
                       Utils.hideLoading(context);
                       controller.clearScreen();
                       Utils.showToastSuccess(
                         context,
                         'price_logged_successfully'.tr(),
-                        '',
+                        'Go to Price List',
                         () {
                           Navigator.pop(context);
                         },

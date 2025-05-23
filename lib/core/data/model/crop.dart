@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import 'package:kaspa/core/data/model/insight.dart';
@@ -20,6 +21,49 @@ class Crop extends GeneralModel {
   String? unit = "";
 
   Crop();
+
+  Color getCropColor() {
+    if (product?.productType?.toLowerCase() == 'crop' &&
+        name != null &&
+        name!.isNotEmpty) {
+      switch (name!.toLowerCase()) {
+        case 'maize':
+          return Colors.amber[700]!;
+        case 'potato':
+          return Colors.brown[400]!;
+        case 'rice':
+          return Colors.yellow[700]!;
+        case 'tomato':
+          return Colors.red[600]!;
+        case 'onion':
+          return Colors.purple[700]!;
+        default:
+          return Colors.green[600]!;
+      }
+    } else {
+      return Colors.grey[500]!;
+    }
+  }
+
+  IconData getCropIcon() {
+    if (name != null && name!.isNotEmpty) {
+      switch (name!.toLowerCase()) {
+        case 'maize':
+          return Icons.grass;
+        case 'potato':
+          return Icons.circle;
+        case 'rice':
+          return Icons.grain;
+        case 'tomato':
+        case 'onion':
+          return Icons.circle;
+        default:
+          return Icons.eco;
+      }
+    }
+
+    return Icons.eco;
+  }
 
   factory Crop.fromJson(Map<String, dynamic> json) => _$CropFromJson(json);
 }

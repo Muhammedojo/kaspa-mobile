@@ -20,7 +20,7 @@ class MarketData extends GeneralModel {
   int? productId;
   int? lgaId;
 
-  double? price;
+  String? price;
   String? date;
   String? volume;
 
@@ -40,22 +40,19 @@ MarketData _$MarketDataFromJson(Map<String, dynamic> json) {
   obj.pk = json[KEY_PK] as int;
 
   obj.market = MarketObject.fromJson(json[KEY_MARKET]);
-
   if (json[KEY_PRODUCT] != null && json[KEY_PRODUCT] is Map<String, dynamic>) {
     obj.product = NestedProductObject.fromJson(json[KEY_PRODUCT]);
   } else if (json.containsKey(KEY_PRODUCT_ID)) {
     obj.productId = json[KEY_PRODUCT_ID] as int?;
   }
-
   if (json[KEY_PRICE] != null) {
-    obj.price = (json[KEY_PRICE] as num).toDouble();
+    obj.price = json[KEY_PRICE];
   } else {
     obj.price = null;
   }
-  obj.volume = json[KEY_VOLUME];
-  obj.lgaId = json[KEY_LGA_ID];
-
   obj.date = json[KEY_DATE];
+ 
+  obj.volume = json[KEY_VOLUME];
 
   return obj;
 }

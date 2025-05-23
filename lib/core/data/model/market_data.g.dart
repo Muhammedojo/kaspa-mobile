@@ -76,7 +76,7 @@ const MarketDataSchema = CollectionSchema(
     r'price': PropertySchema(
       id: 11,
       name: r'price',
-      type: IsarType.double,
+      type: IsarType.string,
     ),
     r'product': PropertySchema(
       id: 12,
@@ -216,6 +216,12 @@ int _marketDataEstimateSize(
     }
   }
   {
+    final value = object.price;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.product;
     if (value != null) {
       bytesCount += 3 +
@@ -260,7 +266,7 @@ void _marketDataSerialize(
   );
   writer.writeLong(offsets[9], object.marketId);
   writer.writeLong(offsets[10], object.pk);
-  writer.writeDouble(offsets[11], object.price);
+  writer.writeString(offsets[11], object.price);
   writer.writeObject<NestedProductObject>(
     offsets[12],
     allOffsets,
@@ -295,7 +301,7 @@ MarketData _marketDataDeserialize(
   );
   object.marketId = reader.readLongOrNull(offsets[9]);
   object.pk = reader.readLong(offsets[10]);
-  object.price = reader.readDoubleOrNull(offsets[11]);
+  object.price = reader.readStringOrNull(offsets[11]);
   object.product = reader.readObjectOrNull<NestedProductObject>(
     offsets[12],
     NestedProductObjectSchema.deserialize,
@@ -341,7 +347,7 @@ P _marketDataDeserializeProp<P>(
     case 10:
       return (reader.readLong(offset)) as P;
     case 11:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 12:
       return (reader.readObjectOrNull<NestedProductObject>(
         offset,
@@ -2008,54 +2014,54 @@ extension MarketDataQueryFilter
   }
 
   QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
+    String? value, {
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'price',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceGreaterThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'price',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceLessThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'price',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceBetween(
-    double? lower,
-    double? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -2064,7 +2070,76 @@ extension MarketDataQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'price',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'price',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'price',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'price',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MarketData, MarketData, QAfterFilterCondition> priceIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'price',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MarketData, MarketData, QAfterFilterCondition>
+      priceIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'price',
+        value: '',
       ));
     });
   }
@@ -2905,9 +2980,10 @@ extension MarketDataQueryWhereDistinct
     });
   }
 
-  QueryBuilder<MarketData, MarketData, QDistinct> distinctByPrice() {
+  QueryBuilder<MarketData, MarketData, QDistinct> distinctByPrice(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'price');
+      return query.addDistinctBy(r'price', caseSensitive: caseSensitive);
     });
   }
 
@@ -3006,7 +3082,7 @@ extension MarketDataQueryProperty
     });
   }
 
-  QueryBuilder<MarketData, double?, QQueryOperations> priceProperty() {
+  QueryBuilder<MarketData, String?, QQueryOperations> priceProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'price');
     });

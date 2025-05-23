@@ -63,60 +63,65 @@ const CooperativeSchema = CollectionSchema(
       name: r'errorMessage',
       type: IsarType.string,
     ),
-    r'hasSynced': PropertySchema(
+    r'file': PropertySchema(
       id: 9,
+      name: r'file',
+      type: IsarType.string,
+    ),
+    r'hasSynced': PropertySchema(
+      id: 10,
       name: r'hasSynced',
       type: IsarType.bool,
     ),
     r'head': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'head',
       type: IsarType.string,
     ),
     r'lastPulledTime': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
     r'lga': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'lga',
       type: IsarType.object,
       target: r'LgaData',
     ),
     r'lgaId': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'lgaId',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'name',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'pk',
       type: IsarType.long,
     ),
     r'secretary': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'secretary',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'updated',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'ward',
       type: IsarType.object,
       target: r'WardData',
     ),
     r'wardId': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'wardId',
       type: IsarType.long,
     )
@@ -249,6 +254,12 @@ int _cooperativeEstimateSize(
     }
   }
   {
+    final value = object.file;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.head;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -315,27 +326,28 @@ void _cooperativeSerialize(
   writer.writeString(offsets[6], object.dateOfIncorporation);
   writer.writeString(offsets[7], object.doi);
   writer.writeString(offsets[8], object.errorMessage);
-  writer.writeBool(offsets[9], object.hasSynced);
-  writer.writeString(offsets[10], object.head);
-  writer.writeString(offsets[11], object.lastPulledTime);
+  writer.writeString(offsets[9], object.file);
+  writer.writeBool(offsets[10], object.hasSynced);
+  writer.writeString(offsets[11], object.head);
+  writer.writeString(offsets[12], object.lastPulledTime);
   writer.writeObject<LgaData>(
-    offsets[12],
+    offsets[13],
     allOffsets,
     LgaDataSchema.serialize,
     object.lga,
   );
-  writer.writeLong(offsets[13], object.lgaId);
-  writer.writeString(offsets[14], object.name);
-  writer.writeLong(offsets[15], object.pk);
-  writer.writeString(offsets[16], object.secretary);
-  writer.writeString(offsets[17], object.updated);
+  writer.writeLong(offsets[14], object.lgaId);
+  writer.writeString(offsets[15], object.name);
+  writer.writeLong(offsets[16], object.pk);
+  writer.writeString(offsets[17], object.secretary);
+  writer.writeString(offsets[18], object.updated);
   writer.writeObject<WardData>(
-    offsets[18],
+    offsets[19],
     allOffsets,
     WardDataSchema.serialize,
     object.ward,
   );
-  writer.writeLong(offsets[19], object.wardId);
+  writer.writeLong(offsets[20], object.wardId);
 }
 
 Cooperative _cooperativeDeserialize(
@@ -358,26 +370,27 @@ Cooperative _cooperativeDeserialize(
   object.dateOfIncorporation = reader.readStringOrNull(offsets[6]);
   object.doi = reader.readStringOrNull(offsets[7]);
   object.errorMessage = reader.readStringOrNull(offsets[8]);
-  object.hasSynced = reader.readBoolOrNull(offsets[9]);
-  object.head = reader.readStringOrNull(offsets[10]);
+  object.file = reader.readStringOrNull(offsets[9]);
+  object.hasSynced = reader.readBoolOrNull(offsets[10]);
+  object.head = reader.readStringOrNull(offsets[11]);
   object.id = id;
-  object.lastPulledTime = reader.readStringOrNull(offsets[11]);
+  object.lastPulledTime = reader.readStringOrNull(offsets[12]);
   object.lga = reader.readObjectOrNull<LgaData>(
-    offsets[12],
+    offsets[13],
     LgaDataSchema.deserialize,
     allOffsets,
   );
-  object.lgaId = reader.readLongOrNull(offsets[13]);
-  object.name = reader.readStringOrNull(offsets[14]);
-  object.pk = reader.readLong(offsets[15]);
-  object.secretary = reader.readStringOrNull(offsets[16]);
-  object.updated = reader.readStringOrNull(offsets[17]);
+  object.lgaId = reader.readLongOrNull(offsets[14]);
+  object.name = reader.readStringOrNull(offsets[15]);
+  object.pk = reader.readLong(offsets[16]);
+  object.secretary = reader.readStringOrNull(offsets[17]);
+  object.updated = reader.readStringOrNull(offsets[18]);
   object.ward = reader.readObjectOrNull<WardData>(
-    offsets[18],
+    offsets[19],
     WardDataSchema.deserialize,
     allOffsets,
   );
-  object.wardId = reader.readLongOrNull(offsets[19]);
+  object.wardId = reader.readLongOrNull(offsets[20]);
   return object;
 }
 
@@ -411,34 +424,36 @@ P _cooperativeDeserializeProp<P>(
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readBoolOrNull(offset)) as P;
-    case 10:
       return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readBoolOrNull(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
+      return (reader.readStringOrNull(offset)) as P;
+    case 13:
       return (reader.readObjectOrNull<LgaData>(
         offset,
         LgaDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 13:
-      return (reader.readLongOrNull(offset)) as P;
     case 14:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 15:
-      return (reader.readLong(offset)) as P;
-    case 16:
       return (reader.readStringOrNull(offset)) as P;
+    case 16:
+      return (reader.readLong(offset)) as P;
     case 17:
       return (reader.readStringOrNull(offset)) as P;
     case 18:
+      return (reader.readStringOrNull(offset)) as P;
+    case 19:
       return (reader.readObjectOrNull<WardData>(
         offset,
         WardDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 19:
+    case 20:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2097,6 +2112,154 @@ extension CooperativeQueryFilter
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'file',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      fileIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'file',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'file',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'file',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'file',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'file',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'file',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'file',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'file',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'file',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> fileIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'file',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      fileIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'file',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
       hasSyncedIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -3312,6 +3475,18 @@ extension CooperativeQuerySortBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByFile() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'file', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByFileDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'file', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByHasSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hasSynced', Sort.asc);
@@ -3528,6 +3703,18 @@ extension CooperativeQuerySortThenBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByFile() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'file', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByFileDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'file', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByHasSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hasSynced', Sort.asc);
@@ -3711,6 +3898,13 @@ extension CooperativeQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByFile(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'file', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByHasSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hasSynced');
@@ -3835,6 +4029,12 @@ extension CooperativeQueryProperty
   QueryBuilder<Cooperative, String?, QQueryOperations> errorMessageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'errorMessage');
+    });
+  }
+
+  QueryBuilder<Cooperative, String?, QQueryOperations> fileProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'file');
     });
   }
 

@@ -210,6 +210,7 @@ class MarketObject {
       marketType: json['market_type'],
       size: json['size'],
       marketDays: json['market_days'],
+      
     );
   }
 }

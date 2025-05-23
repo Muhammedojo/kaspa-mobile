@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/market_data.dart';
@@ -85,13 +85,13 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
     if (formKey.currentState!.validate()) {
       if (selectedCrop != null && selectedMarket != null) {
         MarketData marketPrice = MarketData();
-        marketPrice.price = double.tryParse(priceController.text) ?? 0.0;
+        marketPrice.price = priceController.text;
         marketPrice.productId = selectedCrop!.pk;
         marketPrice.marketId = selectedMarket!.pk;
         marketPrice.volume = volumeController.text;
         marketPrice.lgaId = selectedLga!.pk;
 
-        context.read<MarketPriceCubit>().addMarketPrice(marketPrice);
+        GetIt.I.get<MarketPriceCubit>().addMarketPrice(marketPrice);
         priceController.clear();
       }
     }

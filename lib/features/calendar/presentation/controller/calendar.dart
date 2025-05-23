@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../contract/calendar.dart';
 import '../view/calendar.dart';
 
-
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 
@@ -15,14 +14,46 @@ class _CalendarScreenState extends State<CalendarScreen>
   late final CalendarViewContract view;
 
   @override
+  late ScrollController scrollController;
+
+  @override
+  int selectedTabIndex = 0;
+
+  @override
+  bool showFixedTabs = false;
+
+  @override
   void initState() {
+    scrollController = ScrollController();
     super.initState();
+    scrollController.addListener(onScroll);
+
     view = CalendarView(controller: this);
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void onScroll() {
+    if (scrollController.offset > 200 && !showFixedTabs) {
+      setState(() {
+        showFixedTabs = true;
+      });
+    } else if (scrollController.offset <= 200 && showFixedTabs) {
+      setState(() {
+        showFixedTabs = false;
+      });
+    }
+  }
+
+  @override
+  void tabClick(int index) {
+    setState(() {
+      selectedTabIndex = index;
+    });
   }
 
   @override
