@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import '../../../home/presentation/bloc/cooperative/cooperative_cubit.dart';
 import '../contract/cooperative.dart';
 import '../view/cooperative.dart';
-
 
 class CooperativeScreen extends StatefulWidget {
   const CooperativeScreen({super.key});
@@ -16,6 +17,10 @@ class _CooperativeScreenState extends State<CooperativeScreen>
 
   @override
   late bool isSearching = false;
+
+  @override
+  late String searchTerm = "";
+
   @override
   late TextEditingController searchController = TextEditingController();
 
@@ -28,18 +33,23 @@ class _CooperativeScreenState extends State<CooperativeScreen>
 
   @override
   void dispose() {
+    searchController.dispose();
     super.dispose();
   }
 
-    @override
+  @override
   searchCooperative(String text) {
-    // if(text.isNotEmpty) {
-    //   GetIt.I.get<SearchFarmerCubit>().searchFarmers(text);
-    // }
+    searchTerm = text;
+    if (mounted) {
+      GetIt.I.get<CooperativeCubit>().loadCooperativesFromDb(
+        searchTerm: text.toLowerCase(),
+        isSearching: true,
+      );
+    }
   }
 
-   @override
-  void updateSearchStatus(bool status){
+  @override
+  void updateSearchStatus(bool status) {
     setState(() {
       isSearching = status;
     });

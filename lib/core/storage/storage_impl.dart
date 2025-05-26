@@ -1,3 +1,5 @@
+import 'package:isar/isar.dart';
+
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
@@ -83,14 +85,46 @@ class LocalStorageImpl implements LocalStorage {
       databaseStorage.getCropCalendar();
 
   @override
-  Future<List<Cooperative>> getCooperative() =>
-      databaseStorage.getCooperative();
+  Future<List<Cooperative>> getCooperative({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  }) =>
+      databaseStorage.getCooperative(
+          searchTerm: searchTerm,
+    filter: filter,
+    sortBy: sortBy,
+    whereClauses: whereClauses,
+    whereSort: whereSort,
+    isSearching: isSearching,
+    isFiltering: isFiltering,
+      );
 
   @override
   Future<List<DashboardData>> getDashboard() => databaseStorage.getDashboard();
 
   @override
-  Future<List<Farmer>> getFarmer() => databaseStorage.getFarmer();
+  Future<List<Farmer>> getFarmer({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  }) => databaseStorage.getFarmer(
+    searchTerm: searchTerm,
+    filter: filter,
+    sortBy: sortBy,
+    whereClauses: whereClauses,
+    whereSort: whereSort,
+    isSearching: isSearching,
+    isFiltering: isFiltering,
+  );
 
   @override
   Future<List<FarmVisit>> getFarmVisit() => databaseStorage.getFarmVisit();
@@ -174,7 +208,7 @@ class LocalStorageImpl implements LocalStorage {
   Future<void> saveProduct(List<Product> objectList) =>
       databaseStorage.saveProduct(objectList);
 
-       @override
+  @override
   Future<void> savePlot(List<Plot> objectList) =>
       databaseStorage.savePlot(objectList);
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:kaspa/features/farmers/presentation/bloc/get_farmer/get_farmer_cubit.dart';
 import '../contract/farmer.dart';
 import '../view/farmer.dart';
 
@@ -20,6 +22,9 @@ class _FarmerScreenState extends State<FarmerScreen>
   late bool isSearching = false;
 
   @override
+  late String searchTerm = "";
+
+  @override
   void initState() {
     isSearching = false;
     super.initState();
@@ -34,11 +39,17 @@ class _FarmerScreenState extends State<FarmerScreen>
 
   @override
   searchFarmer(String text) {
-     // GetIt.I.get<SearchFarmerCubit>().searchFarmers(text);
+    searchTerm = text;
+    if (mounted) {
+      GetIt.I.get<GetFarmersCubit>().loadFarmersFromDb(
+        searchTerm: text.toLowerCase(),
+        isSearching: true,
+      );
+    }
   }
 
-   @override
-  void updateSearchStatus(bool status){
+  @override
+  void updateSearchStatus(bool status) {
     setState(() {
       isSearching = status;
     });

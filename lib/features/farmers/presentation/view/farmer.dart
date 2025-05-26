@@ -59,7 +59,6 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
                       onTextChanged: (text) {
                         final String currentQuery = text ?? "";
                         final bool isQueryPresent = currentQuery.isNotEmpty;
-
                         controller.updateSearchStatus(isQueryPresent);
                         controller.searchFarmer(currentQuery);
                       },

@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:isar/isar.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/crop_calendar.dart';
@@ -156,7 +157,23 @@ class HomeRepository implements IHomeRepository {
   Future<List<IncidentReport>> getIncident() => localStorage.getIncident();
 
   @override
-  Future<List<Cooperative>> getCooperative() => localStorage.getCooperative();
+  Future<List<Cooperative>> getCooperative({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  }) => localStorage.getCooperative(
+    searchTerm: searchTerm,
+    filter: filter,
+    whereClauses: whereClauses,
+    whereSort: whereSort,
+    sortBy: sortBy,
+    isSearching: isSearching,
+    isFiltering: isFiltering,
+  );
 
   @override
   Future<List<Lga>> getLga() => localStorage.getLga();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isar/isar.dart';
 import 'package:kaspa/features/farmers/repository/farmer_repository_contract.dart';
 
 import '../../../../../core/api/api.dart';
@@ -21,18 +22,16 @@ class GetFarmersCubit extends Cubit<GetFarmersState> {
   loadFarmers({String? url}) async {
     try {
       emit(FarmerListLoading());
-      
+
       final response =
           url != null && url.isNotEmpty
               ? await repository.getFarmerList(endpoint: url)
               : await repository.getFarmerList();
- debugPrint('Try calling farmer');
       final state =
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
       if (state is ApiRequestStateCompleted) {
-          
         loadFarmersFromDb();
       } else {
         response.fold(
@@ -78,12 +77,27 @@ class GetFarmersCubit extends Cubit<GetFarmersState> {
     }
   }
 
-  loadFarmersFromDb() async {
+  loadFarmersFromDb({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  }) async {
     try {
-      final response = await repository.getFarmer();
+      final response = await repository.getFarmer(
+        searchTerm: searchTerm,
+        whereClauses: whereClauses,
+        whereSort: whereSort,
+        sortBy: sortBy,
+        isSearching: isSearching,
+        isFiltering: isFiltering,
+      );
       emit(FarmerListLoaded(response));
     } catch (e) {
-      emit(FarmerListNotLoaded());
+      emit(FarmerListNotLoaded(e.toString()));
     }
   }
 

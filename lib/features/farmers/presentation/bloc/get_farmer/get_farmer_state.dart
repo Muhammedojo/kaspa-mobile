@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../../../core/data/model/farmer.dart';
 
-
 abstract class GetFarmersState extends Equatable {
   const GetFarmersState();
 
@@ -13,26 +12,23 @@ class FarmerListLoading extends GetFarmersState {}
 
 class FarmerListLoaded extends GetFarmersState {
   final List<Farmer> dataList;
- // final String searchTerm;
 
-  const FarmerListLoaded(this.dataList, 
-  //this.searchTerm
-  );
+  const FarmerListLoaded(this.dataList);
 
   @override
-  List<Object> get props => [dataList, 
-  //searchTerm
-  ];
+  List<Object> get props => [dataList];
 
   @override
-  String toString() =>
-      'FarmerLoaded { farmers: $dataList}';
-      // ,
-      //  searchTerm: $searchTerm'
-       //;
+  String toString() => 'FarmerLoaded { farmers: $dataList}';
 }
 
-class FarmerListNotLoaded extends GetFarmersState {}
+class FarmerListNotLoaded extends GetFarmersState {
+  final String? message;
+  const FarmerListNotLoaded([this.message]);
+
+  @override
+  String toString() => 'FarmerListFailure { error: $message }';
+}
 
 class FarmerListFailure extends GetFarmersState {
   final String error;

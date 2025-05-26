@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:isar/isar.dart';
 import 'package:kaspa/core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/api/api.dart';
 import '../../../../../core/api/exceptions/api_exception.dart';
@@ -80,9 +81,25 @@ class CooperativeCubit extends Cubit<CooperativeState> {
     }
   }
 
-  loadCooperativesFromDb() async {
+  loadCooperativesFromDb(   {
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  }) async {
     try {
-      final response = await repository.getCooperative();
+      final response = await repository.getCooperative(
+         searchTerm: searchTerm,
+        whereClauses: whereClauses,
+        whereSort: whereSort,
+        sortBy: sortBy,
+        isSearching: isSearching,
+        isFiltering: isFiltering,
+    
+      );
       emit(CooperativeLoaded(response));
     } catch (e) {
       emit(CooperativeNotLoaded());

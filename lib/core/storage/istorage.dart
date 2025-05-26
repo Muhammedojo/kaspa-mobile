@@ -1,3 +1,5 @@
+import 'package:isar/isar.dart';
+
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
@@ -41,13 +43,29 @@ abstract class DatabaseStorage {
   Future<List<Bank>> getBank();
   Future<List<Crop>> getCrop();
   Future<List<CropCalendar>> getCropCalendar();
-  Future<List<Cooperative>> getCooperative();
+  Future<List<Cooperative>> getCooperative({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  });
   Future<List<DashboardData>> getDashboard();
-  Future<List<Farmer>> getFarmer();
+  Future<List<Farmer>> getFarmer({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  });
   Future<List<FarmVisit>> getFarmVisit();
   Future<List<Lga>> getLga();
   Future<List<Product>> getProduct();
-   Future<List<Plot>> getPlot();
+  Future<List<Plot>> getPlot();
   Future<List<Livestock>> getLivestock();
   Future<List<User>> getUser();
   Future<List<Ward>> getWard();
@@ -70,7 +88,7 @@ abstract class DatabaseStorage {
   Future<void> saveLivestock(List<Livestock> objectList);
   Future<void> saveWard(List<Ward> objectList);
   Future<void> saveProduct(List<Product> objectList);
-    Future<void> savePlot(List<Plot> objectList);
+  Future<void> savePlot(List<Plot> objectList);
   Future<void> saveUser(List<User> objectList);
   Future<void> saveMarket(List<Market> objectList);
   Future<void> saveMarketPrice(List<MarketData> objectList);

@@ -106,30 +106,66 @@ class IsarImpl implements DatabaseStorage {
   }
 
   @override
-  Future<List<Cooperative>> getCooperative() {
+  Future<List<Cooperative>> getCooperative({
+    String? searchTerm,
+    List<WhereClause>? whereClauses = const [],
+    Sort? whereSort = Sort.desc,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy = const [],
+    bool? isSearching = false,
+    bool? isFiltering = false,
+  }) async {
     if (!_isar.isOpen) {
-      return Future.value(<Cooperative>[]);
+      return <Cooperative>[];
     }
     try {
-      final cooperatives = _isar.cooperatives.where().findAllSync();
-      return Future.value(cooperatives);
+      if (searchTerm != null && searchTerm.isNotEmpty) {
+        return _isar.cooperatives
+            .filter()
+            .codeContains(searchTerm, caseSensitive: false)
+            .or()
+            .nameContains(searchTerm, caseSensitive: false)
+            .or()
+            .headContains(searchTerm, caseSensitive: false)
+            .findAll();
+      } else {
+        return _isar.cooperatives.where().findAll();
+      }
     } catch (e) {
       debugPrint("Error retrieving cooperatives: $e");
-      return Future.value(<Cooperative>[]);
+      return <Cooperative>[];
     }
   }
 
   @override
-  Future<List<Farmer>> getFarmer() {
+  Future<List<Farmer>> getFarmer({
+    String? searchTerm,
+    List<WhereClause>? whereClauses = const [],
+    Sort? whereSort = Sort.desc,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy = const [],
+    bool? isSearching = false,
+    bool? isFiltering = false,
+  }) async {
     if (!_isar.isOpen) {
-      return Future.value(<Farmer>[]);
+      return <Farmer>[];
     }
     try {
-      final farmers = _isar.farmers.where().findAllSync();
-      return Future.value(farmers);
+      if (searchTerm != null && searchTerm.isNotEmpty) {
+        return _isar.farmers
+            .filter()
+            .folioIdContains(searchTerm, caseSensitive: false)
+            .or()
+            .firstNameContains(searchTerm, caseSensitive: false)
+            .or()
+            .phoneNumberContains(searchTerm, caseSensitive: false)
+            .findAll();
+      } else {
+        return _isar.farmers.where().findAll();
+      }
     } catch (e) {
       debugPrint("Error retrieving farmers: $e");
-      return Future.value(<Farmer>[]);
+      return <Farmer>[];
     }
   }
 
@@ -435,7 +471,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-    @override
+  @override
   Future<void> savePlot(List<Plot> objectList) async {
     if (!_isar.isOpen) {
       return;

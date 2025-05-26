@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:isar/isar.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/crop_calendar.dart';
@@ -30,9 +31,17 @@ abstract class IHomeRepository {
 
   Future<void> saveCooperative(List<Cooperative> cooperativeList);
 
-  Future<List<Cooperative>> getCooperative();
+  Future<List<Cooperative>> getCooperative({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  });
 
-   Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(
+  Future<Either<Failure, ApiResponse<Cooperative>>> createCooperative(
     Cooperative data,
   );
 
@@ -72,7 +81,7 @@ abstract class IHomeRepository {
 
   Future<List<Insight>> getInsight();
 
-   //FARM VISIT CUBIT CALLS
+  //FARM VISIT CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList({
     String? endpoint,
   });
@@ -140,7 +149,7 @@ abstract class IHomeRepository {
 
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
 
-   //PLOT CUBIT CALLS
+  //PLOT CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList({
     String? endpoint,
   });

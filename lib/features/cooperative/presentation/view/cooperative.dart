@@ -56,12 +56,10 @@ class CooperativeView extends StatelessWidget
                     SearchBarWidget(
                       hint: 'search_for_a_cooperative',
                       onTextChanged: (text) {
-                        controller.updateSearchStatus(
-                          text != null && text.isNotEmpty,
-                        );
-                        if (text != null && text.isNotEmpty) {
-                          controller.searchCooperative(text);
-                        }
+                        final String currentQuery = text ?? "";
+                        final bool isQueryPresent = currentQuery.isNotEmpty;
+                        controller.updateSearchStatus(isQueryPresent);
+                        controller.searchCooperative(currentQuery);
                       },
                       searchController: controller.searchController,
                       onClearSearch: () => controller.onClearSearch(),

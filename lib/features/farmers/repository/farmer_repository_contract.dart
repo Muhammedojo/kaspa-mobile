@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:isar/isar.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/api/services/contracts/api_response.dart';
 import '../../../core/data/model/farmer.dart';
@@ -13,5 +14,13 @@ abstract class IFarmerRepository {
 
   Future<void> saveFarmer(List<Farmer> farmerList);
 
-  Future<List<Farmer>> getFarmer();
+  Future<List<Farmer>> getFarmer({
+    String? searchTerm,
+    List<WhereClause>? whereClauses,
+    Sort? whereSort,
+    FilterOperation? filter,
+    List<SortProperty>? sortBy,
+    bool? isSearching,
+    bool? isFiltering,
+  });
 }
