@@ -55,6 +55,9 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
   @override
   void onSelectLga(Lga? newValue) {
     setState(() {
+        if (selectedLga?.pk != newValue?.pk) {
+        selectedMarket = null;
+      }
       selectedLga = newValue!;
     });
   }
@@ -76,6 +79,9 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
   @override
   void onSelectMarket(Market? newValue) {
     setState(() {
+      if (selectedLga?.pk != newValue?.pk) {
+        selectedMarket = null;
+      }
       selectedMarket = newValue!;
     });
   }

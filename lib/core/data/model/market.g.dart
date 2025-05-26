@@ -52,58 +52,70 @@ const MarketSchema = CollectionSchema(
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
-    r'lgaId': PropertySchema(
+    r'lga': PropertySchema(
       id: 7,
+      name: r'lga',
+      type: IsarType.object,
+      target: r'LgaData',
+    ),
+    r'lgaId': PropertySchema(
+      id: 8,
       name: r'lgaId',
       type: IsarType.long,
     ),
     r'marketDays': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'marketDays',
       type: IsarType.string,
     ),
     r'marketId': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'marketId',
       type: IsarType.long,
     ),
     r'marketType': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'marketType',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'name',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'pk',
       type: IsarType.long,
     ),
     r'price': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'price',
       type: IsarType.double,
     ),
     r'productId': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'productId',
       type: IsarType.long,
     ),
     r'size': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'size',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'updated',
       type: IsarType.string,
     ),
+    r'ward': PropertySchema(
+      id: 18,
+      name: r'ward',
+      type: IsarType.object,
+      target: r'WardData',
+    ),
     r'wardId': PropertySchema(
-      id: 17,
+      id: 19,
       name: r'wardId',
       type: IsarType.long,
     )
@@ -168,7 +180,7 @@ const MarketSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'LgaData': LgaDataSchema, r'WardData': WardDataSchema},
   getId: _marketGetId,
   getLinks: _marketGetLinks,
   attach: _marketAttach,
@@ -212,6 +224,13 @@ int _marketEstimateSize(
     }
   }
   {
+    final value = object.lga;
+    if (value != null) {
+      bytesCount += 3 +
+          LgaDataSchema.estimateSize(value, allOffsets[LgaData]!, allOffsets);
+    }
+  }
+  {
     final value = object.marketDays;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -241,6 +260,13 @@ int _marketEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.ward;
+    if (value != null) {
+      bytesCount += 3 +
+          WardDataSchema.estimateSize(value, allOffsets[WardData]!, allOffsets);
+    }
+  }
   return bytesCount;
 }
 
@@ -257,17 +283,29 @@ void _marketSerialize(
   writer.writeString(offsets[4], object.errorMessage);
   writer.writeBool(offsets[5], object.hasSynced);
   writer.writeString(offsets[6], object.lastPulledTime);
-  writer.writeLong(offsets[7], object.lgaId);
-  writer.writeString(offsets[8], object.marketDays);
-  writer.writeLong(offsets[9], object.marketId);
-  writer.writeString(offsets[10], object.marketType);
-  writer.writeString(offsets[11], object.name);
-  writer.writeLong(offsets[12], object.pk);
-  writer.writeDouble(offsets[13], object.price);
-  writer.writeLong(offsets[14], object.productId);
-  writer.writeString(offsets[15], object.size);
-  writer.writeString(offsets[16], object.updated);
-  writer.writeLong(offsets[17], object.wardId);
+  writer.writeObject<LgaData>(
+    offsets[7],
+    allOffsets,
+    LgaDataSchema.serialize,
+    object.lga,
+  );
+  writer.writeLong(offsets[8], object.lgaId);
+  writer.writeString(offsets[9], object.marketDays);
+  writer.writeLong(offsets[10], object.marketId);
+  writer.writeString(offsets[11], object.marketType);
+  writer.writeString(offsets[12], object.name);
+  writer.writeLong(offsets[13], object.pk);
+  writer.writeDouble(offsets[14], object.price);
+  writer.writeLong(offsets[15], object.productId);
+  writer.writeString(offsets[16], object.size);
+  writer.writeString(offsets[17], object.updated);
+  writer.writeObject<WardData>(
+    offsets[18],
+    allOffsets,
+    WardDataSchema.serialize,
+    object.ward,
+  );
+  writer.writeLong(offsets[19], object.wardId);
 }
 
 Market _marketDeserialize(
@@ -285,17 +323,27 @@ Market _marketDeserialize(
   object.hasSynced = reader.readBoolOrNull(offsets[5]);
   object.id = id;
   object.lastPulledTime = reader.readStringOrNull(offsets[6]);
-  object.lgaId = reader.readLongOrNull(offsets[7]);
-  object.marketDays = reader.readStringOrNull(offsets[8]);
-  object.marketId = reader.readLongOrNull(offsets[9]);
-  object.marketType = reader.readStringOrNull(offsets[10]);
-  object.name = reader.readStringOrNull(offsets[11]);
-  object.pk = reader.readLong(offsets[12]);
-  object.price = reader.readDoubleOrNull(offsets[13]);
-  object.productId = reader.readLongOrNull(offsets[14]);
-  object.size = reader.readStringOrNull(offsets[15]);
-  object.updated = reader.readStringOrNull(offsets[16]);
-  object.wardId = reader.readLongOrNull(offsets[17]);
+  object.lga = reader.readObjectOrNull<LgaData>(
+    offsets[7],
+    LgaDataSchema.deserialize,
+    allOffsets,
+  );
+  object.lgaId = reader.readLongOrNull(offsets[8]);
+  object.marketDays = reader.readStringOrNull(offsets[9]);
+  object.marketId = reader.readLongOrNull(offsets[10]);
+  object.marketType = reader.readStringOrNull(offsets[11]);
+  object.name = reader.readStringOrNull(offsets[12]);
+  object.pk = reader.readLong(offsets[13]);
+  object.price = reader.readDoubleOrNull(offsets[14]);
+  object.productId = reader.readLongOrNull(offsets[15]);
+  object.size = reader.readStringOrNull(offsets[16]);
+  object.updated = reader.readStringOrNull(offsets[17]);
+  object.ward = reader.readObjectOrNull<WardData>(
+    offsets[18],
+    WardDataSchema.deserialize,
+    allOffsets,
+  );
+  object.wardId = reader.readLongOrNull(offsets[19]);
   return object;
 }
 
@@ -321,26 +369,38 @@ P _marketDeserializeProp<P>(
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readObjectOrNull<LgaData>(
+        offset,
+        LgaDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
-    case 9:
       return (reader.readLongOrNull(offset)) as P;
-    case 10:
+    case 9:
       return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readLongOrNull(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
-      return (reader.readLong(offset)) as P;
-    case 13:
-      return (reader.readDoubleOrNull(offset)) as P;
-    case 14:
-      return (reader.readLongOrNull(offset)) as P;
-    case 15:
       return (reader.readStringOrNull(offset)) as P;
+    case 13:
+      return (reader.readLong(offset)) as P;
+    case 14:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 15:
+      return (reader.readLongOrNull(offset)) as P;
     case 16:
       return (reader.readStringOrNull(offset)) as P;
     case 17:
+      return (reader.readStringOrNull(offset)) as P;
+    case 18:
+      return (reader.readObjectOrNull<WardData>(
+        offset,
+        WardDataSchema.deserialize,
+        allOffsets,
+      )) as P;
+    case 19:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1732,6 +1792,22 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lga',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> lgaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lga',
+      ));
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterFilterCondition> lgaIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2796,6 +2872,22 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'ward',
+      ));
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> wardIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'ward',
+      ));
+    });
+  }
+
   QueryBuilder<Market, Market, QAfterFilterCondition> wardIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2866,7 +2958,21 @@ extension MarketQueryFilter on QueryBuilder<Market, Market, QFilterCondition> {
   }
 }
 
-extension MarketQueryObject on QueryBuilder<Market, Market, QFilterCondition> {}
+extension MarketQueryObject on QueryBuilder<Market, Market, QFilterCondition> {
+  QueryBuilder<Market, Market, QAfterFilterCondition> lga(
+      FilterQuery<LgaData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'lga');
+    });
+  }
+
+  QueryBuilder<Market, Market, QAfterFilterCondition> ward(
+      FilterQuery<WardData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'ward');
+    });
+  }
+}
 
 extension MarketQueryLinks on QueryBuilder<Market, Market, QFilterCondition> {}
 
@@ -3489,6 +3595,12 @@ extension MarketQueryProperty on QueryBuilder<Market, Market, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Market, LgaData?, QQueryOperations> lgaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lga');
+    });
+  }
+
   QueryBuilder<Market, int?, QQueryOperations> lgaIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lgaId');
@@ -3546,6 +3658,12 @@ extension MarketQueryProperty on QueryBuilder<Market, Market, QQueryProperty> {
   QueryBuilder<Market, String?, QQueryOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updated');
+    });
+  }
+
+  QueryBuilder<Market, WardData?, QQueryOperations> wardProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ward');
     });
   }
 

@@ -55,15 +55,14 @@ class WeatherCard extends StatelessWidget {
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                       ),
-                      SizedBox(width: 8), // Add some spacing
-
-                       '${insight.weather.tempMax}°/${insight.weather.tempMin}°'.toText(
-                        translate: false,
-                        fontSize: 12,
-                        color: AppColors.accentText,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      
+                      8.horizontalSpace,
+                      '${insight.weather.tempMax}°/${insight.weather.tempMin}°'
+                          .toText(
+                            translate: false,
+                            fontSize: 12,
+                            color: AppColors.accentText,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ],
                   ),
 
@@ -85,7 +84,10 @@ class WeatherCard extends StatelessWidget {
             children: [
               _buildWeatherDetail('-- hPa', 'Pressure'),
               _buildWeatherDetail('--%', 'Humidity'),
-              _buildWeatherDetail('${insight.weather.windSpeedMax}km/h', 'Wind'),
+              _buildWeatherDetail(
+                '${insight.weather.windSpeedMax}km/h',
+                'Wind',
+              ),
               _buildWeatherDetail('--°C', 'Soil Temp'),
             ],
           ),

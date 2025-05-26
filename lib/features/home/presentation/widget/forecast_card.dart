@@ -4,16 +4,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaspa/core/theme/colors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 
+import '../../../../core/data/model/weather.dart';
 import '../../../../core/resources/vectors.dart';
 
 class ForecastCard extends StatelessWidget {
-  const ForecastCard({super.key});
+  final Weather weather;
+  const ForecastCard({super.key, required this.weather});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: REdgeInsets.symmetric(vertical: 15, horizontal: 14),
+      padding: REdgeInsets.symmetric(vertical: 10, horizontal: 14),
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
         borderRadius: BorderRadius.circular(8.r),
@@ -37,55 +39,20 @@ class ForecastCard extends StatelessWidget {
               ),
             ],
           ),
-          12.verticalSpace,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  '41°C'.toText(
-                    translate: false,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
-                  ),
-                  'Sunrise - 5:45AM | Sunset - 6:30PM'.toText(
-                    translate: false,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.accentText,
-                  ),
-                ],
-              ),
-              SvgPicture.asset(AppIcon.sun),
-            ],
-          ),
           10.verticalSpace,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildWeatherDetail('1,013 hPa', 'Pressure'),
-              _buildWeatherDetail('60%', 'Humidity'),
-              _buildWeatherDetail('100km/h', 'Wind'),
-              _buildWeatherDetail('32°C', 'Soil Temp'),
-            ],
-          ),
-          10.verticalSpace,
-          const Divider(),
-          10.verticalSpace,
-          Row(
-            children: [
-              SvgPicture.asset(AppIcon.info),
-              8.horizontalSpace,
-              Expanded(
-                child: 'Today is a good day to plant new seeds'.toText(
-                  translate: false,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SvgPicture.asset(AppIcon.refresh),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildWeatherDetail('', ''),
+                8.horizontalSpace,
+                _buildWeatherDetail('', ''),
+                8.horizontalSpace,
+                _buildWeatherDetail('', ''),
+                8.horizontalSpace,
+                _buildWeatherDetail('', ''),
+              ],
+            ),
           ),
         ],
       ),
@@ -93,20 +60,63 @@ class ForecastCard extends StatelessWidget {
   }
 
   Widget _buildWeatherDetail(String value, String label) {
-    return Column(
-      children: [
-        value.toText(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          translate: false,
-        ),
-        label.toText(
-          translate: false,
-          fontSize: 10,
-          fontWeight: FontWeight.w600,
-          color: AppColors.ColorAccent,
-        ),
-      ],
+    return Container(
+      width: 100.w,
+      padding: REdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.r),
+        color: AppColors.bgGreen.withAlpha((0.3 * 255).toInt()),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          'TOMORROW'.toText(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            color: AppColors.primaryGreen,
+            translate: false,
+          ),
+
+          SvgPicture.asset(AppIcon.sun),
+          2.verticalSpace,
+          '34°C'.toText(
+            translate: false,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+          'Temperature'.toText(
+            translate: false,
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: AppColors.ColorAccent,
+          ),
+
+          2.verticalSpace,
+          '60%'.toText(
+            translate: false,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+          'Humidity'.toText(
+            translate: false,
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: AppColors.ColorAccent,
+          ),
+          2.verticalSpace,
+          '34km/h'.toText(
+            translate: false,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+          'Wind'.toText(
+            translate: false,
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: AppColors.ColorAccent,
+          ),
+        ],
+      ),
     );
   }
 }

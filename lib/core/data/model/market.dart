@@ -1,8 +1,7 @@
 import 'package:isar/isar.dart';
-import '../../../core/data/model/ward.dart';
 import '../../utils/const.dart';
 import 'general_model.dart';
-import 'lga.dart';
+import 'insight.dart';
 
 part 'market.g.dart';
 
@@ -16,11 +15,9 @@ class Market extends GeneralModel {
   String? name = "";
   String? address = "";
 
-  @ignore
-  Lga? lga;
+  LgaData? lga;
 
-  @ignore
-  Ward? ward;
+  WardData? ward;
 
   String? marketType = "";
   String? size = "";
@@ -45,11 +42,14 @@ Market _$MarketFromJson(Map<String, dynamic> json) {
   obj.pk = json[KEY_PK];
   obj.name = json[KEY_NAME];
   if (json.containsKey(KEY_LGA) && json[KEY_LGA] != null) {
-    obj.lga = Lga.fromJson(json[KEY_LGA]);
+    obj.lga = LgaData.fromJson(json[KEY_LGA]);
   }
   obj.address = json[KEY_ADDRESS];
-  // obj.productData = ProductData.fromJson(json[KEY_PRODUCT_DATA]);
-  obj.ward = Ward.fromJson(json[KEY_WARD]);
+
+  if (json.containsKey(KEY_WARD) && json[KEY_WARD] != null) {
+    obj.ward = WardData.fromJson(json[KEY_WARD]);
+  }
+
   obj.marketDays = json[KEY_MARKET_DAYS];
   obj.marketType = json[KEY_MARKET_TYPE];
   obj.size = json[KEY_SIZE];

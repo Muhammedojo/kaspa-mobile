@@ -1,9 +1,12 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/button.dart';
+import '../../../../core/data/model/lga.dart';
+import '../../../../core/data/model/market.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
@@ -44,38 +47,179 @@ class CreateMarketPriceView extends StatelessWidget
                 ),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
-                  child: BlocBuilder<LgaCubit, LgaState>(
+                  child:
+                  // BlocBuilder<LgaCubit, LgaState>(
+                  //   builder: (context, state) {
+                  //      List<Lga> lgas = [];
+                  //     if (state is LgaLoaded) {
+                  //       return DropdownButtonFormField(
+                  //         icon: 'arrowDown'.toSvg(),
+                  //         style: Styles.x14dp_4A4A4A(14.0.sp),
+                  //         decoration:
+                  //             Styles.textFormFieldDecorationBorderWithBackground(
+                  //               'Choose the option',
+                  //               '',
+                  //             ),
+                  //         items:
+                  //             state.dataList.map((e) {
+                  //               return DropdownMenuItem(
+                  //                 value: e,
+                  //                 child: (e.name!).toText(translate: false),
+                  //               );
+                  //             }).toList(),
+                  //         value: controller.selectedLga,
+                  //         onChanged: (Lga? newValue) {
+                  //           controller.onSelectLga(newValue);
+                  //         },
+                  //       );
+                  //     }
+                  //     return DropdownButtonFormField(
+                  //       style: Styles.x14dp_4A4A4A(14.0.sp),
+                  //       items: [],
+                  //       onChanged: (_) {},
+                  //     );
+                  //   },
+                  // ),
+                  BlocBuilder<LgaCubit, LgaState>(
                     builder: (context, state) {
+                      List<Lga> lgas = [];
                       if (state is LgaLoaded) {
-                        return DropdownButtonFormField(
-                          icon: 'arrowDown'.toSvg(),
-                          style: Styles.x14dp_4A4A4A(14.0.sp),
+                        lgas = state.dataList;
+                      }
+
+                      return DropdownSearch<Lga>(
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              labelStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+
+                              hintText: "search_lga".tr(),
+                              hintStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                          ),
+                          itemBuilder:
+                              (context, lgaItem, isDisabled, isSelected) =>
+                                  ListTile(
+                                    title: (lgaItem.name ?? '').toText(
+                                      translate: false,
+                                    ),
+
+                                    selected: isSelected,
+                                  ),
+
+                          emptyBuilder:
+                              (context, searchEntry) =>
+                                  Center(child: 'no_lga_found'.toText()),
+                        ),
+                        items: (filter, infiniteScrollProps) async {
+                          if (filter.isEmpty) {
+                            return lgas;
+                          }
+                          return lgas
+                              .where(
+                                (lga) =>
+                                    lga.name?.toLowerCase().contains(
+                                      filter.toLowerCase(),
+                                    ) ??
+                                    false,
+                              )
+                              .toList();
+                        },
+                        itemAsString: (Lga? lga) => lga?.name ?? '',
+                        compareFn: (Lga? item1, Lga? item2) {
+                          return item1?.pk == item2?.pk;
+                        },
+                        selectedItem: controller.selectedLga,
+                        onChanged: (Lga? newValue) {
+                          if (newValue != null) {
+                            controller.onSelectLga(newValue);
+                          }
+                        },
+                        decoratorProps: DropDownDecoratorProps(
                           decoration:
                               Styles.textFormFieldDecorationBorderWithBackground(
-                                'Choose the option',
+                                'choose_an_option'.tr(),
                                 '',
                               ),
-                          items:
-                              state.dataList.map((e) {
-                                return DropdownMenuItem(
-                                  value: e,
-                                  child: (e.name!).toText(translate: false),
-                                );
-                              }).toList(),
-                          value: controller.selectedLga,
-                          onChanged: (newValue) {
-                            controller.onSelectLga(newValue!);
-                          },
-                        );
-                      }
-                      return DropdownButtonFormField(
-                        style: Styles.x14dp_4A4A4A(14.0.sp),
-                        items: [],
-                        onChanged: (_) {},
+                        ),
                       );
                     },
                   ),
                 ),
+                16.verticalSpace,
+                'market'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                Padding(
+                  padding: REdgeInsets.only(top: 5.0),
+                  child: BlocBuilder<MarketCubit, MarketState>(
+                    builder: (context, state) {
+                      List<Market> filteredMarkets = [];
+                      String hintText = 'choose_an_option'.tr();
+                      bool isDisabled = false;
+
+                      if (state is MarketLoaded) {
+                        if (controller.selectedMarket == null) {
+                          hintText = 'select_lga_first'.tr();
+                          isDisabled = true;
+                        } else {
+                          filteredMarkets =
+                              state.marketList
+                                  .where(
+                                    (market) =>
+                                        market.lga?.id ==
+                                        controller.selectedLga!.pk,
+                                  )
+                                  .toList();
+                          if (filteredMarkets.isEmpty) {
+                            hintText = 'no_markets_available'.tr();
+                            isDisabled = true;
+                          }
+                        }
+                      } else if (state is WardLoading) {
+                        hintText = 'loading_markets'.tr();
+                        isDisabled = true;
+                      } else {
+                        hintText = 'markets_not_loaded'.tr();
+                        isDisabled = true;
+                      }
+                      final Market? currentSelectedMarket =
+                          filteredMarkets.any(
+                                (w) => w.pk == controller.selectedMarket?.pk,
+                              )
+                              ? controller.selectedMarket
+                              : null;
+                      return DropdownButtonFormField<Market>(
+                        icon: 'arrowDown'.toSvg(),
+                        style: Styles.x14dp_4A4A4A(14.0.sp),
+                        decoration:
+                            Styles.textFormFieldDecorationBorderWithBackground(
+                              hintText,
+                              '',
+                            ),
+                        items:
+                            filteredMarkets.map((e) {
+                              return DropdownMenuItem<Market>(
+                                value: e,
+                                child: (e.name ?? '').toText(translate: false),
+                              );
+                            }).toList(),
+                        value: currentSelectedMarket,
+                        onChanged:
+                            isDisabled
+                                ? null
+                                : (Market? newValue) {
+                                  controller.onSelectMarket(newValue);
+                                },
+                      );
+                    },
+                  ),
+                ),
+
                 16.verticalSpace,
                 'Commodity/Livestock'.toText(
                   fontSize: 14,
@@ -107,44 +251,6 @@ class CreateMarketPriceView extends StatelessWidget
                               }).toList(),
                           onChanged: (newValue) {
                             controller.onSelectCrop(newValue!);
-                          },
-                        );
-                      }
-                      return DropdownButtonFormField(
-                        style: Styles.x14dp_4A4A4A(14.0.sp),
-                        items: [],
-                        onChanged: (_) {},
-                      );
-                    },
-                  ),
-                ),
-                16.verticalSpace,
-                'market'.toText(fontSize: 14, fontWeight: FontWeight.w600),
-                Padding(
-                  padding: REdgeInsets.only(top: 5.0),
-                  child: BlocBuilder<MarketCubit, MarketState>(
-                    builder: (context, state) {
-                      if (state is MarketLoaded) {
-                        return DropdownButtonFormField(
-                          icon: 'arrowDown'.toSvg(),
-                          style: Styles.x14dp_4A4A4A(14.0.sp),
-                          decoration:
-                              Styles.textFormFieldDecorationBorderWithBackground(
-                                'choose_an_option'.tr(),
-                                '',
-                              ),
-
-                          items:
-                              state.marketList.map((e) {
-                                return DropdownMenuItem(
-                                  value: e,
-                                  child: (e.name ?? '').toText(
-                                    translate: false,
-                                  ),
-                                );
-                              }).toList(),
-                          onChanged: (newValue) {
-                            controller.onSelectMarket(newValue!);
                           },
                         );
                       }
@@ -208,8 +314,7 @@ class CreateMarketPriceView extends StatelessWidget
                   listener: (context, state) {
                     if (state is MarketPriceLoading) {
                       Utils.showLoading(context);
-                    } 
-                    else if (state is CreateMarketPriceSuccess) {
+                    } else if (state is CreateMarketPriceSuccess) {
                       Utils.hideLoading(context);
                       controller.clearScreen();
                       Utils.showToastSuccess(

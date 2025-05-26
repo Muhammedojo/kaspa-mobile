@@ -20,52 +20,61 @@ class Styles {
   static final containerSmallTextStyle = TextStyle(
     fontSize: 12.sp,
     color: AppColors.x848484,
+         fontFamily: fontFAMILY,
     fontWeight: FontWeight.w400,
   );
   static final containerBigTextStyle = TextStyle(
     fontSize: 24.sp,
+     fontFamily: fontFAMILY,
     color: AppColors.x000000,
     fontWeight: FontWeight.w700,
   );
 
-  static const boldWeightWhiteBiggerTextStyle = TextStyle(
-    fontSize: 20.0,
+  static final boldWeightWhiteBiggerTextStyle = TextStyle(
+    fontSize: 20.0.sp,
+     fontFamily: fontFAMILY,
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
   static const boldWeightWhiteBigSizeTextStyle = TextStyle(
     fontSize: 17.0,
+     fontFamily: fontFAMILY,
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
   static const boldWeightWhiteBiggestTextStyle = TextStyle(
     fontSize: 25.0,
+     fontFamily: fontFAMILY,
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
-  static const normalWeightGreyNormalSizeTextStyle = TextStyle(
-    fontSize: 15.0,
+  static final normalWeightGreyNormalSizeTextStyle = TextStyle(
+    fontSize: 15.0.sp,
+    fontFamily: fontFAMILY,
     fontWeight: FontWeight.normal,
     color: Colors.grey,
   );
 
   static const normalWeightGreySmallSizeTextStyle = TextStyle(
     fontSize: 13.0,
+     fontFamily: fontFAMILY,
     fontWeight: FontWeight.normal,
     color: Colors.grey,
   );
 
   static const boldWeightGreySmallSizeTextStyle = TextStyle(
     fontSize: 13.0,
+     fontFamily: fontFAMILY,
     fontWeight: FontWeight.bold,
     color: Colors.grey,
   );
 
   static const normalWeightGreySmallerSizeTextStyle = TextStyle(
     fontSize: 11.0,
+     fontFamily: fontFAMILY,
     fontWeight: FontWeight.normal,
     color: Colors.grey,
   );

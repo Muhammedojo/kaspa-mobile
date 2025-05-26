@@ -12,6 +12,7 @@ import '../../../../core/component/pages_bar.dart';
 import '../../../auth/presentation/bloc/user/cubit.dart';
 import '../bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
 import '../bloc/insight/insight_cubit.dart';
+import '../bloc/weather/cubit.dart';
 import '../contract/homepage.dart';
 import '../widget/forecast_card.dart';
 import '../widget/weather_card.dart';
@@ -66,7 +67,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                     ),
                     16.verticalSpace,
                     SizedBox(
-                      height: 260.h,
+                      height: 280.h,
                       child: PageView(
                         controller: controller.pageController,
                         children: [
@@ -96,7 +97,33 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                               );
                             },
                           ),
-                          ForecastCard(),
+                            BlocBuilder<WeatherCubit, WeatherState>(
+                            builder: (context, state) {
+                              if (state is WeatherLoading) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.colorPrimary,
+                                  ),
+                                );
+                              }
+                              if (state is WeatherLoaded) {
+                                if (state.weatherList.isEmpty) {
+                                  return ErrorWidgets(
+                                    message:
+                                        'Weather data not available for your location.',
+                                  );
+                                }
+                                final currentWeatherData = state.weatherList[0];
+
+                                return ForecastCard(weather: currentWeatherData);
+                              }
+
+                              return ErrorWidgets(
+                                message: 'Unable to load weather data.',
+                              );
+                            },
+                          ),
+                          
                         ],
                         onPageChanged: (index) {
                           controller.monitor(index);
