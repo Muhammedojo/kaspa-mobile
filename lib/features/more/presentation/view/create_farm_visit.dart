@@ -11,6 +11,7 @@ import '../../../farmers/presentation/bloc/bloc.dart';
 import '../../../farmers/presentation/bloc/get_farmer/get_farmer_state.dart';
 import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
 import '../../../home/presentation/bloc/market/cubit.dart';
+import '../../../home/presentation/bloc/plot/plot_cubit.dart';
 import '../contract/create_farm_visit.dart';
 
 class CreateFarmVisitView extends StatelessWidget
@@ -35,7 +36,7 @@ class CreateFarmVisitView extends StatelessWidget
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Utils.customAppBar(context, 'new_farm_visit',false,(){}),
+                Utils.customAppBar(context, 'new_farm_visit', false, () {}),
                 25.verticalSpace,
                 'farmer'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(
@@ -53,17 +54,13 @@ class CreateFarmVisitView extends StatelessWidget
                               ),
 
                           items:
-                              state.dataList
-                            
-                                  .map((e) {
-                                    return DropdownMenuItem(
-                                      value: e,
-                                      child: ('${e.firstName} ${e.lastName}').toText(
-                                        translate: false,
-                                      ),
-                                    );
-                                  })
-                                  .toList(),
+                              state.dataList.map((e) {
+                                return DropdownMenuItem(
+                                  value: e,
+                                  child: ('${e.firstName} ${e.lastName}')
+                                      .toText(translate: false),
+                                );
+                              }).toList(),
                           onChanged: (newValue) {
                             controller.onSelectFarmer(newValue!);
                           },
@@ -78,6 +75,45 @@ class CreateFarmVisitView extends StatelessWidget
                   ),
                 ),
                 16.verticalSpace,
+                    'plot'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                Padding(
+                  padding: REdgeInsets.only(top: 5.0),
+                  child: BlocBuilder<PlotCubit, PlotState>(
+                    builder: (context, state) {
+                      if (state is PlotLoaded) {
+                        return DropdownButtonFormField(
+                          icon: 'arrowDown'.toSvg(),
+                          style: Styles.x14dp_4A4A4A(14.0.sp),
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                'choose_an_option'.tr(),
+                                '',
+                              ),
+
+                          items:
+                              state.plotList.map((e) {
+                                return DropdownMenuItem(
+                                  value: e,
+                                  child: ('${e.totalHectares} ha')
+                                      .toText(translate: false),
+                                );
+                              }).toList(),
+                          onChanged: (newValue) {
+                            controller.onSelectPlot(newValue!);
+                          },
+                        );
+                      }
+                      return DropdownButtonFormField(
+                        style: Styles.x14dp_4A4A4A(14.0.sp),
+                        items: [],
+                        onChanged: (_) {},
+                      );
+                    },
+                  ),
+                ),
+               
+               
+               16.verticalSpace,
                 'market'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
@@ -149,7 +185,7 @@ class CreateFarmVisitView extends StatelessWidget
                         'visit_logged_successfully'.tr(),
                         '',
                         () {
-                       Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                       );
                     } else if (state is FarmVisitFailure) {
