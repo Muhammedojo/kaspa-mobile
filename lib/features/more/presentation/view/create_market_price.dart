@@ -48,38 +48,7 @@ class CreateMarketPriceView extends StatelessWidget
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
                   child:
-                  // BlocBuilder<LgaCubit, LgaState>(
-                  //   builder: (context, state) {
-                  //      List<Lga> lgas = [];
-                  //     if (state is LgaLoaded) {
-                  //       return DropdownButtonFormField(
-                  //         icon: 'arrowDown'.toSvg(),
-                  //         style: Styles.x14dp_4A4A4A(14.0.sp),
-                  //         decoration:
-                  //             Styles.textFormFieldDecorationBorderWithBackground(
-                  //               'Choose the option',
-                  //               '',
-                  //             ),
-                  //         items:
-                  //             state.dataList.map((e) {
-                  //               return DropdownMenuItem(
-                  //                 value: e,
-                  //                 child: (e.name!).toText(translate: false),
-                  //               );
-                  //             }).toList(),
-                  //         value: controller.selectedLga,
-                  //         onChanged: (Lga? newValue) {
-                  //           controller.onSelectLga(newValue);
-                  //         },
-                  //       );
-                  //     }
-                  //     return DropdownButtonFormField(
-                  //       style: Styles.x14dp_4A4A4A(14.0.sp),
-                  //       items: [],
-                  //       onChanged: (_) {},
-                  //     );
-                  //   },
-                  // ),
+          
                   BlocBuilder<LgaCubit, LgaState>(
                     builder: (context, state) {
                       List<Lga> lgas = [];
@@ -88,6 +57,11 @@ class CreateMarketPriceView extends StatelessWidget
                       }
 
                       return DropdownSearch<Lga>(
+                          suffixProps: DropdownSuffixProps(
+                        dropdownButtonProps: DropdownButtonProps(
+                            iconClosed: 'arrowDown'.toSvg(),
+                        )
+                        ),
                         popupProps: PopupProps.menu(
                           showSearchBox: true,
                           searchFieldProps: TextFieldProps(
@@ -151,6 +125,8 @@ class CreateMarketPriceView extends StatelessWidget
                       );
                     },
                   ),
+            
+            
                 ),
                 16.verticalSpace,
                 'market'.toText(fontSize: 14, fontWeight: FontWeight.w600),

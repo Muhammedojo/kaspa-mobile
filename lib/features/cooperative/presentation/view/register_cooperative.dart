@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,8 @@ import 'package:form_validator/form_validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kaspa/core/utils/extensions.dart';
 import '../../../../core/component/button.dart';
+import '../../../../core/data/model/lga.dart';
+import '../../../../core/data/model/ward.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
@@ -78,39 +81,82 @@ class RegisterCooperativeView extends StatelessWidget
                     translate: false,
                     fontWeight: FontWeight.w600,
                   ),
-                  Padding(
-                    padding: REdgeInsets.only(top: 5.0),
-                    child: BlocBuilder<LgaCubit, LgaState>(
-                      builder: (context, state) {
-                        if (state is LgaLoaded) {
-                          return DropdownButtonFormField(
-                            icon: 'arrowDown'.toSvg(),
-                            style: Styles.x14dp_4A4A4A(14.0.sp),
-                            decoration:
-                                Styles.textFormFieldDecorationBorderWithBackground(
-                                  'choose_an_option'.tr(),
-                                  '',
-                                ),
-                            items:
-                                state.dataList.map((e) {
-                                  return DropdownMenuItem(
-                                    value: e,
-                                    child: (e.name!).toText(translate: false),
-                                  );
-                                }).toList(),
-                            value: controller.selectedLga,
-                            onChanged: (newValue) {
-                              controller.onSelectLga(newValue!);
-                            },
-                          );
-                        }
-                        return DropdownButtonFormField(
-                          style: Styles.x14dp_4A4A4A(14.0.sp),
-                          items: [],
-                          onChanged: (_) {},
-                        );
-                      },
-                    ),
+                  BlocBuilder<LgaCubit, LgaState>(
+                    builder: (context, state) {
+                      List<Lga> lgas = [];
+                      if (state is LgaLoaded) {
+                        lgas = state.dataList;
+                      }
+
+                      return DropdownSearch<Lga>(
+                        suffixProps: DropdownSuffixProps(
+                        dropdownButtonProps: DropdownButtonProps(
+                            iconClosed: 'arrowDown'.toSvg(),
+                        )
+                        ),
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              // icon: 'arrowDown'.toSvg(),
+                              labelStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+
+                              hintText: "search_lga".tr(),
+                              hintStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                          ),
+                          itemBuilder:
+                              (context, lgaItem, isDisabled, isSelected) =>
+                                  ListTile(
+                                    title: (lgaItem.name ?? '').toText(
+                                      translate: false,
+                                    ),
+
+                                    selected: isSelected,
+                                  ),
+
+                          emptyBuilder:
+                              (context, searchEntry) =>
+                                  Center(child: 'no_lga_found'.toText()),
+                        ),
+                        items: (filter, infiniteScrollProps) async {
+                          if (filter.isEmpty) {
+                            return lgas;
+                          }
+                          return lgas
+                              .where(
+                                (lga) =>
+                                    lga.name?.toLowerCase().contains(
+                                      filter.toLowerCase(),
+                                    ) ??
+                                    false,
+                              )
+                              .toList();
+                        },
+                        itemAsString: (Lga? lga) => lga?.name ?? '',
+                        compareFn: (Lga? item1, Lga? item2) {
+                          return item1?.pk == item2?.pk;
+                        },
+                        selectedItem: controller.selectedLga,
+                        onChanged: (Lga? newValue) {
+                          if (newValue != null) {
+                            controller.onSelectLga(newValue);
+                          }
+                        },
+                        decoratorProps: DropDownDecoratorProps(
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                'choose_an_option'.tr(),
+                                '',
+                              ),
+                        ),
+                      );
+                    },
                   ),
 
                   16.verticalSpace,
@@ -119,40 +165,76 @@ class RegisterCooperativeView extends StatelessWidget
                     translate: false,
                     fontWeight: FontWeight.w600,
                   ),
+
                   Padding(
                     padding: REdgeInsets.only(top: 5.0),
                     child: BlocBuilder<WardCubit, WardState>(
                       builder: (context, state) {
+                        List<Ward> filteredWards = [];
+                        String hintText = 'choose_an_option'.tr();
+                        bool isDisabled = false;
                         if (state is WardLoaded) {
-                          return DropdownButtonFormField(
-                            icon: 'arrowDown'.toSvg(),
-                            style: Styles.x14dp_4A4A4A(14.0.sp),
-                            decoration:
-                                Styles.textFormFieldDecorationBorderWithBackground(
-                                  'choose_an_option'.tr(),
-                                  '',
-                                ),
-                            items:
-                                state.dataList.map((e) {
-                                  return DropdownMenuItem(
-                                    value: e,
-                                    child: (e.name!).toText(translate: false),
-                                  );
-                                }).toList(),
-                            value: controller.selectedWard,
-                            onChanged: (newValue) {
-                              controller.onSelectWard(newValue!);
-                            },
-                          );
+                          if (controller.selectedLga == null) {
+                            hintText = 'select_lga_first'.tr();
+                            isDisabled = true;
+                          } else {
+                            filteredWards =
+                                state.dataList
+                                    .where(
+                                      (ward) =>
+                                          ward.lga?.id ==
+                                          controller.selectedLga!.pk,
+                                    )
+                                    .toList();
+                            if (filteredWards.isEmpty) {
+                              hintText = 'no_wards_available'.tr();
+                              isDisabled = true;
+                            }
+                          }
+                        } else if (state is WardLoading) {
+                          hintText = 'loading_wards'.tr();
+                          isDisabled = true;
+                        } else {
+                          // WardFailure or initial state
+                          hintText = 'wards_not_loaded'.tr();
+                          isDisabled = true;
                         }
-                        return DropdownButtonFormField(
+                        final Ward? currentSelectedWard =
+                            filteredWards.any(
+                                  (w) => w.pk == controller.selectedWard?.pk,
+                                )
+                                ? controller.selectedWard
+                                : null;
+
+                        return DropdownButtonFormField<Ward>(
+                          icon: 'arrowDown'.toSvg(),
                           style: Styles.x14dp_4A4A4A(14.0.sp),
-                          items: [],
-                          onChanged: (_) {},
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                hintText,
+                                '',
+                              ),
+                          items:
+                              filteredWards.map((e) {
+                                return DropdownMenuItem<Ward>(
+                                  value: e,
+                                  child: (e.name ?? '').toText(
+                                    translate: false,
+                                  ),
+                                );
+                              }).toList(),
+                          value: currentSelectedWard,
+                          onChanged:
+                              isDisabled
+                                  ? null
+                                  : (Ward? newValue) {
+                                    controller.onSelectWard(newValue);
+                                  },
                         );
                       },
                     ),
                   ),
+
                   16.verticalSpace,
                   'date_of_incorporation'.toText(
                     fontSize: 14,

@@ -166,9 +166,11 @@ class _RegisterCooperativeScreenState extends State<RegisterCooperativeScreen>
   @override
   void onSelectWard(Ward? newValue) {
     setState(() {
-      selectedWard = newValue!;
+      selectedWard = newValue;
     });
   }
+
+  
 
     String generateTempFolioId() {
     return "CID-${selectedWard?.pk}-${DateAndTimeUtil.getCurrentTimeStamp()}";

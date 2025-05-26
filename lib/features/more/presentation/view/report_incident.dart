@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../core/data/model/lga.dart';
+import '../../../../core/data/model/ward.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/button.dart';
 import '../../../../core/theme/colors.dart';
@@ -72,72 +75,154 @@ class ReportIncidentView extends StatelessWidget
                     translate: false,
                     fontWeight: FontWeight.w600,
                   ),
-                  Padding(
-                    padding: REdgeInsets.only(top: 5.0),
-                    child: BlocBuilder<LgaCubit, LgaState>(
-                      builder: (context, state) {
-                        if (state is LgaLoaded) {
-                          return DropdownButtonFormField(
-                            icon: 'arrowDown'.toSvg(),
-                            style: Styles.x14dp_4A4A4A(14.0.sp),
-                            decoration:
-                                Styles.textFormFieldDecorationBorderWithBackground(
-                                  'Choose the LGA where the incident occurred',
-                                  '',
-                                ),
-                            items:
-                                state.dataList.map((e) {
-                                  return DropdownMenuItem(
-                                    value: e,
-                                    child: (e.name!).toText(translate: false),
-                                  );
-                                }).toList(),
-                            value: controller.selectedLga,
-                            onChanged: (newValue) {
-                              controller.onSelectLga(newValue!);
-                            },
-                          );
-                        }
-                        return DropdownButtonFormField(
-                          style: Styles.x14dp_4A4A4A(14.0.sp),
-                          items: [],
-                          onChanged: (_) {},
-                        );
-                      },
-                    ),
+                  BlocBuilder<LgaCubit, LgaState>(
+                    builder: (context, state) {
+                      List<Lga> lgas = [];
+                      if (state is LgaLoaded) {
+                        lgas = state.dataList;
+                      }
+
+                      return DropdownSearch<Lga>(
+                        suffixProps: DropdownSuffixProps(
+                          dropdownButtonProps: DropdownButtonProps(
+                            iconClosed: 'arrowDown'.toSvg(),
+                          ),
+                        ),
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              // icon: 'arrowDown'.toSvg(),
+                              labelStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+
+                              hintText: "search_lga".tr(),
+                              hintStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                          ),
+                          itemBuilder:
+                              (context, lgaItem, isDisabled, isSelected) =>
+                                  ListTile(
+                                    title: (lgaItem.name ?? '').toText(
+                                      translate: false,
+                                    ),
+
+                                    selected: isSelected,
+                                  ),
+
+                          emptyBuilder:
+                              (context, searchEntry) =>
+                                  Center(child: 'no_lga_found'.toText()),
+                        ),
+                        items: (filter, infiniteScrollProps) async {
+                          if (filter.isEmpty) {
+                            return lgas;
+                          }
+                          return lgas
+                              .where(
+                                (lga) =>
+                                    lga.name?.toLowerCase().contains(
+                                      filter.toLowerCase(),
+                                    ) ??
+                                    false,
+                              )
+                              .toList();
+                        },
+                        itemAsString: (Lga? lga) => lga?.name ?? '',
+                        compareFn: (Lga? item1, Lga? item2) {
+                          return item1?.pk == item2?.pk;
+                        },
+                        selectedItem: controller.selectedLga,
+                        onChanged: (Lga? newValue) {
+                          if (newValue != null) {
+                            controller.onSelectLga(newValue);
+                          }
+                        },
+                        decoratorProps: DropDownDecoratorProps(
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                'Choose LGA',
+                                '',
+                              ),
+                        ),
+                      );
+                    },
                   ),
+
                   16.verticalSpace,
-                  'ward'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                  'ward'.toText(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+
                   Padding(
                     padding: REdgeInsets.only(top: 5.0),
                     child: BlocBuilder<WardCubit, WardState>(
                       builder: (context, state) {
+                        List<Ward> filteredWards = [];
+                        String hintText = 'choose_an_option'.tr();
+                        bool isDisabled = false;
                         if (state is WardLoaded) {
-                          return DropdownButtonFormField(
-                            icon: 'arrowDown'.toSvg(),
-                            style: Styles.x14dp_4A4A4A(14.0.sp),
-                            decoration:
-                                Styles.textFormFieldDecorationBorderWithBackground(
-                                  'Choose the ward where the incident occurred',
-                                  '',
-                                ),
-                            items:
-                                state.dataList.map((e) {
-                                  return DropdownMenuItem(
-                                    value: e,
-                                    child: (e.name!).toText(translate: false),
-                                  );
-                                }).toList(),
-                            value: controller.selectedWard,
-                            onChanged: (newValue) {
-                              controller.onSelectWard(newValue!);
-                            },
-                          );
+                          if (controller.selectedLga == null) {
+                            hintText = 'select_lga_first'.tr();
+                            isDisabled = true;
+                          } else {
+                            filteredWards =
+                                state.dataList
+                                    .where(
+                                      (ward) =>
+                                          ward.lga?.id ==
+                                          controller.selectedLga!.pk,
+                                    )
+                                    .toList();
+                            if (filteredWards.isEmpty) {
+                              hintText = 'no_wards_available'.tr();
+                              isDisabled = true;
+                            }
+                          }
+                        } else if (state is WardLoading) {
+                          hintText = 'loading_wards'.tr();
+                          isDisabled = true;
+                        } else {
+                          // WardFailure or initial state
+                          hintText = 'wards_not_loaded'.tr();
+                          isDisabled = true;
                         }
-                        return DropdownButtonFormField(
+                        final Ward? currentSelectedWard =
+                            filteredWards.any(
+                                  (w) => w.pk == controller.selectedWard?.pk,
+                                )
+                                ? controller.selectedWard
+                                : null;
+
+                        return DropdownButtonFormField<Ward>(
+                          icon: 'arrowDown'.toSvg(),
                           style: Styles.x14dp_4A4A4A(14.0.sp),
-                          items: [],
-                          onChanged: (_) {},
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                hintText,
+                                '',
+                              ),
+                          items:
+                              filteredWards.map((e) {
+                                return DropdownMenuItem<Ward>(
+                                  value: e,
+                                  child: (e.name ?? '').toText(
+                                    translate: false,
+                                  ),
+                                );
+                              }).toList(),
+                          value: currentSelectedWard,
+                          onChanged:
+                              isDisabled
+                                  ? null
+                                  : (Ward? newValue) {
+                                    controller.onSelectWard(newValue);
+                                  },
                         );
                       },
                     ),
@@ -173,54 +258,53 @@ class ReportIncidentView extends StatelessWidget
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
-                    controller.imageFileList.isEmpty
-                  ? const SizedBox.shrink()
-                  : GridView.builder(
-                      itemCount: controller.imageFileList.length,
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                  controller.imageFileList.isEmpty
+                      ? const SizedBox.shrink()
+                      : GridView.builder(
+                        itemCount: controller.imageFileList.length,
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
                               mainAxisSpacing: 10,
-                              crossAxisSpacing: 10),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.r),
-                              ),
-                              child: Image.file(
-                                controller.imageFileList[index],
-                                width: 160.w,
-                                height: 160.h,
-                                fit: BoxFit.cover,
-                              ),
+                              crossAxisSpacing: 10,
                             ),
-                            Positioned(
-                              top: 0.0.sp,
-                              right: 0.0.sp,
-                              child: GestureDetector(
-                                onTap: () {
-                                  controller.removeImage(index);
-                                },
-                                child: Icon(
-                                  Icons.cancel,
-                                  color: Colors.black,
-                                  size: 24.0.sp,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                ),
+                                child: Image.file(
+                                  controller.imageFileList[index],
+                                  width: 160.w,
+                                  height: 160.h,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      }),
+                              Positioned(
+                                top: 0.0.sp,
+                                right: 0.0.sp,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    controller.removeImage(index);
+                                  },
+                                  child: Icon(
+                                    Icons.cancel,
+                                    color: Colors.black,
+                                    size: 24.0.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                   10.verticalSpace,
                   InkWell(
                     onTap: () {
-                      controller.getImage(
-                        ImageSource.camera
-                       
-                      );
+                      controller.getImage(ImageSource.camera);
                     },
                     child: DottedBorder(
                       color: AppColors.primaryGreen,
@@ -308,7 +392,6 @@ class ReportIncidentView extends StatelessWidget
                       onPressed: () => controller.reportIncident(),
                     ),
                   ),
-               
                 ],
               ),
             ),

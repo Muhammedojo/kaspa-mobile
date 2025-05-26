@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -384,41 +385,90 @@ class RegisterFarmerView extends StatelessWidget
                             translate: false,
                             fontWeight: FontWeight.w600,
                           ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: BlocBuilder<LgaCubit, LgaState>(
-                              builder: (context, state) {
-                                if (state is LgaLoaded) {
-                                  return DropdownButtonFormField(
-                                    icon: 'arrowDown'.toSvg(),
-                                    style: Styles.x14dp_4A4A4A(14.0.sp),
-                                    decoration:
-                                        Styles.textFormFieldDecorationBorderWithBackground(
-                                          'choose_an_option'.tr(),
-                                          '',
+                          BlocBuilder<LgaCubit, LgaState>(
+                            builder: (context, state) {
+                              List<Lga> lgas = [];
+                              if (state is LgaLoaded) {
+                                lgas = state.dataList;
+                              }
+
+                              return DropdownSearch<Lga>(
+                                suffixProps: DropdownSuffixProps(
+                                  dropdownButtonProps: DropdownButtonProps(
+                                    iconClosed: 'arrowDown'.toSvg(),
+                                  ),
+                                ),
+                                popupProps: PopupProps.menu(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      labelStyle:
+                                          Styles
+                                              .normalWeightGreyNormalSizeTextStyle,
+
+                                      hintText: "search_lga".tr(),
+                                      hintStyle:
+                                          Styles
+                                              .normalWeightGreyNormalSizeTextStyle,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          8.r,
                                         ),
-                                    items:
-                                        state.dataList.map((e) {
-                                          return DropdownMenuItem(
-                                            value: e,
-                                            child: (e.name!).toText(
-                                              translate: false,
-                                            ),
-                                          );
-                                        }).toList(),
-                                    value: controller.selectedLga,
-                                    onChanged: (Lga? newValue) {
-                                      controller.onSelectLga(newValue);
-                                    },
-                                  );
-                                }
-                                return DropdownButtonFormField(
-                                  style: Styles.x14dp_4A4A4A(14.0.sp),
-                                  items: [],
-                                  onChanged: (_) {},
-                                );
-                              },
-                            ),
+                                      ),
+                                    ),
+                                  ),
+                                  itemBuilder:
+                                      (
+                                        context,
+                                        lgaItem,
+                                        isDisabled,
+                                        isSelected,
+                                      ) => ListTile(
+                                        title: (lgaItem.name ?? '').toText(
+                                          translate: false,
+                                        ),
+
+                                        selected: isSelected,
+                                      ),
+
+                                  emptyBuilder:
+                                      (context, searchEntry) => Center(
+                                        child: 'no_lga_found'.toText(),
+                                      ),
+                                ),
+                                items: (filter, infiniteScrollProps) async {
+                                  if (filter.isEmpty) {
+                                    return lgas;
+                                  }
+                                  return lgas
+                                      .where(
+                                        (lga) =>
+                                            lga.name?.toLowerCase().contains(
+                                              filter.toLowerCase(),
+                                            ) ??
+                                            false,
+                                      )
+                                      .toList();
+                                },
+                                itemAsString: (Lga? lga) => lga?.name ?? '',
+                                compareFn: (Lga? item1, Lga? item2) {
+                                  return item1?.pk == item2?.pk;
+                                },
+                                selectedItem: controller.selectedLga,
+                                onChanged: (Lga? newValue) {
+                                  if (newValue != null) {
+                                    controller.onSelectLga(newValue);
+                                  }
+                                },
+                                decoratorProps: DropDownDecoratorProps(
+                                  decoration:
+                                      Styles.textFormFieldDecorationBorderWithBackground(
+                                        'choose_an_option'.tr(),
+                                        '',
+                                      ),
+                                ),
+                              );
+                            },
                           ),
 
                           16.verticalSpace,
@@ -427,6 +477,7 @@ class RegisterFarmerView extends StatelessWidget
                             translate: false,
                             fontWeight: FontWeight.w600,
                           ),
+
                           Padding(
                             padding: REdgeInsets.only(top: 5.0),
                             child: BlocBuilder<WardCubit, WardState>(

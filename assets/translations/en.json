@@ -57,6 +57,7 @@
     "first_name":"First Name",
     "log_market_price":"Log Market Price",
     "market":"Market",
+    "no_lga_found":"No Lga Found",
     "price":"Price",
     "log_price":"Log Price",
     "name":"Name",

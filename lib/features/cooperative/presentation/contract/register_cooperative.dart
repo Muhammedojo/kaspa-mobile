@@ -12,8 +12,8 @@ abstract class RegisterCooperativeControllerContract {
   late Cooperative? cooperative;
 
   late GlobalKey<FormState> formKey;
-  void onSelectLga(Lga newValue);
-  void onSelectWard(Ward newValue);
+  void onSelectLga(Lga? newValue);
+  void onSelectWard(Ward? newValue);
 
   late bool hasSubmitted;
   late Lga? selectedLga;
