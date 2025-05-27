@@ -99,22 +99,13 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                     SliverToBoxAdapter(child: _buildTabBar()),
 
                   SliverList(
-                    delegate: SliverChildListDelegate([
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                      CropCard(data: Crop(), onTap: () {}),
-                    ]),
+                    delegate: SliverChildBuilderDelegate((
+                      BuildContext context,
+                      int index,
+                    ) {
+                      return CropCard(data: Crop(), onTap: () {});
+                    }, childCount: 14),
+                    
                   ),
                 ],
               ),

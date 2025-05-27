@@ -9,7 +9,7 @@ part 'market.g.dart';
 class Market extends GeneralModel {
   Id? id;
 
-  @Index(unique: true)
+  @Index(unique: true, replace: true)
   late int pk = 0;
 
   String? name = "";

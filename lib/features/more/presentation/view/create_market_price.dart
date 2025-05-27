@@ -47,9 +47,7 @@ class CreateMarketPriceView extends StatelessWidget
                 ),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
-                  child:
-          
-                  BlocBuilder<LgaCubit, LgaState>(
+                  child: BlocBuilder<LgaCubit, LgaState>(
                     builder: (context, state) {
                       List<Lga> lgas = [];
                       if (state is LgaLoaded) {
@@ -57,10 +55,10 @@ class CreateMarketPriceView extends StatelessWidget
                       }
 
                       return DropdownSearch<Lga>(
-                          suffixProps: DropdownSuffixProps(
-                        dropdownButtonProps: DropdownButtonProps(
+                        suffixProps: DropdownSuffixProps(
+                          dropdownButtonProps: DropdownButtonProps(
                             iconClosed: 'arrowDown'.toSvg(),
-                        )
+                          ),
                         ),
                         popupProps: PopupProps.menu(
                           showSearchBox: true,
@@ -83,7 +81,6 @@ class CreateMarketPriceView extends StatelessWidget
                                     title: (lgaItem.name ?? '').toText(
                                       translate: false,
                                     ),
-
                                     selected: isSelected,
                                   ),
 
@@ -125,8 +122,6 @@ class CreateMarketPriceView extends StatelessWidget
                       );
                     },
                   ),
-            
-            
                 ),
                 16.verticalSpace,
                 'market'.toText(fontSize: 14, fontWeight: FontWeight.w600),
@@ -139,7 +134,7 @@ class CreateMarketPriceView extends StatelessWidget
                       bool isDisabled = false;
 
                       if (state is MarketLoaded) {
-                        if (controller.selectedMarket == null) {
+                        if (controller.selectedLga == null) {
                           hintText = 'select_lga_first'.tr();
                           isDisabled = true;
                         } else {
@@ -156,7 +151,7 @@ class CreateMarketPriceView extends StatelessWidget
                             isDisabled = true;
                           }
                         }
-                      } else if (state is WardLoading) {
+                      } else if (state is MarketLoading) {
                         hintText = 'loading_markets'.tr();
                         isDisabled = true;
                       } else {
@@ -298,6 +293,7 @@ class CreateMarketPriceView extends StatelessWidget
                         'price_logged_successfully'.tr(),
                         'Go to Price List',
                         () {
+                          Navigator.of(context, rootNavigator: true).pop();
                           Navigator.pop(context);
                         },
                       );

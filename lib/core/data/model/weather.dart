@@ -8,7 +8,7 @@ part 'weather.g.dart';
 class Weather extends GeneralModel {
   Id? id;
 
-  @Index(unique: true)
+  @Index(unique: true, replace: true)
   late int pk = 0;
 
   int? lgaId = 0;

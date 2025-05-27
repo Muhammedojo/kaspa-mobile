@@ -26,13 +26,16 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
     super.initState();
     view = CreateFarmVisitView(controller: this);
     formKey = GlobalKey<FormState>();
-    priceController = TextEditingController();
+    aolController = TextEditingController();
+    totalAOLController = TextEditingController();
+   
   }
 
   @override
   void dispose() {
     super.dispose();
-    priceController.dispose();
+    aolController.dispose();
+    totalAOLController.dispose();
   }
 
   @override
@@ -44,8 +47,6 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
     @override
   Plot? selectedPlot;
 
-  @override
-  Market? selectedMarket;
 
   @override
   void onSelectCrop(Product? newValue) {
@@ -77,20 +78,21 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   late GlobalKey<FormState> formKey;
 
   @override
-  late TextEditingController priceController;
+  late TextEditingController aolController;
 
-  @override
-  void onSelectMarket(Market? newValue) {
-    setState(() {
-      selectedMarket = newValue!;
-    });
-  }
+    @override
+  late TextEditingController totalAOLController;
+
 
   @override
   void logVisit() async {
     if (formKey.currentState!.validate()) {
       FarmVisit visit = FarmVisit();
       visit.farmerId = selectedFarmer?.pk;
+      // visit.plotId = selectedPlot?.pk;
+      // visit.productId = selectedCrop?.pk;
+      // visit.aol = double.parse(aolController.text);
+      // visit.totalAol = double.parse(totalAOLController.text);
 
       context.read<FarmVisitCubit>().createFarmVisit(visit);
     }
@@ -99,9 +101,11 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   @override
   void clearScreen() {
     setState(() {
-      priceController.clear();
+      aolController.clear();
+      totalAOLController.clear();
       selectedCrop = null;
-      selectedMarket = null;
+      selectedPlot = null;
+      selectedFarmer = null;
     });
   }
 }

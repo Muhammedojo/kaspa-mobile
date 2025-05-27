@@ -1,5 +1,8 @@
 const liveMode = bool.fromEnvironment("mode", defaultValue: false);
-const baseUrl = liveMode ? "https://5fb2-154-113-120-30.ngrok-free.app"  : "https://5fb2-154-113-120-30.ngrok-free.app";
+const baseUrl = liveMode ? 
+"https://kaspa.effing.cloud"  
+ //"https://5fb2-154-113-120-30.ngrok-free.app" 
+ : "https://kaspa.effing.cloud";
 const baseApi = "$baseUrl/api/v1/";
 
 const loginEndpoint = "auth/login";
@@ -12,7 +15,7 @@ const dashboardFarmerEndpoint = "dashboard/farmers";
 const registerFarmerEndpoint = "farmers";
 const cooperativeListEndpoint = "cooperatives";
 const createCooperativeEndpoint = "cooperatives";
-const updateCooperativesEndpoint = "cooperatives/";
+const updateCooperativesEndpoint = "cooperatives";
 const cropListEndpoint = "crops";
 const plotListEndpoint = "plots";
 const farmVisitListEndpoint = "farm-visits";

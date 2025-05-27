@@ -63,6 +63,7 @@ class MarketPriceView extends StatelessWidget
                             return ErrorWidgets(title: "empty", message: '');
                           }
                           if (state is MarketPriceLoaded) {
+                            debugPrint( state.marketPriceList.length.toString());
                             return state.marketPriceList.isEmpty
                                 ? ErrorWidgets(
                                   message: 'market_price_empty',

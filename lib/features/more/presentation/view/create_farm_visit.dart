@@ -12,6 +12,7 @@ import '../../../farmers/presentation/bloc/get_farmer/get_farmer_state.dart';
 import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
 import '../../../home/presentation/bloc/market/cubit.dart';
 import '../../../home/presentation/bloc/plot/plot_cubit.dart';
+import '../../../home/presentation/bloc/product/cubit.dart';
 import '../contract/create_farm_visit.dart';
 
 class CreateFarmVisitView extends StatelessWidget
@@ -75,7 +76,7 @@ class CreateFarmVisitView extends StatelessWidget
                   ),
                 ),
                 16.verticalSpace,
-                    'plot'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                'plot'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
                   child: BlocBuilder<PlotCubit, PlotState>(
@@ -94,8 +95,9 @@ class CreateFarmVisitView extends StatelessWidget
                               state.plotList.map((e) {
                                 return DropdownMenuItem(
                                   value: e,
-                                  child: ('${e.totalHectares} ha')
-                                      .toText(translate: false),
+                                  child: ('${e.totalHectares} ha').toText(
+                                    translate: false,
+                                  ),
                                 );
                               }).toList(),
                           onChanged: (newValue) {
@@ -111,15 +113,42 @@ class CreateFarmVisitView extends StatelessWidget
                     },
                   ),
                 ),
-               
-               
-               16.verticalSpace,
-                'market'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                16.verticalSpace,
+                'Total area of land being cultivated'.toText(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  translate: false,
+                ),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
-                  child: BlocBuilder<MarketCubit, MarketState>(
+                  child: TextFormField(
+                    controller: controller.totalAOLController,
+                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                    maxLines: 1,
+                    validator: ValidationBuilder().required().build(),
+                    keyboardType: TextInputType.number,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    textInputAction: TextInputAction.next,
+                    decoration:
+                        Styles.textFormFieldDecorationBorderWithBackground(
+                          'Kindly enter the total area of land being cultivated',
+                          '',
+                          check: false,
+                        ),
+                    onChanged: (value) {},
+                  ),
+                ),
+                16.verticalSpace,
+                'Crop being cultivated'.toText(
+                  fontSize: 14,
+                  translate: false,
+                  fontWeight: FontWeight.w600,
+                ),
+                Padding(
+                  padding: REdgeInsets.only(top: 5.0),
+                  child: BlocBuilder<ProductCubit, ProductState>(
                     builder: (context, state) {
-                      if (state is MarketLoaded) {
+                      if (state is ProductLoaded) {
                         return DropdownButtonFormField(
                           icon: 'arrowDown'.toSvg(),
                           style: Styles.x14dp_4A4A4A(14.0.sp),
@@ -130,7 +159,7 @@ class CreateFarmVisitView extends StatelessWidget
                               ),
 
                           items:
-                              state.marketList.map((e) {
+                              state.productList.map((e) {
                                 return DropdownMenuItem(
                                   value: e,
                                   child: (e.name ?? '').toText(
@@ -139,7 +168,7 @@ class CreateFarmVisitView extends StatelessWidget
                                 );
                               }).toList(),
                           onChanged: (newValue) {
-                            controller.onSelectMarket(newValue!);
+                            controller.onSelectCrop(newValue!);
                           },
                         );
                       }
@@ -152,11 +181,15 @@ class CreateFarmVisitView extends StatelessWidget
                   ),
                 ),
                 16.verticalSpace,
-                'price'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                'Area of land (in Ha)'.toText(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  translate: false,
+                ),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
                   child: TextFormField(
-                    controller: controller.priceController,
+                    controller: controller.totalAOLController,
                     style: Styles.x14dp_4A4A4A(14.0.sp),
                     maxLines: 1,
                     validator: ValidationBuilder().required().build(),
@@ -165,13 +198,14 @@ class CreateFarmVisitView extends StatelessWidget
                     textInputAction: TextInputAction.next,
                     decoration:
                         Styles.textFormFieldDecorationBorderWithBackground(
-                          '2000',
+                          'Kindly enter the area of land in Hectares',
                           '',
                           check: false,
                         ),
                     onChanged: (value) {},
                   ),
                 ),
+
                 50.verticalSpace,
                 BlocListener<FarmVisitCubit, FarmVisitState>(
                   listener: (context, state) {

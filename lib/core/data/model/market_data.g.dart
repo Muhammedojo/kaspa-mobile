@@ -110,7 +110,7 @@ const MarketDataSchema = CollectionSchema(
       id: -4985078949141874687,
       name: r'pk',
       unique: true,
-      replace: false,
+      replace: true,
       properties: [
         IndexPropertySchema(
           name: r'pk',

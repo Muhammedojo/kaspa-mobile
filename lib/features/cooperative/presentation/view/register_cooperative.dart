@@ -98,7 +98,7 @@ class RegisterCooperativeView extends StatelessWidget
                           showSearchBox: true,
                           searchFieldProps: TextFieldProps(
                             decoration: InputDecoration(
-                              // icon: 'arrowDown'.toSvg(),
+                            
                               labelStyle:
                                   Styles.normalWeightGreyNormalSizeTextStyle,
 
@@ -116,7 +116,6 @@ class RegisterCooperativeView extends StatelessWidget
                                     title: (lgaItem.name ?? '').toText(
                                       translate: false,
                                     ),
-
                                     selected: isSelected,
                                   ),
 
