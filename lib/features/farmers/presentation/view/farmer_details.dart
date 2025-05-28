@@ -45,7 +45,7 @@ class FarmerDetailsView extends StatelessWidget
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Farmer info section
+                
                       Row(
                         children: [
                           CircleAvatar(

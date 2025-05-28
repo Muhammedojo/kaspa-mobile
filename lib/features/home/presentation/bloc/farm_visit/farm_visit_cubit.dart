@@ -2,9 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kaspa/core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/api/api.dart';
-import '../../../../../core/api/exceptions/api_exception.dart';
 import '../../../../../core/data/model/farm_visit.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
@@ -102,7 +100,9 @@ class FarmVisitCubit extends Cubit<FarmVisitState> {
     try {
       emit(FarmVisitLoading());
       final response = await repository.createFarmVisit(data);
-      response.fold((l) => emit(FarmVisitFailure(l)), (r) async {
+      response.fold((l) => emit(FarmVisitFailure(error: l.failureMessage())), (
+        r,
+      ) async {
         if (r.data != null) {
           emit(CreateVisitSuccess(r.data!));
 
@@ -110,15 +110,11 @@ class FarmVisitCubit extends Cubit<FarmVisitState> {
             ApiRequestTriggered(apiRequestList: [farmVisitListEndpoint]),
           );
         } else {
-          emit(
-            FarmVisitFailure(
-              UnknownFailure(message: "Farm visit creation returned no data"),
-            ),
-          );
+          emit(FarmVisitFailure(error: 'Something went wrong.'));
         }
       });
     } on Error catch (e) {
-      emit(FarmVisitFailure(UnknownFailure(message: e.toString())));
+      emit(FarmVisitFailure(error: e.toString()));
     }
   }
 }

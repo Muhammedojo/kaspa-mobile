@@ -32,9 +32,9 @@ class ReportIncidentSuccess extends IncidentState {
 class IncidentNotLoaded extends IncidentState {}
 
 class IncidentFailure extends IncidentState {
-  final Failure error;
+  final String error;
 
-  const IncidentFailure(this.error);
+  const IncidentFailure({required this.error});
 
   @override
   List<Object> get props => [error];

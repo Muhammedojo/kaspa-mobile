@@ -20,7 +20,7 @@ class BankCubit extends Cubit<BankState> {
   int currentPulledCount = 0;
 
   loadBank({String? url}) async {
-     try {
+    try {
       emit(BankLoading());
       final response =
           url != null && url.isNotEmpty
@@ -36,12 +36,14 @@ class BankCubit extends Cubit<BankState> {
       } else {
         response.fold(
           (l) {
+       
             GlobalVariables.rootNavigatorKey.currentContext!
                 .read<ApiRequestBloc>()
                 .add(ApiRequestCompleted());
             loadBanksFromDb();
           },
           (r) async {
+             
             currentPulledCount += r.data?.length ?? 0;
             double progressPercent =
                 (currentPulledCount.toDouble() /
@@ -78,7 +80,7 @@ class BankCubit extends Cubit<BankState> {
   }
 
   loadBanksFromDb() async {
-      try {
+    try {
       final response = await repository.getBank();
       emit(BankLoaded(response));
     } catch (e) {

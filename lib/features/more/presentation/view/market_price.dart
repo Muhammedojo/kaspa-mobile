@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:kaspa/core/data/model/market.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
+import '../../../../core/data/model/market_data.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../features/more/presentation/controller/create_market_price.dart';
 import '../../../../core/utils/extensions.dart';
@@ -55,7 +59,7 @@ class MarketPriceView extends StatelessWidget
                     ),
 
                     16.verticalSpace,
-                  
+
                     Expanded(
                       child: BlocBuilder<MarketPriceCubit, MarketPriceState>(
                         builder: (context, state) {
@@ -63,32 +67,54 @@ class MarketPriceView extends StatelessWidget
                             return ErrorWidgets(title: "empty", message: '');
                           }
                           if (state is MarketPriceLoaded) {
-                            debugPrint( state.marketPriceList.length.toString());
                             return state.marketPriceList.isEmpty
-                                ? ErrorWidgets(
-                                  message: 'market_price_empty',
-                                )
-                                : ListView.separated(
-                                  itemCount: state.marketPriceList.length,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return MarketPriceCard(
-                                      data: state.marketPriceList[index],
-                                      onTap: () {
-                                        // pushTo(
-                                        //   CooperativeDetailsScreen(
-                                        //     cooperative:
-                                        //         state.cooperativeList[index],
-                                        //   ),
-                                        //   context,
-                                        // );
-                                      },
+                                ? ErrorWidgets(message: 'market_price_empty')
+                                : StickyGroupedListView<MarketData, DateTime>(
+                                  stickyHeaderBackgroundColor:
+                                      Colors.transparent,
+                                  elements: state.marketPriceList,
+                                  groupBy: (item) {
+                                    DateTime parsedDate = DateTime.parse(
+                                      item.date ?? '2025-01-01',
+                                    );
+                                    return DateTime(
+                                      parsedDate.year,
+                                      parsedDate.month,
+                                      parsedDate.day,
                                     );
                                   },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          12.verticalSpace,
+                                  groupSeparatorBuilder: (item) {
+                                    return Container(
+                                      padding: REdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
+                                      color: Colors.transparent,
+                                      width: double.infinity,
+                                      child: DateFormat.yMMMd()
+                                          .format(
+                                            DateTime.parse(
+                                              item.date ?? '2025-01-01',
+                                            ),
+                                          )
+                                          .toText(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.accentText,
+                                          ),
+                                    );
+                                  },
+                                  itemBuilder: (context, item) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 8),
+                                      child: MarketPriceCard(
+                                        data: item,
+                                        onTap: () {},
+                                      ),
+                                    );
+                                  },
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  order: StickyGroupedListOrder.DESC,
                                 );
                           }
                           if (state is CooperativeFailure) {
@@ -101,7 +127,6 @@ class MarketPriceView extends StatelessWidget
                         },
                       ),
                     ),
-                  
                   ],
                 ),
               ),

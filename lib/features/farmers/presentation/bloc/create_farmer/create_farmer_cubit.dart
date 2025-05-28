@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kaspa/core/api/services/endpoints.dart';
-import '../../../../../core/api/exceptions/api_exception.dart';
+import '../../../../../core/api/services/endpoints.dart';
 import '../../../../../core/data/model/farmer.dart';
 import '../../../../home/presentation/bloc/api_request/api_request_bloc.dart';
 import '../../../repository/farmer_repository_contract.dart';
@@ -17,14 +16,14 @@ class CreateFarmerCubit extends Cubit<CreateFarmerState> {
     try {
       emit(CreateFarmerLoading());
       final response = await repository.createFarmer(data);
-      response.fold((l) => emit(CreateFarmerFailure(l)), (r) async {
+      response.fold((l) => emit(CreateFarmerFailure(error:l.failureMessage())), (r) async {
          GetIt.I
              .get<ApiRequestBloc>()
              .add(ApiRequestTriggered(apiRequestList: [farmersListEndpoint]));
         emit(CreateFarmerSuccess());
       });
     } on Error catch (e) {
-      emit(CreateFarmerFailure(UnknownFailure(message: e.toString())));
+      emit(CreateFarmerFailure(error:  e.toString()));
     }
   }
 
@@ -33,11 +32,11 @@ class CreateFarmerCubit extends Cubit<CreateFarmerState> {
       emit(CreateFarmerLoading());
       final response = await repository.createFarmer(data);
       response.fold(
-        (l) => emit(CreateFarmerFailure(l)),
+        (l) => emit(CreateFarmerFailure(error: l.failureMessage())),
         (r) => emit(CreateFarmerSuccess()),
       );
     } on Error catch (e) {
-      emit(CreateFarmerFailure(UnknownFailure(message: e.toString())));
+      emit(CreateFarmerFailure(error: e.toString()));
     }
   }
 }

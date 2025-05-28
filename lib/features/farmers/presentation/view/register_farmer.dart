@@ -82,912 +82,942 @@ class RegisterFarmerView extends StatelessWidget
             ),
             Positioned.fill(
               top: 54,
-              child: Stepper(
-                clipBehavior: Clip.antiAlias,
-                type: StepperType.horizontal,
-                controlsBuilder: (context, index) {
-                  return const SizedBox();
-                },
-                physics: const ScrollPhysics(),
-                onStepTapped: (index) {
-                  controller.onStepTapped(index);
-                },
-                onStepContinue: () {
-                  if (controller.formKey.currentState != null &&
-                      controller.formKey.currentState!.validate()) {
-                    controller.onStepTapped(controller.currentStep + 1);
-                  }
-                },
-                onStepCancel: () {
-                  controller.onStepTapped(controller.currentStep - 1);
-                },
-                currentStep: controller.currentStep,
-                elevation: 0,
-                steps: [
-                  Step(
-                    title: ''.toText(),
-                    isActive: controller.currentStep >= 0,
-                    stepStyle: StepStyle(
-                      color:
-                          controller.currentStep >= 0
-                              ? AppColors.colorPrimary
-                              : AppColors.ColorAccent,
-                    ),
-
-                    content: Form(
-                      key: controller.formKey1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          'first_name'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.firstNameController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    'Muhammad',
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
+              child: Theme(
+                   data: Theme.of(context).copyWith(
+                  canvasColor: Colors.transparent,
+                ),
+                child: Stepper(
+                  clipBehavior: Clip.antiAlias,
+                  type: StepperType.horizontal,
+                  controlsBuilder: (context, index) {
+                    return const SizedBox();
+                  },
+                  physics: const ScrollPhysics(),
+                  onStepTapped: (index) {
+                    controller.onStepTapped(index);
+                  },
+                  onStepContinue: () {
+                    if (controller.formKey.currentState != null &&
+                        controller.formKey.currentState!.validate()) {
+                      controller.onStepTapped(controller.currentStep + 1);
+                    }
+                  },
+                  onStepCancel: () {
+                    controller.onStepTapped(controller.currentStep - 1);
+                  },
+                  currentStep: controller.currentStep,
+                  elevation: 0,
+                  steps: [
+                    Step(
+                      title: ''.toText(),
+                      isActive: controller.currentStep >= 0,
+                      stepStyle: StepStyle(
+                        color:
+                            controller.currentStep >= 0
+                                ? AppColors.colorPrimary
+                                : AppColors.ColorAccent,
+                      ),
+                
+                      content: Form(
+                        key: controller.formKey1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            'first_name'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
                             ),
-                          ),
-                          16.verticalSpace,
-                          'last_name'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.lastNameController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    'Ojo',
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.firstNameController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator: ValidationBuilder().required().build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      'Muhammad',
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
                             ),
-                          ),
-
-                          16.verticalSpace,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    'age'.toText(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
+                            16.verticalSpace,
+                            'last_name'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.lastNameController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator: ValidationBuilder().required().build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      'Ojo',
+                                      '',
+                                      check: false,
                                     ),
-                                    Padding(
-                                      padding: REdgeInsets.only(top: 5.0),
-                                      child: TextFormField(
-                                        controller: controller.ageController,
-                                        style: Styles.x14dp_4A4A4A(14.0.sp),
-                                        maxLines: 1,
-                                        validator:
-                                            ValidationBuilder()
-                                                .required()
-                                                .build(),
-                                        keyboardType: TextInputType.number,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        textInputAction: TextInputAction.next,
-                                        decoration:
-                                            Styles.textFormFieldDecorationBorderWithBackground(
-                                              '',
-                                              '',
-                                              check: false,
-                                            ),
-                                        onChanged: (value) {},
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                onChanged: (value) {},
                               ),
-                              8.horizontalSpace,
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    'gender'.toText(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    Padding(
-                                      padding: REdgeInsets.only(top: 5.0),
-                                      child: DropdownButtonFormField<String>(
-                                        validator:
-                                            ValidationBuilder()
-                                                .required()
-                                                .build(),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.zero,
-                                        ),
-                                        value: controller.selectedGender,
-                                        onChanged: (newValue) {
-                                          controller.onSelectGender(newValue);
-                                        },
-                                        items:
-                                            GlobalVariables().genderList.map((
-                                              String value,
-                                            ) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                        style: Styles.x14dp_4A4A4A(14.0.sp),
-                                        decoration:
-                                            Styles.textFormFieldDecorationBorderWithBackground(
-                                              'choose_an_option'.tr(),
-                                              '',
-                                            ),
-                                        icon: 'arrowDown'.toSvg(),
+                            ),
+                
+                            16.verticalSpace,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      'age'.toText(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          16.verticalSpace,
-                          'phone_number'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  inputFormatters: [
-                                    //  PhoneNumberFormatter(),
-                                    FilteringTextInputFormatter.deny(
-                                      RegExp(
-                                        r'[!@#$%^&*()?":{}|<>;,_\[.\]\\\-+=/`~]',
-                                      ),
-                                    ),
-                                  ],
-
-                                  keyboardType: TextInputType.phone,
-                                  decoration:
-                                      Styles.textFormFieldDecorationBorderWithBackground(
-                                        'Enter phone number',
-                                        '',
-                                        showPrefixIcon: true,
-                                        check: false,
-                                        prefixIconData: Container(
-                                          width: 80.sp,
-                                          padding: REdgeInsets.symmetric(
-                                            vertical: 0,
-                                          ),
-                                          decoration: BoxDecoration(),
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 30.sp,
-                                                child: Center(
-                                                  child: Row(
-                                                    children: [
-                                                      '+234'.toText(
-                                                        translate: false,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
+                                      Padding(
+                                        padding: REdgeInsets.only(top: 5.0),
+                                        child: TextFormField(
+                                          controller: controller.ageController,
+                                          style: Styles.x14dp_4A4A4A(14.0.sp),
+                                          maxLines: 1,
+                                          validator:
+                                              ValidationBuilder()
+                                                  .required()
+                                                  .build(),
+                                          keyboardType: TextInputType.number,
+                                          autovalidateMode:
+                                              AutovalidateMode.onUserInteraction,
+                                          textInputAction: TextInputAction.next,
+                                          decoration:
+                                              Styles.textFormFieldDecorationBorderWithBackground(
+                                                '',
+                                                '',
+                                                check: false,
                                               ),
-                                              Padding(
-                                                padding: REdgeInsets.all(8.0),
-                                                child: SizedBox(
-                                                  height: 14.sp,
-                                                  width: 14.sp,
-                                                  child: 'arrowDown'.toSvg(),
-                                                ),
-                                              ),
-                                            ],
+                                          onChanged: (value) {},
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                8.horizontalSpace,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      'gender'.toText(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      Padding(
+                                        padding: REdgeInsets.only(top: 5.0),
+                                        child: DropdownButtonFormField<String>(
+                                          validator:
+                                              ValidationBuilder()
+                                                  .required()
+                                                  .build(),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.zero,
                                           ),
-                                        ),
-                                      ),
-
-                                  controller: controller.phoneNumberController,
-                                  validator:
-                                      ValidationBuilder()
-                                          .required()
-                                          .phone()
-                                          .maxLength(11)
-                                          .minLength(10)
-                                          .build(),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          16.verticalSpace,
-                          'NIN'.toText(
-                            fontSize: 14,
-                            translate: false,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.ninController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator:
-                                  ValidationBuilder()
-                                      .maxLength(11)
-                                      .minLength(11)
-                                      .build(),
-                              keyboardType: TextInputType.number,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    'Enter your national identification number',
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
-                            ),
-                          ),
-                          16.verticalSpace,
-                          'address'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.addressController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    'enter_address'.tr(),
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
-                            ),
-                          ),
-                          16.verticalSpace,
-                          'LGA'.toText(
-                            fontSize: 14,
-                            translate: false,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          BlocBuilder<LgaCubit, LgaState>(
-                            builder: (context, state) {
-                              List<Lga> lgas = [];
-                              if (state is LgaLoaded) {
-                                lgas = state.dataList;
-                              }
-
-                              return DropdownSearch<Lga>(
-                                suffixProps: DropdownSuffixProps(
-                                  dropdownButtonProps: DropdownButtonProps(
-                                    iconClosed: 'arrowDown'.toSvg(),
-                                  ),
-                                ),
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      labelStyle:
-                                          Styles
-                                              .normalWeightGreyNormalSizeTextStyle,
-
-                                      hintText: "search_lga".tr(),
-                                      hintStyle:
-                                          Styles
-                                              .normalWeightGreyNormalSizeTextStyle,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          8.r,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  itemBuilder:
-                                      (
-                                        context,
-                                        lgaItem,
-                                        isDisabled,
-                                        isSelected,
-                                      ) => ListTile(
-                                        title: (lgaItem.name ?? '').toText(
-                                          translate: false,
-                                        ),
-
-                                        selected: isSelected,
-                                      ),
-
-                                  emptyBuilder:
-                                      (context, searchEntry) => Center(
-                                        child: 'no_lga_found'.toText(),
-                                      ),
-                                ),
-                                items: (filter, infiniteScrollProps) async {
-                                  if (filter.isEmpty) {
-                                    return lgas;
-                                  }
-                                  return lgas
-                                      .where(
-                                        (lga) =>
-                                            lga.name?.toLowerCase().contains(
-                                              filter.toLowerCase(),
-                                            ) ??
-                                            false,
-                                      )
-                                      .toList();
-                                },
-                                itemAsString: (Lga? lga) => lga?.name ?? '',
-                                compareFn: (Lga? item1, Lga? item2) {
-                                  return item1?.pk == item2?.pk;
-                                },
-                                selectedItem: controller.selectedLga,
-                                onChanged: (Lga? newValue) {
-                                  if (newValue != null) {
-                                    controller.onSelectLga(newValue);
-                                  }
-                                },
-                                decoratorProps: DropDownDecoratorProps(
-                                  decoration:
-                                      Styles.textFormFieldDecorationBorderWithBackground(
-                                        'choose_an_option'.tr(),
-                                        '',
-                                      ),
-                                ),
-                              );
-                            },
-                          ),
-
-                          16.verticalSpace,
-                          'Ward of Residence'.toText(
-                            fontSize: 14,
-                            translate: false,
-                            fontWeight: FontWeight.w600,
-                          ),
-
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: BlocBuilder<WardCubit, WardState>(
-                              builder: (context, state) {
-                                List<Ward> filteredWards = [];
-                                String hintText = 'choose_an_option'.tr();
-                                bool isDisabled = false;
-                                if (state is WardLoaded) {
-                                  if (controller.selectedLga == null) {
-                                    hintText = 'select_lga_first'.tr();
-                                    isDisabled = true;
-                                  } else {
-                                    filteredWards =
-                                        state.dataList
-                                            .where(
-                                              (ward) =>
-                                                  ward.lga?.id ==
-                                                  controller.selectedLga!.pk,
-                                            )
-                                            .toList();
-                                    if (filteredWards.isEmpty) {
-                                      hintText = 'no_wards_available'.tr();
-                                      isDisabled = true;
-                                    }
-                                  }
-                                } else if (state is WardLoading) {
-                                  hintText = 'loading_wards'.tr();
-                                  isDisabled = true;
-                                } else {
-                                  // WardFailure or initial state
-                                  hintText = 'wards_not_loaded'.tr();
-                                  isDisabled = true;
-                                }
-                                final Ward? currentSelectedWard =
-                                    filteredWards.any(
-                                          (w) =>
-                                              w.pk ==
-                                              controller.selectedWard?.pk,
-                                        )
-                                        ? controller.selectedWard
-                                        : null;
-
-                                return DropdownButtonFormField<Ward>(
-                                  icon: 'arrowDown'.toSvg(),
-                                  style: Styles.x14dp_4A4A4A(14.0.sp),
-                                  decoration:
-                                      Styles.textFormFieldDecorationBorderWithBackground(
-                                        hintText,
-                                        '',
-                                      ),
-                                  items:
-                                      filteredWards.map((e) {
-                                        return DropdownMenuItem<Ward>(
-                                          value: e,
-                                          child: (e.name ?? '').toText(
-                                            translate: false,
-                                          ),
-                                        );
-                                      }).toList(),
-                                  value: currentSelectedWard,
-                                  onChanged:
-                                      isDisabled
-                                          ? null
-                                          : (Ward? newValue) {
-                                            controller.onSelectWard(newValue);
+                                          value: controller.selectedGender,
+                                          onChanged: (newValue) {
+                                            controller.onSelectGender(newValue);
                                           },
-                                );
-                              },
-                            ),
-                          ),
-
-                          80.verticalSpace,
-                        ],
-                      ),
-                    ),
-                  ),
-                  Step(
-                    title: ''.toText(),
-                    isActive: controller.currentStep >= 1,
-                    stepStyle: StepStyle(
-                      color:
-                          controller.currentStep >= 1
-                              ? AppColors.colorPrimary
-                              : AppColors.ColorAccent,
-                    ),
-                    content: Form(
-                      key: controller.formKey2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          'nok_name'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.nokNameController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator: ValidationBuilder().required().build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    'Muhammad',
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
-                            ),
-                          ),
-                          16.verticalSpace,
-                          'nok_phone_number'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  inputFormatters: [
-                                    //  PhoneNumberFormatter(),
-                                    FilteringTextInputFormatter.deny(
-                                      RegExp(
-                                        r'[!@#$%^&*()?":{}|<>;,_\[.\]\\\-+=/`~]',
-                                      ),
-                                    ),
-                                  ],
-
-                                  keyboardType: TextInputType.phone,
-                                  decoration:
-                                      Styles.textFormFieldDecorationBorderWithBackground(
-                                        'Enter phone number',
-                                        '',
-                                        showPrefixIcon: true,
-                                        check: false,
-                                        prefixIconData: Container(
-                                          width: 80.sp,
-                                          padding: REdgeInsets.symmetric(
-                                            vertical: 0,
-                                          ),
-                                          decoration: BoxDecoration(),
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 30.sp,
-                                                child: Center(
-                                                  child: Row(
-                                                    children: [
-                                                      '+234'.toText(
-                                                        translate: false,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
+                                          items:
+                                              GlobalVariables().genderList.map((
+                                                String value,
+                                              ) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              }).toList(),
+                                          style: Styles.x14dp_4A4A4A(14.0.sp),
+                                          decoration:
+                                              Styles.textFormFieldDecorationBorderWithBackground(
+                                                'choose_an_option'.tr(),
+                                                '',
                                               ),
-                                              Padding(
-                                                padding: REdgeInsets.all(8.0),
-                                                child: SizedBox(
-                                                  height: 14.sp,
-                                                  width: 14.sp,
-                                                  child: 'arrowDown'.toSvg(),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                          icon: 'arrowDown'.toSvg(),
                                         ),
                                       ),
-
-                                  controller:
-                                      controller.nokPhoneNumberController,
-                                  validator:
-                                      ValidationBuilder()
-                                          .required()
-                                          .phone()
-                                          .maxLength(11)
-                                          .minLength(10)
-                                          .build(),
-                                  // onChanged: (value) {
-                                  //   //controller.validateAndSetPhoneNumber(value);
-                                  // },
-                                ),
-                              ),
-                            ],
-                          ),
-                          16.verticalSpace,
-                          'nok_relationship'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: DropdownButtonFormField<String>(
-                              validator: ValidationBuilder().build(),
-                              borderRadius: const BorderRadius.all(Radius.zero),
-                              value: controller.selectedNokRelationship,
-                              onChanged: (newValue) {
-                                controller.onSelectNokRelationship(newValue);
-                              },
-                              items:
-                                  GlobalVariables().nokRelationshipList.map((
-                                    String value,
-                                  ) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    'choose_an_option'.tr(),
-                                    '',
+                                    ],
                                   ),
-                              icon: 'arrowDown'.toSvg(),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Step(
-                    title: ''.toText(),
-                    isActive: controller.currentStep >= 2,
-                    stepStyle: StepStyle(
-                      color:
-                          controller.currentStep >= 2
-                              ? AppColors.colorPrimary
-                              : AppColors.ColorAccent,
-                    ),
-                    content: Form(
-                      key: controller.formKey3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          'bank'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: BlocBuilder<BankCubit, BankState>(
-                              builder: (context, state) {
-                                if (state is BankLoaded) {
-                                  return DropdownButtonFormField(
-                                    icon: 'arrowDown'.toSvg(height: 11.sp),
-                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                            16.verticalSpace,
+                            'phone_number'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    inputFormatters: [
+                                      //  PhoneNumberFormatter(),
+                                      FilteringTextInputFormatter.deny(
+                                        RegExp(
+                                          r'[!@#$%^&*()?":{}|<>;,_\[.\]\\\-+=/`~]',
+                                        ),
+                                      ),
+                                    ],
+                
+                                    keyboardType: TextInputType.phone,
                                     decoration:
                                         Styles.textFormFieldDecorationBorderWithBackground(
-                                          ''.tr(),
+                                          'Enter phone number',
                                           '',
-                                        ),
-                                    items:
-                                        state.bankList.map((e) {
-                                          return DropdownMenuItem(
-                                            value: e,
-                                            child: (e.name!).toText(
-                                              translate: false,
-                                              textOverflow:
-                                                  TextOverflow.ellipsis,
+                                          showPrefixIcon: true,
+                                          check: false,
+                                          prefixIconData: Container(
+                                            width: 80.sp,
+                                            padding: REdgeInsets.symmetric(
+                                              vertical: 0,
                                             ),
-                                          );
-                                        }).toList(),
-                                    value: controller.selectedBank,
-                                    onChanged: (newValue) {
-                                      controller.onSelectBank(newValue!);
-                                    },
-                                  );
-                                }
-                                return DropdownButtonFormField(
-                                  style: Styles.x14dp_4A4A4A(14.0.sp),
-                                  items: [],
-                                  onChanged: (_) {},
-                                );
-                              },
-                            ),
-                          ),
-                          16.verticalSpace,
-                          'bank_verification_number'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.bvnController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator:
-                                  ValidationBuilder(optional: true).build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    '',
-                                    '',
-                                    check: false,
+                                            decoration: BoxDecoration(),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 30.sp,
+                                                  child: Center(
+                                                    child: Row(
+                                                      children: [
+                                                        '+234'.toText(
+                                                          translate: false,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: REdgeInsets.all(8.0),
+                                                  child: SizedBox(
+                                                    height: 14.sp,
+                                                    width: 14.sp,
+                                                    child: 'arrowDown'.toSvg(),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                
+                                    controller: controller.phoneNumberController,
+                                    validator:
+                                        ValidationBuilder()
+                                            .required()
+                                            .phone()
+                                            .maxLength(11)
+                                            .minLength(10)
+                                            .build(),
                                   ),
-                              onChanged: (value) {},
+                                ),
+                              ],
                             ),
-                          ),
-                          16.verticalSpace,
-                          'account_number'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.accountNumberController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator:
-                                  ValidationBuilder(optional: true).build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    '',
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
+                
+                            16.verticalSpace,
+                            'NIN'.toText(
+                              fontSize: 14,
+                              translate: false,
+                              fontWeight: FontWeight.w600,
                             ),
-                          ),
-                          16.verticalSpace,
-                          'account_name'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.accountNameController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator:
-                                  ValidationBuilder(optional: true).build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    '',
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.ninController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator:
+                                    ValidationBuilder()
+                                        .maxLength(11)
+                                        .minLength(11)
+                                        .build(),
+                                keyboardType: TextInputType.number,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      'Enter your national identification number',
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
                             ),
-                          ),
-                          16.verticalSpace,
-                        ],
-                      ),
-                    ),
-                  ),
-                  Step(
-                    title: ''.toText(),
-                    isActive: controller.currentStep >= 3,
-                    stepStyle: StepStyle(
-                      color:
-                          controller.currentStep >= 3
-                              ? AppColors.colorPrimary
-                              : AppColors.ColorAccent,
-                    ),
-                    content: Form(
-                      key: controller.formKey4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          'farm_address'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: controller.farmAddressController,
-                              style: Styles.x14dp_4A4A4A(14.0.sp),
-                              maxLines: 1,
-                              validator:
-                                  ValidationBuilder(optional: true).build(),
-                              keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              decoration:
-                                  Styles.textFormFieldDecorationBorderWithBackground(
-                                    '',
-                                    '',
-                                    check: false,
-                                  ),
-                              onChanged: (value) {},
+                            16.verticalSpace,
+                            'address'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
                             ),
-                          ),
-                          16.verticalSpace,
-                          'livestock'.toText(
-                            fontSize: 14,
-
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: BlocBuilder<ProductCubit, ProductState>(
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.addressController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator: ValidationBuilder().required().build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      'enter_address'.tr(),
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            16.verticalSpace,
+                            'LGA'.toText(
+                              fontSize: 14,
+                              translate: false,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            BlocBuilder<LgaCubit, LgaState>(
                               builder: (context, state) {
-                                if (state is ProductLoaded) {
-                                  return DropdownButtonFormField(
-                                    icon: 'arrowDown'.toSvg(),
-                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                                List<Lga> lgas = [];
+                                if (state is LgaLoaded) {
+                                  lgas = state.dataList;
+                                }
+                
+                                return DropdownSearch<Lga>(
+                                  suffixProps: DropdownSuffixProps(
+                                    dropdownButtonProps: DropdownButtonProps(
+                                      iconClosed: 'arrowDown'.toSvg(),
+                                    ),
+                                  ),
+                                  popupProps: PopupProps.menu(
+                                    showSearchBox: true,
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        labelStyle:
+                                            Styles
+                                                .normalWeightGreyNormalSizeTextStyle,
+                
+                                        hintText: "search_lga".tr(),
+                                        hintStyle:
+                                            Styles
+                                                .normalWeightGreyNormalSizeTextStyle,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8.r,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    itemBuilder:
+                                        (
+                                          context,
+                                          lgaItem,
+                                          isDisabled,
+                                          isSelected,
+                                        ) => ListTile(
+                                          title: (lgaItem.name ?? '').toText(
+                                            translate: false,
+                                          ),
+                
+                                          selected: isSelected,
+                                        ),
+                
+                                    emptyBuilder:
+                                        (context, searchEntry) => Center(
+                                          child: 'no_lga_found'.toText(),
+                                        ),
+                                  ),
+                                  items: (filter, infiniteScrollProps) async {
+                                    if (filter.isEmpty) {
+                                      return lgas;
+                                    }
+                                    return lgas
+                                        .where(
+                                          (lga) =>
+                                              lga.name?.toLowerCase().contains(
+                                                filter.toLowerCase(),
+                                              ) ??
+                                              false,
+                                        )
+                                        .toList();
+                                  },
+                                  itemAsString: (Lga? lga) => lga?.name ?? '',
+                                  compareFn: (Lga? item1, Lga? item2) {
+                                    return item1?.pk == item2?.pk;
+                                  },
+                                  selectedItem: controller.selectedLga,
+                                  onChanged: (Lga? newValue) {
+                                    if (newValue != null) {
+                                      controller.onSelectLga(newValue);
+                                    }
+                                  },
+                                  decoratorProps: DropDownDecoratorProps(
                                     decoration:
                                         Styles.textFormFieldDecorationBorderWithBackground(
                                           'choose_an_option'.tr(),
                                           '',
                                         ),
-
-                                    items:
-                                        state.productList
-                                            .where(
-                                              (product) =>
-                                                  product.type == 'Livestock',
-                                            )
-                                            .map((e) {
-                                              return DropdownMenuItem(
-                                                value: e,
-                                                child: (e.name ?? '').toText(
-                                                  translate: false,
-                                                ),
-                                              );
-                                            })
-                                            .toList(),
-                                    onChanged: (newValue) {
-                                      controller.onSelectLivestock(newValue!);
-                                    },
-                                  );
-                                }
-                                return DropdownButtonFormField(
-                                  style: Styles.x14dp_4A4A4A(14.0.sp),
-                                  items: [],
-                                  onChanged: (_) {},
+                                  ),
                                 );
                               },
                             ),
-                          ),
-                          16.verticalSpace,
-                          'crop'.toText(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Padding(
-                            padding: REdgeInsets.only(top: 5.0),
-                            child: BlocBuilder<ProductCubit, ProductState>(
-                              builder: (context, productState) {
-                                if (productState is ProductLoaded) {
-                                  return _buildCropSelector(
-                                    context,
-                                    productState,
+                
+                            16.verticalSpace,
+                            'Ward of Residence'.toText(
+                              fontSize: 14,
+                              translate: false,
+                              fontWeight: FontWeight.w600,
+                            ),
+                
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: BlocBuilder<WardCubit, WardState>(
+                                builder: (context, state) {
+                                  List<Ward> filteredWards = [];
+                                  String hintText = 'choose_an_option'.tr();
+                                  bool isDisabled = false;
+                                  if (state is WardLoaded) {
+                                    if (controller.selectedLga == null) {
+                                      hintText = 'select_lga_first'.tr();
+                                      isDisabled = true;
+                                    } else {
+                                      filteredWards =
+                                          state.dataList
+                                              .where(
+                                                (ward) =>
+                                                    ward.lga?.id ==
+                                                    controller.selectedLga!.pk,
+                                              )
+                                              .toList();
+                                      if (filteredWards.isEmpty) {
+                                        hintText = 'no_wards_available'.tr();
+                                        isDisabled = true;
+                                      }
+                                    }
+                                  } else if (state is WardLoading) {
+                                    hintText = 'loading_wards'.tr();
+                                    isDisabled = true;
+                                  } else {
+                                    // WardFailure or initial state
+                                    hintText = 'wards_not_loaded'.tr();
+                                    isDisabled = true;
+                                  }
+                                  final Ward? currentSelectedWard =
+                                      filteredWards.any(
+                                            (w) =>
+                                                w.pk ==
+                                                controller.selectedWard?.pk,
+                                          )
+                                          ? controller.selectedWard
+                                          : null;
+                
+                                  return DropdownButtonFormField<Ward>(
+                                    icon: 'arrowDown'.toSvg(),
+                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                                    decoration:
+                                        Styles.textFormFieldDecorationBorderWithBackground(
+                                          hintText,
+                                          '',
+                                        ),
+                                    items:
+                                        filteredWards.map((e) {
+                                          return DropdownMenuItem<Ward>(
+                                            value: e,
+                                            child: (e.name ?? '').toText(
+                                              translate: false,
+                                            ),
+                                          );
+                                        }).toList(),
+                                    value: currentSelectedWard,
+                                    onChanged:
+                                        isDisabled
+                                            ? null
+                                            : (Ward? newValue) {
+                                              controller.onSelectWard(newValue);
+                                            },
                                   );
-                                }
-                                return Container(
-                                  width: double.infinity,
-                                  padding: REdgeInsets.symmetric(
-                                    horizontal: 12.0,
-                                    vertical: 16.0,
+                                },
+                              ),
+                            ),
+                
+                            80.verticalSpace,
+                          ],
+                        ),
+                      ),
+                    ),
+                    Step(
+                      title: ''.toText(),
+                      isActive: controller.currentStep >= 1,
+                      stepStyle: StepStyle(
+                        color:
+                            controller.currentStep >= 1
+                                ? AppColors.colorPrimary
+                                : AppColors.ColorAccent,
+                      ),
+                      content: Form(
+                        key: controller.formKey2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            'nok_name'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.nokNameController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator: ValidationBuilder().required().build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      'Muhammad',
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            16.verticalSpace,
+                            'nok_phone_number'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    inputFormatters: [
+                                      //  PhoneNumberFormatter(),
+                                      FilteringTextInputFormatter.deny(
+                                        RegExp(
+                                          r'[!@#$%^&*()?":{}|<>;,_\[.\]\\\-+=/`~]',
+                                        ),
+                                      ),
+                                    ],
+                
+                                    keyboardType: TextInputType.phone,
+                                    decoration:
+                                        Styles.textFormFieldDecorationBorderWithBackground(
+                                          'Enter phone number',
+                                          '',
+                                          showPrefixIcon: true,
+                                          check: false,
+                                          prefixIconData: Container(
+                                            width: 80.sp,
+                                            padding: REdgeInsets.symmetric(
+                                              vertical: 0,
+                                            ),
+                                            decoration: BoxDecoration(),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 30.sp,
+                                                  child: Center(
+                                                    child: Row(
+                                                      children: [
+                                                        '+234'.toText(
+                                                          translate: false,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: REdgeInsets.all(8.0),
+                                                  child: SizedBox(
+                                                    height: 14.sp,
+                                                    width: 14.sp,
+                                                    child: 'arrowDown'.toSvg(),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                
+                                    controller:
+                                        controller.nokPhoneNumberController,
+                                    validator:
+                                        ValidationBuilder()
+                                            .required()
+                                            .phone()
+                                            .maxLength(11)
+                                            .minLength(10)
+                                            .build(),
+                                    // onChanged: (value) {
+                                    //   //controller.validateAndSetPhoneNumber(value);
+                                    // },
                                   ),
-
-                                  child: Text(
-                                    productState is ProductLoading
-                                        ? 'loading_crops'.tr()
-                                        : 'crops_not_available'.tr(),
-                                    style: Styles.x14dp_4A4A4A(
-                                      14.0.sp,
-                                    ).copyWith(
-                                      color: AppColors.accentText.withAlpha(
-                                        (0.7 * 255).toInt(),
+                                ),
+                              ],
+                            ),
+                            16.verticalSpace,
+                            'nok_relationship'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: DropdownButtonFormField<String>(
+                                validator: ValidationBuilder().build(),
+                                borderRadius: const BorderRadius.all(Radius.zero),
+                                value: controller.selectedNokRelationship,
+                                onChanged: (newValue) {
+                                  controller.onSelectNokRelationship(newValue);
+                                },
+                                items:
+                                    GlobalVariables().nokRelationshipList.map((
+                                      String value,
+                                    ) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      'choose_an_option'.tr(),
+                                      '',
+                                    ),
+                                icon: 'arrowDown'.toSvg(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Step(
+                      title: ''.toText(),
+                      isActive: controller.currentStep >= 2,
+                      stepStyle: StepStyle(
+                        color:
+                            controller.currentStep >= 2
+                                ? AppColors.colorPrimary
+                                : AppColors.ColorAccent,
+                      ),
+                      content: Form(
+                        key: controller.formKey3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            'bank'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: BlocBuilder<BankCubit, BankState>(
+                                builder: (context, state) {
+                                  if (state is BankLoaded) {
+                                    return DropdownButtonFormField(
+                                      icon: 'arrowDown'.toSvg(height: 11.sp),
+                                      style: Styles.x14dp_4A4A4A(14.0.sp),
+                                      decoration:
+                                          Styles.textFormFieldDecorationBorderWithBackground(
+                                            ''.tr(),
+                                            '',
+                                          ),
+                                      items:
+                                          state.bankList.map((e) {
+                                            return DropdownMenuItem(
+                                              value: e,
+                                              child: (e.name!).toText(
+                                                translate: false,
+                                                textOverflow:
+                                                    TextOverflow.ellipsis,
+                                              ),
+                                            );
+                                          }).toList(),
+                                      value: controller.selectedBank,
+                                      onChanged: (newValue) {
+                                        controller.onSelectBank(newValue!);
+                                      },
+                                    );
+                                  }
+                                  return DropdownButtonFormField(
+                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                                    items: [],
+                                    onChanged: (_) {},
+                                  );
+                                },
+                              ),
+                            ),
+                            16.verticalSpace,
+                            'bank_verification_number'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.bvnController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator:
+                                    ValidationBuilder(optional: true).build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      '',
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            16.verticalSpace,
+                            'account_number'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.accountNumberController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator:
+                                    ValidationBuilder(optional: true).build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      '',
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            16.verticalSpace,
+                            'account_name'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.accountNameController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator:
+                                    ValidationBuilder(optional: true).build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      '',
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            16.verticalSpace,
+                          ],
+                        ),
+                      ),
+                    ),
+                    Step(
+                      title: ''.toText(),
+                      isActive: controller.currentStep >= 3,
+                      stepStyle: StepStyle(
+                        color:
+                            controller.currentStep >= 3
+                                ? AppColors.colorPrimary
+                                : AppColors.ColorAccent,
+                      ),
+                      content: Form(
+                        key: controller.formKey4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            'farm_address'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: controller.farmAddressController,
+                                style: Styles.x14dp_4A4A4A(14.0.sp),
+                                maxLines: 1,
+                                validator:
+                                    ValidationBuilder(optional: true).build(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    Styles.textFormFieldDecorationBorderWithBackground(
+                                      '',
+                                      '',
+                                      check: false,
+                                    ),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            16.verticalSpace,
+                            'livestock'.toText(
+                              fontSize: 14,
+                
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: BlocBuilder<ProductCubit, ProductState>(
+                                builder: (context, state) {
+                                  if (state is ProductLoaded) {
+                                    return DropdownButtonFormField(
+                                      icon: 'arrowDown'.toSvg(),
+                                      style: Styles.x14dp_4A4A4A(14.0.sp),
+                                      decoration:
+                                          Styles.textFormFieldDecorationBorderWithBackground(
+                                            'choose_an_option'.tr(),
+                                            '',
+                                          ),
+                
+                                      items:
+                                          state.productList
+                                              .where(
+                                                (product) =>
+                                                    product.type == 'Livestock',
+                                              )
+                                              .map((e) {
+                                                return DropdownMenuItem(
+                                                  value: e,
+                                                  child: (e.name ?? '').toText(
+                                                    translate: false,
+                                                  ),
+                                                );
+                                              })
+                                              .toList(),
+                                      onChanged: (newValue) {
+                                        controller.onSelectLivestock(newValue!);
+                                      },
+                                    );
+                                  }
+                                  return DropdownButtonFormField(
+                                    style: Styles.x14dp_4A4A4A(14.0.sp),
+                                    items: [],
+                                    onChanged: (_) {},
+                                  );
+                                },
+                              ),
+                            ),
+                            16.verticalSpace,
+                            'crop'.toText(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Padding(
+                              padding: REdgeInsets.only(top: 5.0),
+                              child: BlocBuilder<ProductCubit, ProductState>(
+                                builder: (context, productState) {
+                                  if (productState is ProductLoaded) {
+                                    return _buildCropSelector(
+                                      context,
+                                      productState,
+                                    );
+                                  }
+                                  return Container(
+                                    width: double.infinity,
+                                    padding: REdgeInsets.symmetric(
+                                      horizontal: 12.0,
+                                      vertical: 16.0,
+                                    ),
+                
+                                    child: Text(
+                                      productState is ProductLoading
+                                          ? 'loading_crops'.tr()
+                                          : 'crops_not_available'.tr(),
+                                      style: Styles.x14dp_4A4A4A(
+                                        14.0.sp,
+                                      ).copyWith(
+                                        color: AppColors.accentText.withAlpha(
+                                          (0.7 * 255).toInt(),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-
-                          16.verticalSpace,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              'farm'.toText(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                                  );
+                                },
                               ),
-
-                              if (controller
-                                  .currentFarmLocationCoordinates
-                                  .isNotEmpty)
-                                controller.isFetchingLocation
-                                    ? Padding(
-                                      padding: REdgeInsets.all(8.0),
-                                      child: SizedBox(
-                                        width: 24.sp,
-                                        height: 24.sp,
+                            ),
+                
+                            16.verticalSpace,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                'farm'.toText(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                
+                                if (controller
+                                    .currentFarmLocationCoordinates
+                                    .isNotEmpty)
+                                  controller.isFetchingLocation
+                                      ? Padding(
+                                        padding: REdgeInsets.all(8.0),
+                                        child: SizedBox(
+                                          width: 24.sp,
+                                          height: 24.sp,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2.0,
+                                            color: AppColors.colorPrimary,
+                                          ),
+                                        ),
+                                      )
+                                      : InkWell(
+                                        onTap:
+                                            controller.isFetchingLocation
+                                                ? null
+                                                : () => controller
+                                                    .onAddFarmLocation(context),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: AppColors.colorPrimary,
+                                        ),
+                                      ),
+                              ],
+                            ),
+                            5.verticalSpace,
+                            controller.currentFarmLocationCoordinates.isEmpty
+                                ? controller.isFetchingLocation
+                                    ? Center(
+                                      child: Padding(
+                                        padding: REdgeInsets.symmetric(
+                                          vertical: 50.0,
+                                        ),
                                         child: CircularProgressIndicator(
-                                          strokeWidth: 2.0,
                                           color: AppColors.colorPrimary,
                                         ),
                                       ),
@@ -998,153 +1028,128 @@ class RegisterFarmerView extends StatelessWidget
                                               ? null
                                               : () => controller
                                                   .onAddFarmLocation(context),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: AppColors.colorPrimary,
-                                      ),
-                                    ),
-                            ],
-                          ),
-                          5.verticalSpace,
-                          controller.currentFarmLocationCoordinates.isEmpty
-                              ? controller.isFetchingLocation
-                                  ? Center(
-                                    child: Padding(
-                                      padding: REdgeInsets.symmetric(
-                                        vertical: 50.0,
-                                      ),
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.colorPrimary,
-                                      ),
-                                    ),
-                                  )
-                                  : InkWell(
-                                    onTap:
-                                        controller.isFetchingLocation
-                                            ? null
-                                            : () => controller
-                                                .onAddFarmLocation(context),
-                                    child: DottedBorder(
-                                      color: AppColors.primaryGreen,
-                                      radius: Radius.circular(8.r),
-                                      strokeWidth: 2,
-                                      dashPattern: const [10, 6],
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primaryGreen
-                                              .withAlpha((0.1 * 255).toInt()),
-                                          borderRadius: BorderRadius.circular(
-                                            8.r,
+                                      child: DottedBorder(
+                                        color: AppColors.primaryGreen,
+                                        radius: Radius.circular(8.r),
+                                        strokeWidth: 2,
+                                        dashPattern: const [10, 6],
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryGreen
+                                                .withAlpha((0.1 * 255).toInt()),
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
+                                            ),
                                           ),
-                                        ),
-                                        child: Padding(
-                                          padding: REdgeInsets.symmetric(
-                                            vertical: 20.0,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/vectors/location.svg',
-                                                height: 50.sp,
-                                                width: 50.sp,
-                                              ),
-                                              Center(
-                                                child: 'Add Farm'.toText(
-                                                  fontSize: 14,
-                                                  translate: false,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: AppColors.colorPrimary,
+                                          child: Padding(
+                                            padding: REdgeInsets.symmetric(
+                                              vertical: 20.0,
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  'assets/vectors/location.svg',
+                                                  height: 50.sp,
+                                                  width: 50.sp,
                                                 ),
-                                              ),
-                                            ],
+                                                Center(
+                                                  child: 'Add Farm'.toText(
+                                                    fontSize: 14,
+                                                    translate: false,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.colorPrimary,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                              : ListView.builder(
-                                itemCount:
-                                    controller
-                                        .currentFarmLocationCoordinates
-                                        .length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  final coordinate =
+                                    )
+                                : ListView.builder(
+                                  itemCount:
                                       controller
-                                          .currentFarmLocationCoordinates[index];
-                                  return Points(
-                                    lat: coordinate.latitude!.toStringAsFixed(
-                                      6,
-                                    ),
-                                    long: coordinate.longitude!.toStringAsFixed(
-                                      6,
-                                    ),
-                                    delete: () {
-                                      controller
-                                          .onDeleteFarmLocationCoordinates(
-                                            index,
-                                          );
-                                    },
-                                    showIcon: true,
-                                    point: index + 1,
-                                  );
-                                },
-                              ),
-                          16.verticalSpace,
-                        ],
+                                          .currentFarmLocationCoordinates
+                                          .length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    final coordinate =
+                                        controller
+                                            .currentFarmLocationCoordinates[index];
+                                    return Points(
+                                      lat: coordinate.latitude!.toStringAsFixed(
+                                        6,
+                                      ),
+                                      long: coordinate.longitude!.toStringAsFixed(
+                                        6,
+                                      ),
+                                      delete: () {
+                                        controller
+                                            .onDeleteFarmLocationCoordinates(
+                                              index,
+                                            );
+                                      },
+                                      showIcon: true,
+                                      point: index + 1,
+                                    );
+                                  },
+                                ),
+                            16.verticalSpace,
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Step(
-                    title: ''.toText(),
-                    isActive: controller.currentStep >= 4,
-                    stepStyle: StepStyle(
-                      color:
-                          controller.currentStep >= 4
-                              ? AppColors.colorPrimary
-                              : AppColors.ColorAccent,
-                    ),
-                    content: Form(
-                      key: controller.formKey5,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          DottedBorder(
-                            color: AppColors.primaryGreen,
-                            radius: Radius.circular(8.r),
-                            strokeWidth: 2,
-                            dashPattern: const [10, 6],
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryGreen.withAlpha(
-                                  (0.1 * 255).toInt(),
+                    Step(
+                      title: ''.toText(),
+                      isActive: controller.currentStep >= 4,
+                      stepStyle: StepStyle(
+                        color:
+                            controller.currentStep >= 4
+                                ? AppColors.colorPrimary
+                                : AppColors.ColorAccent,
+                      ),
+                      content: Form(
+                        key: controller.formKey5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            DottedBorder(
+                              color: AppColors.primaryGreen,
+                              radius: Radius.circular(8.r),
+                              strokeWidth: 2,
+                              dashPattern: const [10, 6],
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryGreen.withAlpha(
+                                    (0.1 * 255).toInt(),
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.r),
                                 ),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Padding(
-                                padding: REdgeInsets.symmetric(vertical: 25.0),
-                                child: Column(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/vectors/image.svg',
-                                    ),
-                                    Center(
-                                      child: 'add_farmer_profile_image'.toText(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.colorPrimary,
+                                child: Padding(
+                                  padding: REdgeInsets.symmetric(vertical: 25.0),
+                                  child: Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/vectors/image.svg',
                                       ),
-                                    ),
-                                  ],
+                                      Center(
+                                        child: 'add_farmer_profile_image'.toText(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.colorPrimary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Positioned.fill(

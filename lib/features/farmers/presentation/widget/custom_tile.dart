@@ -17,45 +17,45 @@ class CustomTile extends StatefulWidget {
 }
 
 class _CustomTileState extends State<CustomTile> {
-  bool isExpanded = false;
+  bool isExpanded = true;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      padding: REdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      duration: CustomTile.duration,
-      decoration: ShapeDecoration(
-        color: isExpanded ? AppColors.primaryBackground : null,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            width: 1,
-            color: isExpanded ? AppColors.faint : const Color(0xFFE4E8EB),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isExpanded = !isExpanded;
+        });
+      },
+      child: AnimatedContainer(
+        padding: REdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        duration: CustomTile.duration,
+        decoration: ShapeDecoration(
+          color: isExpanded ? AppColors.primaryBackground : null,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 1,
+              color: isExpanded ? AppColors.faint : const Color(0xFFE4E8EB),
+            ),
+            borderRadius: BorderRadius.circular(8.r),
           ),
-          borderRadius: BorderRadius.circular(8.r),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: widget.title.toText(
-                  translate: false,
-                  fontSize: 14,
-                  color: isExpanded ? AppColors.colorPrimary : AppColors.accentElement,
-                  fontWeight: FontWeight.w600,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: widget.title.toText(
+                    translate: false,
+                    fontSize: 14,
+                    color: isExpanded ? AppColors.colorPrimary : AppColors.accentElement,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              16.horizontalSpace,
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isExpanded = !isExpanded;
-                  });
-                },
-                child: AnimatedContainer(
+                16.horizontalSpace,
+                AnimatedContainer(
                   duration: CustomTile.duration,
                   height: 25.h,
                   width: 25.w,
@@ -71,23 +71,23 @@ class _CustomTileState extends State<CustomTile> {
                     child: SvgPicture.asset(AppIcon.rightArrow),
                   ),
                 ),
-              ),
-            ],
-          ),
-          AnimatedCrossFade(
-            firstChild: const SizedBox(height: 0),
-            secondChild: Padding(
-              padding: REdgeInsets.only(top: 16),
-              
-              child: widget.body,
+              ],
             ),
-            crossFadeState:
-                isExpanded
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
-            duration: CustomTile.duration,
-          ),
-        ],
+            AnimatedCrossFade(
+              firstChild: const SizedBox(height: 0),
+              secondChild: Padding(
+                padding: REdgeInsets.only(top: 16),
+                
+                child: widget.body,
+              ),
+              crossFadeState:
+                  isExpanded
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+              duration: CustomTile.duration,
+            ),
+          ],
+        ),
       ),
     );
   }

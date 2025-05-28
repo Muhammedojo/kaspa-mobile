@@ -38,7 +38,7 @@ class GlobalVariables {
     marketListEndpoint,
     marketPriceListEndpoint,
     cropListEndpoint,
-    cropCalendarListEndpoint,
+    bankListEndpoint,
     lgaListEndpoint,
     productListEndpoint,
     incidentReportListEndpoint,
@@ -46,17 +46,17 @@ class GlobalVariables {
     dashboardFarmerEndpoint,
     farmersListEndpoint,
     cooperativeListEndpoint,
-    bankListEndpoint,
+    cropCalendarListEndpoint,
   ];
 
-  var syncMap = <String, String>{
+  var syncMap = {
     livestockListEndpoint: KEY_LIVESTOCK,
     wardListEndpoint: KEY_WARD,
     weatherListEndpoint: KEY_WEATHER,
     marketListEndpoint: KEY_MARKET,
     marketPriceListEndpoint: KEY_MARKET_PRICE,
     cropListEndpoint: KEY_CROPS,
-    cropCalendarListEndpoint: KEY_CROP_CALENDAR,
+    bankListEndpoint: KEY_BANK,
     lgaListEndpoint: KEY_LGA,
     productListEndpoint: KEY_PRODUCT,
     incidentReportListEndpoint: KEY_INCIDENT,
@@ -64,7 +64,7 @@ class GlobalVariables {
     dashboardFarmerEndpoint: KEY_DASHBOARD,
     farmersListEndpoint: KEY_FARMER,
     cooperativeListEndpoint: KEY_COOPERATIVE,
-    bankListEndpoint: KEY_BANK,
+    cropCalendarListEndpoint: KEY_CROP_CALENDAR,
   };
 
   static final rootNavigatorKey = GlobalKey<NavigatorState>();

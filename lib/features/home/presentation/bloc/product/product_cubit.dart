@@ -42,7 +42,9 @@ class ProductCubit extends Cubit<ProductState> {
             loadProductsFromDb();
           },
           (r) async {
+            int totalCount = r.itemCount ?? 0;
             currentPulledCount += r.data?.length ?? 0;
+            currentPulledCount = currentPulledCount.clamp(0, totalCount);
             double progressPercent =
                 (currentPulledCount.toDouble() /
                     double.parse((r.itemCount ?? 0).toString())) *
@@ -58,10 +60,8 @@ class ProductCubit extends Cubit<ProductState> {
                 );
             saveProductsToDb(r.data ?? []);
             if (r.nextUrl != null && (r.nextUrl ?? "").isNotEmpty) {
-              
               loadProduct(url: r.nextUrl);
             } else {
-              
               GlobalVariables.rootNavigatorKey.currentContext!
                   .read<ApiRequestBloc>()
                   .add(ApiRequestCompleted());
@@ -95,5 +95,4 @@ class ProductCubit extends Cubit<ProductState> {
       debugPrint(e.toString());
     }
   }
-
 }

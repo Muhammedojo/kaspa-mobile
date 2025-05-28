@@ -33,9 +33,9 @@ class CreateCooperativeSuccess extends CooperativeState {
 }
 
 class CooperativeFailure extends CooperativeState {
-  final Failure error;
+  final String error;
 
-  const CooperativeFailure(this.error);
+  const CooperativeFailure({required this.error});
 
   @override
   List<Object> get props => [error];

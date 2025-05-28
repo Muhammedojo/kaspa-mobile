@@ -1,11 +1,8 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import '../../../../../core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/api/api.dart';
-import '../../../../../core/api/exceptions/api_exception.dart';
 import '../../../../../core/data/model/incident_report.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
@@ -35,7 +32,7 @@ class IncidentCubit extends Cubit<IncidentState> {
           BlocProvider.of<ApiRequestBloc>(
             GlobalVariables.rootNavigatorKey.currentContext!,
           ).state;
-            if (state is ApiRequestStateCompleted) {
+      if (state is ApiRequestStateCompleted) {
         loadIncidentsFromDb();
       } else {
         response.fold(
@@ -46,7 +43,9 @@ class IncidentCubit extends Cubit<IncidentState> {
             loadIncidentsFromDb();
           },
           (r) async {
+            int totalCount = r.itemCount ?? 0;
             currentPulledCount += r.data?.length ?? 0;
+            currentPulledCount = currentPulledCount.clamp(0, totalCount);
             double progressPercent =
                 (currentPulledCount.toDouble() /
                     double.parse((r.itemCount ?? 0).toString())) *
@@ -81,7 +80,7 @@ class IncidentCubit extends Cubit<IncidentState> {
     }
   }
 
-    loadIncidentsFromDb() async {
+  loadIncidentsFromDb() async {
     try {
       final response = await repository.getIncident();
       emit(IncidentLoaded(response));
@@ -90,11 +89,13 @@ class IncidentCubit extends Cubit<IncidentState> {
     }
   }
 
-    logIncidentReport(IncidentReport data) async {
+  logIncidentReport(IncidentReport data) async {
     try {
       emit(IncidentLoading());
       final response = await repository.logIncident(data);
-      response.fold((l) => emit(IncidentFailure(l)), (r) async {
+      response.fold((l) => emit(IncidentFailure(error: l.failureMessage())), (
+        r,
+      ) async {
         if (r.data != null) {
           emit(ReportIncidentSuccess(r.data!));
 
@@ -104,13 +105,13 @@ class IncidentCubit extends Cubit<IncidentState> {
         } else {
           emit(
             IncidentFailure(
-              UnknownFailure(message: "Market price creation returned no data"),
+              error: 'Something went wrong. Please try again later.',
             ),
           );
         }
       });
     } on Error catch (e) {
-      emit(IncidentFailure(UnknownFailure(message: e.toString())));
+      emit(IncidentFailure(error: e.toString()));
     }
   }
 

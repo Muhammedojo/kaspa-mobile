@@ -39,7 +39,7 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                     elevation: 0,
                     floating: false,
                     pinned: false,
-                    title: 'Crop Calendar'.toText(
+                    title: 'Crops'.toText(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       translate: false,

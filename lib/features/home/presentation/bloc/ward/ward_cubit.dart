@@ -42,7 +42,9 @@ class WardCubit extends Cubit<WardState> {
             loadWardsFromDb();
           },
           (r) async {
+            int totalCount = r.itemCount ?? 0;
             currentPulledCount += r.data?.length ?? 0;
+            currentPulledCount = currentPulledCount.clamp(0, totalCount);
             double progressPercent =
                 (currentPulledCount.toDouble() /
                     double.parse((r.itemCount ?? 0).toString())) *

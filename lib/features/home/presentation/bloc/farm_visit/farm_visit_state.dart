@@ -33,9 +33,9 @@ class CreateVisitSuccess extends FarmVisitState {
 }
 
 class FarmVisitFailure extends FarmVisitState {
-  final Failure error;
+  final String error;
 
-  const FarmVisitFailure(this.error);
+  const FarmVisitFailure({required this.error});
 
   @override
   List<Object> get props => [error];

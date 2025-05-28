@@ -32,9 +32,9 @@ class CreateMarketPriceSuccess extends MarketPriceState {
 }
 
 class MarketPriceFailure extends MarketPriceState {
-  final Failure error;
+  final String error;
 
-  const MarketPriceFailure(this.error);
+  const MarketPriceFailure({required this.error});
 
   @override
   List<Object> get props => [error];

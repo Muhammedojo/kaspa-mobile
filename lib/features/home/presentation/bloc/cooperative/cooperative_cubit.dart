@@ -3,9 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
-import 'package:kaspa/core/api/exceptions/contracts/failure.dart';
 import '../../../../../core/api/api.dart';
-import '../../../../../core/api/exceptions/api_exception.dart';
 import '../../../../../core/data/model/cooperative.dart';
 import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/utils/global_variables.dart';
@@ -46,7 +44,10 @@ class CooperativeCubit extends Cubit<CooperativeState> {
             loadCooperativesFromDb();
           },
           (r) async {
+            
+            int totalCount = r.itemCount ?? 0;
             currentPulledCount += r.data?.length ?? 0;
+            currentPulledCount = currentPulledCount.clamp(0, totalCount);
             double progressPercent =
                 (currentPulledCount.toDouble() /
                     double.parse((r.itemCount ?? 0).toString())) *
@@ -81,7 +82,7 @@ class CooperativeCubit extends Cubit<CooperativeState> {
     }
   }
 
-  loadCooperativesFromDb(   {
+  loadCooperativesFromDb({
     String? searchTerm,
     List<WhereClause>? whereClauses,
     Sort? whereSort,
@@ -92,13 +93,12 @@ class CooperativeCubit extends Cubit<CooperativeState> {
   }) async {
     try {
       final response = await repository.getCooperative(
-         searchTerm: searchTerm,
+        searchTerm: searchTerm,
         whereClauses: whereClauses,
         whereSort: whereSort,
         sortBy: sortBy,
         isSearching: isSearching,
         isFiltering: isFiltering,
-    
       );
       emit(CooperativeLoaded(response));
     } catch (e) {
@@ -119,23 +119,22 @@ class CooperativeCubit extends Cubit<CooperativeState> {
     try {
       emit(CooperativeLoading());
       final response = await repository.createCooperative(data);
-      response.fold((l) => emit(CooperativeFailure(l)), (r) async {
-        if (r.data != null) {
-          emit(CreateCooperativeSuccess(r.data!));
+      response.fold(
+        (l) => emit(CooperativeFailure(error: l.failureMessage())),
+        (r) async {
+          if (r.data != null) {
+            emit(CreateCooperativeSuccess(r.data!));
 
-          GetIt.I.get<ApiRequestBloc>().add(
-            ApiRequestTriggered(apiRequestList: [cooperativeListEndpoint]),
-          );
-        } else {
-          emit(
-            CooperativeFailure(
-              UnknownFailure(message: "Cooperative creation returned no data"),
-            ),
-          );
-        }
-      });
+            GetIt.I.get<ApiRequestBloc>().add(
+              ApiRequestTriggered(apiRequestList: [cooperativeListEndpoint]),
+            );
+          } else {
+            emit(CooperativeFailure(error: 'Something went wrong'));
+          }
+        },
+      );
     } on Error catch (e) {
-      emit(CooperativeFailure(UnknownFailure(message: e.toString())));
+      emit(CooperativeFailure(error: e.toString()));
     }
   }
 }

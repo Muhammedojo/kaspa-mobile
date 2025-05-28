@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/data/model/farm_visit.dart';
 import '../../../../core/data/model/farmer.dart';
-import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/plot.dart';
 import '../../../../core/data/model/product.dart';
 import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';

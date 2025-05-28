@@ -17,9 +17,8 @@ class LivestockCubit extends Cubit<LivestockState> {
   int currentPulledCount = 0;
 
   loadLivestock({String? url}) async {
-   
-        try {
-     emit(LivestockLoading());
+    try {
+      emit(LivestockLoading());
       final response =
           url != null && url.isNotEmpty
               ? await repository.getLivestockList(endpoint: url)
@@ -40,7 +39,9 @@ class LivestockCubit extends Cubit<LivestockState> {
             loadLivestocksFromDb();
           },
           (r) async {
+            int totalCount = r.itemCount ?? 0;
             currentPulledCount += r.data?.length ?? 0;
+            currentPulledCount = currentPulledCount.clamp(0, totalCount);
             double progressPercent =
                 (currentPulledCount.toDouble() /
                     double.parse((r.itemCount ?? 0).toString())) *

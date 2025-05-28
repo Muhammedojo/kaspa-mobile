@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import '../../../../../core/api/exceptions/contracts/failure.dart';
 
 abstract class CreateFarmerState extends Equatable {
   const CreateFarmerState();
@@ -15,9 +14,9 @@ class CreateFarmerLoading extends CreateFarmerState {}
 class CreateFarmerSuccess extends CreateFarmerState {}
 
 class CreateFarmerFailure extends CreateFarmerState {
-  final Failure error;
+  final String error;
 
-  const CreateFarmerFailure(this.error);
+  const CreateFarmerFailure({required this.error});
 
   @override
   List<Object> get props => [error];

@@ -10,7 +10,6 @@ import '../../../../core/utils/styles.dart';
 import '../../../farmers/presentation/bloc/bloc.dart';
 import '../../../farmers/presentation/bloc/get_farmer/get_farmer_state.dart';
 import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
-import '../../../home/presentation/bloc/market/cubit.dart';
 import '../../../home/presentation/bloc/plot/plot_cubit.dart';
 import '../../../home/presentation/bloc/product/cubit.dart';
 import '../contract/create_farm_visit.dart';

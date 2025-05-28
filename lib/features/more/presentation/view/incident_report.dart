@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
+import '../../../../core/data/model/incident_report.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/navigation/navigator.dart';
@@ -63,28 +66,75 @@ class IncidentReportView extends StatelessWidget
                           if (state is IncidentLoaded) {
                             return state.incidentList.isEmpty
                                 ? ErrorWidgets(message: 'no_incident_logged')
-                                : ListView.separated(
-                                  itemCount: state.incidentList.length,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return ReportCard(
-                                      data: state.incidentList[index],
-                                      onTap: () {
-                                        // pushTo(
-                                        //   CooperativeDetailsScreen(
-                                        //     cooperative:
-                                        //         state.cooperativeList[index],
-                                        //   ),
-                                        //   context,
-                                        // );
-                                      },
+                                : StickyGroupedListView<IncidentReport, DateTime>(
+                                  stickyHeaderBackgroundColor:
+                                      Colors.transparent,
+                                  elements: state.incidentList,
+                                  groupBy: (item) {
+                                    DateTime parsedDate = DateTime.parse(
+                                      item.date ?? '2025-01-01',
+                                    );
+                                    return DateTime(
+                                      parsedDate.year,
+                                      parsedDate.month,
+                                      parsedDate.day,
                                     );
                                   },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          12.verticalSpace,
+                                  groupSeparatorBuilder: (item) {
+                                    return Container(
+                                      padding: REdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
+                                      color: Colors.transparent,
+                                      width: double.infinity,
+                                      child: DateFormat.yMMMd()
+                                          .format(
+                                            DateTime.parse(
+                                              item.date ?? '2025-01-01',
+                                            ),
+                                          )
+                                          .toText(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.accentText,
+                                          ),
+                                    );
+                                  },
+                                  itemBuilder: (context, item) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 8),
+                                      child: ReportCard(
+                                        data: item,
+                                        onTap: () {},
+                                      ),
+                                    );
+                                  },
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  order: StickyGroupedListOrder.DESC,
                                 );
+                                //  ListView.separated(
+                                //   itemCount: state.incidentList.length,
+                                //   physics:
+                                //       const AlwaysScrollableScrollPhysics(),
+                                //   itemBuilder: (context, index) {
+                                //     return ReportCard(
+                                //       data: state.incidentList[index],
+                                //       onTap: () {
+                                //         // pushTo(
+                                //         //   CooperativeDetailsScreen(
+                                //         //     cooperative:
+                                //         //         state.cooperativeList[index],
+                                //         //   ),
+                                //         //   context,
+                                //         // );
+                                //       },
+                                //     );
+                                //   },
+                                //   separatorBuilder:
+                                //       (BuildContext context, int index) =>
+                                //           12.verticalSpace,
+                                // );
                           }
                           if (state is CooperativeFailure) {
                             return ErrorWidgets(
