@@ -25,6 +25,7 @@ import 'features/home/presentation/bloc/market_price/cubit.dart';
 import 'features/home/presentation/bloc/plot/plot_cubit.dart';
 import 'features/home/presentation/bloc/product/cubit.dart';
 import 'features/home/presentation/bloc/weather/cubit.dart';
+import 'features/home/presentation/bloc/weather_lga/cubit.dart';
 
 class Kaspa extends StatelessWidget {
   const Kaspa({super.key});
@@ -91,6 +92,11 @@ class Kaspa extends StatelessWidget {
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<LgaCubit>(),
         ),
+
+          BlocProvider(
+          create: (context) => AppInitializer.instanceLocator.get<LgaWeatherCubit>(),
+        ),
+
 
         BlocProvider(
           create:

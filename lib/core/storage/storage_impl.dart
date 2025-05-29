@@ -162,6 +162,10 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<List<Weather>> getWeather() => databaseStorage.getWeather();
 
+    @override
+  Future<List<Weather>> getLgaWeather() => databaseStorage.getLgaWeather();
+
+
   // SAVE TO DB CALLS
 
   @override
@@ -234,4 +238,8 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveWeather(List<Weather> objectList) =>
       databaseStorage.saveWeather(objectList);
+
+        @override
+  Future<void> saveLgaWeather(List<Weather> objectList) =>
+      databaseStorage.saveLgaWeather(objectList);
 }

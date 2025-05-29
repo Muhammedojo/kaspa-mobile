@@ -72,6 +72,7 @@ abstract class DatabaseStorage {
   Future<List<Market>> getMarket();
   Future<List<MarketData>> getMarketPrice();
   Future<List<Weather>> getWeather();
+    Future<List<Weather>> getLgaWeather();
   Future<List<Insight>> getInsight();
   Future<List<IncidentReport>> getIncident();
 
@@ -93,4 +94,5 @@ abstract class DatabaseStorage {
   Future<void> saveMarket(List<Market> objectList);
   Future<void> saveMarketPrice(List<MarketData> objectList);
   Future<void> saveWeather(List<Weather> objectList);
+    Future<void> saveLgaWeather(List<Weather> objectList);
 }

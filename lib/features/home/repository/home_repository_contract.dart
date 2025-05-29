@@ -193,4 +193,12 @@ abstract class IHomeRepository {
   Future<void> saveWeather(List<Weather> weatherList);
 
   Future<List<Weather>> getWeather();
+
+   Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList({
+    String? endpoint,
+  });
+
+  Future<void> saveLgaWeather(List<Weather> weatherList);
+
+  Future<List<Weather>> getLgaWeather();
 }

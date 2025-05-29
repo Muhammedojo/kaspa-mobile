@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:kaspa/core/data/model/market.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import '../../../../core/data/model/market_data.dart';
 import '../../../../core/utils/function.dart';

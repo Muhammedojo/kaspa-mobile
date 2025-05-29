@@ -496,6 +496,32 @@ class ApiServicesImpl implements ApiServices {
     }
   }
 
+    @override
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Weather>>(
+        endpoint ?? lgaWeatherListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.lgaWeather = currentDateTime();
+          lastRequestTime.lgaWeatherUrl = realUri;
+          final weatherList =
+              (data as List).map((e) => Weather.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return weatherList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
   @override
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data) {
     return apiClient.request<Market>(

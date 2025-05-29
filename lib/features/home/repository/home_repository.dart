@@ -128,6 +128,12 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getWeatherList(endpoint);
 
+   @override
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList({
+    String? endpoint,
+  }) => apiServices.getLGAWeatherList(endpoint);
+
+
   @override
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList({
     String? endpoint,
@@ -201,6 +207,9 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<Weather>> getWeather() => localStorage.getWeather();
 
+    @override
+  Future<List<Weather>> getLgaWeather() => localStorage.getLgaWeather();
+
   //SAVE LOCAL STORAGE CALLS
   @override
   Future<void> saveBank(List<Bank> bankList) => localStorage.saveBank(bankList);
@@ -263,4 +272,8 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveWeather(List<Weather> weatherList) =>
       localStorage.saveWeather(weatherList);
+
+        @override
+  Future<void> saveLgaWeather(List<Weather> weatherList) =>
+      localStorage.saveLgaWeather(weatherList);
 }

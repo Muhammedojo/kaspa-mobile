@@ -37,6 +37,7 @@ import '../../features/home/presentation/bloc/market_price/cubit.dart';
 import '../../features/home/presentation/bloc/plot/plot_cubit.dart';
 import '../../features/home/presentation/bloc/product/cubit.dart';
 import '../../features/home/presentation/bloc/weather/cubit.dart';
+import '../../features/home/presentation/bloc/weather_lga/cubit.dart';
 import '../../features/home/repository/home_repository.dart';
 import '../../features/home/repository/home_repository_contract.dart';
 
@@ -173,6 +174,13 @@ class AppInitializer {
 
     instanceLocator.registerLazySingleton<LgaCubit>(
       () => LgaCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+     instanceLocator.registerLazySingleton<LgaWeatherCubit>(
+      () => LgaWeatherCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),

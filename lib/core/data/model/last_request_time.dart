@@ -11,6 +11,8 @@ class LastRequestTime {
   String? cropCalendarUrl;
   String? lga;
   String? lgaUrl;
+  String? lgaWeather;
+  String? lgaWeatherUrl;
   String? livestock;
   String? livestockUrl;
   String? ward;
@@ -59,6 +61,8 @@ LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
   obj.cropCalendarUrl = json['cropCalendarUrl'];
   obj.lga = json['lga'];
   obj.lgaUrl = json['lgaUrl'];
+  obj.lgaWeather = json['lgaWeather'];
+  obj.lgaWeatherUrl = json['lgaWeatherUrl'];
   obj.livestock = json['livestock'];
   obj.livestockUrl = json['livestockUrl'];
   obj.ward = json['ward'];
@@ -103,6 +107,8 @@ Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
       KEY_COOPERATIVE_URL: obj.cooperativeUrl,
       KEY_LGA: obj.lga,
       KEY_LGA_URL: obj.lgaUrl,
+      KEY_LGA_WEATHER: obj.lgaWeather,
+      KEY_LGA_WEATHER_URL: obj.lgaWeatherUrl,
       KEY_LIVESTOCK: obj.livestock,
       KEY_LIVESTOCK_URL: obj.livestockUrl,
       KEY_WARD: obj.ward,

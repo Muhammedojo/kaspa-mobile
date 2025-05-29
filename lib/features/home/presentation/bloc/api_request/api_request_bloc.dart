@@ -6,6 +6,7 @@ import '../../../../../core/utils/global_variables.dart';
 import '../../../../farmers/presentation/bloc/bloc.dart';
 import '../bloc.dart';
 import '../crop_calendar/crop_calendar_cubit.dart';
+import '../farm_visit/farm_visit_cubit.dart';
 import '../farmer_dashboard/farmer_dashboard_cubit.dart';
 import '../incident_report/incident_report_cubit.dart';
 import '../insight/insight_cubit.dart';
@@ -13,7 +14,7 @@ import '../market/cubit.dart';
 import '../market_price/cubit.dart';
 import '../plot/plot_cubit.dart';
 import '../product/cubit.dart';
-import '../weather/cubit.dart';
+import '../weather_lga/cubit.dart';
 import 'api_request_state.dart';
 part 'api_request_event.dart';
 
@@ -128,8 +129,16 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<GetFarmersCubit>().loadFarmers();
         break;
 
+         case farmVisitListEndpoint:
+        AppInitializer.instanceLocator.get<FarmVisitCubit>().loadFarmVisit();
+        break;
+
       case lgaListEndpoint:
         AppInitializer.instanceLocator.get<LgaCubit>().loadLga();
+        break;
+
+              case lgaWeatherListEndpoint:
+        AppInitializer.instanceLocator.get<LgaWeatherCubit>().loadLgaWeather();
         break;
 
       case livestockListEndpoint:
@@ -183,9 +192,9 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
       // case usersListEndpoint:
       //   AppInitializer.instanceLocator.get<UserCubit>().loadUser();
       //   break;
-      case weatherListEndpoint:
-        AppInitializer.instanceLocator.get<WeatherCubit>().loadWeather();
-        break;
+      // case weatherListEndpoint:
+      //   AppInitializer.instanceLocator.get<WeatherCubit>().loadWeather();
+      //   break;
 
       case marketListEndpoint:
         AppInitializer.instanceLocator.get<MarketCubit>().loadMarket();

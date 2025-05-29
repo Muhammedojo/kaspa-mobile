@@ -1,14 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaspa/core/theme/colors.dart';
 import 'package:kaspa/core/utils/extensions.dart';
-
 import '../../../../core/data/model/weather.dart';
 import '../../../../core/resources/vectors.dart';
 
 class ForecastCard extends StatelessWidget {
-  final Weather weather;
+  final List<Weather> weather;
+
   const ForecastCard({super.key, required this.weather});
 
   @override
@@ -42,16 +43,63 @@ class ForecastCard extends StatelessWidget {
           10.verticalSpace,
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildWeatherDetail('', ''),
-                8.horizontalSpace,
-                _buildWeatherDetail('', ''),
-                8.horizontalSpace,
-                _buildWeatherDetail('', ''),
-                8.horizontalSpace,
-                _buildWeatherDetail('', ''),
-              ],
+            child: Builder(
+              builder: (context) {
+                final now = DateTime.now();
+
+                final tomorrowStartOfDay = DateTime(
+                  now.year,
+                  now.month,
+                  now.day,
+                ).add(const Duration(days: 1));
+
+                List<Weather> displayableWeatherItems =
+                    weather.where((item) {
+                      if (item.date != null && item.date!.isNotEmpty) {
+                        try {
+                          final itemDateTime = DateTime.parse(item.date!);
+                          final itemDateOnly = DateTime(
+                            itemDateTime.year,
+                            itemDateTime.month,
+                            itemDateTime.day,
+                          );
+                          return !itemDateOnly.isBefore(tomorrowStartOfDay);
+                        } catch (_) {
+                          return false;
+                        }
+                      }
+                      return false;
+                    }).toList();
+
+                displayableWeatherItems.sort((a, b) {
+                  try {
+                    final dateA = DateTime.parse(a.date!);
+                    final dateB = DateTime.parse(b.date!);
+                    return dateA.compareTo(dateB);
+                  } catch (_) {
+                    return 0;
+                  }
+                });
+
+                List<Widget> forecastWidgets = [];
+                if (displayableWeatherItems.isEmpty) {
+                  return "no_forecast_data_from_tomorrow".toText(
+                    translate: true,
+                  );
+                }
+                for (int i = 0; i < displayableWeatherItems.length; i++) {
+                  forecastWidgets.add(
+                    _buildWeatherDetail(
+                      displayableWeatherItems[i],
+                      _getDayLabel(context, i, displayableWeatherItems[i]),
+                    ),
+                  );
+                  if (i < displayableWeatherItems.length - 1) {
+                    forecastWidgets.add(8.horizontalSpace);
+                  }
+                }
+                return Row(children: forecastWidgets);
+              },
             ),
           ),
         ],
@@ -59,7 +107,39 @@ class ForecastCard extends StatelessWidget {
     );
   }
 
-  Widget _buildWeatherDetail(String value, String label) {
+  String _getDayLabel(BuildContext context, int index, Weather weatherItem) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    DateTime? itemDate;
+    if (weatherItem.date?.isNotEmpty == true) {
+      try {
+        final parsedDate = DateTime.parse(weatherItem.date!);
+        itemDate = DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+      } catch (e) {
+        debugPrint('Failed to parse weather date: ${weatherItem.date}');
+      }
+    }
+
+    itemDate ??= today.add(Duration(days: index + 1));
+
+    final tomorrow = today.add(const Duration(days: 1));
+    if (itemDate.isAtSameMomentAs(tomorrow)) {
+      return "TOMORROW";
+    }
+
+    try {
+      return DateFormat(
+        'EEE',
+        context.locale.languageCode,
+      ).format(itemDate).toUpperCase();
+    } catch (e) {
+      debugPrint('Failed to format date: $e');
+      return "DAY ${index + 1}";
+    }
+  }
+
+  Widget _buildWeatherDetail(Weather item, String dayLabel) {
     return Container(
       width: 100.w,
       padding: REdgeInsets.symmetric(vertical: 4),
@@ -70,7 +150,7 @@ class ForecastCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          'TOMORROW'.toText(
+          dayLabel.toText(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: AppColors.primaryGreen,
@@ -79,7 +159,7 @@ class ForecastCard extends StatelessWidget {
 
           SvgPicture.asset(AppIcon.sun),
           2.verticalSpace,
-          '34°C'.toText(
+          '${item.tempMean}°C'.toText(
             translate: false,
             fontSize: 14,
             fontWeight: FontWeight.w700,
@@ -92,7 +172,7 @@ class ForecastCard extends StatelessWidget {
           ),
 
           2.verticalSpace,
-          '60%'.toText(
+          '${item.precipProbMean}%'.toText(
             translate: false,
             fontSize: 14,
             fontWeight: FontWeight.w700,
@@ -104,7 +184,7 @@ class ForecastCard extends StatelessWidget {
             color: AppColors.ColorAccent,
           ),
           2.verticalSpace,
-          '34km/h'.toText(
+          '${item.windSpeedMax}km/h'.toText(
             translate: false,
             fontSize: 14,
             fontWeight: FontWeight.w700,

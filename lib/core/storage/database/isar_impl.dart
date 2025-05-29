@@ -351,6 +351,21 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
+    @override
+  Future<List<Weather>> getLgaWeather() {
+    if (!_isar.isOpen) {
+      return Future.value(<Weather>[]);
+    }
+    try {
+      final weathers = _isar.weathers.where().findAllSync();
+      return Future.value(weathers);
+    } catch (e) {
+      debugPrint("Error retrieving weathers: $e");
+      return Future.value(<Weather>[]);
+    }
+  }
+
+
   @override
   Future<void> saveBank(List<Bank> objectList) async {
     if (!_isar.isOpen) {
@@ -564,6 +579,18 @@ class IsarImpl implements DatabaseStorage {
       await _isar.writeTxn(() => _isar.weathers.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving weather : $e");
+    }
+  }
+
+   @override
+  Future<void> saveLgaWeather(List<Weather> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.weathers.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving lga weather : $e");
     }
   }
 }

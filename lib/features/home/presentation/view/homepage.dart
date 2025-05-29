@@ -12,7 +12,7 @@ import '../../../../core/component/pages_bar.dart';
 import '../../../auth/presentation/bloc/user/cubit.dart';
 import '../bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
 import '../bloc/insight/insight_cubit.dart';
-import '../bloc/weather/cubit.dart';
+import '../bloc/weather_lga/cubit.dart';
 import '../contract/homepage.dart';
 import '../widget/forecast_card.dart';
 import '../widget/weather_card.dart';
@@ -97,25 +97,24 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                               );
                             },
                           ),
-                            BlocBuilder<WeatherCubit, WeatherState>(
+                            BlocBuilder<LgaWeatherCubit, LgaWeatherState>(
                             builder: (context, state) {
-                              if (state is WeatherLoading) {
+                              if (state is LgaWeatherLoading) {
                                 return Center(
                                   child: CircularProgressIndicator(
                                     color: AppColors.colorPrimary,
                                   ),
                                 );
                               }
-                              if (state is WeatherLoaded) {
+                              if (state is LgaWeatherLoaded) {
                                 if (state.weatherList.isEmpty) {
                                   return ErrorWidgets(
                                     message:
                                         'Weather data not available for your location.',
                                   );
                                 }
-                                final currentWeatherData = state.weatherList[0];
-
-                                return ForecastCard(weather: currentWeatherData);
+                              
+                                return ForecastCard(weather: state.weatherList,);
                               }
 
                               return ErrorWidgets(
@@ -402,7 +401,6 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
       ),
     );
   }
-
   Widget _buildQuickActionButton(
     String label,
     String labels,

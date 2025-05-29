@@ -25,6 +25,7 @@ const incidentReportListEndpoint = "incident-reports";
 const createIncidentReportEndpoint = "incident-reports";
 const productListEndpoint = "products";
 const weatherListEndpoint = "weather-data";
+const lgaWeatherListEndpoint = "weather-data?lga=3";
 const marketListEndpoint = "markets";
 const createMarketEndpoint = "markets";
 const logMarketPriceEndpoint = "market-data";
