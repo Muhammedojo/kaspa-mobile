@@ -48,6 +48,8 @@ class GlobalVariables {
     dashboardEndpoint,
     dashboardFarmerEndpoint,
     farmersListEndpoint,
+    plotListEndpoint,
+    farmVisitListEndpoint,
     cropCalendarListEndpoint,
     cooperativeListEndpoint,
     cropCalendarListEndpoint,
@@ -70,10 +72,12 @@ class GlobalVariables {
     dashboardEndpoint: KEY_INSIGHT,
     dashboardFarmerEndpoint: KEY_DASHBOARD,
     farmersListEndpoint: KEY_FARMER,
+    plotListEndpoint: KEY_PLOT,
+    farmVisitListEndpoint: KEY_FARM_VISIT,
     cropCalendarListEndpoint: KEY_CROP_CALENDAR,
     cooperativeListEndpoint: KEY_COOPERATIVE,
- plotListEndpoint: KEY_PLOT,
- farmVisitListEndpoint: KEY_FARM_VISIT,
+    plotListEndpoint: KEY_PLOT,
+    
   };
 
   static final rootNavigatorKey = GlobalKey<NavigatorState>();

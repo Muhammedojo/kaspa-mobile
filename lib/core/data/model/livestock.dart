@@ -2,7 +2,6 @@ import 'package:isar/isar.dart';
 import 'package:kaspa/core/data/model/general_model.dart';
 import '../../utils/const.dart';
 import 'insight.dart';
-import 'product.dart';
 
  part 'livestock.g.dart';
 

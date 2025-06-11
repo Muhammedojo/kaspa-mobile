@@ -191,6 +191,7 @@ class FarmerDetailsView extends StatelessWidget
                               children: [
                                 "NOK Name".toText(
                                   fontSize: 14,
+                                  translate: false,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
@@ -207,11 +208,15 @@ class FarmerDetailsView extends StatelessWidget
                               children: [
                                 "NOK Relationship".toText(
                                   fontSize: 14,
+                                     translate: false,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.nokDetails?.relationship ??
+                                  child: (controller
+                                              .farmer
+                                              .nokDetails
+                                              ?.relationship ??
                                           'Not specified')
                                       .toText(translate: false, fontSize: 14),
                                 ),
@@ -222,11 +227,15 @@ class FarmerDetailsView extends StatelessWidget
                               children: [
                                 "NOK Phone".toText(
                                   fontSize: 14,
+                                     translate: false,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.nokDetails?.phoneNumber ??
+                                  child: (controller
+                                              .farmer
+                                              .nokDetails
+                                              ?.phoneNumber ??
                                           'Not specified')
                                       .toText(translate: false, fontSize: 14),
                                 ),
@@ -281,16 +290,31 @@ class FarmerDetailsView extends StatelessWidget
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    (controller.farmer.bankDetails?.accountNumber ??
+                                    (controller
+                                                .farmer
+                                                .bankDetails
+                                                ?.accountNumber ??
                                             'Not specified')
                                         .toText(translate: false, fontSize: 14),
-                                    (controller.farmer.bankDetails?.accountName ??
+                                    (controller
+                                                .farmer
+                                                .bankDetails
+                                                ?.accountName ??
                                             'Not specified')
                                         .toText(translate: false, fontSize: 14),
-                                    (controller.farmer.bankDetails?.bank?.name ??
-                                            'Not specified').toText(
-                                      translate: false,
-                                      fontSize: 14,
+                                    SizedBox(
+                                      width: 210.w,
+                                      child: (controller
+                                                  .farmer
+                                                  .bankDetails
+                                                  ?.bank
+                                                  ?.name ??
+                                              'Not specified')
+                                          .toText(
+                                            textOverflow: TextOverflow.ellipsis,
+                                            translate: false,
+                                            fontSize: 14,
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -305,6 +329,7 @@ class FarmerDetailsView extends StatelessWidget
                           ],
                         ),
                       ),
+                     
                       16.verticalSpace,
                       CustomTile(
                         title: "Farmer's Loan",

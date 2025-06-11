@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
 import '../../utils/const.dart';
@@ -34,9 +35,9 @@ Plot _$PlotFromJson(Map<String, dynamic> json) {
   obj.longitude =json[KEY_LONGITUDE];
   obj.latitude = json[KEY_LATITUDE];
   obj.farmCrops = json[KEY_FARM_CROPS]
+
       .map<FarmCrop>((farmCrop) => FarmCrop.fromJson(farmCrop))
       .toList();
-
 
   return obj;
 }

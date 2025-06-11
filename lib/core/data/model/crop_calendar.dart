@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:isar/isar.dart';
 import '../../../core/data/model/general_model.dart';
 import '../../../../core/data/model/insight.dart';
+import '../../resources/vectors.dart';
 import '../../utils/const.dart';
 
 part 'crop_calendar.g.dart';
@@ -21,20 +23,13 @@ class CropCalendar extends GeneralModel {
 
   CropCalendar();
 
-    Color getCropColor() {
-    if (crop?.product?.productType?.toLowerCase() == 'crop' &&
-        crop?.product?.name != null ) {
-      switch (crop?.product?.name!.toLowerCase()) {
-        case 'maize':
+  Color getStageColor() {
+    if (stage != null) {
+      switch (stage?.toLowerCase()) {
+        case 'harvesting':
           return Colors.amber[700]!;
-        case 'potato':
-          return Colors.brown[400]!;
-        case 'rice':
+        case 'planting':
           return Colors.yellow[700]!;
-        case 'tomato':
-          return Colors.red[600]!;
-        case 'onion':
-          return Colors.purple[700]!;
         default:
           return Colors.green[600]!;
       }
@@ -43,27 +38,14 @@ class CropCalendar extends GeneralModel {
     }
   }
 
-  IconData getCropIcon() {
+  getCropIcon() {
     if (crop?.product?.productType?.toLowerCase() == 'crop' &&
         crop?.product?.name != null) {
-      switch (crop?.product?.name!.toLowerCase()) {
-        case 'maize':
-          return Icons.grass;
-        case 'potato':
-          return Icons.circle;
-        case 'rice':
-          return Icons.grain;
-        case 'tomato':
-        case 'onion':
-          return Icons.circle;
-        default:
-          return Icons.eco;
-      }
+      return SvgPicture.asset(AppIcon.crop);
     }
 
-    return Icons.eco;
+    return SvgPicture.asset(AppIcon.livestock);
   }
-
 
   factory CropCalendar.fromJson(Map<String, dynamic> json) =>
       _$CropCalendarFromJson(json);

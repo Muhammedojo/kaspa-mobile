@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kaspa/core/utils/extensions.dart';
-import 'package:kaspa/features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
+import 'package:kaspa/features/calendar/presentation/controller/crop_activity.dart';
+import '../../../../core/navigation/navigator.dart';
+import '../../../../core/utils/extensions.dart';
+import '../../../../features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
 import '../../../../core/component/empty_list_widget.dart';
-import '../../../../core/data/model/crop.dart';
 import '../../../../core/data/model/crop_calendar.dart';
 import '../../../../core/resources/vectors.dart';
 import '../../../../core/theme/colors.dart';
@@ -177,7 +178,9 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                               final cropCalendarItem = filteredList[itemIndex];
                               return CropCard(
                                 data: cropCalendarItem,
-                                onTap: () {},
+                                onTap: () {
+                                  pushTo(CropActivityScreen(crop: state.cropCalendarList[itemIndex]),context);
+                                },
                               );
                             },
                           ),

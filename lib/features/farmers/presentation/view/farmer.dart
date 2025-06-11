@@ -41,11 +41,7 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageBar(
-              onTap: () {
-                //   pushTo(FarmerRegistrationWithStepper(), context);
-              },
-            ),
+            PageBar(onTap: () {}),
             24.verticalSpace,
             Expanded(
               child: Padding(

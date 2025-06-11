@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/data/model/crop_calendar.dart';
-import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/card_container_widget.dart';
-import '../../../../core/data/model/crop.dart';
 
 class CropCard extends StatelessWidget {
   final CropCalendar data;
@@ -17,17 +15,18 @@ class CropCard extends StatelessWidget {
       onTap: onTap,
       child: Padding(
         padding: REdgeInsets.symmetric(vertical: 8.0),
-        child: CardContainerWidget(
+        child: 
+        CardContainerWidget(
           child: Row(
             children: [
               Container(
                 width: 48.sp,
                 height: 48.sp,
                 decoration: BoxDecoration(
-                  color: data.getCropColor(),
+                 
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Icon(data.getCropIcon(), color: Colors.white, size: 24),
+                child: data.getCropIcon()
               ),
               16.horizontalSpace,
 
@@ -54,27 +53,28 @@ class CropCard extends StatelessWidget {
                   Container(
                     padding: REdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: AppColors.bgGreen.withAlpha((0.3 * 255).toInt()),
+                      color: data.getStageColor().withAlpha((0.1 * 255).toInt()),
                       borderRadius: BorderRadius.circular(16.r),
-                      border: Border.all(color: AppColors.bgGreen, width: 1),
+                      border: Border.all(color: data.getStageColor(), width: 0.5),
                     ),
                     child: (data.stage ?? '').toText(
                       fontSize: 12,
                       translate: false,
-                      color: AppColors.primaryGreen,
+                      color: data.getStageColor(),
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  ('25 May - 25 June').toText(
-                    fontSize: 12,
-                    translate: false,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  // ('25 May - 25 June').toText(
+                  //   fontSize: 12,
+                  //   translate: false,
+                  //   fontWeight: FontWeight.w500,
+                  // ),
                 ],
               ),
             ],
           ),
         ),
+      
       ),
     );
   }

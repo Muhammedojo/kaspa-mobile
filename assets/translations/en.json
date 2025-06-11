@@ -15,10 +15,12 @@
     "in_progress": "In Progress",
     "started": "Started",
     "plot":"Plot",
+    "visit_list_empty":"No Farm Visit Logs Yet.",
+    "crop_stage_activity":"Crop Stage Activity",
     "no_crops_in_harvesting_stage":"No Crops in harvesting stage",
     "no_crops_in_planting_stage":"No Crops in planting stage",
     "no_crops_in_growing_stage":"No Crops in growing stage",
-
+    "stage_activities":"Stage Activities",
     "no_markets_available":"No Market Available",
     "loading_markets":"Loading Markets",
     "markets_not_loaded":"Markets not loaded",
