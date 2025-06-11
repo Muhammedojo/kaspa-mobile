@@ -32,11 +32,13 @@ class GlobalVariables {
   Login? currentUser;
 
   var syncItemList = <String>[
+    "",
     livestockListEndpoint,
     wardListEndpoint,
-   // weatherListEndpoint,
+    // weatherListEndpoint,
     marketListEndpoint,
     marketPriceListEndpoint,
+    notificationListEndpoint,
     cropListEndpoint,
     bankListEndpoint,
     lgaListEndpoint,
@@ -46,16 +48,19 @@ class GlobalVariables {
     dashboardEndpoint,
     dashboardFarmerEndpoint,
     farmersListEndpoint,
+    cropCalendarListEndpoint,
     cooperativeListEndpoint,
     cropCalendarListEndpoint,
   ];
 
   var syncMap = {
+    "": "",
     livestockListEndpoint: KEY_LIVESTOCK,
     wardListEndpoint: KEY_WARD,
     //weatherListEndpoint: KEY_WEATHER,
     marketListEndpoint: KEY_MARKET,
     marketPriceListEndpoint: KEY_MARKET_PRICE,
+    notificationListEndpoint: KEY_NOTIFICATION,
     cropListEndpoint: KEY_CROPS,
     bankListEndpoint: KEY_BANK,
     lgaListEndpoint: KEY_LGA,
@@ -65,8 +70,10 @@ class GlobalVariables {
     dashboardEndpoint: KEY_INSIGHT,
     dashboardFarmerEndpoint: KEY_DASHBOARD,
     farmersListEndpoint: KEY_FARMER,
-    cooperativeListEndpoint: KEY_COOPERATIVE,
     cropCalendarListEndpoint: KEY_CROP_CALENDAR,
+    cooperativeListEndpoint: KEY_COOPERATIVE,
+ plotListEndpoint: KEY_PLOT,
+ farmVisitListEndpoint: KEY_FARM_VISIT,
   };
 
   static final rootNavigatorKey = GlobalKey<NavigatorState>();

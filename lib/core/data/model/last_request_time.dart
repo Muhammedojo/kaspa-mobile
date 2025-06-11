@@ -23,6 +23,8 @@ class LastRequestTime {
   String? userUrl;
   String? market;
   String? marketUrl;
+  String? notification;
+  String? notificationUrl;
   String? plot;
   String? plotUrl;
   String? product;
@@ -85,6 +87,8 @@ LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
   obj.marketUrl = json['marketUrl'];
   obj.marketPrice = json['marketPrice'];
   obj.marketPriceUrl = json['marketPriceUrl'];
+  obj.notification = json['notification'];
+  obj.notificationUrl = json['notificationUrl'];
   obj.weather = json['weather'];
   obj.weatherUrl = json['weatherUrl'];
   obj.farmer = json['farmer'];
@@ -131,6 +135,8 @@ Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
       KEY_MARKET_URL: obj.marketUrl,
       KEY_MARKET_PRICE: obj.marketPrice,
       KEY_MARKET_PRICE_URL: obj.marketPriceUrl,
+      KEY_NOTIFICATION: obj.notification,
+      KEY_NOTIFICATION_URL: obj.notificationUrl,
       KEY_WEATHER: obj.weather,
       KEY_WEATHER_URL: obj.weatherUrl,
       KEY_FARMER: obj.farmer,

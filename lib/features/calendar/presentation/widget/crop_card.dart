@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/data/model/crop_calendar.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/card_container_widget.dart';
 import '../../../../core/data/model/crop.dart';
 
 class CropCard extends StatelessWidget {
-  final Crop data;
+  final CropCalendar data;
   final Function() onTap;
   const CropCard({super.key, required this.data, required this.onTap});
 
@@ -15,7 +16,7 @@ class CropCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding:REdgeInsets.symmetric(vertical: 8.0),
+        padding: REdgeInsets.symmetric(vertical: 8.0),
         child: CardContainerWidget(
           child: Row(
             children: [
@@ -29,21 +30,19 @@ class CropCard extends StatelessWidget {
                 child: Icon(data.getCropIcon(), color: Colors.white, size: 24),
               ),
               16.horizontalSpace,
-        
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  (
-                    //data.name ??
-                   'Maize').toText(
+                  (data.crop?.product?.name ?? 'Maize').toText(
                     fontSize: 14,
+                    translate: false,
                     fontWeight: FontWeight.w700,
                   ),
                   4.horizontalSpace,
-                  (
-                    //data.variety ??
-                    'Suwan-1').toText(
+                  (data.crop?.variety ?? 'Suwan-1').toText(
                     fontSize: 12,
+                    translate: false,
                     fontWeight: FontWeight.w500,
                   ),
                 ],
@@ -59,14 +58,16 @@ class CropCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16.r),
                       border: Border.all(color: AppColors.bgGreen, width: 1),
                     ),
-                    child: 'Growing Stage'.toText(
+                    child: (data.stage ?? '').toText(
                       fontSize: 12,
+                      translate: false,
                       color: AppColors.primaryGreen,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                   ('25 May - 25 June').toText(
                     fontSize: 12,
+                    translate: false,
                     fontWeight: FontWeight.w500,
                   ),
                 ],

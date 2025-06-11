@@ -15,6 +15,7 @@ import '../data/model/livestock.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
+import '../data/model/notification.dart';
 import '../data/model/plot.dart';
 import '../data/model/product.dart';
 import '../data/model/user.dart';
@@ -93,16 +94,15 @@ class LocalStorageImpl implements LocalStorage {
     List<SortProperty>? sortBy,
     bool? isSearching,
     bool? isFiltering,
-  }) =>
-      databaseStorage.getCooperative(
-          searchTerm: searchTerm,
+  }) => databaseStorage.getCooperative(
+    searchTerm: searchTerm,
     filter: filter,
     sortBy: sortBy,
     whereClauses: whereClauses,
     whereSort: whereSort,
     isSearching: isSearching,
     isFiltering: isFiltering,
-      );
+  );
 
   @override
   Future<List<DashboardData>> getDashboard() => databaseStorage.getDashboard();
@@ -160,11 +160,14 @@ class LocalStorageImpl implements LocalStorage {
   Future<List<MarketData>> getMarketPrice() => databaseStorage.getMarketPrice();
 
   @override
+  Future<List<Notifications>> getNotification() =>
+      databaseStorage.getNotification();
+
+  @override
   Future<List<Weather>> getWeather() => databaseStorage.getWeather();
 
-    @override
+  @override
   Future<List<Weather>> getLgaWeather() => databaseStorage.getLgaWeather();
-
 
   // SAVE TO DB CALLS
 
@@ -213,6 +216,10 @@ class LocalStorageImpl implements LocalStorage {
       databaseStorage.saveProduct(objectList);
 
   @override
+  Future<void> saveNotification(List<Notifications> objectList) =>
+      databaseStorage.saveNotification(objectList);
+
+  @override
   Future<void> savePlot(List<Plot> objectList) =>
       databaseStorage.savePlot(objectList);
 
@@ -239,7 +246,7 @@ class LocalStorageImpl implements LocalStorage {
   Future<void> saveWeather(List<Weather> objectList) =>
       databaseStorage.saveWeather(objectList);
 
-        @override
+  @override
   Future<void> saveLgaWeather(List<Weather> objectList) =>
       databaseStorage.saveLgaWeather(objectList);
 }

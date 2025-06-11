@@ -1,8 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaspa/core/utils/extensions.dart';
+import 'package:kaspa/features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
+import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/data/model/crop.dart';
+import '../../../../core/data/model/crop_calendar.dart';
 import '../../../../core/resources/vectors.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/styles.dart';
@@ -98,14 +103,88 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                   if (!controller.showFixedTabs)
                     SliverToBoxAdapter(child: _buildTabBar()),
 
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((
-                      BuildContext context,
-                      int index,
-                    ) {
-                      return CropCard(data: Crop(), onTap: () {});
-                    }, childCount: 14),
-                    
+                  BlocBuilder<CropCalendarCubit, CropCalendarState>(
+                    builder: (context, state) {
+                      if (state is CropCalendarLoading) {
+                        return SliverToBoxAdapter(
+                          child: ErrorWidgets(title: "empty".tr(), message: ''),
+                        );
+                      }
+                      if (state is CropCalendarLoaded) {
+                        List<CropCalendar> filteredList =
+                            state.cropCalendarList;
+                        String emptyListMessageKey = 'crop_list_empty';
+
+                        if (controller.selectedTabIndex == 1) {
+                          filteredList =
+                              state.cropCalendarList
+                                  .where(
+                                    (item) =>
+                                        item.stage?.toLowerCase() == "planting",
+                                  )
+                                  .toList();
+                          if (state.cropCalendarList.isNotEmpty &&
+                              filteredList.isEmpty) {
+                            emptyListMessageKey = 'no_crops_in_planting_stage';
+                          }
+                        } else if (controller.selectedTabIndex == 2) {
+                          filteredList =
+                              state.cropCalendarList
+                                  .where(
+                                    (item) =>
+                                        item.stage?.toLowerCase() == "growing",
+                                  )
+                                  .toList();
+                          if (state.cropCalendarList.isNotEmpty &&
+                              filteredList.isEmpty) {
+                            emptyListMessageKey = 'no_crops_in_growing_stage';
+                          }
+                        } else if (controller.selectedTabIndex == 3) {
+                          filteredList =
+                              state.cropCalendarList
+                                  .where(
+                                    (item) =>
+                                        item.stage?.toLowerCase() ==
+                                        "harvesting",
+                                  )
+                                  .toList();
+                          if (state.cropCalendarList.isNotEmpty &&
+                              filteredList.isEmpty) {
+                            emptyListMessageKey =
+                                'no_crops_in_harvesting_stage';
+                          }
+                        }
+
+                        if (filteredList.isEmpty) {
+                          return SliverToBoxAdapter(
+                            child: Padding(
+                              padding: REdgeInsets.symmetric(vertical: 15.0),
+                              child: ErrorWidgets(
+                                message: emptyListMessageKey,
+                              ),
+                            ),
+                          );
+                        }
+                        return SliverToBoxAdapter(
+                          child: ListView.separated(
+                            itemCount: filteredList.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder:
+                                (BuildContext context, int separatorIndex) =>
+                                    12.verticalSpace,
+                            itemBuilder: (BuildContext context, int itemIndex) {
+                              final cropCalendarItem = filteredList[itemIndex];
+                              return CropCard(
+                                data: cropCalendarItem,
+                                onTap: () {},
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      return SliverToBoxAdapter(child: const SizedBox.shrink());
+                    },
                   ),
                 ],
               ),
@@ -167,12 +246,14 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
         children: [
           day.toText(
             fontSize: 12,
+            translate: false,
             fontWeight: FontWeight.w700,
             color: isSelected ? Colors.white : AppColors.primaryText,
           ),
 
           date.toText(
             fontSize: 12,
+            translate: false,
             fontWeight: FontWeight.w700,
             color: isSelected ? Colors.white : AppColors.accentElement,
           ),
@@ -211,6 +292,7 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
           color: isSelected ? AppColors.primaryBackground : Colors.grey[100],
         ),
         child: text.toText(
+          translate: false,
           color: isSelected ? AppColors.colorPrimary : Colors.grey[700],
           fontWeight: FontWeight.w700,
           fontSize: 12,

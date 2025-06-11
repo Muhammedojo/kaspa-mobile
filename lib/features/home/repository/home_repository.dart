@@ -10,6 +10,7 @@ import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
+import '../../../core/data/model/notification.dart';
 import '../../../core/data/model/plot.dart';
 import '../../../core/data/model/product.dart';
 import '../../../core/data/model/weather.dart';
@@ -109,6 +110,11 @@ class HomeRepository implements IHomeRepository {
   }) => apiServices.getMarketList(endpoint);
 
   @override
+  Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList({
+    String? endpoint,
+  }) => apiServices.getNotificationList(endpoint);
+
+  @override
   Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList({
     String? endpoint,
   }) => apiServices.getPlotList(endpoint);
@@ -128,11 +134,10 @@ class HomeRepository implements IHomeRepository {
     String? endpoint,
   }) => apiServices.getWeatherList(endpoint);
 
-   @override
+  @override
   Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList({
     String? endpoint,
   }) => apiServices.getLGAWeatherList(endpoint);
-
 
   @override
   Future<Either<Failure, ApiResponse<List<Ward>>>> getWardList({
@@ -205,9 +210,13 @@ class HomeRepository implements IHomeRepository {
   Future<List<MarketData>> getMarketPrice() => localStorage.getMarketPrice();
 
   @override
+  Future<List<Notifications>> getNotification() =>
+      localStorage.getNotification();
+
+  @override
   Future<List<Weather>> getWeather() => localStorage.getWeather();
 
-    @override
+  @override
   Future<List<Weather>> getLgaWeather() => localStorage.getLgaWeather();
 
   //SAVE LOCAL STORAGE CALLS
@@ -270,10 +279,14 @@ class HomeRepository implements IHomeRepository {
       localStorage.saveMarketPrice(marketPriceList);
 
   @override
+  Future<void> saveNotification(List<Notifications> notificationList) =>
+      localStorage.saveNotification(notificationList);
+
+  @override
   Future<void> saveWeather(List<Weather> weatherList) =>
       localStorage.saveWeather(weatherList);
 
-        @override
+  @override
   Future<void> saveLgaWeather(List<Weather> weatherList) =>
       localStorage.saveLgaWeather(weatherList);
 }

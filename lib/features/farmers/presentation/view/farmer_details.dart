@@ -45,7 +45,6 @@ class FarmerDetailsView extends StatelessWidget
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                
                       Row(
                         children: [
                           CircleAvatar(
@@ -196,7 +195,7 @@ class FarmerDetailsView extends StatelessWidget
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.nokName ??
+                                  child: (controller.farmer.nokDetails?.name ??
                                           'Not available')
                                       .toText(translate: false, fontSize: 14),
                                 ),
@@ -212,7 +211,7 @@ class FarmerDetailsView extends StatelessWidget
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.nokRelationship ??
+                                  child: (controller.farmer.nokDetails?.relationship ??
                                           'Not specified')
                                       .toText(translate: false, fontSize: 14),
                                 ),
@@ -221,13 +220,13 @@ class FarmerDetailsView extends StatelessWidget
                             12.verticalSpace,
                             Row(
                               children: [
-                                "NOK address".toText(
+                                "NOK Phone".toText(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
                                 Expanded(
-                                  child: (controller.farmer.nokAddress ??
+                                  child: (controller.farmer.nokDetails?.phoneNumber ??
                                           'Not specified')
                                       .toText(translate: false, fontSize: 14),
                                 ),
@@ -280,14 +279,16 @@ class FarmerDetailsView extends StatelessWidget
                                 ),
                                 8.horizontalSpace,
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    (controller.farmer.accountNumber ??
+                                    (controller.farmer.bankDetails?.accountNumber ??
                                             'Not specified')
                                         .toText(translate: false, fontSize: 14),
-                                    (controller.farmer.accountName ??
+                                    (controller.farmer.bankDetails?.accountName ??
                                             'Not specified')
                                         .toText(translate: false, fontSize: 14),
-                                    ('UBA').toText(
+                                    (controller.farmer.bankDetails?.bank?.name ??
+                                            'Not specified').toText(
                                       translate: false,
                                       fontSize: 14,
                                     ),

@@ -94,7 +94,7 @@ class CreateFarmVisitView extends StatelessWidget
                               state.plotList.map((e) {
                                 return DropdownMenuItem(
                                   value: e,
-                                  child: ('${e.totalHectares} ha').toText(
+                                  child: ('${e.sizeInHa} ha').toText(
                                     translate: false,
                                   ),
                                 );

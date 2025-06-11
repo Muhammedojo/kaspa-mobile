@@ -47,15 +47,16 @@ const LivestockSchema = CollectionSchema(
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
-      id: 6,
-      name: r'name',
-      type: IsarType.string,
-    ),
     r'pk': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'pk',
       type: IsarType.long,
+    ),
+    r'product': PropertySchema(
+      id: 7,
+      name: r'product',
+      type: IsarType.object,
+      target: r'ProductObject',
     ),
     r'unit': PropertySchema(
       id: 8,
@@ -133,7 +134,7 @@ const LivestockSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'ProductObject': ProductObjectSchema},
   getId: _livestockGetId,
   getLinks: _livestockGetLinks,
   attach: _livestockAttach,
@@ -171,9 +172,11 @@ int _livestockEstimateSize(
     }
   }
   {
-    final value = object.name;
+    final value = object.product;
     if (value != null) {
-      bytesCount += 3 + value.length * 3;
+      bytesCount += 3 +
+          ProductObjectSchema.estimateSize(
+              value, allOffsets[ProductObject]!, allOffsets);
     }
   }
   {
@@ -209,8 +212,13 @@ void _livestockSerialize(
   writer.writeString(offsets[3], object.errorMessage);
   writer.writeBool(offsets[4], object.hasSynced);
   writer.writeString(offsets[5], object.lastPulledTime);
-  writer.writeString(offsets[6], object.name);
-  writer.writeLong(offsets[7], object.pk);
+  writer.writeLong(offsets[6], object.pk);
+  writer.writeObject<ProductObject>(
+    offsets[7],
+    allOffsets,
+    ProductObjectSchema.serialize,
+    object.product,
+  );
   writer.writeString(offsets[8], object.unit);
   writer.writeString(offsets[9], object.updated);
   writer.writeString(offsets[10], object.variety);
@@ -230,8 +238,12 @@ Livestock _livestockDeserialize(
   object.hasSynced = reader.readBoolOrNull(offsets[4]);
   object.id = id;
   object.lastPulledTime = reader.readStringOrNull(offsets[5]);
-  object.name = reader.readStringOrNull(offsets[6]);
-  object.pk = reader.readLong(offsets[7]);
+  object.pk = reader.readLong(offsets[6]);
+  object.product = reader.readObjectOrNull<ProductObject>(
+    offsets[7],
+    ProductObjectSchema.deserialize,
+    allOffsets,
+  );
   object.unit = reader.readStringOrNull(offsets[8]);
   object.updated = reader.readStringOrNull(offsets[9]);
   object.variety = reader.readStringOrNull(offsets[10]);
@@ -258,9 +270,13 @@ P _livestockDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
-    case 7:
       return (reader.readLong(offset)) as P;
+    case 7:
+      return (reader.readObjectOrNull<ProductObject>(
+        offset,
+        ProductObjectSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
@@ -1543,152 +1559,6 @@ extension LivestockQueryFilter
     });
   }
 
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'name',
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'name',
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> nameIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<Livestock, Livestock, QAfterFilterCondition> pkEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -1738,6 +1608,22 @@ extension LivestockQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> productIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'product',
+      ));
+    });
+  }
+
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> productIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'product',
       ));
     });
   }
@@ -2184,7 +2070,14 @@ extension LivestockQueryFilter
 }
 
 extension LivestockQueryObject
-    on QueryBuilder<Livestock, Livestock, QFilterCondition> {}
+    on QueryBuilder<Livestock, Livestock, QFilterCondition> {
+  QueryBuilder<Livestock, Livestock, QAfterFilterCondition> product(
+      FilterQuery<ProductObject> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'product');
+    });
+  }
+}
 
 extension LivestockQueryLinks
     on QueryBuilder<Livestock, Livestock, QFilterCondition> {}
@@ -2260,18 +2153,6 @@ extension LivestockQuerySortBy on QueryBuilder<Livestock, Livestock, QSortBy> {
   QueryBuilder<Livestock, Livestock, QAfterSortBy> sortByLastPulledTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastPulledTime', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterSortBy> sortByName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterSortBy> sortByNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
     });
   }
 
@@ -2411,18 +2292,6 @@ extension LivestockQuerySortThenBy
     });
   }
 
-  QueryBuilder<Livestock, Livestock, QAfterSortBy> thenByName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Livestock, Livestock, QAfterSortBy> thenByNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
   QueryBuilder<Livestock, Livestock, QAfterSortBy> thenByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pk', Sort.asc);
@@ -2516,13 +2385,6 @@ extension LivestockQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Livestock, Livestock, QDistinct> distinctByName(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<Livestock, Livestock, QDistinct> distinctByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pk');
@@ -2595,15 +2457,15 @@ extension LivestockQueryProperty
     });
   }
 
-  QueryBuilder<Livestock, String?, QQueryOperations> nameProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'name');
-    });
-  }
-
   QueryBuilder<Livestock, int, QQueryOperations> pkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pk');
+    });
+  }
+
+  QueryBuilder<Livestock, ProductObject?, QQueryOperations> productProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'product');
     });
   }
 

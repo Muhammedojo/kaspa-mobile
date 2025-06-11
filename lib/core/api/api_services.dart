@@ -9,6 +9,7 @@ import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/notification.dart';
 import '../data/model/plot.dart';
 import '../data/model/product.dart';
 import '../data/model/weather.dart';
@@ -94,6 +95,10 @@ abstract class ApiServices {
   );
 
   Future<Either<Failure, ApiResponse<List<MarketData>>>> getMarketPriceList(
+    String? endpoint,
+  );
+
+   Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList(
     String? endpoint,
   );
 

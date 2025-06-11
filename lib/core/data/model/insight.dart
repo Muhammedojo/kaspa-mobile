@@ -53,6 +53,50 @@ class LgaData {
 }
 
 @embedded
+class BankData {
+  int? id;
+  String? name;
+
+  BankData({this.id, this.name});
+
+  Map<String, dynamic> toJson() => _$BankDataToJson(this);
+  factory BankData.fromJson(Map<String, dynamic> json) {
+    return BankData(id: json['id'], name: json['name']);
+  }
+  Map<String, dynamic> _$BankDataToJson(BankData obj) => <String, dynamic>{
+    KEY_NAME: obj.name,
+    KEY_PK: obj.id,
+  };
+}
+
+@embedded
+class NokData {
+  int? id;
+  String? name;
+  String? phoneNumber;
+  String? address;
+  String? relationship;
+
+  NokData({
+    this.id,
+    this.name,
+    this.address,
+    this.phoneNumber,
+    this.relationship,
+  });
+
+  factory NokData.fromJson(Map<String, dynamic> json) {
+    return NokData(
+      id: json['id'],
+      name: json['name'],
+      phoneNumber: json['phone_number'],
+      address: json['address'],
+      relationship: json['relationship'],
+    );
+  }
+}
+
+@embedded
 class CooperativeData {
   int? id;
   String? name;
@@ -151,8 +195,6 @@ class WeatherData {
   }
 }
 
-
-
 @embedded
 class ProductObject {
   int? id;
@@ -166,6 +208,69 @@ class ProductObject {
       id: json['id'],
       name: json['name'],
       productType: json['product_type'],
+    );
+  }
+}
+
+@embedded
+class CropData {
+  int? id;
+  ProductObject? product;
+  String? variety;
+  String? unit;
+
+  CropData({this.id, this.product, this.variety, this.unit});
+
+  factory CropData.fromJson(Map<String, dynamic> json) {
+    return CropData(
+      id: json['id'],
+      product: ProductObject.fromJson(json['product']),
+      variety: json['variety'],
+      unit: json['unit'],
+    );
+  }
+}
+
+@embedded
+class ActivityObject {
+  int? id;
+  String? startDate;
+  String? endDate;
+  String? activity;
+  String? description;
+
+  ActivityObject({
+    this.id,
+    this.startDate,
+    this.endDate,
+    this.activity,
+    this.description,
+  });
+
+  factory ActivityObject.fromJson(Map<String, dynamic> json) {
+    return ActivityObject(
+      id: json['id'],
+      startDate: json['start_date'],
+      endDate: json['end_date'],
+      activity: json['activity'],
+      description: json['description'],
+    );
+  }
+}
+
+@embedded
+class FarmCrop {
+  int? id;
+  CropData? crop;
+  String? noOfHectares;
+
+  FarmCrop({this.id, this.crop, this.noOfHectares});
+
+  factory FarmCrop.fromJson(Map<String, dynamic> json) {
+    return FarmCrop(
+      id: json['id'],
+      crop: CropData.fromJson(json[KEY_CROP]),
+      noOfHectares: json['no_of_hectares'],
     );
   }
 }
@@ -185,10 +290,42 @@ class NestedProductObject {
       product: ProductObject.fromJson(json[KEY_PRODUCT]),
       variety: json['variety'],
       unit: json['unit'],
-
     );
   }
 }
+
+@embedded
+class BankDetail {
+  int? id;
+  BankData? bank;
+  String? accountName;
+  String? accountNumber;
+
+  BankDetail({this.accountName, this.accountNumber, this.bank, this.id});
+
+  factory BankDetail.fromJson(Map<String, dynamic> json) =>
+      _$BankDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BankDetailsToJson(this);
+}
+
+BankDetail _$BankDetailFromJson(Map<String, dynamic> json) {
+  var obj = BankDetail();
+
+  obj.id = json[KEY_PK];
+  obj.accountName = json[KEY_ACCOUNT_NAME];
+  obj.accountNumber = json[KEY_ACCOUNT_NUMBER];
+  obj.bank = BankData.fromJson(json[KEY_BANK]);
+
+  return obj;
+}
+
+Map<String, dynamic> _$BankDetailsToJson(BankDetail obj) => <String, dynamic>{
+  KEY_ACCOUNT_NAME: obj.accountName,
+  KEY_ACCOUNT_NUMBER: obj.accountNumber,
+  KEY_BANK: obj.bank?.toJson(),
+  KEY_PK: obj.id,
+};
 
 @embedded
 class MarketObject {
@@ -199,8 +336,14 @@ class MarketObject {
   String? size;
   String? marketDays;
 
-
-  MarketObject({this.id, this.name, this.address,this.marketType,this.size,this.marketDays});
+  MarketObject({
+    this.id,
+    this.name,
+    this.address,
+    this.marketType,
+    this.size,
+    this.marketDays,
+  });
 
   factory MarketObject.fromJson(Map<String, dynamic> json) {
     return MarketObject(
@@ -210,7 +353,6 @@ class MarketObject {
       marketType: json['market_type'],
       size: json['size'],
       marketDays: json['market_days'],
-      
     );
   }
 }

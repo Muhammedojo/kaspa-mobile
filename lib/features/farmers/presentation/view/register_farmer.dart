@@ -64,9 +64,8 @@ class RegisterFarmerView extends StatelessWidget
     var bottom = MediaQuery.of(context).viewInsets.bottom;
     bottom = max(min(bottom, 80), 0);
     return SafeArea(
-      child: Container(
-        decoration: Styles.colorComboDecoration(),
-        child: Stack(
+      child:
+        Stack(
           children: [
             Container(
               height: MediaQuery.of(context).size.height,
@@ -84,7 +83,7 @@ class RegisterFarmerView extends StatelessWidget
               top: 54,
               child: Theme(
                    data: Theme.of(context).copyWith(
-                  canvasColor: Colors.transparent,
+                  canvasColor: AppColors.primaryBackground,
                 ),
                 child: Stepper(
                   clipBehavior: Clip.antiAlias,
@@ -1203,7 +1202,7 @@ class RegisterFarmerView extends StatelessWidget
             ),
           ],
         ),
-      ),
+
     );
   }
 

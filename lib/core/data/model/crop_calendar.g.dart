@@ -17,65 +17,61 @@ const CropCalendarSchema = CollectionSchema(
   name: r'CropCalendar',
   id: 5095555430947499823,
   properties: {
-    r'created': PropertySchema(
+    r'activities': PropertySchema(
       id: 0,
+      name: r'activities',
+      type: IsarType.objectList,
+      target: r'ActivityObject',
+    ),
+    r'created': PropertySchema(
+      id: 1,
       name: r'created',
       type: IsarType.string,
     ),
     r'createdInEpsilon': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'createdInEpsilon',
       type: IsarType.long,
     ),
     r'createdOffline': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'createdOffline',
       type: IsarType.string,
     ),
+    r'crop': PropertySchema(
+      id: 4,
+      name: r'crop',
+      type: IsarType.object,
+      target: r'CropData',
+    ),
     r'errorMessage': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'errorMessage',
       type: IsarType.string,
     ),
     r'hasSynced': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'hasSynced',
       type: IsarType.bool,
     ),
     r'lastPulledTime': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
-      id: 6,
-      name: r'name',
-      type: IsarType.string,
-    ),
     r'pk': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'pk',
       type: IsarType.long,
     ),
-    r'product': PropertySchema(
-      id: 8,
-      name: r'product',
-      type: IsarType.object,
-      target: r'ProductObject',
-    ),
-    r'unit': PropertySchema(
+    r'stage': PropertySchema(
       id: 9,
-      name: r'unit',
+      name: r'stage',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
       id: 10,
       name: r'updated',
-      type: IsarType.string,
-    ),
-    r'variety': PropertySchema(
-      id: 11,
-      name: r'variety',
       type: IsarType.string,
     )
   },
@@ -139,7 +135,11 @@ const CropCalendarSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {r'ProductObject': ProductObjectSchema},
+  embeddedSchemas: {
+    r'CropData': CropDataSchema,
+    r'ProductObject': ProductObjectSchema,
+    r'ActivityObject': ActivityObjectSchema
+  },
   getId: _cropCalendarGetId,
   getLinks: _cropCalendarGetLinks,
   attach: _cropCalendarAttach,
@@ -152,6 +152,15 @@ int _cropCalendarEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.activities.length * 3;
+  {
+    final offsets = allOffsets[ActivityObject]!;
+    for (var i = 0; i < object.activities.length; i++) {
+      final value = object.activities[i];
+      bytesCount +=
+          ActivityObjectSchema.estimateSize(value, offsets, allOffsets);
+    }
+  }
   {
     final value = object.created;
     if (value != null) {
@@ -162,6 +171,13 @@ int _cropCalendarEstimateSize(
     final value = object.createdOffline;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.crop;
+    if (value != null) {
+      bytesCount += 3 +
+          CropDataSchema.estimateSize(value, allOffsets[CropData]!, allOffsets);
     }
   }
   {
@@ -177,33 +193,13 @@ int _cropCalendarEstimateSize(
     }
   }
   {
-    final value = object.name;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.product;
-    if (value != null) {
-      bytesCount += 3 +
-          ProductObjectSchema.estimateSize(
-              value, allOffsets[ProductObject]!, allOffsets);
-    }
-  }
-  {
-    final value = object.unit;
+    final value = object.stage;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
     final value = object.updated;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.variety;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -217,23 +213,27 @@ void _cropCalendarSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.created);
-  writer.writeLong(offsets[1], object.createdInEpsilon);
-  writer.writeString(offsets[2], object.createdOffline);
-  writer.writeString(offsets[3], object.errorMessage);
-  writer.writeBool(offsets[4], object.hasSynced);
-  writer.writeString(offsets[5], object.lastPulledTime);
-  writer.writeString(offsets[6], object.name);
-  writer.writeLong(offsets[7], object.pk);
-  writer.writeObject<ProductObject>(
-    offsets[8],
+  writer.writeObjectList<ActivityObject>(
+    offsets[0],
     allOffsets,
-    ProductObjectSchema.serialize,
-    object.product,
+    ActivityObjectSchema.serialize,
+    object.activities,
   );
-  writer.writeString(offsets[9], object.unit);
+  writer.writeString(offsets[1], object.created);
+  writer.writeLong(offsets[2], object.createdInEpsilon);
+  writer.writeString(offsets[3], object.createdOffline);
+  writer.writeObject<CropData>(
+    offsets[4],
+    allOffsets,
+    CropDataSchema.serialize,
+    object.crop,
+  );
+  writer.writeString(offsets[5], object.errorMessage);
+  writer.writeBool(offsets[6], object.hasSynced);
+  writer.writeString(offsets[7], object.lastPulledTime);
+  writer.writeLong(offsets[8], object.pk);
+  writer.writeString(offsets[9], object.stage);
   writer.writeString(offsets[10], object.updated);
-  writer.writeString(offsets[11], object.variety);
 }
 
 CropCalendar _cropCalendarDeserialize(
@@ -243,23 +243,28 @@ CropCalendar _cropCalendarDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = CropCalendar();
-  object.created = reader.readStringOrNull(offsets[0]);
-  object.createdInEpsilon = reader.readLongOrNull(offsets[1]);
-  object.createdOffline = reader.readStringOrNull(offsets[2]);
-  object.errorMessage = reader.readStringOrNull(offsets[3]);
-  object.hasSynced = reader.readBoolOrNull(offsets[4]);
-  object.id = id;
-  object.lastPulledTime = reader.readStringOrNull(offsets[5]);
-  object.name = reader.readStringOrNull(offsets[6]);
-  object.pk = reader.readLong(offsets[7]);
-  object.product = reader.readObjectOrNull<ProductObject>(
-    offsets[8],
-    ProductObjectSchema.deserialize,
+  object.activities = reader.readObjectList<ActivityObject>(
+        offsets[0],
+        ActivityObjectSchema.deserialize,
+        allOffsets,
+        ActivityObject(),
+      ) ??
+      [];
+  object.created = reader.readStringOrNull(offsets[1]);
+  object.createdInEpsilon = reader.readLongOrNull(offsets[2]);
+  object.createdOffline = reader.readStringOrNull(offsets[3]);
+  object.crop = reader.readObjectOrNull<CropData>(
+    offsets[4],
+    CropDataSchema.deserialize,
     allOffsets,
   );
-  object.unit = reader.readStringOrNull(offsets[9]);
+  object.errorMessage = reader.readStringOrNull(offsets[5]);
+  object.hasSynced = reader.readBoolOrNull(offsets[6]);
+  object.id = id;
+  object.lastPulledTime = reader.readStringOrNull(offsets[7]);
+  object.pk = reader.readLong(offsets[8]);
+  object.stage = reader.readStringOrNull(offsets[9]);
   object.updated = reader.readStringOrNull(offsets[10]);
-  object.variety = reader.readStringOrNull(offsets[11]);
   return object;
 }
 
@@ -271,32 +276,36 @@ P _cropCalendarDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectList<ActivityObject>(
+            offset,
+            ActivityObjectSchema.deserialize,
+            allOffsets,
+            ActivityObject(),
+          ) ??
+          []) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
-    case 2:
       return (reader.readStringOrNull(offset)) as P;
+    case 2:
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readObjectOrNull<CropData>(
+        offset,
+        CropDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 7:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readObjectOrNull<ProductObject>(
-        offset,
-        ProductObjectSchema.deserialize,
-        allOffsets,
-      )) as P;
+      return (reader.readLong(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readStringOrNull(offset)) as P;
-    case 11:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -805,6 +814,95 @@ extension CropCalendarQueryWhere
 extension CropCalendarQueryFilter
     on QueryBuilder<CropCalendar, CropCalendar, QFilterCondition> {
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      activitiesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'activities',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      activitiesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'activities',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      activitiesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'activities',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      activitiesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'activities',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      activitiesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'activities',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      activitiesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'activities',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
       createdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1182,6 +1280,23 @@ extension CropCalendarQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'createdOffline',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> cropIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'crop',
+      ));
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      cropIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'crop',
       ));
     });
   }
@@ -1592,157 +1707,6 @@ extension CropCalendarQueryFilter
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> nameIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'name',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      nameIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'name',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> nameEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      nameGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> nameLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> nameBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      nameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> nameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> nameContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> nameMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      nameIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      nameIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> pkEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -1797,47 +1761,30 @@ extension CropCalendarQueryFilter
   }
 
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      productIsNull() {
+      stageIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'product',
+        property: r'stage',
       ));
     });
   }
 
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      productIsNotNull() {
+      stageIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'product',
+        property: r'stage',
       ));
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> unitIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'unit',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      unitIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'unit',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> unitEqualTo(
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> stageEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'unit',
+        property: r'stage',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1845,7 +1792,7 @@ extension CropCalendarQueryFilter
   }
 
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      unitGreaterThan(
+      stageGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1853,14 +1800,14 @@ extension CropCalendarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'unit',
+        property: r'stage',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> unitLessThan(
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> stageLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1868,14 +1815,14 @@ extension CropCalendarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'unit',
+        property: r'stage',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> unitBetween(
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> stageBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1884,7 +1831,7 @@ extension CropCalendarQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'unit',
+        property: r'stage',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1895,50 +1842,50 @@ extension CropCalendarQueryFilter
   }
 
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      unitStartsWith(
+      stageStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'unit',
+        property: r'stage',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> unitEndsWith(
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> stageEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'unit',
+        property: r'stage',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> unitContains(
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> stageContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'unit',
+        property: r'stage',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> unitMatches(
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> stageMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'unit',
+        property: r'stage',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -1946,20 +1893,20 @@ extension CropCalendarQueryFilter
   }
 
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      unitIsEmpty() {
+      stageIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'unit',
+        property: r'stage',
         value: '',
       ));
     });
   }
 
   QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      unitIsNotEmpty() {
+      stageIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'unit',
+        property: r'stage',
         value: '',
       ));
     });
@@ -2118,168 +2065,21 @@ extension CropCalendarQueryFilter
       ));
     });
   }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'variety',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'variety',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'variety',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'variety',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'variety',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'variety',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'variety',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'variety',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'variety',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'variety',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'variety',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
-      varietyIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'variety',
-        value: '',
-      ));
-    });
-  }
 }
 
 extension CropCalendarQueryObject
     on QueryBuilder<CropCalendar, CropCalendar, QFilterCondition> {
-  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> product(
-      FilterQuery<ProductObject> q) {
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition>
+      activitiesElement(FilterQuery<ActivityObject> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'product');
+      return query.object(q, r'activities');
+    });
+  }
+
+  QueryBuilder<CropCalendar, CropCalendar, QAfterFilterCondition> crop(
+      FilterQuery<CropData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'crop');
     });
   }
 }
@@ -2368,18 +2168,6 @@ extension CropCalendarQuerySortBy
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
   QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pk', Sort.asc);
@@ -2392,15 +2180,15 @@ extension CropCalendarQuerySortBy
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByUnit() {
+  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByStage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'unit', Sort.asc);
+      return query.addSortBy(r'stage', Sort.asc);
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByUnitDesc() {
+  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByStageDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'unit', Sort.desc);
+      return query.addSortBy(r'stage', Sort.desc);
     });
   }
 
@@ -2413,18 +2201,6 @@ extension CropCalendarQuerySortBy
   QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updated', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByVariety() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'variety', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> sortByVarietyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'variety', Sort.desc);
     });
   }
 }
@@ -2522,18 +2298,6 @@ extension CropCalendarQuerySortThenBy
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
   QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pk', Sort.asc);
@@ -2546,15 +2310,15 @@ extension CropCalendarQuerySortThenBy
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByUnit() {
+  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByStage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'unit', Sort.asc);
+      return query.addSortBy(r'stage', Sort.asc);
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByUnitDesc() {
+  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByStageDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'unit', Sort.desc);
+      return query.addSortBy(r'stage', Sort.desc);
     });
   }
 
@@ -2567,18 +2331,6 @@ extension CropCalendarQuerySortThenBy
   QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updated', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByVariety() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'variety', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CropCalendar, CropCalendar, QAfterSortBy> thenByVarietyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'variety', Sort.desc);
     });
   }
 }
@@ -2628,23 +2380,16 @@ extension CropCalendarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QDistinct> distinctByName(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<CropCalendar, CropCalendar, QDistinct> distinctByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pk');
     });
   }
 
-  QueryBuilder<CropCalendar, CropCalendar, QDistinct> distinctByUnit(
+  QueryBuilder<CropCalendar, CropCalendar, QDistinct> distinctByStage(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'unit', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'stage', caseSensitive: caseSensitive);
     });
   }
 
@@ -2654,13 +2399,6 @@ extension CropCalendarQueryWhereDistinct
       return query.addDistinctBy(r'updated', caseSensitive: caseSensitive);
     });
   }
-
-  QueryBuilder<CropCalendar, CropCalendar, QDistinct> distinctByVariety(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'variety', caseSensitive: caseSensitive);
-    });
-  }
 }
 
 extension CropCalendarQueryProperty
@@ -2668,6 +2406,13 @@ extension CropCalendarQueryProperty
   QueryBuilder<CropCalendar, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<CropCalendar, List<ActivityObject>, QQueryOperations>
+      activitiesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'activities');
     });
   }
 
@@ -2691,6 +2436,12 @@ extension CropCalendarQueryProperty
     });
   }
 
+  QueryBuilder<CropCalendar, CropData?, QQueryOperations> cropProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'crop');
+    });
+  }
+
   QueryBuilder<CropCalendar, String?, QQueryOperations> errorMessageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'errorMessage');
@@ -2710,40 +2461,21 @@ extension CropCalendarQueryProperty
     });
   }
 
-  QueryBuilder<CropCalendar, String?, QQueryOperations> nameProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'name');
-    });
-  }
-
   QueryBuilder<CropCalendar, int, QQueryOperations> pkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pk');
     });
   }
 
-  QueryBuilder<CropCalendar, ProductObject?, QQueryOperations>
-      productProperty() {
+  QueryBuilder<CropCalendar, String?, QQueryOperations> stageProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'product');
-    });
-  }
-
-  QueryBuilder<CropCalendar, String?, QQueryOperations> unitProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'unit');
+      return query.addPropertyName(r'stage');
     });
   }
 
   QueryBuilder<CropCalendar, String?, QQueryOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updated');
-    });
-  }
-
-  QueryBuilder<CropCalendar, String?, QQueryOperations> varietyProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'variety');
     });
   }
 }

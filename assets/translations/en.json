@@ -15,6 +15,10 @@
     "in_progress": "In Progress",
     "started": "Started",
     "plot":"Plot",
+    "no_crops_in_harvesting_stage":"No Crops in harvesting stage",
+    "no_crops_in_planting_stage":"No Crops in planting stage",
+    "no_crops_in_growing_stage":"No Crops in growing stage",
+
     "no_markets_available":"No Market Available",
     "loading_markets":"Loading Markets",
     "markets_not_loaded":"Markets not loaded",

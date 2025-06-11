@@ -1,6 +1,4 @@
 import 'package:isar/isar.dart';
-import '../../../core/data/model/bank_detail.dart';
-import '../../../core/data/model/nok_details.dart';
 import '../../utils/const.dart';
 import 'insight.dart';
 
@@ -44,10 +42,8 @@ class Farmer {
 
   CooperativeData? cooperative;
 
-  @ignore
-  NokDetails? nokDetails;
+  NokData? nokDetails;
 
-  @ignore
   BankDetail? bankDetails;
 
   LgaData? lga;
@@ -86,7 +82,7 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   }
 
   if (json.containsKey(KEY_NOK_DETAILS) && json[KEY_NOK_DETAILS] != null) {
-    obj.nokDetails = NokDetails.fromJson(json[KEY_NOK_DETAILS]);
+    obj.nokDetails = NokData.fromJson(json[KEY_NOK_DETAILS]);
   }
 
   if (json.containsKey(KEY_LGA) && json[KEY_LGA] != null) {

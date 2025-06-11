@@ -34,6 +34,7 @@ import '../../features/home/presentation/bloc/incident_report/incident_report_cu
 import '../../features/home/presentation/bloc/insight/insight_cubit.dart';
 import '../../features/home/presentation/bloc/market/cubit.dart';
 import '../../features/home/presentation/bloc/market_price/cubit.dart';
+import '../../features/home/presentation/bloc/notification/cubit.dart';
 import '../../features/home/presentation/bloc/plot/plot_cubit.dart';
 import '../../features/home/presentation/bloc/product/cubit.dart';
 import '../../features/home/presentation/bloc/weather/cubit.dart';
@@ -133,14 +134,14 @@ class AppInitializer {
         databaseManager: instanceLocator(),
       ),
     );
-       instanceLocator.registerLazySingleton<FarmVisitCubit>(
+    instanceLocator.registerLazySingleton<FarmVisitCubit>(
       () => FarmVisitCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),
     );
 
-      instanceLocator.registerLazySingleton<CropCalendarCubit>(
+    instanceLocator.registerLazySingleton<CropCalendarCubit>(
       () => CropCalendarCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
@@ -154,14 +155,14 @@ class AppInitializer {
       ),
     );
 
-      instanceLocator.registerLazySingleton<DashboardCubit>(
+    instanceLocator.registerLazySingleton<DashboardCubit>(
       () => DashboardCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),
     );
 
-     instanceLocator.registerLazySingleton<GetFarmersCubit>(
+    instanceLocator.registerLazySingleton<GetFarmersCubit>(
       () => GetFarmersCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
@@ -179,35 +180,42 @@ class AppInitializer {
       ),
     );
 
-     instanceLocator.registerLazySingleton<LgaWeatherCubit>(
+    instanceLocator.registerLazySingleton<LgaWeatherCubit>(
       () => LgaWeatherCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),
     );
 
-     instanceLocator.registerLazySingleton<ProductCubit>(
+    instanceLocator.registerLazySingleton<ProductCubit>(
       () => ProductCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),
     );
 
-      instanceLocator.registerLazySingleton<PlotCubit>(
+    instanceLocator.registerLazySingleton<NotificationCubit>(
+      () => NotificationCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+    instanceLocator.registerLazySingleton<PlotCubit>(
       () => PlotCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),
     );
 
-       instanceLocator.registerLazySingleton<IncidentCubit>(
+    instanceLocator.registerLazySingleton<IncidentCubit>(
       () => IncidentCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),
     );
 
-      instanceLocator.registerLazySingleton<InsightCubit>(
+    instanceLocator.registerLazySingleton<InsightCubit>(
       () => InsightCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
@@ -228,8 +236,6 @@ class AppInitializer {
     instanceLocator.registerLazySingleton<LivestockCubit>(
       () => LivestockCubit(repository: instanceLocator()),
     );
-
-   
 
     instanceLocator.registerLazySingleton<UserCubit>(
       () => UserCubit(repository: instanceLocator()),

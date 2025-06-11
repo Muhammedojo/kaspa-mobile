@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kaspa/core/navigation/navigator.dart';
+import '../../features/home/presentation/controller/notification.dart';
 import '../resources/images.dart';
 import '../theme/colors.dart';
 
@@ -25,14 +27,16 @@ class PageBar extends StatelessWidget {
             const Spacer(),
             InkWell(
               onTap: onTap,
-              child: Icon(Icons.logout, color: AppColors.burntRed)),
+              child: Icon(Icons.logout, color: AppColors.burntRed),
+            ),
             16.horizontalSpace,
 
             InkWell(
-              onTap :(){
-               
+              onTap: () {
+                pushTo(NotificationScreen(), context);
               },
-              child: SvgPicture.asset('assets/vectors/bell.svg')),
+              child: SvgPicture.asset('assets/vectors/bell.svg'),
+            ),
             10.horizontalSpace,
           ],
         ),

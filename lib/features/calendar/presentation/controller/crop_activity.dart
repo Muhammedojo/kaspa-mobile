@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../../core/data/model/crop.dart';
+import '../../../../core/data/model/crop_calendar.dart';
 import '../contract/crop_activity.dart';
 import '../view/crop_activity.dart';
 
 
 class CropActivityScreen extends StatefulWidget {
-  final Crop crop;
+  final CropCalendar crop;
   const CropActivityScreen({super.key,required this.crop});
 
   @override
@@ -34,5 +34,5 @@ class _CropActivityScreenState extends State<CropActivityScreen>
   }
 
   @override
-  Crop crop = Crop();
+  CropCalendar crop = CropCalendar();
 }

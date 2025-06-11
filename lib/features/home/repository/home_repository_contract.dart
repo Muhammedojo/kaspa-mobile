@@ -10,6 +10,7 @@ import '../../../core/data/model/insight.dart';
 import '../../../core/data/model/market.dart';
 import '../../../core/data/model/market_data.dart';
 import '../../../core/data/model/model.dart';
+import '../../../core/data/model/notification.dart';
 import '../../../core/data/model/plot.dart';
 import '../../../core/data/model/product.dart';
 import '../../../core/data/model/weather.dart';
@@ -149,6 +150,15 @@ abstract class IHomeRepository {
 
   Future<Either<Failure, ApiResponse<Market>>> createMarket(Market data);
 
+  //NOTIFICATION CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList({
+    String? endpoint,
+  });
+
+  Future<void> saveNotification(List<Notifications> notificationList);
+
+  Future<List<Notifications>> getNotification();
+
   //PLOT CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList({
     String? endpoint,
@@ -194,7 +204,7 @@ abstract class IHomeRepository {
 
   Future<List<Weather>> getWeather();
 
-   Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList({
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList({
     String? endpoint,
   });
 

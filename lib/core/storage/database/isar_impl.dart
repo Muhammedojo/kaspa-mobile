@@ -9,6 +9,7 @@ import '../../data/model/incident_report.dart';
 import '../../data/model/insight.dart';
 import '../../data/model/market_data.dart';
 import '../../data/model/model.dart';
+import '../../data/model/notification.dart';
 import '../../data/model/product.dart';
 import '../../data/model/weather.dart';
 import '../istorage.dart';
@@ -38,6 +39,7 @@ class IsarImpl implements DatabaseStorage {
           LivestockSchema,
           MarketSchema,
           MarketDataSchema,
+          NotificationsSchema,
           IncidentReportSchema,
           InsightSchema,
           ProductSchema,
@@ -268,6 +270,20 @@ class IsarImpl implements DatabaseStorage {
   }
 
   @override
+  Future<List<Notifications>> getNotification() {
+    if (!_isar.isOpen) {
+      return Future.value(<Notifications>[]);
+    }
+    try {
+      final notifications = _isar.notifications.where().findAllSync();
+      return Future.value(notifications);
+    } catch (e) {
+      debugPrint("Error retrieving notifications: $e");
+      return Future.value(<Notifications>[]);
+    }
+  }
+
+  @override
   Future<List<User>> getUser() {
     if (!_isar.isOpen) {
       return Future.value(<User>[]);
@@ -351,7 +367,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-    @override
+  @override
   Future<List<Weather>> getLgaWeather() {
     if (!_isar.isOpen) {
       return Future.value(<Weather>[]);
@@ -364,7 +380,6 @@ class IsarImpl implements DatabaseStorage {
       return Future.value(<Weather>[]);
     }
   }
-
 
   @override
   Future<void> saveBank(List<Bank> objectList) async {
@@ -547,6 +562,18 @@ class IsarImpl implements DatabaseStorage {
   }
 
   @override
+  Future<void> saveNotification(List<Notifications> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.notifications.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving notification: $e");
+    }
+  }
+
+  @override
   Future<void> saveUser(List<User> objectList) async {
     if (!_isar.isOpen) {
       return;
@@ -582,7 +609,7 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
-   @override
+  @override
   Future<void> saveLgaWeather(List<Weather> objectList) async {
     if (!_isar.isOpen) {
       return;

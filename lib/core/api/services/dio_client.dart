@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import '../../utils/const.dart';
 import '../exceptions/api_exception.dart';
 import '../exceptions/contracts/failure.dart';
 import '../network/network_info.dart';
@@ -41,6 +42,7 @@ class DioClient implements IApiClient {
         baseUrl: baseApi,
         headers: {
           "content-type": "application/json",
+          KEY_CLIENT_AGENT: 'mobile',
         },
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(minutes: 1),

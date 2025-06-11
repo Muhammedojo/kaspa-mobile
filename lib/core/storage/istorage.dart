@@ -15,6 +15,7 @@ import '../data/model/livestock.dart';
 import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
+import '../data/model/notification.dart';
 import '../data/model/plot.dart';
 import '../data/model/product.dart';
 import '../data/model/user.dart';
@@ -71,8 +72,9 @@ abstract class DatabaseStorage {
   Future<List<Ward>> getWard();
   Future<List<Market>> getMarket();
   Future<List<MarketData>> getMarketPrice();
+  Future<List<Notifications>> getNotification();
   Future<List<Weather>> getWeather();
-    Future<List<Weather>> getLgaWeather();
+  Future<List<Weather>> getLgaWeather();
   Future<List<Insight>> getInsight();
   Future<List<IncidentReport>> getIncident();
 
@@ -93,6 +95,7 @@ abstract class DatabaseStorage {
   Future<void> saveUser(List<User> objectList);
   Future<void> saveMarket(List<Market> objectList);
   Future<void> saveMarketPrice(List<MarketData> objectList);
+  Future<void> saveNotification(List<Notifications> objectList);
   Future<void> saveWeather(List<Weather> objectList);
-    Future<void> saveLgaWeather(List<Weather> objectList);
+  Future<void> saveLgaWeather(List<Weather> objectList);
 }

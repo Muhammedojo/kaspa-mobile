@@ -12,6 +12,7 @@ import '../data/model/login.dart';
 import '../data/model/market.dart';
 import '../data/model/market_data.dart';
 import '../data/model/model.dart';
+import '../data/model/notification.dart';
 import '../data/model/plot.dart';
 import '../data/model/product.dart';
 import '../data/model/weather.dart';
@@ -79,7 +80,9 @@ class ApiServicesImpl implements ApiServices {
         return bankList;
       },
       null,
-      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime,
+     
+      },
     );
   }
 
@@ -329,6 +332,32 @@ class ApiServicesImpl implements ApiServices {
               (data as List).map((e) => Market.fromJson(e)).toList();
           GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
           return marketList;
+        },
+        null,
+        headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+      );
+    } on Error catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
+  }
+
+    @override
+  Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList(
+    String? endpoint,
+  ) async {
+    try {
+      var lastRequestTime =
+          await GetIt.I.get<LocalStorage>().getLastRequestTime();
+      return apiClient.request<List<Notifications>>(
+        endpoint ?? notificationListEndpoint,
+        MethodType.get,
+        (data, {String? realUri}) {
+          lastRequestTime.notification = currentDateTime();
+          lastRequestTime.notificationUrl = realUri;
+          final notificationList =
+              (data as List).map((e) => Notifications.fromJson(e)).toList();
+          GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+          return notificationList;
         },
         null,
         headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
