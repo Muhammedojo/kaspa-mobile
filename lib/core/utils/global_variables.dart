@@ -76,7 +76,7 @@ class GlobalVariables {
     farmVisitListEndpoint: KEY_FARM_VISIT,
     cropCalendarListEndpoint: KEY_CROP_CALENDAR,
     cooperativeListEndpoint: KEY_COOPERATIVE,
-    plotListEndpoint: KEY_PLOT,
+    'plot': KEY_PLOT,
     
   };
 

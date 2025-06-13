@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +28,12 @@ abstract class RegisterFarmerControllerContract {
   void onSelectBank(Bank? newValue);
   void removeCoordinatePoint(int position);
   void onAddFarmLocation(BuildContext context);
+  void onSelectImages(TextEditingController controller);
+  Future getImage(
+      ImageSource source,
+      TextEditingController controller);
   bool get isFetchingLocation;
+  File? image;
   void onGetFarmLocationCoordinates(
     double latitude,
     double longitude,

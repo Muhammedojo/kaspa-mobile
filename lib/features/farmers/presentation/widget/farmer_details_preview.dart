@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,6 +17,7 @@ class FarmerConfirmation extends StatelessWidget {
   final String address;
   final String lga;
   final String ward;
+  final String image;
   final String registrationDate;
   final String registrationOfficer;
   final String? cooperative;
@@ -23,12 +26,13 @@ class FarmerConfirmation extends StatelessWidget {
   const FarmerConfirmation({
     super.key,
     required this.fName,
-       required this.lName,
+    required this.lName,
     required this.age,
     required this.gender,
     required this.phone,
     required this.nin,
     required this.address,
+    required this.image,
     required this.lga,
     required this.ward,
     required this.registrationDate,
@@ -97,11 +101,18 @@ class FarmerConfirmation extends StatelessWidget {
               ),
 
               20.verticalSpace,
-
-              CircleAvatar(
-                // backgroundImage: FileImage(File(photoPath)),
-                radius: 40.r,
-              ),
+              image.isEmpty
+                  ? SvgPicture.asset(
+                    'assets/images/add_pic.svg',
+                   
+                    height: 80.w,
+                    width: 80.w,
+                    fit: BoxFit.scaleDown,
+                  )
+                  : CircleAvatar(
+                    backgroundImage: FileImage(File(image)),
+                    radius: 40.r,
+                  ),
               20.verticalSpace,
             ],
           ),
@@ -114,7 +125,7 @@ class FarmerConfirmation extends StatelessWidget {
                   children: [
                     SizedBox(height: 6.h),
                     HorizontalWidget(value: fName, label: 'first_name'),
-                     HorizontalWidget(value: lName, label: 'last_name'),
+                    HorizontalWidget(value: lName, label: 'last_name'),
                     HorizontalWidget(value: age, label: 'age'),
                     HorizontalWidget(value: gender, label: 'gender'),
                     HorizontalWidget(value: phone, label: 'phone_number'),

@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import '../../core/resources/images.dart';
 import '../../core/utils/extensions.dart';
@@ -180,6 +184,15 @@ class Utils {
     return initials;
   }
 
+  static Future<dynamic> getPhotoFromSource(ImageSource source, context) async {
+    final picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null && pickedFile.path.isNotEmpty) {
+      return File(pickedFile.path);
+    }
+    return "operation_cancelled".tr();
+  }
+
   static mediaBottomSheet(
     context,
     Function onCameraSelected,
@@ -194,9 +207,10 @@ class Utils {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.camera_alt),
-                title: 'camera'.toText(
+                title: 'Capture farmer with camera'.toText(
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  translate: false,
+                  fontWeight: FontWeight.w600,
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -205,15 +219,17 @@ class Utils {
               ),
               ListTile(
                 leading: Icon(Icons.image),
-                title: 'gallery'.toText(
+                title: 'Select farmer from gallery'.toText(
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                      translate: false,
+                  fontWeight: FontWeight.w600,
                 ),
                 onTap: () {
                   Navigator.pop(context);
                   onGallerySelected();
                 },
               ),
+              80.verticalSpace
             ],
           ),
         );

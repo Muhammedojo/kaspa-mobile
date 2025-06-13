@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:collection';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
@@ -40,6 +41,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   late GlobalKey<FormState> formKey4;
   @override
   late GlobalKey<FormState> formKey5;
+
+  @override
+  File? image;
 
   @override
   late TextEditingController firstNameController;
@@ -153,6 +157,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     bvnController = TextEditingController();
     cooperativeController = TextEditingController();
     accountNumberController = TextEditingController();
+    imageController = TextEditingController();
+    picker = ImagePicker();
+   
     accountNameController = TextEditingController();
     nokNameController = TextEditingController();
     ageController = TextEditingController();
@@ -244,6 +251,31 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       setState(() {
         currentStep = index;
       });
+    }
+  }
+
+  @override
+  void onSelectImages(TextEditingController controller) {
+    Utils.mediaBottomSheet(
+      context,
+      () => getImage(ImageSource.camera, controller),
+      () => getImage(ImageSource.gallery, controller),
+    );
+  }
+
+  @override
+  Future getImage(ImageSource source, TextEditingController controller) async {
+       final XFile? pickedFile = await picker.pickImage(source: source); 
+    if (pickedFile != null && pickedFile.path.isNotEmpty) {
+      try {
+        setState(() {
+          if (controller == imageController) {
+            image = File(pickedFile.path);
+          }
+        });
+      } catch (e) {
+        debugPrint(e.toString());
+      }
     }
   }
 
@@ -502,6 +534,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
     return FarmerConfirmation(
       fName: firstNameController.text,
+      image: image!.path,
       lName: lastNameController.text,
       age: ageController.text,
       proceed: () {
@@ -560,8 +593,6 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
     List<Map<String, dynamic>> farmsPayload = [];
     if (currentFarmLocationCoordinates.isNotEmpty) {
-
-
       List<List<double>> polygonRing =
           currentFarmLocationCoordinates
               .map((coord) => [coord.longitude!, coord.latitude!])
