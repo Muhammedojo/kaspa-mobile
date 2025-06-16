@@ -160,6 +160,8 @@ class IsarImpl implements DatabaseStorage {
             .or()
             .firstNameContains(searchTerm, caseSensitive: false)
             .or()
+            .lastNameContains(searchTerm, caseSensitive: false)
+            .or()
             .phoneNumberContains(searchTerm, caseSensitive: false)
             .findAll();
       } else {

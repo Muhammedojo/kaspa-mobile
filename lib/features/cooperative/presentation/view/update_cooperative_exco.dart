@@ -33,6 +33,7 @@ class UpdateCooperativeExcoView extends StatelessWidget
               (){}
             ),
             24.verticalSpace,
+            
           ],
         ),
       ),

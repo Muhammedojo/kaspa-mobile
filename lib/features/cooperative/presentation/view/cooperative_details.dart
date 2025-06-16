@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kaspa/core/navigation/navigator.dart';
 import 'package:kaspa/core/resources/vectors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../contract/cooperative_details.dart';
+import '../controller/update_cooperative.dart';
 import '../widget/coop_pattern_cont.dart';
 
 class CooperativeDetailsView extends StatelessWidget
@@ -196,7 +198,7 @@ class CooperativeDetailsView extends StatelessWidget
       onSelected: (String item) {
         switch (item) {
           case editAction:
-            debugPrint('Edit cooperative selected');
+           pushTo(UpdateCooperativeScreen(cooperative: controller.cooperative,), context);
             break;
           case deleteAction:
             debugPrint('Delete cooperative selected');

@@ -420,11 +420,12 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
       calendarStyle: CalendarStyle(
         todayDecoration: BoxDecoration(
           color: AppColors.primaryGreen.withAlpha((225 * 0.5).toInt()),
-          shape: BoxShape.circle,
+          shape: BoxShape.rectangle,
         ),
         selectedDecoration: BoxDecoration(
           color: AppColors.primaryGreen,
-          shape: BoxShape.circle,
+          shape: BoxShape.rectangle,
+        
         ),
       ),
       headerStyle: HeaderStyle(
@@ -439,8 +440,9 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
               margin: REdgeInsets.all(4.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.green, // Current day green color
-                shape: BoxShape.circle,
+                color: Colors.green,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(8.0.r),
               ),
               child: Text('${day.day}', style: TextStyle(color: Colors.white)),
             );
