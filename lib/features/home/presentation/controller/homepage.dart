@@ -10,6 +10,8 @@ import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/storage/istorage.dart';
 import '../../../auth/presentation/bloc/user/user_cubit.dart';
 import '../../../farmers/presentation/controller/register_farmer.dart';
+import '../bloc/insight/insight_cubit.dart';
+import '../bloc/weather_lga/cubit.dart';
 import '../contract/homepage.dart';
 import '../view/homepage.dart';
 
@@ -34,12 +36,12 @@ class _HomePageScreenState extends State<HomePageScreen>
   void initState() {
     super.initState();
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) { 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
         context.read<UserCubit>().getUser;
       }
     });
-    
+
     pageController.addListener(() {
       int next = pageController.page!.round();
       if (currentPage != next) {
@@ -88,6 +90,12 @@ class _HomePageScreenState extends State<HomePageScreen>
   @override
   void report() {
     pushTo(IncidentReportScreen(), context);
+  }
+
+  @override
+  void refreshData() {
+    GetIt.I.get<InsightCubit>().loadInsight();
+    GetIt.I.get<LgaWeatherCubit>().loadLgaWeather();
   }
 
   @override

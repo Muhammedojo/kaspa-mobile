@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kaspa/features/calendar/presentation/controller/calendar.dart';
 import 'package:kaspa/features/calendar/presentation/controller/crop_activity.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
@@ -51,42 +53,82 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                       translate: false,
                     ),
                     centerTitle: true,
-                    actions: [SvgPicture.asset(AppIcon.calendar)],
+                    actions: [
+                      PopupMenuButton<String>(
+                        icon: SvgPicture.asset(AppIcon.calendar),
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0.r),
+                        ),
+                        onSelected: (String item) {
+                          switch (item) {
+                            case 'week':
+                              controller.changeCalendarDisplayMode(
+                                CalendarDisplayMode.week,
+                              );
+                              break;
+                            case 'month':
+                              controller.changeCalendarDisplayMode(
+                                CalendarDisplayMode.month,
+                              );
+                              break;
+                          }
+                        },
+                        itemBuilder:
+                            (BuildContext context) => <PopupMenuEntry<String>>[
+                              PopupMenuItem<String>(
+                                value: 'week',
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      AppIcon.cal,
+                                      height: 14.sp,
+                                      width: 14.sp,
+                                    ),
+                                    8.horizontalSpace,
+                                    "Week".toText(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.accentText,
+                                      translate: false,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const PopupMenuDivider(),
+                              PopupMenuItem<String>(
+                                value: 'month',
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      AppIcon.cal,
+                                      height: 14.sp,
+                                      width: 14.sp,
+                                    ),
+                                    8.horizontalSpace,
+                                    "Month".toText(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.accentText,
+                                      translate: false,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                      ),
+                    ],
                   ),
 
                   SliverToBoxAdapter(
                     child: Container(
                       color: Colors.transparent,
-                      padding: REdgeInsets.symmetric(vertical: 8),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SvgPicture.asset(AppIcon.left),
-                              'May 2025'.toText(
-                                translate: false,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              SvgPicture.asset(AppIcon.right),
-                            ],
-                          ),
-                          16.verticalSpace,
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildCalendarDay('Thu', '22', false),
-                              _buildCalendarDay('Fri', '23', true),
-                              _buildCalendarDay('Sat', '24', false),
-                              _buildCalendarDay('Sun', '25', false),
-                              _buildCalendarDay('Mon', '26', false),
-                              _buildCalendarDay('Tue', '27', false),
-                            ],
-                          ),
-                        ],
-                      ),
+                      padding: REdgeInsets.symmetric(vertical: 8.0),
+                      child:
+                          controller.calendarDisplayMode ==
+                                  CalendarDisplayMode.week
+                              ? _buildWeekViewCalendar(context)
+                              : _buildMonthViewCalendar(context),
                     ),
                   ),
 
@@ -160,9 +202,7 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                           return SliverToBoxAdapter(
                             child: Padding(
                               padding: REdgeInsets.symmetric(vertical: 15.0),
-                              child: ErrorWidgets(
-                                message: emptyListMessageKey,
-                              ),
+                              child: ErrorWidgets(message: emptyListMessageKey),
                             ),
                           );
                         }
@@ -179,7 +219,12 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                               return CropCard(
                                 data: cropCalendarItem,
                                 onTap: () {
-                                  pushTo(CropActivityScreen(crop: state.cropCalendarList[itemIndex]),context);
+                                  pushTo(
+                                    CropActivityScreen(
+                                      crop: state.cropCalendarList[itemIndex],
+                                    ),
+                                    context,
+                                  );
                                 },
                               );
                             },
@@ -300,6 +345,108 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
+      ),
+    );
+  }
+
+  Widget _buildWeekViewCalendar(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: SvgPicture.asset(AppIcon.left),
+              onPressed: () {
+                controller.onDaySelected(
+                  controller.focusedDay.subtract(const Duration(days: 7)),
+                  controller.focusedDay.subtract(const Duration(days: 7)),
+                );
+              },
+            ),
+            DateFormat('MMMM yyyy')
+                .format(controller.focusedDay)
+                .toText(
+                  translate: false,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+            IconButton(
+              icon: SvgPicture.asset(AppIcon.right),
+              onPressed: () {
+                controller.onDaySelected(
+                  controller.focusedDay.add(const Duration(days: 7)),
+                  controller.focusedDay.add(const Duration(days: 7)),
+                );
+              },
+            ),
+          ],
+        ),
+        16.verticalSpace,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(7, (index) {
+            final day = controller.focusedDay.subtract(
+              Duration(days: controller.focusedDay.weekday - 1 - index),
+            );
+            final isToday = isSameDay(day, DateTime.now());
+            return _buildCalendarDay(
+              DateFormat('E').format(day),
+              DateFormat('d').format(day),
+              isToday,
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMonthViewCalendar(BuildContext context) {
+    return TableCalendar(
+      firstDay: DateTime.utc(2020, 1, 1),
+      lastDay: DateTime.utc(2030, 12, 31),
+      focusedDay: controller.focusedDay,
+      calendarFormat: CalendarFormat.month,
+      selectedDayPredicate: (day) {
+        return isSameDay(controller.focusedDay, day);
+      },
+
+      onDaySelected: (selectedDay, focusedDay) {
+        controller.onDaySelected(selectedDay, focusedDay);
+      },
+      onPageChanged: (focusedDay) {
+        controller.onDaySelected(focusedDay, focusedDay);
+      },
+      calendarStyle: CalendarStyle(
+        todayDecoration: BoxDecoration(
+          color: AppColors.primaryGreen.withAlpha((225 * 0.5).toInt()),
+          shape: BoxShape.circle,
+        ),
+        selectedDecoration: BoxDecoration(
+          color: AppColors.primaryGreen,
+          shape: BoxShape.circle,
+        ),
+      ),
+      headerStyle: HeaderStyle(
+        titleTextStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700),
+        formatButtonVisible: false,
+        titleCentered: true,
+      ),
+      calendarBuilders: CalendarBuilders(
+        defaultBuilder: (context, day, focusedDay) {
+          if (isSameDay(day, DateTime.now())) {
+            return Container(
+              margin: REdgeInsets.all(4.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.green, // Current day green color
+                shape: BoxShape.circle,
+              ),
+              child: Text('${day.day}', style: TextStyle(color: Colors.white)),
+            );
+          }
+          return null;
+        },
       ),
     );
   }

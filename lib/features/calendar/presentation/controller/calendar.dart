@@ -9,6 +9,8 @@ class CalendarScreen extends StatefulWidget {
   State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
+enum CalendarDisplayMode { week, month }
+
 class _CalendarScreenState extends State<CalendarScreen>
     implements CalendarControllerContract {
   late final CalendarViewContract view;
@@ -23,9 +25,15 @@ class _CalendarScreenState extends State<CalendarScreen>
   bool showFixedTabs = false;
 
   @override
+  CalendarDisplayMode calendarDisplayMode = CalendarDisplayMode.week;
+
+  @override
+  DateTime focusedDay = DateTime.now();
+
+  @override
   void initState() {
-    scrollController = ScrollController();
     super.initState();
+    scrollController = ScrollController();
     scrollController.addListener(onScroll);
 
     view = CalendarView(controller: this);
@@ -47,6 +55,20 @@ class _CalendarScreenState extends State<CalendarScreen>
         showFixedTabs = false;
       });
     }
+  }
+
+  @override
+  void changeCalendarDisplayMode(CalendarDisplayMode mode) {
+    setState(() {
+      calendarDisplayMode = mode;
+    });
+  }
+
+   @override
+  void onDaySelected(DateTime selectedDay, DateTime newFocusedDay) {
+    setState(() {
+      focusedDay = newFocusedDay;
+    });
   }
 
   @override

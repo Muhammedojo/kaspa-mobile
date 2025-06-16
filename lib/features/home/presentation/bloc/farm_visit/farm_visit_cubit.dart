@@ -104,7 +104,7 @@ class FarmVisitCubit extends Cubit<FarmVisitState> {
         r,
       ) async {
         if (r.data != null) {
-          emit(CreateVisitSuccess(r.data!));
+          emit(CreateVisitSuccess(r.data!)); 
 
           GetIt.I.get<ApiRequestBloc>().add(
             ApiRequestTriggered(apiRequestList: [farmVisitListEndpoint]),

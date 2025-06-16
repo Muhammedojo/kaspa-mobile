@@ -10,6 +10,7 @@ abstract class HomePageControllerContract {
   void registerFarmer();
   void farmVisit();
   void priceUpdate();
+  void refreshData();
   void report();
 }
 

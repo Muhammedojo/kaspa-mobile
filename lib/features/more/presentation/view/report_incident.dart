@@ -254,8 +254,9 @@ class ReportIncidentView extends StatelessWidget
                   ),
                   16.verticalSpace,
 
-                  'supporting_documents'.toText(
+                  'Add a photo'.toText(
                     fontSize: 14,
+                    translate: false,
                     fontWeight: FontWeight.w600,
                   ),
                   controller.imageFileList.isEmpty

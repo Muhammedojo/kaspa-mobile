@@ -9,7 +9,8 @@ import '../../../../core/resources/vectors.dart';
 
 class WeatherCard extends StatelessWidget {
   final Insight insight;
-  const WeatherCard({super.key, required this.insight});
+  final Function() onTap;
+  const WeatherCard({super.key, required this.insight, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +106,10 @@ class WeatherCard extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SvgPicture.asset(AppIcon.refresh),
+              GestureDetector(
+                onTap: onTap,
+                child: SvgPicture.asset(AppIcon.refresh),
+              ),
             ],
           ),
         ],

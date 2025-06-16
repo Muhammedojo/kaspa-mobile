@@ -89,7 +89,10 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                                 }
                                 final currentWeatherData = state.insightList[0];
 
-                                return WeatherCard(insight: currentWeatherData);
+                                return WeatherCard(insight: currentWeatherData, onTap: () { 
+                                  controller.refreshData();
+
+                                 },);
                               }
 
                               return ErrorWidgets(
@@ -270,6 +273,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                                     8.horizontalSpace,
                                     'Unverified Farmers (45%)'.toText(
                                       fontSize: 10,
+                                      translate: false,
                                       color: AppColors.accentText,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -351,6 +355,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                                   8.horizontalSpace,
                                   'Unverified Farmers (45%)'.toText(
                                     fontSize: 10,
+                                    translate: false,
                                     color: AppColors.accentText,
                                     fontWeight: FontWeight.w600,
                                   ),
