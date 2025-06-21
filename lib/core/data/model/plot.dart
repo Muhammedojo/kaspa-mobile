@@ -17,6 +17,7 @@ class Plot {
   String? ownershipType;
   String? longitude;
   String? latitude;
+  String? folioId;
   List<FarmCrop> farmCrops = [];
 
   Plot();
@@ -33,10 +34,8 @@ Plot _$PlotFromJson(Map<String, dynamic> json) {
   obj.ownershipType = json[KEY_OWNERSHIP_TYPE];
   obj.longitude = json[KEY_LONGITUDE];
   obj.latitude = json[KEY_LATITUDE];
-  obj.farmCrops =
-      json[KEY_FARM_CROPS]
-          .map<FarmCrop>((farmCrop) => FarmCrop.fromJson(farmCrop))
-          .toList();
+  obj.folioId = json[KEY_FOLIO_ID];
+
 
   return obj;
 }

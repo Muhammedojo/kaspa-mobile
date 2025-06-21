@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
+import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/farm_visit.dart';
@@ -70,6 +71,7 @@ abstract class DatabaseStorage {
   Future<List<Livestock>> getLivestock();
   Future<List<User>> getUser();
   Future<List<Ward>> getWard();
+  Future<List<CropActivities>> getFarmCropActivity();
   Future<List<Market>> getMarket();
   Future<List<MarketData>> getMarketPrice();
   Future<List<Notifications>> getNotification();
@@ -86,6 +88,7 @@ abstract class DatabaseStorage {
   Future<void> saveCooperative(List<Cooperative> objectList);
   Future<void> saveDashboard(List<DashboardData> objectList);
   Future<void> saveFarmer(List<Farmer> objectList);
+  Future<void> saveFarmCropActivity(List<CropActivities> objectList);
   Future<void> saveFarmVisit(List<FarmVisit> objectList);
   Future<void> saveLga(List<Lga> objectList);
   Future<void> saveLivestock(List<Livestock> objectList);

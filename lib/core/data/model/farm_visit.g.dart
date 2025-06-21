@@ -22,49 +22,65 @@ const FarmVisitSchema = CollectionSchema(
       name: r'address',
       type: IsarType.string,
     ),
-    r'cropId': PropertySchema(
+    r'crop': PropertySchema(
       id: 1,
+      name: r'crop',
+      type: IsarType.object,
+      target: r'CropData',
+    ),
+    r'cropId': PropertySchema(
+      id: 2,
       name: r'cropId',
       type: IsarType.long,
     ),
     r'farmCrops': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'farmCrops',
       type: IsarType.objectList,
       target: r'FarmCrop',
     ),
     r'farmId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'farmId',
       type: IsarType.long,
     ),
+    r'farmerName': PropertySchema(
+      id: 5,
+      name: r'farmerName',
+      type: IsarType.string,
+    ),
+    r'folioId': PropertySchema(
+      id: 6,
+      name: r'folioId',
+      type: IsarType.string,
+    ),
     r'latitude': PropertySchema(
-      id: 4,
+      id: 7,
       name: r'latitude',
       type: IsarType.string,
     ),
     r'longitude': PropertySchema(
-      id: 5,
+      id: 8,
       name: r'longitude',
       type: IsarType.string,
     ),
     r'noOfHectares': PropertySchema(
-      id: 6,
+      id: 9,
       name: r'noOfHectares',
       type: IsarType.long,
     ),
     r'ownershipType': PropertySchema(
-      id: 7,
+      id: 10,
       name: r'ownershipType',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 8,
+      id: 11,
       name: r'pk',
       type: IsarType.long,
     ),
     r'sizeInHa': PropertySchema(
-      id: 9,
+      id: 12,
       name: r'sizeInHa',
       type: IsarType.string,
     )
@@ -113,12 +129,31 @@ int _farmVisitEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.crop;
+    if (value != null) {
+      bytesCount += 3 +
+          CropDataSchema.estimateSize(value, allOffsets[CropData]!, allOffsets);
+    }
+  }
   bytesCount += 3 + object.farmCrops.length * 3;
   {
     final offsets = allOffsets[FarmCrop]!;
     for (var i = 0; i < object.farmCrops.length; i++) {
       final value = object.farmCrops[i];
       bytesCount += FarmCropSchema.estimateSize(value, offsets, allOffsets);
+    }
+  }
+  {
+    final value = object.farmerName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.folioId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
     }
   }
   {
@@ -155,20 +190,28 @@ void _farmVisitSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.address);
-  writer.writeLong(offsets[1], object.cropId);
+  writer.writeObject<CropData>(
+    offsets[1],
+    allOffsets,
+    CropDataSchema.serialize,
+    object.crop,
+  );
+  writer.writeLong(offsets[2], object.cropId);
   writer.writeObjectList<FarmCrop>(
-    offsets[2],
+    offsets[3],
     allOffsets,
     FarmCropSchema.serialize,
     object.farmCrops,
   );
-  writer.writeLong(offsets[3], object.farmId);
-  writer.writeString(offsets[4], object.latitude);
-  writer.writeString(offsets[5], object.longitude);
-  writer.writeLong(offsets[6], object.noOfHectares);
-  writer.writeString(offsets[7], object.ownershipType);
-  writer.writeLong(offsets[8], object.pk);
-  writer.writeString(offsets[9], object.sizeInHa);
+  writer.writeLong(offsets[4], object.farmId);
+  writer.writeString(offsets[5], object.farmerName);
+  writer.writeString(offsets[6], object.folioId);
+  writer.writeString(offsets[7], object.latitude);
+  writer.writeString(offsets[8], object.longitude);
+  writer.writeLong(offsets[9], object.noOfHectares);
+  writer.writeString(offsets[10], object.ownershipType);
+  writer.writeLong(offsets[11], object.pk);
+  writer.writeString(offsets[12], object.sizeInHa);
 }
 
 FarmVisit _farmVisitDeserialize(
@@ -179,22 +222,29 @@ FarmVisit _farmVisitDeserialize(
 ) {
   final object = FarmVisit();
   object.address = reader.readStringOrNull(offsets[0]);
-  object.cropId = reader.readLongOrNull(offsets[1]);
+  object.crop = reader.readObjectOrNull<CropData>(
+    offsets[1],
+    CropDataSchema.deserialize,
+    allOffsets,
+  );
+  object.cropId = reader.readLongOrNull(offsets[2]);
   object.farmCrops = reader.readObjectList<FarmCrop>(
-        offsets[2],
+        offsets[3],
         FarmCropSchema.deserialize,
         allOffsets,
         FarmCrop(),
       ) ??
       [];
-  object.farmId = reader.readLongOrNull(offsets[3]);
+  object.farmId = reader.readLongOrNull(offsets[4]);
+  object.farmerName = reader.readStringOrNull(offsets[5]);
+  object.folioId = reader.readStringOrNull(offsets[6]);
   object.id = id;
-  object.latitude = reader.readStringOrNull(offsets[4]);
-  object.longitude = reader.readStringOrNull(offsets[5]);
-  object.noOfHectares = reader.readLongOrNull(offsets[6]);
-  object.ownershipType = reader.readStringOrNull(offsets[7]);
-  object.pk = reader.readLong(offsets[8]);
-  object.sizeInHa = reader.readStringOrNull(offsets[9]);
+  object.latitude = reader.readStringOrNull(offsets[7]);
+  object.longitude = reader.readStringOrNull(offsets[8]);
+  object.noOfHectares = reader.readLongOrNull(offsets[9]);
+  object.ownershipType = reader.readStringOrNull(offsets[10]);
+  object.pk = reader.readLong(offsets[11]);
+  object.sizeInHa = reader.readStringOrNull(offsets[12]);
   return object;
 }
 
@@ -208,8 +258,14 @@ P _farmVisitDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readObjectOrNull<CropData>(
+        offset,
+        CropDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 2:
+      return (reader.readLongOrNull(offset)) as P;
+    case 3:
       return (reader.readObjectList<FarmCrop>(
             offset,
             FarmCropSchema.deserialize,
@@ -217,19 +273,23 @@ P _farmVisitDeserializeProp<P>(
             FarmCrop(),
           ) ??
           []) as P;
-    case 3:
-      return (reader.readLongOrNull(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readLongOrNull(offset)) as P;
+    case 10:
+      return (reader.readStringOrNull(offset)) as P;
+    case 11:
+      return (reader.readLong(offset)) as P;
+    case 12:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -624,6 +684,22 @@ extension FarmVisitQueryFilter
     });
   }
 
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> cropIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'crop',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> cropIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'crop',
+      ));
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> cropIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -846,6 +922,304 @@ extension FarmVisitQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmerNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'farmerName',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition>
+      farmerNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'farmerName',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmerNameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'farmerName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition>
+      farmerNameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'farmerName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmerNameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'farmerName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmerNameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'farmerName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition>
+      farmerNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'farmerName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmerNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'farmerName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmerNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'farmerName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmerNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'farmerName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition>
+      farmerNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'farmerName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition>
+      farmerNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'farmerName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'folioId',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'folioId',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'folioId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'folioId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> folioIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'folioId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition>
+      folioIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'folioId',
+        value: '',
       ));
     });
   }
@@ -1647,6 +2021,13 @@ extension FarmVisitQueryFilter
 
 extension FarmVisitQueryObject
     on QueryBuilder<FarmVisit, FarmVisit, QFilterCondition> {
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> crop(
+      FilterQuery<CropData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'crop');
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> farmCropsElement(
       FilterQuery<FarmCrop> q) {
     return QueryBuilder.apply(this, (query) {
@@ -1692,6 +2073,30 @@ extension FarmVisitQuerySortBy on QueryBuilder<FarmVisit, FarmVisit, QSortBy> {
   QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByFarmIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'farmId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByFarmerName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'farmerName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByFarmerNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'farmerName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByFolioId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByFolioIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.desc);
     });
   }
 
@@ -1806,6 +2211,30 @@ extension FarmVisitQuerySortThenBy
     });
   }
 
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenByFarmerName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'farmerName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenByFarmerNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'farmerName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenByFolioId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenByFolioIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.desc);
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1912,6 +2341,20 @@ extension FarmVisitQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FarmVisit, FarmVisit, QDistinct> distinctByFarmerName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'farmerName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QDistinct> distinctByFolioId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'folioId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QDistinct> distinctByLatitude(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1968,6 +2411,12 @@ extension FarmVisitQueryProperty
     });
   }
 
+  QueryBuilder<FarmVisit, CropData?, QQueryOperations> cropProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'crop');
+    });
+  }
+
   QueryBuilder<FarmVisit, int?, QQueryOperations> cropIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'cropId');
@@ -1984,6 +2433,18 @@ extension FarmVisitQueryProperty
   QueryBuilder<FarmVisit, int?, QQueryOperations> farmIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'farmId');
+    });
+  }
+
+  QueryBuilder<FarmVisit, String?, QQueryOperations> farmerNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'farmerName');
+    });
+  }
+
+  QueryBuilder<FarmVisit, String?, QQueryOperations> folioIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'folioId');
     });
   }
 

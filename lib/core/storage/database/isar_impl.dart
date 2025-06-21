@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/plot.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../data/model/crop_activities.dart';
 import '../../data/model/crop_calendar.dart';
 import '../../data/model/dashboard_data.dart';
 import '../../data/model/farm_visit.dart';
@@ -30,6 +31,7 @@ class IsarImpl implements DatabaseStorage {
         [
           BankSchema,
           CropSchema,
+          CropActivitiesSchema,
           CropCalendarSchema,
           CooperativeSchema,
           DashboardDataSchema,
@@ -172,6 +174,21 @@ class IsarImpl implements DatabaseStorage {
       return <Farmer>[];
     }
   }
+
+  @override
+  Future<List<CropActivities>> getFarmCropActivity() {
+    if (!_isar.isOpen) {
+      return Future.value(<CropActivities>[]);
+    }
+    try {
+      final cropActivities = _isar.cropActivities.where().findAllSync();
+      return Future.value(cropActivities);
+    } catch (e) {
+      debugPrint("Error retrieving crop activities: $e");
+      return Future.value(<CropActivities>[]);
+    }
+  }
+
 
   @override
   Future<List<FarmVisit>> getFarmVisit() {
@@ -442,6 +459,19 @@ class IsarImpl implements DatabaseStorage {
       debugPrint("Error saving dashboard: $e");
     }
   }
+
+  @override
+  Future<void> saveFarmCropActivity(List<CropActivities> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.cropActivities.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving farm crop activity: $e");
+    }
+  }
+
 
   @override
   Future<void> saveFarmVisit(List<FarmVisit> objectList) async {

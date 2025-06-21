@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/farm_visit.dart';
@@ -54,6 +55,10 @@ abstract class ApiServices {
 
   Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList(
     String? endpoint,
+  );
+
+  Future<Either<Failure, ApiResponse<List<CropActivities>>>> getFarmCropActivityList(
+    String? endpoint,{int? farmCropId}
   );
 
   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList(

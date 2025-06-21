@@ -28,6 +28,7 @@ import '../../features/farmers/repository/farmer_repository_contract.dart';
 import '../../features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import '../../features/home/presentation/bloc/bloc.dart';
 import '../../features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
+import '../../features/home/presentation/bloc/farm_crop_activity/farm_crop_activity_cubit.dart';
 import '../../features/home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
 import '../../features/home/presentation/bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
 import '../../features/home/presentation/bloc/incident_report/incident_report_cubit.dart';
@@ -134,6 +135,14 @@ class AppInitializer {
         databaseManager: instanceLocator(),
       ),
     );
+
+   instanceLocator.registerLazySingleton<FarmCropActivityCubit>(
+      () => FarmCropActivityCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
     instanceLocator.registerLazySingleton<FarmVisitCubit>(
       () => FarmVisitCubit(
         repository: instanceLocator(),

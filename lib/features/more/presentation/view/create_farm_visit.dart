@@ -85,53 +85,61 @@ class CreateFarmVisitView extends StatelessWidget
                       String hintText = 'choose_an_option'.tr();
                       bool isDisabled = false;
                       if (state is PlotLoaded) {
-                        if(controller.selectedFarmer == null){
+                        if (controller.selectedFarmer == null) {
                           hintText = 'Select a farmer first';
-                          isDisabled =true;
+                          isDisabled = true;
+                        } else {
+                          filteredPlots =
+                              state.plotList
+                                  .where(
+                                    (plot) =>
+                                        plot.folioId ==
+                                        controller.selectedFarmer?.folioId,
+                                  )
+                                  .toList();
+                          if (filteredPlots.isEmpty) {
+                            hintText = 'No plots for this farmer';
+                            isDisabled = true;
+                          }
                         }
-                        // else {
-                        //   filteredPlots = state.plotList
-                        //       .where((plot) =>
-                        //           plot.farmer?.pk ==
-                        //           controller.selectedFarmer?.pk)
-                        //       .toList();
-                        //   if (filteredPlots.isEmpty) {
-                        //     hintText = 'no_plots_for_this_farmer'.tr();
-                        //     isDisabled = true;
-                        //   }
-                        // }
-                        return DropdownButtonFormField<Plot>(
-                          icon: 'arrowDown'.toSvg(height: 11.sp),
-                          style: Styles.x14dp_4A4A4A(14.0.sp),
-                          decoration:
-                              Styles.textFormFieldDecorationBorderWithBackground(
-                                'choose_an_option'.tr(),
-                                '',
-                              ),
-
-                          items:
-                              state.plotList.map((e) {
-                                return DropdownMenuItem(
-                                  value: e,
-                                  child: ('${e.sizeInHa} ha').toText(
-                                    translate: false,
-                                  ),
-                                );
-                              }).toList(),
-                          value: controller.selectedPlot,
-                          onChanged: (newValue) {
-                            controller.onSelectPlot(newValue!);
-                          },
-                        );
+                      } else if (state is PlotLoading) {
+                        hintText = 'Loading Plots';
+                        isDisabled = true;
+                      } else {
+                        hintText = 'Failed to load Plot';
+                        isDisabled = true;
                       }
-                      return DropdownButtonFormField(
+
+                      return DropdownButtonFormField<Plot>(
+                        icon: 'arrowDown'.toSvg(height: 11.sp),
                         style: Styles.x14dp_4A4A4A(14.0.sp),
-                        items: [],
-                        onChanged: (_) {},
+                        decoration:
+                            Styles.textFormFieldDecorationBorderWithBackground(
+                              hintText,
+                              '',
+                            ),
+
+                        items:
+                            filteredPlots.map((e) {
+                              return DropdownMenuItem<Plot>(
+                                value: e,
+                                child: ('${e.sizeInHa} ha').toText(
+                                  translate: false,
+                                ),
+                              );
+                            }).toList(),
+                        value: controller.selectedPlot,
+                        onChanged:
+                            isDisabled
+                                ? null
+                                : (newValue) {
+                                  controller.onSelectPlot(newValue!);
+                                },
                       );
                     },
                   ),
                 ),
+
                 16.verticalSpace,
                 'Total area of land being cultivated'.toText(
                   fontSize: 14,
@@ -236,8 +244,9 @@ class CreateFarmVisitView extends StatelessWidget
                       Utils.showToastSuccess(
                         context,
                         'visit_logged_successfully'.tr(),
-                        '',
+                        'Go to Farm Visit List',
                         () {
+                           Navigator.of(context, rootNavigator: true).pop();
                           Navigator.pop(context);
                         },
                       );

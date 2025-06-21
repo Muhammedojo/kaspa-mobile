@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:isar/isar.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/crop_activities.dart';
 import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
 import '../../../core/data/model/farm_visit.dart';
@@ -63,6 +64,11 @@ class HomeRepository implements IHomeRepository {
   Future<Either<Failure, ApiResponse<List<DashboardData>>>> getDashboardList({
     String? endpoint,
   }) => apiServices.getDashboardList(endpoint);
+
+  @override
+  Future<Either<Failure, ApiResponse<List<CropActivities>>>> getFarmCropActivityList(
+    String? endpoint, {int? farmCropId,
+  }) => apiServices.getFarmCropActivityList(endpoint, farmCropId: farmCropId);
 
   @override
   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList({
@@ -201,6 +207,10 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<Plot>> getPlot() => localStorage.getPlot();
 
+ @override
+  Future<List<CropActivities>> getFarmCropActivity() => localStorage.getFarmCropActivity();
+
+
   @override
   Future<List<Product>> getProduct() => localStorage.getProduct();
 
@@ -237,6 +247,11 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveDashboard(List<DashboardData> dashboardList) =>
       localStorage.saveDashboard(dashboardList);
+
+  @override
+  Future<void> saveFarmCropActivity(List<CropActivities> farmCropActivityList) =>
+      localStorage.saveFarmCropActivity(farmCropActivityList);
+
 
   @override
   Future<void> saveFarmVisit(List<FarmVisit> farmVisitList) =>

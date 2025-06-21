@@ -39,6 +39,8 @@ class LastRequestTime {
   String? weatherUrl;
   String? farmer;
   String? farmerUrl;
+  String? farmCropActivity;
+  String? farmCropActivityUrl;
   String? farmVisit;
   String? farmVisitUrl;
   String? dashboard;
@@ -95,6 +97,8 @@ LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
   obj.farmerUrl = json['farmerUrl'];
   obj.farmVisit = json['farmVisit'];
   obj.farmVisitUrl = json['farmVisitUrl'];
+  obj.farmCropActivity = json['farmCropActivity'];
+  obj.farmCropActivityUrl = json['farmCropActivityUrl'];
 
   return obj;
 }
@@ -143,4 +147,6 @@ Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
       KEY_FARMER_URL: obj.farmerUrl,
       KEY_FARM_VISIT: obj.farmVisit,
       KEY_FARM_VISIT_URL: obj.farmVisitUrl,
+      KEY_FARM_CROP_ACTIVITY: obj.farmCropActivity,
+      KEY_FARM_CROP_ACTIVITY_URL: obj
     };

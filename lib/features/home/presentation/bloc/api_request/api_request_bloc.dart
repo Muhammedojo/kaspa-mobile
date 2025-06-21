@@ -6,6 +6,7 @@ import '../../../../../core/utils/global_variables.dart';
 import '../../../../farmers/presentation/bloc/bloc.dart';
 import '../bloc.dart';
 import '../crop_calendar/crop_calendar_cubit.dart';
+import '../farm_crop_activity/farm_crop_activity_cubit.dart';
 import '../farm_visit/farm_visit_cubit.dart';
 import '../farmer_dashboard/farmer_dashboard_cubit.dart';
 import '../incident_report/incident_report_cubit.dart';
@@ -127,6 +128,12 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
     switch (apiRequestName) {
       case farmersListEndpoint:
         AppInitializer.instanceLocator.get<GetFarmersCubit>().loadFarmers();
+        break;
+
+      case farmCropActivityListEndpoint:
+        AppInitializer.instanceLocator
+            .get<FarmCropActivityCubit>()
+            .loadFarmCropActivity();
         break;
 
       case farmVisitListEndpoint:

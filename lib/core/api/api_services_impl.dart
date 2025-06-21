@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
+import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/farm_visit.dart';
@@ -80,9 +81,7 @@ class ApiServicesImpl implements ApiServices {
         return bankList;
       },
       null,
-      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime,
-     
-      },
+      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
     );
   }
 
@@ -196,6 +195,33 @@ class ApiServicesImpl implements ApiServices {
             (data as List).map((e) => Farmer.fromJson(e)).toList();
         GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
         return farmerList;
+      },
+      null,
+      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+    );
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse<List<CropActivities>>>>
+  getFarmCropActivityList(String? endpoint, {int? farmCropId}) async {
+    var lastRequestTime =
+        await GetIt.I.get<LocalStorage>().getLastRequestTime();
+    String finalEndpoint = endpoint ?? farmCropActivityListEndpoint;
+    if (farmCropId != null) {
+      finalEndpoint = '$finalEndpoint?farm_crop=$farmCropId';
+    }
+
+    return apiClient.request<List<CropActivities>>(
+      finalEndpoint,
+      MethodType.get,
+      (data, {String? realUri}) {
+        lastRequestTime.farmCropActivity = currentDateTime();
+        lastRequestTime.farmCropActivityUrl = realUri;
+
+        final farmCropActivityList =
+            (data as List).map((e) => CropActivities.fromJson(e)).toList();
+        GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+        return farmCropActivityList;
       },
       null,
       headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
@@ -341,7 +367,7 @@ class ApiServicesImpl implements ApiServices {
     }
   }
 
-    @override
+  @override
   Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList(
     String? endpoint,
   ) async {
@@ -525,7 +551,7 @@ class ApiServicesImpl implements ApiServices {
     }
   }
 
-    @override
+  @override
   Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList(
     String? endpoint,
   ) async {
@@ -650,7 +676,7 @@ class ApiServicesImpl implements ApiServices {
     return apiClient.request<FarmVisit>(
       createFarmVisitEndpoint,
       MethodType.post,
-      (data, {String? realUri}) => FarmVisit.fromJson(data),
+      (data, {String? realUri}) => FarmVisit.fromJsonSingle(data),
       data.toJson(),
     );
   }

@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
+import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
 import '../data/model/farm_visit.dart';
@@ -130,6 +131,10 @@ class LocalStorageImpl implements LocalStorage {
   Future<List<FarmVisit>> getFarmVisit() => databaseStorage.getFarmVisit();
 
   @override
+  Future<List<CropActivities>> getFarmCropActivity() => databaseStorage.getFarmCropActivity();
+
+
+  @override
   Future<List<Lga>> getLga() => databaseStorage.getLga();
 
   @override
@@ -194,6 +199,11 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveFarmer(List<Farmer> objectList) =>
       databaseStorage.saveFarmer(objectList);
+
+  @override
+  Future<void> saveFarmCropActivity(List<CropActivities> objectList) =>
+      databaseStorage.saveFarmCropActivity(objectList);
+
 
   @override
   Future<void> saveFarmVisit(List<FarmVisit> objectList) =>

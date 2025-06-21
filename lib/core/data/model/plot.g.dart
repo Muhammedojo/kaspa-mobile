@@ -28,28 +28,33 @@ const PlotSchema = CollectionSchema(
       type: IsarType.objectList,
       target: r'FarmCrop',
     ),
-    r'latitude': PropertySchema(
+    r'folioId': PropertySchema(
       id: 2,
+      name: r'folioId',
+      type: IsarType.string,
+    ),
+    r'latitude': PropertySchema(
+      id: 3,
       name: r'latitude',
       type: IsarType.string,
     ),
     r'longitude': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'longitude',
       type: IsarType.string,
     ),
     r'ownershipType': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'ownershipType',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'pk',
       type: IsarType.long,
     ),
     r'sizeInHa': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'sizeInHa',
       type: IsarType.string,
     )
@@ -107,6 +112,12 @@ int _plotEstimateSize(
     }
   }
   {
+    final value = object.folioId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.latitude;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -146,11 +157,12 @@ void _plotSerialize(
     FarmCropSchema.serialize,
     object.farmCrops,
   );
-  writer.writeString(offsets[2], object.latitude);
-  writer.writeString(offsets[3], object.longitude);
-  writer.writeString(offsets[4], object.ownershipType);
-  writer.writeLong(offsets[5], object.pk);
-  writer.writeString(offsets[6], object.sizeInHa);
+  writer.writeString(offsets[2], object.folioId);
+  writer.writeString(offsets[3], object.latitude);
+  writer.writeString(offsets[4], object.longitude);
+  writer.writeString(offsets[5], object.ownershipType);
+  writer.writeLong(offsets[6], object.pk);
+  writer.writeString(offsets[7], object.sizeInHa);
 }
 
 Plot _plotDeserialize(
@@ -168,12 +180,13 @@ Plot _plotDeserialize(
         FarmCrop(),
       ) ??
       [];
+  object.folioId = reader.readStringOrNull(offsets[2]);
   object.id = id;
-  object.latitude = reader.readStringOrNull(offsets[2]);
-  object.longitude = reader.readStringOrNull(offsets[3]);
-  object.ownershipType = reader.readStringOrNull(offsets[4]);
-  object.pk = reader.readLong(offsets[5]);
-  object.sizeInHa = reader.readStringOrNull(offsets[6]);
+  object.latitude = reader.readStringOrNull(offsets[3]);
+  object.longitude = reader.readStringOrNull(offsets[4]);
+  object.ownershipType = reader.readStringOrNull(offsets[5]);
+  object.pk = reader.readLong(offsets[6]);
+  object.sizeInHa = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -201,8 +214,10 @@ P _plotDeserializeProp<P>(
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readLong(offset)) as P;
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -672,6 +687,150 @@ extension PlotQueryFilter on QueryBuilder<Plot, Plot, QFilterCondition> {
         upper,
         includeUpper,
       );
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'folioId',
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'folioId',
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'folioId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'folioId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'folioId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'folioId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterFilterCondition> folioIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'folioId',
+        value: '',
+      ));
     });
   }
 
@@ -1402,6 +1561,18 @@ extension PlotQuerySortBy on QueryBuilder<Plot, Plot, QSortBy> {
     });
   }
 
+  QueryBuilder<Plot, Plot, QAfterSortBy> sortByFolioId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterSortBy> sortByFolioIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Plot, Plot, QAfterSortBy> sortByLatitude() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'latitude', Sort.asc);
@@ -1473,6 +1644,18 @@ extension PlotQuerySortThenBy on QueryBuilder<Plot, Plot, QSortThenBy> {
   QueryBuilder<Plot, Plot, QAfterSortBy> thenByAddressDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterSortBy> thenByFolioId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Plot, Plot, QAfterSortBy> thenByFolioIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folioId', Sort.desc);
     });
   }
 
@@ -1557,6 +1740,13 @@ extension PlotQueryWhereDistinct on QueryBuilder<Plot, Plot, QDistinct> {
     });
   }
 
+  QueryBuilder<Plot, Plot, QDistinct> distinctByFolioId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'folioId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Plot, Plot, QDistinct> distinctByLatitude(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1609,6 +1799,12 @@ extension PlotQueryProperty on QueryBuilder<Plot, Plot, QQueryProperty> {
   QueryBuilder<Plot, List<FarmCrop>, QQueryOperations> farmCropsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'farmCrops');
+    });
+  }
+
+  QueryBuilder<Plot, String?, QQueryOperations> folioIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'folioId');
     });
   }
 
