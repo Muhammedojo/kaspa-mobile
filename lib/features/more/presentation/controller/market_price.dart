@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../../core/data/model/market_data.dart';
 import '../contract/market_price.dart';
 import '../view/market_price.dart';
+import '../widget/market_price_preview_widget.dart';
 
 
 class MarketPriceScreen extends StatefulWidget {
@@ -43,6 +45,18 @@ class _MarketPriceScreenState extends State<MarketPriceScreen>
     setState(() {
       isSearching = status;
     });
+  }
+
+    @override
+    previewLogModal(MarketData data) {
+    showModalBottomSheet(
+        context:context,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return MarketPricePreviewWidget(
+            data: data,
+          );
+        });
   }
 
   @override

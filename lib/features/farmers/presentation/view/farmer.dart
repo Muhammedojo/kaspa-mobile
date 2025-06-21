@@ -96,7 +96,7 @@ class FarmerView extends StatelessWidget implements FarmerViewContract {
                                   },
                                   separatorBuilder:
                                       (BuildContext context, int index) =>
-                                          12.verticalSpace,
+                                          16.verticalSpace,
                                 );
                           }
                           if (state is FarmerListFailure) {

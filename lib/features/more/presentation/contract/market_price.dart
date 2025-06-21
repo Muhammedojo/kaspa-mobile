@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../../../../core/data/model/market_data.dart';
 import '../../../../core/utils/contract.dart';
 
 abstract class MarketPriceControllerContract {
@@ -8,6 +8,7 @@ abstract class MarketPriceControllerContract {
   void updateSearchStatus(bool status);
   void searchCooperative(String text);
   void onClearSearch();
+  void previewLogModal(MarketData data);
 }
 
 abstract class MarketPriceViewContract extends BaseViewContract {}

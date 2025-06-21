@@ -107,7 +107,10 @@ class MarketPriceView extends StatelessWidget
                                       padding: EdgeInsets.only(bottom: 8),
                                       child: MarketPriceCard(
                                         data: item,
-                                        onTap: () {},
+                                        onTap: () {
+                                              controller.previewLogModal(item);
+                                       
+                                        },
                                       ),
                                     );
                                   },

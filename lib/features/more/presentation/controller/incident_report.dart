@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../../core/data/model/incident_report.dart';
 import '../contract/incident_report.dart';
 import '../view/incident_report.dart';
+import '../widget/incident_report_preview_widget.dart';
 
 class IncidentReportScreen extends StatefulWidget {
   const IncidentReportScreen({super.key});
@@ -42,6 +44,18 @@ class _IncidentReportScreenState extends State<IncidentReportScreen>
     setState(() {
       isSearching = status;
     });
+  }
+
+  @override
+    previewLogModal(IncidentReport data) {
+    showModalBottomSheet(
+        context:context,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return IncidentReportPreviewWidget(
+            data: data,
+          );
+        });
   }
 
   @override

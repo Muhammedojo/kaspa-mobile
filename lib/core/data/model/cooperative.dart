@@ -19,6 +19,7 @@ class Cooperative extends GeneralModel {
   String? doi = "";
   int? lgaId = 0;
   int? wardId = 0;
+  int? noOfFarmers = 0;
   String? file;
   String? secretary = "";
   String? certificateNumber = "";
@@ -53,6 +54,7 @@ Cooperative _$CooperativeFromJson(Map<String, dynamic> json) {
   }
 
   obj.head = json[KEY_HEAD];
+  obj.noOfFarmers = json[KEY_NO_OF_FARMERS];
   obj.secretary = json[KEY_SECRETARY];
   obj.dateOfIncorporation = json[KEY_DATE_OF_INCORPORATION];
   if (json.containsKey(KEY_CERTIFICATE) && json[KEY_CERTIFICATE] != null) {

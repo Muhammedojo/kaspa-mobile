@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/ward.dart';
 import '../../../../core/utils/contract.dart';

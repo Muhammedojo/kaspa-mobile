@@ -99,29 +99,34 @@ const CooperativeSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'pk': PropertySchema(
+    r'noOfFarmers': PropertySchema(
       id: 16,
+      name: r'noOfFarmers',
+      type: IsarType.long,
+    ),
+    r'pk': PropertySchema(
+      id: 17,
       name: r'pk',
       type: IsarType.long,
     ),
     r'secretary': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'secretary',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'updated',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'ward',
       type: IsarType.object,
       target: r'WardData',
     ),
     r'wardId': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'wardId',
       type: IsarType.long,
     )
@@ -338,16 +343,17 @@ void _cooperativeSerialize(
   );
   writer.writeLong(offsets[14], object.lgaId);
   writer.writeString(offsets[15], object.name);
-  writer.writeLong(offsets[16], object.pk);
-  writer.writeString(offsets[17], object.secretary);
-  writer.writeString(offsets[18], object.updated);
+  writer.writeLong(offsets[16], object.noOfFarmers);
+  writer.writeLong(offsets[17], object.pk);
+  writer.writeString(offsets[18], object.secretary);
+  writer.writeString(offsets[19], object.updated);
   writer.writeObject<WardData>(
-    offsets[19],
+    offsets[20],
     allOffsets,
     WardDataSchema.serialize,
     object.ward,
   );
-  writer.writeLong(offsets[20], object.wardId);
+  writer.writeLong(offsets[21], object.wardId);
 }
 
 Cooperative _cooperativeDeserialize(
@@ -382,15 +388,16 @@ Cooperative _cooperativeDeserialize(
   );
   object.lgaId = reader.readLongOrNull(offsets[14]);
   object.name = reader.readStringOrNull(offsets[15]);
-  object.pk = reader.readLong(offsets[16]);
-  object.secretary = reader.readStringOrNull(offsets[17]);
-  object.updated = reader.readStringOrNull(offsets[18]);
+  object.noOfFarmers = reader.readLongOrNull(offsets[16]);
+  object.pk = reader.readLong(offsets[17]);
+  object.secretary = reader.readStringOrNull(offsets[18]);
+  object.updated = reader.readStringOrNull(offsets[19]);
   object.ward = reader.readObjectOrNull<WardData>(
-    offsets[19],
+    offsets[20],
     WardDataSchema.deserialize,
     allOffsets,
   );
-  object.wardId = reader.readLongOrNull(offsets[20]);
+  object.wardId = reader.readLongOrNull(offsets[21]);
   return object;
 }
 
@@ -442,18 +449,20 @@ P _cooperativeDeserializeProp<P>(
     case 15:
       return (reader.readStringOrNull(offset)) as P;
     case 16:
-      return (reader.readLong(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 17:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 18:
       return (reader.readStringOrNull(offset)) as P;
     case 19:
+      return (reader.readStringOrNull(offset)) as P;
+    case 20:
       return (reader.readObjectOrNull<WardData>(
         offset,
         WardDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 20:
+    case 21:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2894,6 +2903,80 @@ extension CooperativeQueryFilter
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      noOfFarmersIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'noOfFarmers',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      noOfFarmersIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'noOfFarmers',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      noOfFarmersEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'noOfFarmers',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      noOfFarmersGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'noOfFarmers',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      noOfFarmersLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'noOfFarmers',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      noOfFarmersBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'noOfFarmers',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition> pkEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -3548,6 +3631,18 @@ extension CooperativeQuerySortBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByNoOfFarmers() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'noOfFarmers', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByNoOfFarmersDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'noOfFarmers', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pk', Sort.asc);
@@ -3788,6 +3883,18 @@ extension CooperativeQuerySortThenBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByNoOfFarmers() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'noOfFarmers', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByNoOfFarmersDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'noOfFarmers', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pk', Sort.asc);
@@ -3939,6 +4046,12 @@ extension CooperativeQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByNoOfFarmers() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'noOfFarmers');
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByPk() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pk');
@@ -4072,6 +4185,12 @@ extension CooperativeQueryProperty
   QueryBuilder<Cooperative, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Cooperative, int?, QQueryOperations> noOfFarmersProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'noOfFarmers');
     });
   }
 

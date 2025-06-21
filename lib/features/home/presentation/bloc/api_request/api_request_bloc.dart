@@ -129,7 +129,7 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<GetFarmersCubit>().loadFarmers();
         break;
 
-         case farmVisitListEndpoint:
+      case farmVisitListEndpoint:
         AppInitializer.instanceLocator.get<FarmVisitCubit>().loadFarmVisit();
         break;
 
@@ -137,7 +137,7 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<LgaCubit>().loadLga();
         break;
 
-              case lgaWeatherListEndpoint:
+      case lgaWeatherListEndpoint:
         AppInitializer.instanceLocator.get<LgaWeatherCubit>().loadLgaWeather();
         break;
 

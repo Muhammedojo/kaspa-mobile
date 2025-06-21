@@ -16,6 +16,11 @@ class MarketPriceCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: CardContainerWidget(
+          decoration: BoxDecoration(
+          color: Color(0xffF8F8F8),
+          borderRadius: BorderRadius.circular(8.r),
+           border: BoxBorder.all(color: Color(0xffC8C8C8), width: 0.5),
+        ),
         child: Row(
           children: [
             data.isCrop()
@@ -49,7 +54,7 @@ class MarketPriceCard extends StatelessWidget {
                   color: AppColors.colorPrimary,
                   translate: false,
                 ),
-                ' ${data.date ?? '2025-01-01'}'.toText(
+                'Volume: ${data.volume ?? '0.0'}Kg'.toText(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   translate: false,

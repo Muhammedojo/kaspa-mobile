@@ -198,7 +198,7 @@ class _UpdateCooperativeScreenState extends State<UpdateCooperativeScreen>
 
   @override
   void updateCooperative() async {
-    var code = generateTempFolioId();
+    var code = widget.cooperative?.code;
     if (formKey.currentState!.validate()) {
       if (imageFileList.isNotEmpty) {
         Cooperative cooperative = Cooperative();

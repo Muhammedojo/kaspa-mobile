@@ -15,6 +15,7 @@
     "in_progress": "In Progress",
     "started": "Started",
     "cooperative":"Cooperative",
+    "incident_reported_successfully":"Incident reported successfully",
     "plot":"Plot",
     "update_cooperative":"Update Cooperative",
     "registration_officer":"Registration Officer",

@@ -1,0 +1,162 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../../core/data/model/market_data.dart';
+import '../../../../core/theme/colors.dart';
+import '../../../../core/utils/extensions.dart';
+import '../../../../core/resources/vectors.dart';
+
+class MarketPricePreviewWidget extends StatelessWidget {
+  final MarketData data;
+  const MarketPricePreviewWidget({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.r),
+          topRight: Radius.circular(8.r),
+        ),
+        color: AppColors.primaryBackground,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.bgGreen,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.r),
+                    topRight: Radius.circular(16.r),
+                  ),
+                ),
+                child: Padding(
+                  padding: REdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 16,
+                  ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        AppIcon.crop,
+                        height: 20.sp,
+                        width: 20.sp,
+                      ),
+                      4.horizontalSpace,
+                      Expanded(
+                        child: 'Market Price Details'.toText(
+                          fontSize: 12,
+                          color: AppColors.colorPrimary,
+                          translate: false,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: SvgPicture.asset(
+                          AppIcon.cancel,
+                          height: 32.sp,
+                          width: 32.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              20.verticalSpace,
+              Padding(
+                padding: REdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    'Product'.toText(
+                      fontSize: 12,
+                      color: AppColors.accentText,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    (data.product?.product?.name ?? 'N/A').toText(
+                      fontSize: 14,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    16.verticalSpace,
+                    'Price'.toText(
+                      fontSize: 12,
+                      color: AppColors.accentText,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    (data.price.toString()).toText(
+                      fontSize: 14,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+
+                    16.verticalSpace,
+                    'Market Name'.toText(
+                      fontSize: 12,
+                      color: AppColors.accentText,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    (data.market?.name ?? 'N/A').toText(
+                      fontSize: 14,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    16.verticalSpace,
+                    'Market Address'.toText(
+                      fontSize: 12,
+                      color: AppColors.accentText,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    (data.market?.address ?? 'N/A').toText(
+                      fontSize: 14,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    16.verticalSpace,
+                    'Market Type'.toText(
+                      fontSize: 12,
+                      color: AppColors.accentText,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    (data.market?.marketType ?? 'N/A').toText(
+                      fontSize: 14,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    16.verticalSpace,
+                    'Volume'.toText(
+                      fontSize: 12,
+                      color: AppColors.accentText,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    (data.volume ?? 'N/A').toText(
+                      fontSize: 14,
+                      translate: false,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    25.verticalSpace,
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

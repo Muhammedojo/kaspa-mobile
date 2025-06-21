@@ -15,6 +15,10 @@ class FarmerCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: CardContainerWidget(
+         decoration: BoxDecoration(
+          color: Color(0xffFCFCFC),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
         child: 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

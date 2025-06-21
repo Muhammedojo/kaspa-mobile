@@ -66,7 +66,10 @@ class IncidentReportView extends StatelessWidget
                           if (state is IncidentLoaded) {
                             return state.incidentList.isEmpty
                                 ? ErrorWidgets(message: 'no_incident_logged')
-                                : StickyGroupedListView<IncidentReport, DateTime>(
+                                : StickyGroupedListView<
+                                  IncidentReport,
+                                  DateTime
+                                >(
                                   stickyHeaderBackgroundColor:
                                       Colors.transparent,
                                   elements: state.incidentList,
@@ -105,7 +108,9 @@ class IncidentReportView extends StatelessWidget
                                       padding: EdgeInsets.only(bottom: 8),
                                       child: ReportCard(
                                         data: item,
-                                        onTap: () {},
+                                        onTap: () {
+                                          controller.previewLogModal(item);
+                                        },
                                       ),
                                     );
                                   },
@@ -113,28 +118,6 @@ class IncidentReportView extends StatelessWidget
                                       const AlwaysScrollableScrollPhysics(),
                                   order: StickyGroupedListOrder.DESC,
                                 );
-                                //  ListView.separated(
-                                //   itemCount: state.incidentList.length,
-                                //   physics:
-                                //       const AlwaysScrollableScrollPhysics(),
-                                //   itemBuilder: (context, index) {
-                                //     return ReportCard(
-                                //       data: state.incidentList[index],
-                                //       onTap: () {
-                                //         // pushTo(
-                                //         //   CooperativeDetailsScreen(
-                                //         //     cooperative:
-                                //         //         state.cooperativeList[index],
-                                //         //   ),
-                                //         //   context,
-                                //         // );
-                                //       },
-                                //     );
-                                //   },
-                                //   separatorBuilder:
-                                //       (BuildContext context, int index) =>
-                                //           12.verticalSpace,
-                                // );
                           }
                           if (state is CooperativeFailure) {
                             return ErrorWidgets(

@@ -34,6 +34,8 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
   void dispose() {
     super.dispose();
     priceController.dispose();
+    volumeController.dispose();
+    
   }
 
   @override

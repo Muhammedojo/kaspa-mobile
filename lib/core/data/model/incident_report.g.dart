@@ -17,39 +17,50 @@ const IncidentReportSchema = CollectionSchema(
   name: r'IncidentReport',
   id: -8810760720898200496,
   properties: {
-    r'date': PropertySchema(
+    r'category': PropertySchema(
       id: 0,
+      name: r'category',
+      type: IsarType.string,
+    ),
+    r'date': PropertySchema(
+      id: 1,
       name: r'date',
       type: IsarType.string,
     ),
     r'description': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'description',
       type: IsarType.string,
     ),
-    r'lgaId': PropertySchema(
-      id: 2,
-      name: r'lgaId',
-      type: IsarType.long,
+    r'imageUrl': PropertySchema(
+      id: 3,
+      name: r'imageUrl',
+      type: IsarType.string,
+    ),
+    r'lga': PropertySchema(
+      id: 4,
+      name: r'lga',
+      type: IsarType.object,
+      target: r'LgaData',
     ),
     r'pk': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'pk',
       type: IsarType.long,
     ),
     r'title': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'title',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'ward',
       type: IsarType.object,
       target: r'WardData',
     ),
     r'wardId': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'wardId',
       type: IsarType.long,
     )
@@ -75,7 +86,7 @@ const IncidentReportSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {r'WardData': WardDataSchema},
+  embeddedSchemas: {r'LgaData': LgaDataSchema, r'WardData': WardDataSchema},
   getId: _incidentReportGetId,
   getLinks: _incidentReportGetLinks,
   attach: _incidentReportAttach,
@@ -89,6 +100,12 @@ int _incidentReportEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.category;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.date;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -98,6 +115,19 @@ int _incidentReportEstimateSize(
     final value = object.description;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.imageUrl;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.lga;
+    if (value != null) {
+      bytesCount += 3 +
+          LgaDataSchema.estimateSize(value, allOffsets[LgaData]!, allOffsets);
     }
   }
   {
@@ -122,18 +152,25 @@ void _incidentReportSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.date);
-  writer.writeString(offsets[1], object.description);
-  writer.writeLong(offsets[2], object.lgaId);
-  writer.writeLong(offsets[3], object.pk);
-  writer.writeString(offsets[4], object.title);
+  writer.writeString(offsets[0], object.category);
+  writer.writeString(offsets[1], object.date);
+  writer.writeString(offsets[2], object.description);
+  writer.writeString(offsets[3], object.imageUrl);
+  writer.writeObject<LgaData>(
+    offsets[4],
+    allOffsets,
+    LgaDataSchema.serialize,
+    object.lga,
+  );
+  writer.writeLong(offsets[5], object.pk);
+  writer.writeString(offsets[6], object.title);
   writer.writeObject<WardData>(
-    offsets[5],
+    offsets[7],
     allOffsets,
     WardDataSchema.serialize,
     object.ward,
   );
-  writer.writeLong(offsets[6], object.wardId);
+  writer.writeLong(offsets[8], object.wardId);
 }
 
 IncidentReport _incidentReportDeserialize(
@@ -143,18 +180,24 @@ IncidentReport _incidentReportDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = IncidentReport();
-  object.date = reader.readStringOrNull(offsets[0]);
-  object.description = reader.readStringOrNull(offsets[1]);
+  object.category = reader.readStringOrNull(offsets[0]);
+  object.date = reader.readStringOrNull(offsets[1]);
+  object.description = reader.readStringOrNull(offsets[2]);
   object.id = id;
-  object.lgaId = reader.readLongOrNull(offsets[2]);
-  object.pk = reader.readLong(offsets[3]);
-  object.title = reader.readStringOrNull(offsets[4]);
+  object.imageUrl = reader.readStringOrNull(offsets[3]);
+  object.lga = reader.readObjectOrNull<LgaData>(
+    offsets[4],
+    LgaDataSchema.deserialize,
+    allOffsets,
+  );
+  object.pk = reader.readLong(offsets[5]);
+  object.title = reader.readStringOrNull(offsets[6]);
   object.ward = reader.readObjectOrNull<WardData>(
-    offsets[5],
+    offsets[7],
     WardDataSchema.deserialize,
     allOffsets,
   );
-  object.wardId = reader.readLongOrNull(offsets[6]);
+  object.wardId = reader.readLongOrNull(offsets[8]);
   return object;
 }
 
@@ -170,18 +213,26 @@ P _incidentReportDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset)) as P;
-    case 3:
-      return (reader.readLong(offset)) as P;
-    case 4:
       return (reader.readStringOrNull(offset)) as P;
+    case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
+      return (reader.readObjectOrNull<LgaData>(
+        offset,
+        LgaDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 5:
+      return (reader.readLong(offset)) as P;
+    case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readObjectOrNull<WardData>(
         offset,
         WardDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 6:
+    case 8:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -437,6 +488,160 @@ extension IncidentReportQueryWhere
 
 extension IncidentReportQueryFilter
     on QueryBuilder<IncidentReport, IncidentReport, QFilterCondition> {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'category',
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'category',
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'category',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'category',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'category',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'category',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'category',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'category',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'category',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'category',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'category',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      categoryIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'category',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
       dateIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -819,75 +1024,173 @@ extension IncidentReportQueryFilter
   }
 
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
-      lgaIdIsNull() {
+      imageUrlIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'lgaId',
+        property: r'imageUrl',
       ));
     });
   }
 
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
-      lgaIdIsNotNull() {
+      imageUrlIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'lgaId',
+        property: r'imageUrl',
       ));
     });
   }
 
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
-      lgaIdEqualTo(int? value) {
+      imageUrlEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lgaId',
+        property: r'imageUrl',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
-      lgaIdGreaterThan(
-    int? value, {
+      imageUrlGreaterThan(
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'lgaId',
+        property: r'imageUrl',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
-      lgaIdLessThan(
-    int? value, {
+      imageUrlLessThan(
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'lgaId',
+        property: r'imageUrl',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
-      lgaIdBetween(
-    int? lower,
-    int? upper, {
+      imageUrlBetween(
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'lgaId',
+        property: r'imageUrl',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      imageUrlStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'imageUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      imageUrlEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'imageUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      imageUrlContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'imageUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      imageUrlMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'imageUrl',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      imageUrlIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'imageUrl',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      imageUrlIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'imageUrl',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      lgaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lga',
+      ));
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition>
+      lgaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lga',
       ));
     });
   }
@@ -1196,6 +1499,13 @@ extension IncidentReportQueryFilter
 
 extension IncidentReportQueryObject
     on QueryBuilder<IncidentReport, IncidentReport, QFilterCondition> {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition> lga(
+      FilterQuery<LgaData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'lga');
+    });
+  }
+
   QueryBuilder<IncidentReport, IncidentReport, QAfterFilterCondition> ward(
       FilterQuery<WardData> q) {
     return QueryBuilder.apply(this, (query) {
@@ -1209,6 +1519,19 @@ extension IncidentReportQueryLinks
 
 extension IncidentReportQuerySortBy
     on QueryBuilder<IncidentReport, IncidentReport, QSortBy> {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> sortByCategory() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'category', Sort.asc);
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy>
+      sortByCategoryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'category', Sort.desc);
+    });
+  }
+
   QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> sortByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'date', Sort.asc);
@@ -1235,15 +1558,16 @@ extension IncidentReportQuerySortBy
     });
   }
 
-  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> sortByLgaId() {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> sortByImageUrl() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lgaId', Sort.asc);
+      return query.addSortBy(r'imageUrl', Sort.asc);
     });
   }
 
-  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> sortByLgaIdDesc() {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy>
+      sortByImageUrlDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lgaId', Sort.desc);
+      return query.addSortBy(r'imageUrl', Sort.desc);
     });
   }
 
@@ -1287,6 +1611,19 @@ extension IncidentReportQuerySortBy
 
 extension IncidentReportQuerySortThenBy
     on QueryBuilder<IncidentReport, IncidentReport, QSortThenBy> {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> thenByCategory() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'category', Sort.asc);
+    });
+  }
+
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy>
+      thenByCategoryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'category', Sort.desc);
+    });
+  }
+
   QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> thenByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'date', Sort.asc);
@@ -1325,15 +1662,16 @@ extension IncidentReportQuerySortThenBy
     });
   }
 
-  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> thenByLgaId() {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> thenByImageUrl() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lgaId', Sort.asc);
+      return query.addSortBy(r'imageUrl', Sort.asc);
     });
   }
 
-  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy> thenByLgaIdDesc() {
+  QueryBuilder<IncidentReport, IncidentReport, QAfterSortBy>
+      thenByImageUrlDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lgaId', Sort.desc);
+      return query.addSortBy(r'imageUrl', Sort.desc);
     });
   }
 
@@ -1377,6 +1715,13 @@ extension IncidentReportQuerySortThenBy
 
 extension IncidentReportQueryWhereDistinct
     on QueryBuilder<IncidentReport, IncidentReport, QDistinct> {
+  QueryBuilder<IncidentReport, IncidentReport, QDistinct> distinctByCategory(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'category', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<IncidentReport, IncidentReport, QDistinct> distinctByDate(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1391,9 +1736,10 @@ extension IncidentReportQueryWhereDistinct
     });
   }
 
-  QueryBuilder<IncidentReport, IncidentReport, QDistinct> distinctByLgaId() {
+  QueryBuilder<IncidentReport, IncidentReport, QDistinct> distinctByImageUrl(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lgaId');
+      return query.addDistinctBy(r'imageUrl', caseSensitive: caseSensitive);
     });
   }
 
@@ -1425,6 +1771,12 @@ extension IncidentReportQueryProperty
     });
   }
 
+  QueryBuilder<IncidentReport, String?, QQueryOperations> categoryProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'category');
+    });
+  }
+
   QueryBuilder<IncidentReport, String?, QQueryOperations> dateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'date');
@@ -1438,9 +1790,15 @@ extension IncidentReportQueryProperty
     });
   }
 
-  QueryBuilder<IncidentReport, int?, QQueryOperations> lgaIdProperty() {
+  QueryBuilder<IncidentReport, String?, QQueryOperations> imageUrlProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lgaId');
+      return query.addPropertyName(r'imageUrl');
+    });
+  }
+
+  QueryBuilder<IncidentReport, LgaData?, QQueryOperations> lgaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lga');
     });
   }
 

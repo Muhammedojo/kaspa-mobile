@@ -27,7 +27,6 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
     formKey = GlobalKey<FormState>();
     aolController = TextEditingController();
     totalAOLController = TextEditingController();
-   
   }
 
   @override
@@ -43,9 +42,8 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   @override
   Farmer? selectedFarmer;
 
-    @override
+  @override
   Plot? selectedPlot;
-
 
   @override
   void onSelectCrop(Product? newValue) {
@@ -61,7 +59,7 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
     });
   }
 
-    @override
+  @override
   void onSelectPlot(Plot? newValue) {
     setState(() {
       selectedPlot = newValue;
@@ -79,19 +77,16 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   @override
   late TextEditingController aolController;
 
-    @override
+  @override
   late TextEditingController totalAOLController;
-
 
   @override
   void logVisit() async {
     if (formKey.currentState!.validate()) {
       FarmVisit visit = FarmVisit();
-      visit.farmerId = selectedFarmer?.pk;
-      // visit.plotId = selectedPlot?.pk;
-      // visit.productId = selectedCrop?.pk;
-      // visit.aol = double.parse(aolController.text);
-      // visit.totalAol = double.parse(totalAOLController.text);
+      visit.farmId = selectedPlot?.pk;
+      visit.cropId = selectedCrop?.pk;
+      visit.noOfHectares = double.parse(aolController.text).round();
 
       context.read<FarmVisitCubit>().createFarmVisit(visit);
     }

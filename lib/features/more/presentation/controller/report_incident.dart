@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/data/model/incident_report.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/ward.dart';
@@ -29,8 +30,8 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
     titleController = TextEditingController();
     descriptionController = TextEditingController();
     imageController = TextEditingController();
-    
-
+    selectedLga = null;
+    selectedWard = null;
     view = ReportIncidentView(controller: this);
   }
 
@@ -52,7 +53,7 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
 
   @override
   final picker = ImagePicker();
- 
+
   @override
   void onSelectWard(Ward? newValue) {
     setState(() {
@@ -85,33 +86,36 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
 
   @override
   void reportIncident() async {
+    final today = DateTime.now();
+    final formattedToday = DateFormat('yyyy-MM-dd').format(today);
     if (formKey.currentState!.validate()) {
       if (selectedLga != null && selectedWard != null) {
         IncidentReport report = IncidentReport();
         // report.image = imageFileList;
         report.description = descriptionController.text;
         report.title = titleController.text;
-        report.lgaId = selectedLga?.pk;
+        // report.lgaId = selectedLga?.pk;
+        report.category = "Fire";
         report.wardId = selectedWard?.pk;
+        report.date = formattedToday.toString();
+        debugPrint('Here ${selectedWard?.pk}');
 
-        context.read<IncidentCubit>().logIncidentReport(report);
-      }
+    GetIt.I.get<IncidentCubit>().logIncidentReport(report);
+     
+
+   }
     }
   }
 
   @override
-  Future<void> getImage(
-    ImageSource source,
-  ) async {
+  Future<void> getImage(ImageSource source) async {
     try {
       final pickedFile = await picker.pickImage(source: source);
 
       if (pickedFile != null && pickedFile.path.isNotEmpty) {
-    
-          setState(() {
-            imageFileList.add(File(pickedFile.path));
-          });
-     
+        setState(() {
+          imageFileList.add(File(pickedFile.path));
+        });
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -123,7 +127,7 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
     imageFileList.removeAt(index);
     setState(() {});
   }
- 
+
   @override
   void clearScreen() {
     setState(() {

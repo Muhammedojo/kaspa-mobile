@@ -31,12 +31,12 @@ Plot _$PlotFromJson(Map<String, dynamic> json) {
   obj.address = json[KEY_ADDRESS];
   obj.sizeInHa = json[KEY_SIZE_IN_HA];
   obj.ownershipType = json[KEY_OWNERSHIP_TYPE];
-  obj.longitude =json[KEY_LONGITUDE];
+  obj.longitude = json[KEY_LONGITUDE];
   obj.latitude = json[KEY_LATITUDE];
-  obj.farmCrops = json[KEY_FARM_CROPS]
-
-      .map<FarmCrop>((farmCrop) => FarmCrop.fromJson(farmCrop))
-      .toList();
+  obj.farmCrops =
+      json[KEY_FARM_CROPS]
+          .map<FarmCrop>((farmCrop) => FarmCrop.fromJson(farmCrop))
+          .toList();
 
   return obj;
 }

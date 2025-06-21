@@ -188,7 +188,7 @@ class CreateFarmVisitView extends StatelessWidget
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
                   child: TextFormField(
-                    controller: controller.totalAOLController,
+                    controller: controller.aolController,
                     style: Styles.x14dp_4A4A4A(14.0.sp),
                     maxLines: 1,
                     validator: ValidationBuilder().required().build(),

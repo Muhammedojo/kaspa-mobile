@@ -12,7 +12,6 @@ abstract class UpdateCooperativeControllerContract {
   late GlobalKey<FormState> formKey;
   void onSelectLga(Lga? newValue);
   void onSelectWard(Ward? newValue);
-
   late bool hasSubmitted;
   late Lga? selectedLga;
   late Ward? selectedWard;

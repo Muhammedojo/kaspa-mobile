@@ -371,8 +371,9 @@ class ReportIncidentView extends StatelessWidget
                         Utils.showToastSuccess(
                           context,
                           'incident_reported_successfully'.tr(),
-                          '',
+                          'Go to Report List',
                           () {
+                            Navigator.of(context, rootNavigator: true).pop();
                             Navigator.pop(context);
                           },
                         );

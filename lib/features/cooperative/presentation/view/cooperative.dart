@@ -119,4 +119,5 @@ class CooperativeView extends StatelessWidget
       ),
     );
   }
+
 }

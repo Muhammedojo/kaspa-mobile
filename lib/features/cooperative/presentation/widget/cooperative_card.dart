@@ -26,7 +26,7 @@ class CooperativeCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           '${cooperative.name}'.toText(fontSize: 14,fontWeight: FontWeight.w700,translate: false),
-           '0 Members'.toText(fontSize: 12,fontWeight: FontWeight.w500,translate: false)
+           '${cooperative.noOfFarmers} Members'.toText(fontSize: 12,fontWeight: FontWeight.w500,translate: false)
          ],),
          const Spacer(),
          'verified'.toText(fontSize: 12,fontWeight: FontWeight.w400,color: AppColors.colorPrimary,translate: false)

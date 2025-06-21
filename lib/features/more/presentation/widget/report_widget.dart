@@ -17,9 +17,14 @@ class ReportCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: CardContainerWidget(
+        decoration: BoxDecoration(
+          color: Color(0xffF8F8F8),
+          borderRadius: BorderRadius.circular(8),
+          border: BoxBorder.all(color: Color(0xffC8C8C8), width: 0.5),
+        ),
         child: Row(
           children: [
-            SvgPicture.asset(AppIcon.cancel),
+            SvgPicture.asset(AppIcon.incident),
             8.horizontalSpace,
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -30,9 +35,9 @@ class ReportCard extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   translate: false,
                 ),
-                (data.ward?.name ?? '').toText(
+                '${data.lga?.name ?? ''}, ${data.ward?.name ?? ''}'.toText(
                   fontSize: 12,
-                  color: AppColors.ColorAccent,
+                  color: AppColors.accentText,
                   fontWeight: FontWeight.w500,
                   translate: false,
                 ),

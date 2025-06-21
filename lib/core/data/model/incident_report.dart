@@ -9,14 +9,16 @@ class IncidentReport {
   Id? id;
 
   @Index(unique: true, replace: true)
-  late int pk;
+  late int pk = 0;
 
-  String? date;
-  int? wardId;
-  int? lgaId;
+  String? date ="";
+  int? wardId = 0;
+  String? category = "";
+  LgaData? lga;
   WardData? ward;
-  String? description;
-  String? title;
+  String? description = "";
+  String? title = "";
+  String? imageUrl = "";
 
   IncidentReport();
 
@@ -29,13 +31,14 @@ class IncidentReport {
 IncidentReport _$IncidentReportFromJson(Map<String, dynamic> json) {
   var obj = IncidentReport();
 
-  obj.pk = json[KEY_PK] ?? 0;
+  obj.pk = json[KEY_PK];
   obj.title = json[KEY_TITLE];
   obj.date = json[KEY_DATE];
-  obj.ward = json[KEY_WARD];
-  obj.wardId = json[KEY_WARD_ID];
-  obj.lgaId = json[KEY_LGA_ID];
+  obj.ward = WardData.fromJson(json[KEY_WARD]);
+  obj.lga = LgaData.fromJson(json[KEY_LGA]);
   obj.description = json[KEY_DESCRIPTION];
+  obj.imageUrl = json[KEY_IMAGE_URL];
+  obj.category = json[KEY_CATEGORY];
 
   return obj;
 }
@@ -46,6 +49,8 @@ Map<String, dynamic> _$IncidentReportToJson(IncidentReport obj) =>
       KEY_TITLE: obj.title,
       KEY_DATE: obj.date,
       KEY_WARD_ID: obj.wardId,
-      KEY_LGA_ID: obj.lgaId,
+      KEY_IMAGE_URL: obj.imageUrl,
+      KEY_LGA_ID: obj.lga?.id,
+      KEY_CATEGORY: obj.category,
       KEY_DESCRIPTION: obj.description,
     };

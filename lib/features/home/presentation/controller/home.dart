@@ -5,6 +5,7 @@ import '../../../../features/calendar/presentation/controller/calendar.dart';
 import '../../../../core/utils/global_variables.dart';
 import '../../../cooperative/presentation/controller/cooperative.dart';
 import '../../../farmers/presentation/controller/farmer.dart';
+import '../../../more/presentation/controller/more.dart';
 import '../bloc/api_request/api_request_bloc.dart';
 import '../contract/home.dart';
 import '../view/home.dart';
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen>
     FarmerScreen(),
     CooperativeScreen(),
     CalendarScreen(),
-    CooperativeScreen(),
+    MoreScreen(),
   ];
 
   @override

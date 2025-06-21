@@ -91,6 +91,7 @@ class IncidentCubit extends Cubit<IncidentState> {
 
   logIncidentReport(IncidentReport data) async {
     try {
+      debugPrint('Hey ${data.toJson()}');
       emit(IncidentLoading());
       final response = await repository.logIncident(data);
       response.fold((l) => emit(IncidentFailure(error: l.failureMessage())), (
