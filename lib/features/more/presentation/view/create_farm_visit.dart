@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/button.dart';
+import '../../../../core/data/model/plot.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
@@ -80,9 +81,27 @@ class CreateFarmVisitView extends StatelessWidget
                   padding: REdgeInsets.only(top: 5.0),
                   child: BlocBuilder<PlotCubit, PlotState>(
                     builder: (context, state) {
+                      List<Plot> filteredPlots = [];
+                      String hintText = 'choose_an_option'.tr();
+                      bool isDisabled = false;
                       if (state is PlotLoaded) {
-                        return DropdownButtonFormField(
-                          icon: 'arrowDown'.toSvg(),
+                        if(controller.selectedFarmer == null){
+                          hintText = 'Select a farmer first';
+                          isDisabled =true;
+                        }
+                        // else {
+                        //   filteredPlots = state.plotList
+                        //       .where((plot) =>
+                        //           plot.farmer?.pk ==
+                        //           controller.selectedFarmer?.pk)
+                        //       .toList();
+                        //   if (filteredPlots.isEmpty) {
+                        //     hintText = 'no_plots_for_this_farmer'.tr();
+                        //     isDisabled = true;
+                        //   }
+                        // }
+                        return DropdownButtonFormField<Plot>(
+                          icon: 'arrowDown'.toSvg(height: 11.sp),
                           style: Styles.x14dp_4A4A4A(14.0.sp),
                           decoration:
                               Styles.textFormFieldDecorationBorderWithBackground(
@@ -99,6 +118,7 @@ class CreateFarmVisitView extends StatelessWidget
                                   ),
                                 );
                               }).toList(),
+                          value: controller.selectedPlot,
                           onChanged: (newValue) {
                             controller.onSelectPlot(newValue!);
                           },

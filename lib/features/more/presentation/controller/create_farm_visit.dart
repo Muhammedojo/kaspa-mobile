@@ -56,6 +56,7 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   void onSelectFarmer(Farmer? newValue) {
     setState(() {
       selectedFarmer = newValue;
+      selectedPlot = null;
     });
   }
 

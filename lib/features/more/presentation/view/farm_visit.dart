@@ -10,6 +10,7 @@ import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
 import '../contract/farm_visit.dart';
+import '../controller/farm_visit_crops.dart';
 import '../widget/farm_visit_widget.dart';
 
 class FarmVisitView extends StatelessWidget implements FarmVisitViewContract {
@@ -70,13 +71,12 @@ class FarmVisitView extends StatelessWidget implements FarmVisitViewContract {
                                     return FarmVisitCard(
                                       data: state.farmVisitList[index],
                                       onTap: () {
-                                        // pushTo(
-                                        //   CooperativeDetailsScreen(
-                                        //     cooperative:
-                                        //         state.cooperativeList[index],
-                                        //   ),
-                                        //   context,
-                                        // );
+                                        pushTo(
+                                          FarmVisitCropsScreen(visit: state.farmVisitList[index],
+                                           
+                                          ),
+                                          context,
+                                        );
                                       },
                                     );
                                   },
