@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/button.dart';
 import '../../../../core/data/model/lga.dart';
+import '../../../../core/data/model/model.dart';
 import '../../../../core/data/model/product.dart';
 import '../../../../core/data/model/ward.dart';
 import '../../../../core/resources/vectors.dart';
@@ -108,7 +109,7 @@ class RegisterFarmerView extends StatelessWidget
                 elevation: 0,
                 steps: [
                   Step(
-                    title: ''.toText(),
+                    title: ''.toText(translate: false),
                     isActive: controller.currentStep >= 0,
                     stepStyle: StepStyle(
                       color:
@@ -551,6 +552,121 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
+                          16.verticalSpace,
+                          'cooperative'.toText(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+
+                          Padding(
+                            padding: REdgeInsets.only(top: 5.0),
+                            child: BlocBuilder<
+                              CooperativeCubit,
+                              CooperativeState
+                            >(
+                              builder: (context, state) {
+                                List<Cooperative> cooperatives = [];
+                                if (state is CooperativeLoaded) {
+                                  cooperatives = state.cooperativeList;
+                                }
+                                return DropdownSearch<Cooperative>(
+                                  suffixProps: DropdownSuffixProps(
+                                    dropdownButtonProps: DropdownButtonProps(
+                                      iconClosed: 'arrowDown'.toSvg(),
+                                    ),
+                                  ),
+                                  popupProps: PopupProps.menu(
+                                    showSearchBox: true,
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        labelStyle:
+                                            Styles
+                                                .normalWeightGreyNormalSizeTextStyle,
+
+                                        hintText: "search_cooperative".tr(),
+                                        hintStyle:
+                                            Styles
+                                                .normalWeightGreyNormalSizeTextStyle,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8.r,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    itemBuilder:
+                                        (
+                                          context,
+                                          cooperativeItem,
+                                          isDisabled,
+                                          isSelected,
+                                        ) => ListTile(
+                                          title:
+                                              ('${cooperativeItem.name ?? ''} ${cooperativeItem.code ?? ''}')
+                                                  .toText(translate: false),
+
+                                          selected: isSelected,
+                                        ),
+
+                                    emptyBuilder:
+                                        (context, searchEntry) => Center(
+                                          child:
+                                              'no_cooperative_found'.toText(),
+                                        ),
+                                  ),
+
+                                  items: (filter, infiniteScrollProps) async {
+                                    if (filter.isEmpty) {
+                                      return cooperatives;
+                                    }
+                                    return cooperatives.where((cooperative) {
+                                      final filterLower = filter.toLowerCase();
+                                      return (cooperative.code
+                                                  ?.toLowerCase()
+                                                  .contains(filterLower) ??
+                                              false) ||
+                                          (cooperative.name
+                                                  ?.toLowerCase()
+                                                  .contains(filterLower) ??
+                                              false);
+                                    }).toList();
+                                  },
+                                  itemAsString:
+                                      (Cooperative? cooperative) =>
+                                          '${cooperative?.name ?? ''} ${cooperative?.code ?? ''}',
+                                  compareFn: (
+                                    Cooperative? item1,
+                                    Cooperative? item2,
+                                  ) {
+                                    return item1?.pk == item2?.pk;
+                                  },
+                                  selectedItem: controller.selectedCooperative,
+                                  onChanged: (Cooperative? newValue) {
+                                    if (newValue != null) {
+                                      controller.onSelectCooperative(newValue);
+                                    }
+                                  },
+                                  validator: (Cooperative? value) {
+                                    if (value == null) {
+                                      return 'Please select a cooperative.';
+                                    }
+                                    if (value.code == null ||
+                                        value.code!.isEmpty) {
+                                      return 'Selected cooperative has no code. Please select another or update its data.';
+                                    }
+                                    return null;
+                                  },
+                                  decoratorProps: DropDownDecoratorProps(
+                                    decoration:
+                                        Styles.textFormFieldDecorationBorderWithBackground(
+                                          'Select a cooperative',
+                                          '',
+                                        ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
 
                           80.verticalSpace,
                         ],
@@ -558,7 +674,7 @@ class RegisterFarmerView extends StatelessWidget
                     ),
                   ),
                   Step(
-                    title: ''.toText(),
+                    title: ''.toText(translate: false),
                     isActive: controller.currentStep >= 1,
                     stepStyle: StepStyle(
                       color:
@@ -707,7 +823,7 @@ class RegisterFarmerView extends StatelessWidget
                     ),
                   ),
                   Step(
-                    title: ''.toText(),
+                    title: ''.toText(translate: false),
                     isActive: controller.currentStep >= 2,
                     stepStyle: StepStyle(
                       color:
@@ -846,7 +962,7 @@ class RegisterFarmerView extends StatelessWidget
                     ),
                   ),
                   Step(
-                    title: ''.toText(),
+                    title: ''.toText(translate: false),
                     isActive: controller.currentStep >= 3,
                     stepStyle: StepStyle(
                       color:
@@ -893,41 +1009,32 @@ class RegisterFarmerView extends StatelessWidget
                           Padding(
                             padding: REdgeInsets.only(top: 5.0),
                             child: BlocBuilder<ProductCubit, ProductState>(
-                              builder: (context, state) {
-                                if (state is ProductLoaded) {
-                                  return DropdownButtonFormField(
-                                    icon: 'arrowDown'.toSvg(),
-                                    style: Styles.x14dp_4A4A4A(14.0.sp),
-                                    decoration:
-                                        Styles.textFormFieldDecorationBorderWithBackground(
-                                          'choose_an_option'.tr(),
-                                          '',
-                                        ),
-
-                                    items:
-                                        state.productList
-                                            .where(
-                                              (product) =>
-                                                  product.type == 'Livestock',
-                                            )
-                                            .map((e) {
-                                              return DropdownMenuItem(
-                                                value: e,
-                                                child: (e.name ?? '').toText(
-                                                  translate: false,
-                                                ),
-                                              );
-                                            })
-                                            .toList(),
-                                    onChanged: (newValue) {
-                                      controller.onSelectLivestock(newValue!);
-                                    },
+                              builder: (context, productState) {
+                                if (productState is ProductLoaded) {
+                                  return _buildLivestockSelector(
+                                    context,
+                                    productState,
                                   );
                                 }
-                                return DropdownButtonFormField(
-                                  style: Styles.x14dp_4A4A4A(14.0.sp),
-                                  items: [],
-                                  onChanged: (_) {},
+                                return Container(
+                                  width: double.infinity,
+                                  padding: REdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 16.0,
+                                  ),
+
+                                  child: Text(
+                                    productState is ProductLoading
+                                        ? 'loading_livestocks'.tr()
+                                        : 'livestocks_not_available'.tr(),
+                                    style: Styles.x14dp_4A4A4A(
+                                      14.0.sp,
+                                    ).copyWith(
+                                      color: AppColors.accentText.withAlpha(
+                                        (0.7 * 255).toInt(),
+                                      ),
+                                    ),
+                                  ),
                                 );
                               },
                             ),
@@ -973,39 +1080,21 @@ class RegisterFarmerView extends StatelessWidget
 
                           16.verticalSpace,
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              'farm'.toText(
+                              'Farm'.toText(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
+                                translate: false,
                               ),
-
-                              if (controller
-                                  .currentFarmLocationCoordinates
-                                  .isNotEmpty)
-                                controller.isFetchingLocation
-                                    ? Padding(
-                                      padding: REdgeInsets.all(8.0),
-                                      child: SizedBox(
-                                        width: 24.sp,
-                                        height: 24.sp,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2.0,
-                                          color: AppColors.colorPrimary,
-                                        ),
-                                      ),
-                                    )
-                                    : InkWell(
-                                      onTap:
-                                          controller.isFetchingLocation
-                                              ? null
-                                              : () => controller
-                                                  .onAddFarmLocation(context),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: AppColors.colorPrimary,
-                                      ),
-                                    ),
+                              const Spacer(),
+                              SvgPicture.asset(AppIcon.help),
+                              4.horizontalSpace,
+                              'Help'.toText(
+                                fontSize: 14,
+                                translate: false,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primaryGreen,
+                              ),
                             ],
                           ),
                           5.verticalSpace,
@@ -1093,13 +1182,76 @@ class RegisterFarmerView extends StatelessWidget
                                   );
                                 },
                               ),
-                          16.verticalSpace,
+                          if (controller
+                              .currentFarmLocationCoordinates
+                              .isNotEmpty)
+                            controller.isFetchingLocation
+                                ? Center(
+                                  child: Padding(
+                                    padding: REdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      width: 24.sp,
+                                      height: 24.sp,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2.0,
+                                        color: AppColors.colorPrimary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                : InkWell(
+                                  onTap:
+                                      controller.isFetchingLocation
+                                          ? null
+                                          : () => controller.onAddFarmLocation(
+                                            context,
+                                          ),
+                                  child: DottedBorder(
+                                    color: AppColors.bgGreen,
+                                    radius: Radius.circular(10.r),
+                                    strokeWidth: 2,
+                                    dashPattern: const [8, 6],
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primaryGreen.withAlpha(
+                                          (0.07 * 255).toInt(),
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          8.r,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: REdgeInsets.symmetric(
+                                          vertical: 10.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              color: AppColors.colorPrimary,
+                                            ),
+                                            5.horizontalSpace,
+                                            'Add Point'.toText(
+                                              fontSize: 12,
+                                              translate: false,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.colorPrimary,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                          20.verticalSpace,
                         ],
                       ),
                     ),
                   ),
                   Step(
-                    title: ''.toText(),
+                    title: ''.toText(translate: false),
                     isActive: controller.currentStep >= 4,
                     stepStyle: StepStyle(
                       color:
@@ -1237,8 +1389,8 @@ class RegisterFarmerView extends StatelessWidget
                               child: ButtonWidget(
                                 label:
                                     controller.currentStep == 4
-                                        ? 'submit'.tr()
-                                        : 'next'.tr(),
+                                        ? 'Submit'
+                                        : 'Next',
                                 onPressed: () => controller.next(context),
                               ),
                             ),
@@ -1308,7 +1460,6 @@ class RegisterFarmerView extends StatelessWidget
                         }).toList(),
                   ),
         ),
-        5.verticalSpace,
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
@@ -1324,6 +1475,87 @@ class RegisterFarmerView extends StatelessWidget
             },
             child: (controller.selectedCropsList.isEmpty
                     ? 'select_crops'.tr()
+                    : 'edit_selection'.tr())
+                .toText(
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.colorPrimary,
+                ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLivestockSelector(
+    BuildContext context,
+    ProductLoaded productState,
+  ) {
+    final availableLivestocks =
+        productState.productList.where((p) => p.type == 'Livestock').toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: REdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          decoration: BoxDecoration(
+            color: AppColors.lightGrey,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.bgGreen, width: 1.0),
+          ),
+
+          child:
+              controller.selectedLivestocksList.isEmpty
+                  ? Padding(
+                    padding: REdgeInsets.symmetric(vertical: 8.0),
+                    child: 'choose_an_option'.toText(
+                      color: AppColors.accentText.withAlpha(
+                        (0.7 * 255).toInt(),
+                      ),
+                    ),
+                  )
+                  : Wrap(
+                    spacing: 6.0,
+                    runSpacing: 6.0,
+                    children:
+                        controller.selectedLivestocksList.map((livestock) {
+                          return Chip(
+                            label: Text(
+                              livestock.name ?? 'Unknown Crop',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            onDeleted: () {
+                              final newList = List<Product>.from(
+                                controller.selectedLivestocksList,
+                              );
+                              newList.removeWhere((c) => c.pk == livestock.pk);
+                              controller.updateSelectedLivestocks(newList);
+                            },
+                            deleteIconColor: AppColors.colorPrimary,
+                            backgroundColor: AppColors.primaryGreen.withAlpha(
+                              (0.1 * 255).toInt(),
+                            ),
+                            padding: REdgeInsets.all(4.0),
+                          );
+                        }).toList(),
+                  ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {
+              _showMultiSelectLivestockDialog(
+                context,
+                availableLivestocks,
+                controller.selectedLivestocksList,
+                (newSelection) {
+                  controller.updateSelectedLivestocks(newSelection);
+                },
+              );
+            },
+            child: (controller.selectedLivestocksList.isEmpty
+                    ? 'select_livestocks'.tr()
                     : 'edit_selection'.tr())
                 .toText(
                   fontWeight: FontWeight.w500,
@@ -1366,8 +1598,10 @@ class RegisterFarmerView extends StatelessWidget
                       (selected) => selected.pk == crop.pk,
                     );
                     return CheckboxListTile(
-                      title: (crop.name ?? 'Unknown Crop').toText(),
-
+                      title: (crop.name ?? 'Unknown Crop').toText(
+                        translate: false,
+                      ),
+                      activeColor: AppColors.primaryGreen,
                       value: isSelected,
                       onChanged: (bool? value) {
                         setStateDialog(() {
@@ -1401,6 +1635,86 @@ class RegisterFarmerView extends StatelessWidget
 
                   onPressed: () {
                     onSelectionConfirmed(tempSelectedCrops);
+                    Navigator.of(dialogContext).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showMultiSelectLivestockDialog(
+    BuildContext context,
+    List<Product> allLivestocks,
+    List<Product> initiallySelectedLivestocks,
+    Function(List<Product>) onSelectionConfirmed,
+  ) {
+    List<Product> tempSelectedLivestocks = List<Product>.from(
+      initiallySelectedLivestocks,
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setStateDialog) {
+            return AlertDialog(
+              title: 'select_livestocks'.toText(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: allLivestocks.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final livestock = allLivestocks[index];
+                    final bool isSelected = tempSelectedLivestocks.any(
+                      (selected) => selected.pk == livestock.pk,
+                    );
+                    return CheckboxListTile(
+                      title: (livestock.name ?? 'Unknown Livestock').toText(
+                        translate: false,
+                      ),
+                      activeColor: AppColors.primaryGreen,
+                      value: isSelected,
+                      onChanged: (bool? value) {
+                        setStateDialog(() {
+                          if (value == true) {
+                            if (!isSelected)
+                              tempSelectedLivestocks.add(livestock);
+                          } else {
+                            tempSelectedLivestocks.removeWhere(
+                              (selected) => selected.pk == livestock.pk,
+                            );
+                          }
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: 'cancel'.toText(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                ),
+                TextButton(
+                  child: 'done'.toText(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+
+                  onPressed: () {
+                    onSelectionConfirmed(tempSelectedLivestocks);
                     Navigator.of(dialogContext).pop();
                   },
                 ),

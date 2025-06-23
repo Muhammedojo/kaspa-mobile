@@ -2,6 +2,7 @@
 
 import 'dart:collection';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
@@ -114,6 +115,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   @override
   Bank? selectedBank;
   @override
+  Cooperative? selectedCooperative;
+
+  @override
   Product? selectedLivestock;
 
   @override
@@ -126,6 +130,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
   @override
   List<Product> selectedCropsList = [];
+
+  @override
+  List<Product> selectedLivestocksList = [];
 
   @override
   late ImagePicker picker;
@@ -159,7 +166,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     accountNumberController = TextEditingController();
     imageController = TextEditingController();
     picker = ImagePicker();
-   
+
     accountNameController = TextEditingController();
     nokNameController = TextEditingController();
     ageController = TextEditingController();
@@ -265,7 +272,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
   @override
   Future getImage(ImageSource source, TextEditingController controller) async {
-       final XFile? pickedFile = await picker.pickImage(source: source); 
+    final XFile? pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null && pickedFile.path.isNotEmpty) {
       try {
         setState(() {
@@ -300,6 +307,17 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
     if (lastStep) {
       if (currentStep == 4 && formKey5.currentState!.validate()) {
+           if (image == null) {
+          Utils.showToastError(
+            context,
+            'Please add a profile image for the farmer.',
+            '',
+            () {
+              Navigator.of(context).pop();
+            },
+          );
+          return;
+        }
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -340,13 +358,23 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
           );
           return;
         }
+        if (selectedLivestocksList.isEmpty) {
+          Utils.showToastError(context, 'Kindly select livestock', '', () {
+            Navigator.pop(context);
+          });
+          return; 
+        }
+           if (selectedCropsList.isEmpty) {
+          Utils.showToastError(context, 'Kindly select crop', '', () {
+            Navigator.pop(context);
+          });
+          return;
+        }
+
         setState(() {
           currentStep += 1;
         });
-      } else if (currentStep == 4 && formKey5.currentState!.validate()) {
-        setState(() {
-          currentStep += 1;
-        });
+     
       }
     }
   }
@@ -388,6 +416,13 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   }
 
   @override
+  void updateSelectedLivestocks(List<Product> livestocks) {
+    setState(() {
+      selectedLivestocksList = livestocks;
+    });
+  }
+
+  @override
   void onGetFarmLocationCoordinates(
     double latitude,
     double longitude,
@@ -399,6 +434,13 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
         latitude: latitude,
         longitude: longitude,
       );
+    });
+  }
+
+  @override
+  void onSelectCooperative(Cooperative? newValue) {
+    setState(() {
+      selectedCooperative = newValue;
     });
   }
 
@@ -545,8 +587,9 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       phone: phoneNumberController.text,
       address: addressController.text,
       nin: ninController.text,
-      lga: selectedLga?.name ?? '',
-      ward: selectedWard?.name ?? '',
+      lga: selectedLga?.name ?? 'N/A',
+      ward: selectedWard?.name ?? 'N/A',
+      cooperative: selectedCooperative?.name ?? 'N/A',
       registrationDate: formattedToday,
       registrationOfficer: GlobalVariables().currentUser?.fullname ?? 'N/A',
     );
@@ -559,21 +602,30 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     Farmer farmer = Farmer();
     farmer.folioId = tempFolioId;
 
-    farmer.address = addressController.text;
+    farmer.address = addressController.text.trim();
     farmer.age = ageController.text;
     farmer.bvn = bvnController.text;
-    farmer.firstName = firstNameController.text;
-    farmer.lastName = lastNameController.text;
+    final rawFirstName = firstNameController.text.trim();
+    if (rawFirstName.isNotEmpty) {
+      farmer.firstName =
+          '${rawFirstName[0].toUpperCase()}${rawFirstName.substring(1).toLowerCase()}';
+    }
+
+    final rawLastName = lastNameController.text.trim();
+    if (rawLastName.isNotEmpty) {
+      farmer.lastName =
+          '${rawLastName[0].toUpperCase()}${rawLastName.substring(1).toLowerCase()}';
+    }
     farmer.accountNumber = accountNumberController.text;
-    farmer.accountName = accountNameController.text;
-    farmer.bankId = selectedBank?.pk ?? 0;
+    farmer.accountName = accountNameController.text.trim();
+    farmer.bankId = selectedBank?.pk;
     farmer.nin = ninController.text;
-    farmer.nokName = nokNameController.text;
+    farmer.nokName = nokNameController.text.trim();
     farmer.nokAddress = nokAddressController.text;
     farmer.nokPhoneNumber = nokPhoneNumberController.text;
     farmer.nokRelationship = selectedNokRelationship.toString();
     farmer.gender = selectedGender.toString();
-
+    farmer.cooperativeCode = selectedCooperative?.code;
     farmer.phoneNumber = phoneNumberController.text;
     farmer.wardId = selectedWard?.pk;
 
@@ -585,11 +637,11 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
             .map((crop) => crop.pk)
             .toList();
 
-    if (selectedLivestock != null && selectedLivestock!.pk != null) {
-      farmer.livestock = [selectedLivestock!.pk];
-    } else {
-      farmer.livestock = [];
-    }
+    farmer.livestock =
+        selectedLivestocksList
+            .where((livestock) => livestock.pk != null)
+            .map((livestock) => livestock.pk)
+            .toList();
 
     List<Map<String, dynamic>> farmsPayload = [];
     if (currentFarmLocationCoordinates.isNotEmpty) {
@@ -620,7 +672,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
     farmer.farms = farmsPayload;
 
-    GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
+     GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
   }
 
   @override

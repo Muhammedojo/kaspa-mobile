@@ -75,6 +75,7 @@ class ReportIncidentView extends StatelessWidget
                     translate: false,
                     fontWeight: FontWeight.w600,
                   ),
+                  
                   BlocBuilder<LgaCubit, LgaState>(
                     builder: (context, state) {
                       List<Lga> lgas = [];

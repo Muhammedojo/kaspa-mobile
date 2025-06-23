@@ -9,11 +9,11 @@ abstract class CreateFarmVisitControllerContract {
 
   void onSelectCrop(Product? newValue);
   void onSelectFarmer(Farmer? newValue);
+  late Farmer? selectedFarmer;
   void onSelectPlot(Plot? newValue);
   late TextEditingController aolController;
   late TextEditingController totalAOLController;
   late Product? selectedCrop;
-  late Farmer? selectedFarmer;
   late Plot? selectedPlot;
 
   void logVisit();

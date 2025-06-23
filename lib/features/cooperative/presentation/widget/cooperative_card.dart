@@ -29,8 +29,17 @@ class CooperativeCard extends StatelessWidget {
            '${cooperative.noOfFarmers} Members'.toText(fontSize: 12,fontWeight: FontWeight.w500,translate: false)
          ],),
          const Spacer(),
-         'verified'.toText(fontSize: 12,fontWeight: FontWeight.w400,color: AppColors.colorPrimary,translate: false)
-        ],
+          ((cooperative.isVerified == true)
+                                    ? 'Verified'
+                                    : 'Unverified')
+                                .toText(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.colorPrimary,
+                                  translate: false,
+                                ),
+       
+       ],
       )));
   
   }

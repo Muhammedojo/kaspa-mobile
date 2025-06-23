@@ -22,6 +22,7 @@ abstract class RegisterFarmerControllerContract {
   void onSelectLivestock(Product? livestock);
   void onSelectCrops(Product? crops);
   void updateSelectedCrops(List<Product> crops);
+  void updateSelectedLivestocks(List<Product> livestocks);
   void onSelectCrop(Crop? crop);
   void onSelectWard(Ward? newValue);
   void onSelectNokRelationship(String? newValue);
@@ -29,9 +30,10 @@ abstract class RegisterFarmerControllerContract {
   void removeCoordinatePoint(int position);
   void onAddFarmLocation(BuildContext context);
   void onSelectImages(TextEditingController controller);
-  Future getImage(
-      ImageSource source,
-      TextEditingController controller);
+
+  void onSelectCooperative(Cooperative? newValue);
+  late Cooperative? selectedCooperative;
+  Future getImage(ImageSource source, TextEditingController controller);
   bool get isFetchingLocation;
   File? image;
   void onGetFarmLocationCoordinates(
@@ -81,6 +83,7 @@ abstract class RegisterFarmerControllerContract {
   late List<Coordinates> currentFarmLocationCoordinates = [];
 
   late List<Product> selectedCropsList = [];
+  late List<Product> selectedLivestocksList = [];
 
   late int currentStep;
   late GlobalKey<FormState> formKey;

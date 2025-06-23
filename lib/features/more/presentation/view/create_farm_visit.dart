@@ -1,9 +1,11 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/button.dart';
+import '../../../../core/data/model/model.dart';
 import '../../../../core/data/model/plot.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/utils/function.dart';
@@ -40,41 +42,97 @@ class CreateFarmVisitView extends StatelessWidget
                 Utils.customAppBar(context, 'new_farm_visit', false, () {}),
                 25.verticalSpace,
                 'farmer'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
                   child: BlocBuilder<GetFarmersCubit, GetFarmersState>(
                     builder: (context, state) {
+                      List<Farmer> farmers = [];
                       if (state is FarmerListLoaded) {
-                        return DropdownButtonFormField(
-                          icon: 'arrowDown'.toSvg(),
-                          style: Styles.x14dp_4A4A4A(14.0.sp),
-                          decoration:
-                              Styles.textFormFieldDecorationBorderWithBackground(
-                                'choose_an_option'.tr(),
-                                '',
+                        farmers = state.dataList;
+                      }
+                      return DropdownSearch<Farmer>(
+                        suffixProps: DropdownSuffixProps(
+                          dropdownButtonProps: DropdownButtonProps(
+                            iconClosed: 'arrowDown'.toSvg(),
+                          ),
+                        ),
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              labelStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+
+                              hintText: "search_farmer".tr(),
+                              hintStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                          ),
+                          itemBuilder:
+                              (
+                                context,
+                                farmerItem,
+                                isDisabled,
+                                isSelected,
+                              ) => ListTile(
+                                title:
+                                    ('${farmerItem.firstName ?? ''} ${farmerItem.lastName ?? ''}')
+                                        .toText(translate: false),
+
+                                selected: isSelected,
                               ),
 
-                          items:
-                              state.dataList.map((e) {
-                                return DropdownMenuItem(
-                                  value: e,
-                                  child: ('${e.firstName} ${e.lastName}')
-                                      .toText(translate: false),
-                                );
-                              }).toList(),
-                          onChanged: (newValue) {
-                            controller.onSelectFarmer(newValue!);
-                          },
-                        );
-                      }
-                      return DropdownButtonFormField(
-                        style: Styles.x14dp_4A4A4A(14.0.sp),
-                        items: [],
-                        onChanged: (_) {},
+                          emptyBuilder:
+                              (context, searchEntry) =>
+                                  Center(child: 'no_farmer_found'.toText()),
+                        ),
+
+                        items: (filter, infiniteScrollProps) async {
+                          if (filter.isEmpty) {
+                            return farmers;
+                          }
+                          return farmers.where((farmer) {
+                            final filterLower = filter.toLowerCase();
+                            return (farmer.firstName?.toLowerCase().contains(
+                                      filterLower,
+                                    ) ??
+                                    false) ||
+                                (farmer.lastName?.toLowerCase().contains(
+                                      filterLower,
+                                    ) ??
+                                    false) ||
+                                (farmer.phoneNumber?.contains(filterLower) ??
+                                    false);
+                          }).toList();
+                        },
+                        itemAsString:
+                            (Farmer? farmer) =>
+                                '${farmer?.firstName ?? ''} ${farmer?.lastName ?? ''}',
+                        compareFn: (Farmer? item1, Farmer? item2) {
+                          return item1?.pk == item2?.pk;
+                        },
+                        selectedItem: controller.selectedFarmer,
+                        onChanged: (Farmer? newValue) {
+                          if (newValue != null) {
+                            controller.onSelectFarmer(newValue);
+                          }
+                        },
+                        decoratorProps: DropDownDecoratorProps(
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                'Select a farmer',
+                                '',
+                              ),
+                        ),
                       );
                     },
                   ),
                 ),
+
                 16.verticalSpace,
                 'plot'.toText(fontSize: 14, fontWeight: FontWeight.w600),
                 Padding(
@@ -246,7 +304,7 @@ class CreateFarmVisitView extends StatelessWidget
                         'visit_logged_successfully'.tr(),
                         'Go to Farm Visit List',
                         () {
-                           Navigator.of(context, rootNavigator: true).pop();
+                          Navigator.of(context, rootNavigator: true).pop();
                           Navigator.pop(context);
                         },
                       );

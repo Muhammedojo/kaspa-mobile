@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../../../../core/data/model/farm_visit.dart';
 import '../../../../core/data/model/farmer.dart';
 import '../../../../core/data/model/plot.dart';
 import '../../../../core/data/model/product.dart';
+import '../../../../core/utils/function.dart';
 import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
 import '../contract/create_farm_visit.dart';
 import '../view/create_farm_visit.dart';
@@ -84,12 +86,25 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
   @override
   void logVisit() async {
     if (formKey.currentState!.validate()) {
+     if (selectedFarmer == null) {
+        Utils.showToastError(context, 'Please select a farmer', '', () {});
+        return;
+      }
+      if (selectedPlot == null) {
+        Utils.showToastError(
+            context, 'Please select a plot for the farmer', '', () {});
+        return;
+      }
+      if (selectedCrop == null) {
+        Utils.showToastError(context, 'Please select a crop', '', () {});
+        return;
+      }
       FarmVisit visit = FarmVisit();
       visit.farmId = selectedPlot?.pk;
       visit.cropId = selectedCrop?.pk;
       visit.noOfHectares = double.parse(aolController.text).round();
 
-      context.read<FarmVisitCubit>().createFarmVisit(visit);
+      GetIt.I.get<FarmVisitCubit>().createFarmVisit(visit);
     }
   }
 

@@ -78,55 +78,65 @@ const CooperativeSchema = CollectionSchema(
       name: r'head',
       type: IsarType.string,
     ),
-    r'lastPulledTime': PropertySchema(
+    r'isBlacklisted': PropertySchema(
       id: 12,
+      name: r'isBlacklisted',
+      type: IsarType.bool,
+    ),
+    r'isVerified': PropertySchema(
+      id: 13,
+      name: r'isVerified',
+      type: IsarType.bool,
+    ),
+    r'lastPulledTime': PropertySchema(
+      id: 14,
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
     r'lga': PropertySchema(
-      id: 13,
+      id: 15,
       name: r'lga',
       type: IsarType.object,
       target: r'LgaData',
     ),
     r'lgaId': PropertySchema(
-      id: 14,
+      id: 16,
       name: r'lgaId',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
-      id: 15,
+      id: 17,
       name: r'name',
       type: IsarType.string,
     ),
     r'noOfFarmers': PropertySchema(
-      id: 16,
+      id: 18,
       name: r'noOfFarmers',
       type: IsarType.long,
     ),
     r'pk': PropertySchema(
-      id: 17,
+      id: 19,
       name: r'pk',
       type: IsarType.long,
     ),
     r'secretary': PropertySchema(
-      id: 18,
+      id: 20,
       name: r'secretary',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 19,
+      id: 21,
       name: r'updated',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 20,
+      id: 22,
       name: r'ward',
       type: IsarType.object,
       target: r'WardData',
     ),
     r'wardId': PropertySchema(
-      id: 21,
+      id: 23,
       name: r'wardId',
       type: IsarType.long,
     )
@@ -334,26 +344,28 @@ void _cooperativeSerialize(
   writer.writeString(offsets[9], object.file);
   writer.writeBool(offsets[10], object.hasSynced);
   writer.writeString(offsets[11], object.head);
-  writer.writeString(offsets[12], object.lastPulledTime);
+  writer.writeBool(offsets[12], object.isBlacklisted);
+  writer.writeBool(offsets[13], object.isVerified);
+  writer.writeString(offsets[14], object.lastPulledTime);
   writer.writeObject<LgaData>(
-    offsets[13],
+    offsets[15],
     allOffsets,
     LgaDataSchema.serialize,
     object.lga,
   );
-  writer.writeLong(offsets[14], object.lgaId);
-  writer.writeString(offsets[15], object.name);
-  writer.writeLong(offsets[16], object.noOfFarmers);
-  writer.writeLong(offsets[17], object.pk);
-  writer.writeString(offsets[18], object.secretary);
-  writer.writeString(offsets[19], object.updated);
+  writer.writeLong(offsets[16], object.lgaId);
+  writer.writeString(offsets[17], object.name);
+  writer.writeLong(offsets[18], object.noOfFarmers);
+  writer.writeLong(offsets[19], object.pk);
+  writer.writeString(offsets[20], object.secretary);
+  writer.writeString(offsets[21], object.updated);
   writer.writeObject<WardData>(
-    offsets[20],
+    offsets[22],
     allOffsets,
     WardDataSchema.serialize,
     object.ward,
   );
-  writer.writeLong(offsets[21], object.wardId);
+  writer.writeLong(offsets[23], object.wardId);
 }
 
 Cooperative _cooperativeDeserialize(
@@ -380,24 +392,26 @@ Cooperative _cooperativeDeserialize(
   object.hasSynced = reader.readBoolOrNull(offsets[10]);
   object.head = reader.readStringOrNull(offsets[11]);
   object.id = id;
-  object.lastPulledTime = reader.readStringOrNull(offsets[12]);
+  object.isBlacklisted = reader.readBoolOrNull(offsets[12]);
+  object.isVerified = reader.readBoolOrNull(offsets[13]);
+  object.lastPulledTime = reader.readStringOrNull(offsets[14]);
   object.lga = reader.readObjectOrNull<LgaData>(
-    offsets[13],
+    offsets[15],
     LgaDataSchema.deserialize,
     allOffsets,
   );
-  object.lgaId = reader.readLongOrNull(offsets[14]);
-  object.name = reader.readStringOrNull(offsets[15]);
-  object.noOfFarmers = reader.readLongOrNull(offsets[16]);
-  object.pk = reader.readLong(offsets[17]);
-  object.secretary = reader.readStringOrNull(offsets[18]);
-  object.updated = reader.readStringOrNull(offsets[19]);
+  object.lgaId = reader.readLongOrNull(offsets[16]);
+  object.name = reader.readStringOrNull(offsets[17]);
+  object.noOfFarmers = reader.readLongOrNull(offsets[18]);
+  object.pk = reader.readLong(offsets[19]);
+  object.secretary = reader.readStringOrNull(offsets[20]);
+  object.updated = reader.readStringOrNull(offsets[21]);
   object.ward = reader.readObjectOrNull<WardData>(
-    offsets[20],
+    offsets[22],
     WardDataSchema.deserialize,
     allOffsets,
   );
-  object.wardId = reader.readLongOrNull(offsets[21]);
+  object.wardId = reader.readLongOrNull(offsets[23]);
   return object;
 }
 
@@ -437,32 +451,36 @@ P _cooperativeDeserializeProp<P>(
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 13:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 14:
+      return (reader.readStringOrNull(offset)) as P;
+    case 15:
       return (reader.readObjectOrNull<LgaData>(
         offset,
         LgaDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 14:
-      return (reader.readLongOrNull(offset)) as P;
-    case 15:
-      return (reader.readStringOrNull(offset)) as P;
     case 16:
       return (reader.readLongOrNull(offset)) as P;
     case 17:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 18:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 19:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 20:
+      return (reader.readStringOrNull(offset)) as P;
+    case 21:
+      return (reader.readStringOrNull(offset)) as P;
+    case 22:
       return (reader.readObjectOrNull<WardData>(
         offset,
         WardDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 21:
+    case 23:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2515,6 +2533,62 @@ extension CooperativeQueryFilter
   }
 
   QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      isBlacklistedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'isBlacklisted',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      isBlacklistedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'isBlacklisted',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      isBlacklistedEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isBlacklisted',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      isVerifiedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'isVerified',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      isVerifiedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'isVerified',
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
+      isVerifiedEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isVerified',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterFilterCondition>
       lastPulledTimeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -3594,6 +3668,31 @@ extension CooperativeQuerySortBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByIsBlacklisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy>
+      sortByIsBlacklistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByIsVerified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByIsVerifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> sortByLastPulledTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastPulledTime', Sort.asc);
@@ -3846,6 +3945,31 @@ extension CooperativeQuerySortThenBy
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByIsBlacklisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy>
+      thenByIsBlacklistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByIsVerified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByIsVerifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.desc);
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QAfterSortBy> thenByLastPulledTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastPulledTime', Sort.asc);
@@ -4025,6 +4149,18 @@ extension CooperativeQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByIsBlacklisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isBlacklisted');
+    });
+  }
+
+  QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByIsVerified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isVerified');
+    });
+  }
+
   QueryBuilder<Cooperative, Cooperative, QDistinct> distinctByLastPulledTime(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -4160,6 +4296,18 @@ extension CooperativeQueryProperty
   QueryBuilder<Cooperative, String?, QQueryOperations> headProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'head');
+    });
+  }
+
+  QueryBuilder<Cooperative, bool?, QQueryOperations> isBlacklistedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isBlacklisted');
+    });
+  }
+
+  QueryBuilder<Cooperative, bool?, QQueryOperations> isVerifiedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isVerified');
     });
   }
 

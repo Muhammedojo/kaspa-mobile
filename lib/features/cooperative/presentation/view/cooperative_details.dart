@@ -63,11 +63,14 @@ class CooperativeDetailsView extends StatelessWidget
                               fontWeight: FontWeight.w700,
                               translate: false,
                             ),
-                            'Approved'.toText(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              translate: false,
-                            ),
+                            ((controller.cooperative.isVerified == true)
+                                    ? 'Verified'
+                                    : 'Unverified')
+                                .toText(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  translate: false,
+                                ),
                           ],
                         ),
                       ],
@@ -75,6 +78,25 @@ class CooperativeDetailsView extends StatelessWidget
                     24.verticalSpace,
                     CooperativeDetailsCard(),
                     24.verticalSpace,
+                        
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        'Cooperative Code'.toText(
+                          fontSize: 11,
+                          color: AppColors.accentText,
+                          translate: false,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        (controller.cooperative.code ?? 'Not Available')
+                            .toText(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              translate: false,
+                            ),
+                      ],
+                    ),
+                    12.verticalSpace,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -198,7 +220,10 @@ class CooperativeDetailsView extends StatelessWidget
       onSelected: (String item) {
         switch (item) {
           case editAction:
-           pushTo(UpdateCooperativeScreen(cooperative: controller.cooperative,), context);
+            pushTo(
+              UpdateCooperativeScreen(cooperative: controller.cooperative),
+              context,
+            );
             break;
           case deleteAction:
             debugPrint('Delete cooperative selected');

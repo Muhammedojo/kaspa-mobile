@@ -18,6 +18,8 @@ class Cooperative extends GeneralModel {
   String? code = "";
   String? doi = "";
   int? lgaId = 0;
+  bool? isBlacklisted = false;
+  bool? isVerified = false;
   int? wardId = 0;
   int? noOfFarmers = 0;
   String? file;
@@ -53,6 +55,9 @@ Cooperative _$CooperativeFromJson(Map<String, dynamic> json) {
     obj.ward = WardData.fromJson(json[KEY_WARD]);
   }
 
+  obj.code = json[KEY_CODE];
+  obj.isVerified = json[KEY_IS_VERIFIED];
+  obj.isBlacklisted = json[KEY_IS_BLACKLISTED];
   obj.head = json[KEY_HEAD];
   obj.noOfFarmers = json[KEY_NO_OF_FARMERS];
   obj.secretary = json[KEY_SECRETARY];

@@ -6,7 +6,7 @@ class AppIcon {
   static const String cancel = 'assets/vectors/cancel.svg';
   static const String filter = 'assets/vectors/filter.svg';
   static const String cal = 'assets/vectors/cal.svg';
-    static const String calendar = 'assets/vectors/calendar.svg';
+  static const String calendar = 'assets/vectors/calendar.svg';
   static const String warning = 'assets/vectors/warning.svg';
   static const String sun = 'assets/vectors/sun.svg';
   static const String farmVisit = 'assets/vectors/farmVisit.svg';
@@ -26,6 +26,7 @@ class AppIcon {
   static const String farm = 'assets/vectors/farm.svg';
   static const String crop = 'assets/vectors/crop.svg';
   static const String livestock = 'assets/vectors/livestock.svg';
-   static const String right = 'assets/vectors/right.svg';
-    static const String left = 'assets/vectors/left.svg';
+  static const String right = 'assets/vectors/right.svg';
+  static const String left = 'assets/vectors/left.svg';
+  static const String help = 'assets/vectors/help.svg';
 }
