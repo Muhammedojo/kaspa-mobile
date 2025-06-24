@@ -61,24 +61,24 @@ class FarmerDetailsView extends StatelessWidget
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                '${controller.farmer.title} ${controller.farmer.firstName} ${controller.farmer.lastName}'
+                                '${controller.farmer.title ?? ''} ${controller.farmer.firstName} ${controller.farmer.lastName}'
                                     .toText(
                                       translate: false,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                     ),
-                                '${controller.farmer.folioId}'.toText(
+                                (controller.farmer.folioId ?? 'N/A').toText(
                                   translate: false,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                '${controller.farmer.phoneNumber}'.toText(
+                                (controller.farmer.phoneNumber ?? 'N/A').toText(
                                   translate: false,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 (controller.farmer.cooperative?.name ??
-                                        'Cooperative Name')
+                                        'N/A')
                                     .toText(
                                       translate: false,
                                       fontSize: 12,

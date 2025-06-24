@@ -719,4 +719,22 @@ class ApiServicesImpl implements ApiServices {
   //     formData,
   //   );
   // }
+
+  final String _apiKey = 't8ryGLf4.eS51IE0si8fjlw8jCLaxeQu9UjBITSDK';
+  final String _url = 'https://payload.vextapp.com/hook/CVTU6U7BQZ/catch/1234';
+
+  @override
+  Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> data) async {
+ 
+    final result = await apiClient.request<String>(
+      _url,
+      MethodType.post,
+
+      (responseBody, {String? realUri}) => responseBody.toString(),
+      data,
+      headerOption: {'X-Api-Key': _apiKey, 'Content-Type': 'application/json'},
+    );
+
+    return result.map((apiResponse) => apiResponse.data.toString());
+  }
 }

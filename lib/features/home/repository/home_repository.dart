@@ -27,6 +27,10 @@ class HomeRepository implements IHomeRepository {
   //API CALLS
 
   @override
+  Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload) =>
+      apiServices.getAdvisory(payload);
+
+  @override
   Future<Either<Failure, ApiResponse<List<Bank>>>> getBankList({
     String? endpoint,
   }) => apiServices.getBankList(endpoint);
@@ -66,9 +70,9 @@ class HomeRepository implements IHomeRepository {
   }) => apiServices.getDashboardList(endpoint);
 
   @override
-  Future<Either<Failure, ApiResponse<List<CropActivities>>>> getFarmCropActivityList(
-    String? endpoint, {int? farmCropId,
-  }) => apiServices.getFarmCropActivityList(endpoint, farmCropId: farmCropId);
+  Future<Either<Failure, ApiResponse<List<CropActivities>>>>
+  getFarmCropActivityList(String? endpoint, {int? farmCropId}) =>
+      apiServices.getFarmCropActivityList(endpoint, farmCropId: farmCropId);
 
   @override
   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList({
@@ -116,9 +120,9 @@ class HomeRepository implements IHomeRepository {
   }) => apiServices.getMarketList(endpoint);
 
   @override
-  Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList({
-    String? endpoint,
-  }) => apiServices.getNotificationList(endpoint);
+  Future<Either<Failure, ApiResponse<List<Notifications>>>>
+  getNotificationList({String? endpoint}) =>
+      apiServices.getNotificationList(endpoint);
 
   @override
   Future<Either<Failure, ApiResponse<List<Plot>>>> getPlotList({
@@ -207,9 +211,9 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<List<Plot>> getPlot() => localStorage.getPlot();
 
- @override
-  Future<List<CropActivities>> getFarmCropActivity() => localStorage.getFarmCropActivity();
-
+  @override
+  Future<List<CropActivities>> getFarmCropActivity() =>
+      localStorage.getFarmCropActivity();
 
   @override
   Future<List<Product>> getProduct() => localStorage.getProduct();
@@ -249,9 +253,9 @@ class HomeRepository implements IHomeRepository {
       localStorage.saveDashboard(dashboardList);
 
   @override
-  Future<void> saveFarmCropActivity(List<CropActivities> farmCropActivityList) =>
-      localStorage.saveFarmCropActivity(farmCropActivityList);
-
+  Future<void> saveFarmCropActivity(
+    List<CropActivities> farmCropActivityList,
+  ) => localStorage.saveFarmCropActivity(farmCropActivityList);
 
   @override
   Future<void> saveFarmVisit(List<FarmVisit> farmVisitList) =>

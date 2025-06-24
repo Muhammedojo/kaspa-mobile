@@ -13,6 +13,7 @@ import 'features/auth/presentation/bloc/forgot_password/forgot_password_cubit.da
 import 'features/auth/presentation/bloc/reset_password/reset_password_cubit.dart';
 import 'features/auth/presentation/bloc/user/user_cubit.dart';
 import 'features/farmers/presentation/bloc/bloc.dart';
+import 'features/home/presentation/bloc/advisory/crop_advisory_cubit.dart';
 import 'features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import 'features/home/presentation/bloc/bloc.dart';
 import 'features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
@@ -40,6 +41,12 @@ class Kaspa extends StatelessWidget {
     ]);
     return MultiBlocProvider(
       providers: [
+        
+
+         BlocProvider(
+          create:
+              (context) => AppInitializer.instanceLocator.get<CropAdvisoryCubit>(),
+        ),
         BlocProvider(
           create:
               (context) => AppInitializer.instanceLocator.get<ApiRequestBloc>(),

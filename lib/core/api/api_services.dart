@@ -37,6 +37,9 @@ abstract class ApiServices {
     String? endpoint,
   );
 
+   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload);
+
+
   Future<Either<Failure, ApiResponse<List<Crop>>>> getCropList(
     String? endpoint,
   );
@@ -57,9 +60,8 @@ abstract class ApiServices {
     String? endpoint,
   );
 
-  Future<Either<Failure, ApiResponse<List<CropActivities>>>> getFarmCropActivityList(
-    String? endpoint,{int? farmCropId}
-  );
+  Future<Either<Failure, ApiResponse<List<CropActivities>>>>
+  getFarmCropActivityList(String? endpoint, {int? farmCropId});
 
   Future<Either<Failure, ApiResponse<List<FarmVisit>>>> getFarmVisitList(
     String? endpoint,
@@ -103,7 +105,7 @@ abstract class ApiServices {
     String? endpoint,
   );
 
-   Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList(
+  Future<Either<Failure, ApiResponse<List<Notifications>>>> getNotificationList(
     String? endpoint,
   );
 
@@ -111,7 +113,7 @@ abstract class ApiServices {
     String? endpoint,
   );
 
-    Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList(
+  Future<Either<Failure, ApiResponse<List<Weather>>>> getLGAWeatherList(
     String? endpoint,
   );
 

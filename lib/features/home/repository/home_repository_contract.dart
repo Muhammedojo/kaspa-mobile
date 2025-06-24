@@ -17,6 +17,9 @@ import '../../../core/data/model/product.dart';
 import '../../../core/data/model/weather.dart';
 
 abstract class IHomeRepository {
+  // ADVISORY
+  Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload);
+
   //BANK CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Bank>>>> getBankList({
     String? endpoint,
