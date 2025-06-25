@@ -29,4 +29,8 @@ class AppIcon {
   static const String right = 'assets/vectors/right.svg';
   static const String left = 'assets/vectors/left.svg';
   static const String help = 'assets/vectors/help.svg';
+  static const String fly = 'assets/vectors/fly.svg';
+  static const String activity = 'assets/vectors/activity.svg';
+  static const String boxFly = 'assets/vectors/boxFly.svg';
+  static const String bot = 'assets/vectors/bot.svg';
 }

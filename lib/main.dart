@@ -43,7 +43,7 @@ void main() {
     },
     (error, stackTrace) {
       debugPrint(error.toString());
-      _showErrorUI(error.toString());
+      // _showErrorUI(error.toString());
 
       if (!completer.isCompleted) {
         completer.completeError(error, stackTrace);
@@ -63,8 +63,8 @@ class ErrorHandlerWidget extends StatelessWidget {
       builder: (context) {
         try {
           return child;
-        } catch (e, stack) {
-          debugPrint('Root widget error: $e\n$stack');
+        } catch (e) {
+        //  debugPrint('Root widget error: $e\n$stack');
           return _buildErrorScreen(e.toString(), context);
         }
       },

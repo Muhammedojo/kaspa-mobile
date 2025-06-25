@@ -17,6 +17,11 @@ class CropCard extends StatelessWidget {
         padding: REdgeInsets.symmetric(vertical: 8.0),
         child: 
         CardContainerWidget(
+           decoration: BoxDecoration(
+          color: Color(0xffF8F8F8),
+          borderRadius: BorderRadius.circular(8.r),
+           border: BoxBorder.all(color: Color(0xffC8C8C8), width: 0.5),
+        ),
           child: Row(
             children: [
               Container(
@@ -55,7 +60,7 @@ class CropCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: data.getStageColor().withAlpha((0.1 * 255).toInt()),
                       borderRadius: BorderRadius.circular(16.r),
-                      border: Border.all(color: data.getStageColor(), width: 0.5),
+                      border: Border.all(color: data.getStageColor(), width: 0.8),
                     ),
                     child: (data.stage ?? '').toText(
                       fontSize: 12,

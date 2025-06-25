@@ -61,6 +61,7 @@ class Farmer {
 }
 
 Farmer _$FarmerFromJson(Map<String, dynamic> json) {
+  
   var obj = Farmer();
   obj.pk = json[KEY_PK];
   obj.folioId = json[KEY_FOLIO_ID];
@@ -106,6 +107,7 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
     obj.cooperative = CooperativeData.fromJson(json[KEY_COOPERATIVE]);
   }
+
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
   obj.livestock = json[KEY_LIVESTOCK];
   obj.crop = json[KEY_CROP];
@@ -124,6 +126,7 @@ Map<String, dynamic> _$FarmerToJson(Farmer obj) => <String, dynamic>{
   KEY_ADDRESS: obj.address,
   KEY_PHONE_NUMBER: obj.phoneNumber,
   KEY_NIN: obj.nin,
+
   KEY_ACCOUNT_NAME: obj.accountName,
   KEY_ACCOUNT_NUMBER: obj.accountNumber,
   KEY_NOK_NAME: obj.nokName,

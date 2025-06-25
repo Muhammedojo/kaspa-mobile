@@ -9,10 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/button.dart';
-import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/model.dart';
 import '../../../../core/data/model/product.dart';
-import '../../../../core/data/model/ward.dart';
 import '../../../../core/resources/vectors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../../core/utils/global_variables.dart';
@@ -646,16 +644,16 @@ class RegisterFarmerView extends StatelessWidget
                                       controller.onSelectCooperative(newValue);
                                     }
                                   },
-                                  validator: (Cooperative? value) {
-                                    if (value == null) {
-                                      return 'Please select a cooperative.';
-                                    }
-                                    if (value.code == null ||
-                                        value.code!.isEmpty) {
-                                      return 'Selected cooperative has no code. Please select another or update its data.';
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (Cooperative? value) {
+                                  //   if (value == null) {
+                                  //     return 'Please select a cooperative.';
+                                  //   }
+                                  //   if (value.code == null ||
+                                  //       value.code!.isEmpty) {
+                                  //     return 'Selected cooperative has no code. Please select another or update its data.';
+                                  //   }
+                                  //   return null;
+                                  // },
                                   decoratorProps: DropDownDecoratorProps(
                                     decoration:
                                         Styles.textFormFieldDecorationBorderWithBackground(
@@ -1078,7 +1076,26 @@ class RegisterFarmerView extends StatelessWidget
                             ),
                           ),
 
-                          16.verticalSpace,
+                     20.verticalSpace,
+                        ],
+                      ),
+                    ),
+                  ),
+                   Step(
+                    title: ''.toText(translate: false),
+                    isActive: controller.currentStep >= 4,
+                    stepStyle: StepStyle(
+                      color:
+                          controller.currentStep >= 4
+                              ? AppColors.colorPrimary
+                              : AppColors.ColorAccent,
+                    ),
+                    content: Form(
+                      key: controller.formKey5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                        
                           Row(
                             children: [
                               'Farm'.toText(
@@ -1250,17 +1267,18 @@ class RegisterFarmerView extends StatelessWidget
                       ),
                     ),
                   ),
+                 
                   Step(
                     title: ''.toText(translate: false),
-                    isActive: controller.currentStep >= 4,
+                    isActive: controller.currentStep >= 5,
                     stepStyle: StepStyle(
                       color:
-                          controller.currentStep >= 4
+                          controller.currentStep >= 5
                               ? AppColors.colorPrimary
                               : AppColors.ColorAccent,
                     ),
                     content: Form(
-                      key: controller.formKey5,
+                      key: controller.formKey6,
                       child: Column(
                         children: [
                           InkWell(
@@ -1388,7 +1406,7 @@ class RegisterFarmerView extends StatelessWidget
                               height: 58.sp,
                               child: ButtonWidget(
                                 label:
-                                    controller.currentStep == 4
+                                    controller.currentStep == 5
                                         ? 'Submit'
                                         : 'Next',
                                 onPressed: () => controller.next(context),
@@ -1685,8 +1703,9 @@ class RegisterFarmerView extends StatelessWidget
                       onChanged: (bool? value) {
                         setStateDialog(() {
                           if (value == true) {
-                            if (!isSelected)
+                            if (!isSelected) {
                               tempSelectedLivestocks.add(livestock);
+                            }
                           } else {
                             tempSelectedLivestocks.removeWhere(
                               (selected) => selected.pk == livestock.pk,

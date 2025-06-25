@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kaspa/features/home/repository/home_repository_contract.dart';
 import '../../../../core/component/card_container_widget.dart';
 import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/data/model/crop_activities.dart';
@@ -15,6 +14,8 @@ import '../../../home/presentation/bloc/advisory/crop_advisory_cubit.dart';
 import '../../../home/presentation/bloc/farm_crop_activity/farm_crop_activity_cubit.dart';
 import '../../../home/presentation/bloc/insight/insight_cubit.dart';
 import '../contract/crop_activities.dart';
+import '../widget/advisory_loading.dart';
+import '../widget/advisory_preview.dart';
 
 class CropActivitiesView extends StatelessWidget
     implements CropActivitiesViewContract {
@@ -24,75 +25,48 @@ class CropActivitiesView extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              CropAdvisoryCubit(repository: context.read<IHomeRepository>()),
-      child: Scaffold(
-        backgroundColor: AppColors.primaryBackground,
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: AppColors.primaryGreen,
-          heroTag: "generate_advisory",
-          onPressed: () {
-            _onGenerateAdvisoryPressed(context);
-        
-          },
-          label: Row(
-            children: [
-              SvgPicture.asset('assets/vectors/fly.svg'),
-              5.horizontalSpace,
-              'Generate Advisory'.toText(
-                translate: false,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primaryBackground,
-              ),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: AppColors.primaryBackground,
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: AppColors.primaryGreen,
+        heroTag: "generate_advisory",
+        onPressed: () {
+          _onGenerateAdvisoryPressed(context);
+        },
+        label: Row(
+          children: [
+            SvgPicture.asset('assets/vectors/fly.svg'),
+            5.horizontalSpace,
+            'Generate Advisory'.toText(
+              translate: false,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primaryBackground,
+            ),
+          ],
         ),
-        body: BlocListener<CropAdvisoryCubit, CropAdvisoryState>(
-          listener: (context, state) {
-            if (state is CropAdvisoryLoading) {
-                debugPrint('state.error loading');
-              showModalBottomSheet(
-                context: context,
-                isDismissible: false,
-                enableDrag: false,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: 150.h,
-                    padding: REdgeInsets.all(16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircularProgressIndicator(
-                          color: AppColors.primaryGreen,
-                        ),
-                        16.verticalSpace,
-                        'Generating Advisory...'.toText(
-                          translate: false,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            } else if (state is CropAdvisoryLoaded) {
-                debugPrint('state.error loaded');
-              Navigator.pop(context);
-              _showAdvisoryDialog(context, state.advisory);
-            } else if (state is CropAdvisoryFailure) {
+      ),
+      body: BlocListener<CropAdvisoryCubit, CropAdvisoryState>(
+        listener: (context, state) {
+          if (state is CropAdvisoryLoading) {
+            showModalBottomSheet(
+              context: context,
+              isDismissible: false,
+              enableDrag: false,
+              builder: (BuildContext context) {
+                return AdvisoryLoadingWidget();
+              },
+            );
+          } else if (state is CropAdvisoryLoaded) {
+            Navigator.pop(context);
+            _showAdvisoryDialog(context, state.advisory);
+          } else if (state is CropAdvisoryFailure) {
+            Navigator.of(context).pop();
+            Utils.showToastError(context, state.error, '', () {});
+          }
+        },
 
-              debugPrint('state.error ${state.error}');
-              Navigator.of(context).pop();
-              Utils.showToastError(context, state.error, '', () {});
-            }
-          },
-
-          child: _body(context),
-        ),
+        child: _body(context),
       ),
     );
   }
@@ -137,57 +111,63 @@ class CropActivitiesView extends StatelessWidget
                         separatorBuilder: (context, index) => 12.verticalSpace,
                         itemBuilder: (context, index) {
                           final activity = activities[index];
-                          return CardContainerWidget(
-                            decoration: BoxDecoration(
-                              color: Color(0xffF8F8F8),
-                              borderRadius: BorderRadius.circular(8.r),
-                              border: BoxBorder.all(
-                                color: Color(0xffC8C8C8),
-                                width: 0.5,
+                          return InkWell(
+                            onTap: () {
+                              controller.previewLogModal(activity);
+                            },
+                            child: CardContainerWidget(
+                              decoration: BoxDecoration(
+                                color: Color(0xffF8F8F8),
+                                borderRadius: BorderRadius.circular(8.r),
+                                border: BoxBorder.all(
+                                  color: Color(0xffC8C8C8),
+                                  width: 0.5,
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: AppColors.primaryBackground,
-                                  activeColor: AppColors.primaryGreen,
-                                  value:
-                                      activity.isComplete == true
-                                          ? true
-                                          : false,
-                                  onChanged: (value) {},
-                                ),
-                                8.horizontalSpace,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        (activity.activity?.activity ??
-                                                'No Activity Title')
-                                            .toText(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                              translate: false,
-                                            ),
-                                      ],
-                                    ),
-                                    8.verticalSpace,
-                                    '${activity.activity?.startDate ?? 'N/A'}  -  ${activity.activity?.endDate ?? 'N/A'}'
-                                        .toText(
-                                          fontSize: 12,
-                                          color: AppColors.accentText,
-                                          fontWeight: FontWeight.w500,
-                                          translate: false,
-                                        ),
-                                  ],
-                                ),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    checkColor: AppColors.primaryBackground,
+                                    activeColor: AppColors.primaryGreen,
+                                    value:
+                                        activity.isComplete == true
+                                            ? true
+                                            : false,
+                                    onChanged: (value) {},
+                                  ),
+                                  8.horizontalSpace,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          (activity.activity?.activity ??
+                                                  'No Activity Title')
+                                              .toText(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 14,
+                                                translate: false,
+                                              ),
+                                        ],
+                                      ),
+                                      8.verticalSpace,
+                                      '${activity.activity?.startDate ?? 'N/A'}  -  ${activity.activity?.endDate ?? 'N/A'}'
+                                          .toText(
+                                            fontSize: 12,
+                                            color: AppColors.accentText,
+                                            fontWeight: FontWeight.w500,
+                                            translate: false,
+                                          ),
+                                    ],
+                                  ),
 
-                                const Spacer(),
-                                SvgPicture.asset(AppIcon.rightArrow),
-                              ],
+                                  const Spacer(),
+                                  SvgPicture.asset(AppIcon.rightArrow),
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -254,7 +234,7 @@ class CropActivitiesView extends StatelessWidget
     final lastActivity = activities.first.activity;
     final weatherData = insightState.insightList.first;
 
-   context.read<CropAdvisoryCubit>().generateAdvisory(
+    context.read<CropAdvisoryCubit>().generateAdvisory(
       cropName: cropName,
       lastActivity: lastActivity,
       weatherData: weatherData,
@@ -262,36 +242,11 @@ class CropActivitiesView extends StatelessWidget
   }
 
   void _showAdvisoryDialog(BuildContext context, String advisoryText) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: 'Generated Advisory'.toText(
-            translate: false,
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-          ),
-          content: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 400.h),
-            child: Scrollbar(
-              child: SingleChildScrollView(
-                child: advisoryText.toText(translate: false, fontSize: 14),
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: 'Close'.toText(
-                translate: false,
-                color: AppColors.primaryGreen,
-                fontWeight: FontWeight.w700,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return AdvisoryPreviewWidget(message: advisoryText);
       },
     );
   }

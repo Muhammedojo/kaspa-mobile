@@ -16,6 +16,7 @@ abstract class RegisterFarmerControllerContract {
   late GlobalKey<FormState> formKey3;
   late GlobalKey<FormState> formKey4;
   late GlobalKey<FormState> formKey5;
+  late GlobalKey<FormState> formKey6;
 
   void onSelectGender(String? newValue);
   void onSelectLga(Lga? newValue);

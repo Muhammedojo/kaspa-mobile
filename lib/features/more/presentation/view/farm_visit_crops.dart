@@ -183,55 +183,6 @@ class FarmVisitCropsView extends StatelessWidget
                         ),
                       ),
 
-                      // "Here’s a list of farm visits".toText(
-                      //   translate: false,
-                      //   color: AppColors.accentText,
-                      //   fontSize: 12,
-                      //   fontWeight: FontWeight.w500,
-                      // ),
-                      // 16.verticalSpace,
-                      // Expanded(
-                      //   child: BlocBuilder<FarmVisitCubit, FarmVisitState>(
-                      //     builder: (context, state) {
-                      //       if (state is FarmVisitLoading) {
-                      //         return ErrorWidgets(title: "empty", message: '');
-                      //       }
-                      //       if (state is FarmVisitLoaded) {
-                      //         return state.farmVisitList.isEmpty
-                      //             ? ErrorWidgets(message: 'visit_list_empty')
-                      //             : ListView.separated(
-                      //               itemCount: state.farmVisitList.length,
-                      //               physics:
-                      //                   const AlwaysScrollableScrollPhysics(),
-                      //               itemBuilder: (context, index) {
-                      //                 return FarmVisitCard(
-                      //                   data: state.farmVisitList[index],
-                      //                   onTap: () {
-                      //                     // pushTo(
-                      //                     //   CooperativeDetailsScreen(
-                      //                     //     cooperative:
-                      //                     //         state.cooperativeList[index],
-                      //                     //   ),
-                      //                     //   context,
-                      //                     // );
-                      //                   },
-                      //                 );
-                      //               },
-                      //               separatorBuilder:
-                      //                   (BuildContext context, int index) =>
-                      //                       12.verticalSpace,
-                      //             );
-                      //       }
-                      //       if (state is FarmVisitFailure) {
-                      //         return ErrorWidgets(
-                      //           title: "Error",
-                      //           message: state.toString(),
-                      //         );
-                      //       }
-                      //       return const SizedBox.shrink();
-                      //     },
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

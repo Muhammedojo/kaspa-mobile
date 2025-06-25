@@ -42,6 +42,8 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
   late GlobalKey<FormState> formKey4;
   @override
   late GlobalKey<FormState> formKey5;
+  @override
+  late GlobalKey<FormState> formKey6;
 
   @override
   File? image;
@@ -157,6 +159,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     formKey3 = GlobalKey<FormState>();
     formKey4 = GlobalKey<FormState>();
     formKey5 = GlobalKey<FormState>();
+    formKey6 = GlobalKey<FormState>();
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     phoneNumberController = TextEditingController();
@@ -303,11 +306,11 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
   @override
   void next(BuildContext context) {
-    final lastStep = currentStep == 4;
+    final lastStep = currentStep == 5;
 
     if (lastStep) {
-      if (currentStep == 4 && formKey5.currentState!.validate()) {
-           if (image == null) {
+      if (currentStep == 5 && formKey6.currentState!.validate()) {
+        if (image == null) {
           Utils.showToastError(
             context,
             'Please add a profile image for the farmer.',
@@ -346,6 +349,23 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
           currentStep += 1;
         });
       } else if (currentStep == 3 && formKey4.currentState!.validate()) {
+        if (selectedLivestocksList.isEmpty) {
+          Utils.showToastError(context, 'Kindly select livestock', '', () {
+            Navigator.pop(context);
+          });
+          return;
+        }
+        if (selectedCropsList.isEmpty) {
+          Utils.showToastError(context, 'Kindly select crop', '', () {
+            Navigator.pop(context);
+          });
+          return;
+        }
+
+        setState(() {
+          currentStep += 1;
+        });
+      } else if (currentStep == 4 && formKey5.currentState!.validate()) {
         if (currentFarmLocationCoordinates.isNotEmpty &&
             currentFarmLocationCoordinates.length < 4) {
           Utils.showToastError(
@@ -358,23 +378,10 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
           );
           return;
         }
-        if (selectedLivestocksList.isEmpty) {
-          Utils.showToastError(context, 'Kindly select livestock', '', () {
-            Navigator.pop(context);
-          });
-          return; 
-        }
-           if (selectedCropsList.isEmpty) {
-          Utils.showToastError(context, 'Kindly select crop', '', () {
-            Navigator.pop(context);
-          });
-          return;
-        }
 
         setState(() {
           currentStep += 1;
         });
-     
       }
     }
   }
@@ -672,7 +679,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
 
     farmer.farms = farmsPayload;
 
-     GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
+    GetIt.I.get<CreateFarmerCubit>().createFarmer(farmer);
   }
 
   @override
