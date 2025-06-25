@@ -112,39 +112,7 @@ class ErrorDialogWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                8.verticalSpace,
-                      Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.sp),
-                            border: Border.all(color: AppColors.accentText),
-                            color: Colors.transparent,
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: REdgeInsets.symmetric(vertical: 15.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  InkWell(
-                                    onTap: onTap,
-                                    child: (title ?? 'cancel').toText(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.accentText,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-               
+             
                 ],
               ),
             ),

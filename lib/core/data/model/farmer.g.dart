@@ -84,86 +84,96 @@ const FarmerSchema = CollectionSchema(
       name: r'gender',
       type: IsarType.string,
     ),
-    r'lastName': PropertySchema(
+    r'isBlacklisted': PropertySchema(
       id: 13,
+      name: r'isBlacklisted',
+      type: IsarType.bool,
+    ),
+    r'isVerified': PropertySchema(
+      id: 14,
+      name: r'isVerified',
+      type: IsarType.bool,
+    ),
+    r'lastName': PropertySchema(
+      id: 15,
       name: r'lastName',
       type: IsarType.string,
     ),
     r'lga': PropertySchema(
-      id: 14,
+      id: 16,
       name: r'lga',
       type: IsarType.object,
       target: r'LgaData',
     ),
     r'livestock': PropertySchema(
-      id: 15,
+      id: 17,
       name: r'livestock',
       type: IsarType.longList,
     ),
     r'nin': PropertySchema(
-      id: 16,
+      id: 18,
       name: r'nin',
       type: IsarType.string,
     ),
     r'nokAddress': PropertySchema(
-      id: 17,
+      id: 19,
       name: r'nokAddress',
       type: IsarType.string,
     ),
     r'nokDetails': PropertySchema(
-      id: 18,
+      id: 20,
       name: r'nokDetails',
       type: IsarType.object,
       target: r'NokData',
     ),
     r'nokName': PropertySchema(
-      id: 19,
+      id: 21,
       name: r'nokName',
       type: IsarType.string,
     ),
     r'nokPhoneNumber': PropertySchema(
-      id: 20,
+      id: 22,
       name: r'nokPhoneNumber',
       type: IsarType.string,
     ),
     r'nokRelationship': PropertySchema(
-      id: 21,
+      id: 23,
       name: r'nokRelationship',
       type: IsarType.string,
     ),
     r'otherNames': PropertySchema(
-      id: 22,
+      id: 24,
       name: r'otherNames',
       type: IsarType.string,
     ),
     r'phoneNumber': PropertySchema(
-      id: 23,
+      id: 25,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 24,
+      id: 26,
       name: r'pk',
       type: IsarType.long,
     ),
     r'registrationDate': PropertySchema(
-      id: 25,
+      id: 27,
       name: r'registrationDate',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 26,
+      id: 28,
       name: r'title',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 27,
+      id: 29,
       name: r'ward',
       type: IsarType.object,
       target: r'WardData',
     ),
     r'wardId': PropertySchema(
-      id: 28,
+      id: 30,
       name: r'wardId',
       type: IsarType.long,
     )
@@ -404,37 +414,39 @@ void _farmerSerialize(
   writer.writeString(offsets[10], object.firstName);
   writer.writeString(offsets[11], object.folioId);
   writer.writeString(offsets[12], object.gender);
-  writer.writeString(offsets[13], object.lastName);
+  writer.writeBool(offsets[13], object.isBlacklisted);
+  writer.writeBool(offsets[14], object.isVerified);
+  writer.writeString(offsets[15], object.lastName);
   writer.writeObject<LgaData>(
-    offsets[14],
+    offsets[16],
     allOffsets,
     LgaDataSchema.serialize,
     object.lga,
   );
-  writer.writeLongList(offsets[15], object.livestock);
-  writer.writeString(offsets[16], object.nin);
-  writer.writeString(offsets[17], object.nokAddress);
+  writer.writeLongList(offsets[17], object.livestock);
+  writer.writeString(offsets[18], object.nin);
+  writer.writeString(offsets[19], object.nokAddress);
   writer.writeObject<NokData>(
-    offsets[18],
+    offsets[20],
     allOffsets,
     NokDataSchema.serialize,
     object.nokDetails,
   );
-  writer.writeString(offsets[19], object.nokName);
-  writer.writeString(offsets[20], object.nokPhoneNumber);
-  writer.writeString(offsets[21], object.nokRelationship);
-  writer.writeString(offsets[22], object.otherNames);
-  writer.writeString(offsets[23], object.phoneNumber);
-  writer.writeLong(offsets[24], object.pk);
-  writer.writeString(offsets[25], object.registrationDate);
-  writer.writeString(offsets[26], object.title);
+  writer.writeString(offsets[21], object.nokName);
+  writer.writeString(offsets[22], object.nokPhoneNumber);
+  writer.writeString(offsets[23], object.nokRelationship);
+  writer.writeString(offsets[24], object.otherNames);
+  writer.writeString(offsets[25], object.phoneNumber);
+  writer.writeLong(offsets[26], object.pk);
+  writer.writeString(offsets[27], object.registrationDate);
+  writer.writeString(offsets[28], object.title);
   writer.writeObject<WardData>(
-    offsets[27],
+    offsets[29],
     allOffsets,
     WardDataSchema.serialize,
     object.ward,
   );
-  writer.writeLong(offsets[28], object.wardId);
+  writer.writeLong(offsets[30], object.wardId);
 }
 
 Farmer _farmerDeserialize(
@@ -466,34 +478,36 @@ Farmer _farmerDeserialize(
   object.folioId = reader.readStringOrNull(offsets[11]);
   object.gender = reader.readStringOrNull(offsets[12]);
   object.id = id;
-  object.lastName = reader.readStringOrNull(offsets[13]);
+  object.isBlacklisted = reader.readBoolOrNull(offsets[13]);
+  object.isVerified = reader.readBoolOrNull(offsets[14]);
+  object.lastName = reader.readStringOrNull(offsets[15]);
   object.lga = reader.readObjectOrNull<LgaData>(
-    offsets[14],
+    offsets[16],
     LgaDataSchema.deserialize,
     allOffsets,
   );
-  object.livestock = reader.readLongList(offsets[15]);
-  object.nin = reader.readStringOrNull(offsets[16]);
-  object.nokAddress = reader.readStringOrNull(offsets[17]);
+  object.livestock = reader.readLongList(offsets[17]);
+  object.nin = reader.readStringOrNull(offsets[18]);
+  object.nokAddress = reader.readStringOrNull(offsets[19]);
   object.nokDetails = reader.readObjectOrNull<NokData>(
-    offsets[18],
+    offsets[20],
     NokDataSchema.deserialize,
     allOffsets,
   );
-  object.nokName = reader.readStringOrNull(offsets[19]);
-  object.nokPhoneNumber = reader.readStringOrNull(offsets[20]);
-  object.nokRelationship = reader.readStringOrNull(offsets[21]);
-  object.otherNames = reader.readStringOrNull(offsets[22]);
-  object.phoneNumber = reader.readStringOrNull(offsets[23]);
-  object.pk = reader.readLong(offsets[24]);
-  object.registrationDate = reader.readStringOrNull(offsets[25]);
-  object.title = reader.readStringOrNull(offsets[26]);
+  object.nokName = reader.readStringOrNull(offsets[21]);
+  object.nokPhoneNumber = reader.readStringOrNull(offsets[22]);
+  object.nokRelationship = reader.readStringOrNull(offsets[23]);
+  object.otherNames = reader.readStringOrNull(offsets[24]);
+  object.phoneNumber = reader.readStringOrNull(offsets[25]);
+  object.pk = reader.readLong(offsets[26]);
+  object.registrationDate = reader.readStringOrNull(offsets[27]);
+  object.title = reader.readStringOrNull(offsets[28]);
   object.ward = reader.readObjectOrNull<WardData>(
-    offsets[27],
+    offsets[29],
     WardDataSchema.deserialize,
     allOffsets,
   );
-  object.wardId = reader.readLongOrNull(offsets[28]);
+  object.wardId = reader.readLongOrNull(offsets[30]);
   return object;
 }
 
@@ -539,29 +553,29 @@ P _farmerDeserializeProp<P>(
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 14:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 15:
+      return (reader.readStringOrNull(offset)) as P;
+    case 16:
       return (reader.readObjectOrNull<LgaData>(
         offset,
         LgaDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 15:
-      return (reader.readLongList(offset)) as P;
-    case 16:
-      return (reader.readStringOrNull(offset)) as P;
     case 17:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongList(offset)) as P;
     case 18:
+      return (reader.readStringOrNull(offset)) as P;
+    case 19:
+      return (reader.readStringOrNull(offset)) as P;
+    case 20:
       return (reader.readObjectOrNull<NokData>(
         offset,
         NokDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 19:
-      return (reader.readStringOrNull(offset)) as P;
-    case 20:
-      return (reader.readStringOrNull(offset)) as P;
     case 21:
       return (reader.readStringOrNull(offset)) as P;
     case 22:
@@ -569,18 +583,22 @@ P _farmerDeserializeProp<P>(
     case 23:
       return (reader.readStringOrNull(offset)) as P;
     case 24:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 25:
       return (reader.readStringOrNull(offset)) as P;
     case 26:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 27:
+      return (reader.readStringOrNull(offset)) as P;
+    case 28:
+      return (reader.readStringOrNull(offset)) as P;
+    case 29:
       return (reader.readObjectOrNull<WardData>(
         offset,
         WardDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 28:
+    case 30:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2457,6 +2475,58 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> isBlacklistedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'isBlacklisted',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> isBlacklistedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'isBlacklisted',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> isBlacklistedEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isBlacklisted',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> isVerifiedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'isVerified',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> isVerifiedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'isVerified',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> isVerifiedEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isVerified',
+        value: value,
       ));
     });
   }
@@ -4414,6 +4484,30 @@ extension FarmerQuerySortBy on QueryBuilder<Farmer, Farmer, QSortBy> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByIsBlacklisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByIsBlacklistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByIsVerified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByIsVerifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> sortByLastName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastName', Sort.asc);
@@ -4692,6 +4786,30 @@ extension FarmerQuerySortThenBy on QueryBuilder<Farmer, Farmer, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByIsBlacklisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByIsBlacklistedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isBlacklisted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByIsVerified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByIsVerifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isVerified', Sort.desc);
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterSortBy> thenByLastName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastName', Sort.asc);
@@ -4915,6 +5033,18 @@ extension FarmerQueryWhereDistinct on QueryBuilder<Farmer, Farmer, QDistinct> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByIsBlacklisted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isBlacklisted');
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QDistinct> distinctByIsVerified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isVerified');
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QDistinct> distinctByLastName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -5090,6 +5220,18 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
   QueryBuilder<Farmer, String?, QQueryOperations> genderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gender');
+    });
+  }
+
+  QueryBuilder<Farmer, bool?, QQueryOperations> isBlacklistedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isBlacklisted');
+    });
+  }
+
+  QueryBuilder<Farmer, bool?, QQueryOperations> isVerifiedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isVerified');
     });
   }
 

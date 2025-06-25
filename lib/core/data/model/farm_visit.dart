@@ -17,6 +17,7 @@ class FarmVisit {
   String? longitude;
   String? latitude;
   int? farmId;
+  String? name;
   int? cropId;
   String? farmerName;
   String? folioId;
@@ -46,6 +47,7 @@ FarmVisit _$FarmVisitFromJson(Map<String, dynamic> json) {
   obj.ownershipType = json[KEY_OWNERSHIP_TYPE];
   obj.longitude = json[KEY_LONGITUDE];
   obj.folioId = json[KEY_FOLIO_ID];
+  obj.name = json[KEY_NAME];
   obj.farmerName = json[KEY_FARMER_NAME];
   obj.latitude = json[KEY_LATITUDE];
   obj.farmCrops =
@@ -65,7 +67,7 @@ FarmVisit _$FarmVisitFromJsonSingle(Map<String, dynamic> json) {
   if (hectaresValue != null) {
     obj.noOfHectares = double.tryParse(hectaresValue.toString())?.round();
   }
- 
+
   return obj;
 }
 

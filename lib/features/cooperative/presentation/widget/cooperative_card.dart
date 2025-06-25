@@ -48,7 +48,7 @@ class CooperativeCard extends StatelessWidget {
             ),
             const Spacer(),
             Container(
-              padding: REdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: REdgeInsets.symmetric(horizontal: 8 ),
               decoration: BoxDecoration(
                 color:AppColors.colorPrimary.withAlpha((0.1 * 255).toInt()),
                 borderRadius: BorderRadius.circular(16.r),

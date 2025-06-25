@@ -19,6 +19,8 @@ class Farmer {
   String? gender = "";
   String? nin = "";
   String? bvn = "";
+  bool? isBlacklisted = false;
+  bool? isVerified = false;
   String? accountName = "";
   String? accountNumber = "";
   String? nokName = "";
@@ -69,7 +71,9 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   obj.lastName = json[KEY_LAST_NAME];
   obj.otherNames = json[KEY_OTHER_NAME];
   obj.title = json[KEY_TITLE];
+  obj.isBlacklisted = json[KEY_IS_BLACKLISTED];
   obj.age = json[KEY_AGE];
+  obj.isVerified = json[KEY_IS_VERIFIED];
   obj.gender = json[KEY_GENDER];
   obj.address = json[KEY_ADDRESS];
   obj.phoneNumber = json[KEY_PHONE_NUMBER];
@@ -104,13 +108,14 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
     }
   }
 
-  if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
-    obj.cooperative = CooperativeData.fromJson(json[KEY_COOPERATIVE]);
-  }
+  // if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
+  //   obj.cooperative = CooperativeData.fromJson(json[KEY_COOPERATIVE]);
+  // }
 
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
   obj.livestock = json[KEY_LIVESTOCK];
   obj.crop = json[KEY_CROP];
+  
 
   return obj;
 }

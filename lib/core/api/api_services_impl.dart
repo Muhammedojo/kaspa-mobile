@@ -192,11 +192,11 @@ class ApiServicesImpl implements ApiServices {
       (data, {String? realUri}) {
         lastRequestTime.farmer = currentDateTime();
         lastRequestTime.farmerUrl = realUri;
- debugPrint('Debugging *1');
+
         final farmerList =
             (data as List).map((e) => Farmer.fromJson(e)).toList();
         GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
-         debugPrint('Debugging *2');
+
         return farmerList;
       },
       null,
@@ -728,7 +728,6 @@ class ApiServicesImpl implements ApiServices {
 
   @override
   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> data) async {
- 
     final result = await apiClient.request<String>(
       _url,
       MethodType.post,

@@ -60,11 +60,19 @@ class FarmerCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                'Active'.toText(
+                Container(
+              padding: REdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                color:AppColors.colorPrimary.withAlpha((0.1 * 255).toInt()),
+                borderRadius: BorderRadius.circular(16.r),
+                border: Border.all(color:AppColors.colorPrimary, width: 0.8),
+              ),child:
+                (farmer.isVerified == true
+                    ? 'Verified': 'Unverified').toText(
                   translate: false,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                ),
+                ),),
                 '${farmer.phoneNumber}'.toText(
                   translate: false,
                   fontSize: 12,

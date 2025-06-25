@@ -56,7 +56,7 @@ class CropCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    padding: REdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: REdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
                       color: data.getStageColor().withAlpha((0.1 * 255).toInt()),
                       borderRadius: BorderRadius.circular(16.r),

@@ -62,7 +62,9 @@ class CropActivitiesView extends StatelessWidget
             _showAdvisoryDialog(context, state.advisory);
           } else if (state is CropAdvisoryFailure) {
             Navigator.of(context).pop();
-            Utils.showToastError(context, state.error, '', () {});
+            Utils.showToastError(context, state.error, '', () {
+                  
+            });
           }
         },
 

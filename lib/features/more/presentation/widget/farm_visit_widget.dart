@@ -18,7 +18,7 @@ class FarmVisitCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Color(0xffF8F8F8),
           borderRadius: BorderRadius.circular(8.r),
-           border: BoxBorder.all(color: Color(0xffC8C8C8), width: 0.5),
+          border: BoxBorder.all(color: Color(0xffC8C8C8), width: 0.5),
         ),
         child: Row(
           children: [
@@ -36,7 +36,7 @@ class FarmVisitCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                '${data.ownershipType}'.toText(
+                (data.name ?? 'N/A').toText(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   translate: false,
@@ -47,7 +47,6 @@ class FarmVisitCard extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     textOverflow: TextOverflow.ellipsis,
-
                     translate: false,
                   ),
                 ),
