@@ -34,6 +34,7 @@ class RegisterFarmerView extends StatelessWidget
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
+      appBar: Utils.customAppBar(context, 'register_farmer', false, () {}),
       body: BlocListener<CreateFarmerCubit, CreateFarmerState>(
         listener: (context, state) {
           if (state is CreateFarmerLoading) {
@@ -74,12 +75,26 @@ class RegisterFarmerView extends StatelessWidget
           Positioned.fill(
             child: Column(
               children: [
-                Utils.customAppBar(context, 'register_farmer', false, () {}),
+                Padding(
+                  padding:REdgeInsets.symmetric(horizontal: 16.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        (GlobalVariables()
+                                .farmerInformation[controller.currentStep]
+                                .tr())
+                            .toText(),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
+
           Positioned.fill(
-            top: 54,
+            top: 45,
             child: Theme(
               data: Theme.of(
                 context,
@@ -108,6 +123,7 @@ class RegisterFarmerView extends StatelessWidget
                 steps: [
                   Step(
                     title: ''.toText(translate: false),
+                    // label: "Farmer’s Personal Information".toText(translate: false),
                     isActive: controller.currentStep >= 0,
                     stepStyle: StepStyle(
                       color:
@@ -1076,12 +1092,12 @@ class RegisterFarmerView extends StatelessWidget
                             ),
                           ),
 
-                     20.verticalSpace,
+                          20.verticalSpace,
                         ],
                       ),
                     ),
                   ),
-                   Step(
+                  Step(
                     title: ''.toText(translate: false),
                     isActive: controller.currentStep >= 4,
                     stepStyle: StepStyle(
@@ -1095,7 +1111,6 @@ class RegisterFarmerView extends StatelessWidget
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                        
                           Row(
                             children: [
                               'Farm'.toText(
@@ -1216,47 +1231,48 @@ class RegisterFarmerView extends StatelessWidget
                                     ),
                                   ),
                                 )
-                                : InkWell(
-                                  onTap:
-                                      controller.isFetchingLocation
-                                          ? null
-                                          : () => controller.onAddFarmLocation(
-                                            context,
+                                : Padding(
+                                  padding: REdgeInsets.only(top: 8.0),
+                                  child: InkWell(
+                                    onTap:
+                                        controller.isFetchingLocation
+                                            ? null
+                                            : () => controller
+                                                .onAddFarmLocation(context),
+                                    child: DottedBorder(
+                                      color: AppColors.bgGreen,
+                                      radius: Radius.circular(10.r),
+                                      strokeWidth: 2,
+                                      dashPattern: const [8, 6],
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryGreen
+                                              .withAlpha((0.07 * 255).toInt()),
+                                          borderRadius: BorderRadius.circular(
+                                            8.r,
                                           ),
-                                  child: DottedBorder(
-                                    color: AppColors.bgGreen,
-                                    radius: Radius.circular(10.r),
-                                    strokeWidth: 2,
-                                    dashPattern: const [8, 6],
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryGreen.withAlpha(
-                                          (0.07 * 255).toInt(),
                                         ),
-                                        borderRadius: BorderRadius.circular(
-                                          8.r,
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: REdgeInsets.symmetric(
-                                          vertical: 10.0,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: AppColors.colorPrimary,
-                                            ),
-                                            5.horizontalSpace,
-                                            'Add Point'.toText(
-                                              fontSize: 12,
-                                              translate: false,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.colorPrimary,
-                                            ),
-                                          ],
+                                        child: Padding(
+                                          padding: REdgeInsets.symmetric(
+                                            vertical: 10.0,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.add,
+                                                color: AppColors.colorPrimary,
+                                              ),
+                                              5.horizontalSpace,
+                                              'Add Point'.toText(
+                                                fontSize: 12,
+                                                translate: false,
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.colorPrimary,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1267,7 +1283,7 @@ class RegisterFarmerView extends StatelessWidget
                       ),
                     ),
                   ),
-                 
+
                   Step(
                     title: ''.toText(translate: false),
                     isActive: controller.currentStep >= 5,
@@ -1328,6 +1344,7 @@ class RegisterFarmerView extends StatelessWidget
                                       color: AppColors.primaryGreen,
                                       radius: Radius.circular(8.r),
                                       strokeWidth: 2,
+                                      borderType: BorderType.RRect,
                                       dashPattern: const [10, 6],
                                       child: Container(
                                         decoration: BoxDecoration(

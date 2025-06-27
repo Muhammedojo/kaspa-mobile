@@ -26,6 +26,15 @@ class GlobalVariables {
     "Wife",
   ];
 
+  List<String> farmerInformation = [
+    'Personal Information',
+    'Next of Kin Information',
+    'Financial Information',
+    'Farm Information',
+    'Farm Information',
+    'Profile Picture',
+  ];
+
   static Set<String> selectedSyncItems = {};
   static Set<String> pulledSyncItems = {};
 
@@ -77,7 +86,7 @@ class GlobalVariables {
     farmVisitListEndpoint: KEY_FARM_VISIT,
     cropCalendarListEndpoint: KEY_CROP_CALENDAR,
     cooperativeListEndpoint: KEY_COOPERATIVE,
-    feoListEndpoint: KEY_FEO,    
+    feoListEndpoint: KEY_FEO,
   };
 
   static final rootNavigatorKey = GlobalKey<NavigatorState>();
