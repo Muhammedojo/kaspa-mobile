@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kaspa/core/navigation/navigator.dart';
+import 'package:kaspa/features/farmers/presentation/controller/farmer_farm_location.dart';
 import '../../../../core/resources/vectors.dart';
 import '../../../../features/farmers/presentation/widget/custom_tile.dart';
 import '../../../../core/utils/extensions.dart';
@@ -404,8 +406,10 @@ class FarmerDetailsView extends StatelessWidget
   }
 
   Widget _buildActionsMenu(BuildContext context) {
-    const String editAction = 'edit';
+    const String viewFarmAction = 'viewFarm';
     const String deleteAction = 'delete';
+    const String editAction = 'edit';
+
 
     return PopupMenuButton<String>(
       icon: SvgPicture.asset(AppIcon.more),
@@ -413,8 +417,8 @@ class FarmerDetailsView extends StatelessWidget
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0.r)),
       onSelected: (String item) {
         switch (item) {
-          case editAction:
-            debugPrint('Edit cooperative selected');
+          case viewFarmAction:
+            pushTo(FarmerFarmLocationScreen(farmer: controller.farmer), context);
             break;
           case deleteAction:
             debugPrint('Delete cooperative selected');
@@ -441,7 +445,7 @@ class FarmerDetailsView extends StatelessWidget
             ),
             const PopupMenuDivider(),
             PopupMenuItem<String>(
-              value: deleteAction,
+              value: viewFarmAction,
               child: Row(
                 children: [
                   SvgPicture.asset(AppIcon.farm, height: 14.sp, width: 14.sp),
