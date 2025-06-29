@@ -69,111 +69,117 @@ const FarmerSchema = CollectionSchema(
       name: r'crop',
       type: IsarType.longList,
     ),
-    r'firstName': PropertySchema(
+    r'farmerFarms': PropertySchema(
       id: 10,
+      name: r'farmerFarms',
+      type: IsarType.objectList,
+      target: r'FarmerPlots',
+    ),
+    r'firstName': PropertySchema(
+      id: 11,
       name: r'firstName',
       type: IsarType.string,
     ),
     r'folioId': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'folioId',
       type: IsarType.string,
     ),
     r'gender': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'gender',
       type: IsarType.string,
     ),
     r'isBlacklisted': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'isBlacklisted',
       type: IsarType.bool,
     ),
     r'isVerified': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'isVerified',
       type: IsarType.bool,
     ),
     r'lastName': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'lastName',
       type: IsarType.string,
     ),
     r'lga': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'lga',
       type: IsarType.object,
       target: r'LgaData',
     ),
     r'livestock': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'livestock',
       type: IsarType.longList,
     ),
     r'nin': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'nin',
       type: IsarType.string,
     ),
     r'nokAddress': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'nokAddress',
       type: IsarType.string,
     ),
     r'nokDetails': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'nokDetails',
       type: IsarType.object,
       target: r'NokData',
     ),
     r'nokName': PropertySchema(
-      id: 21,
+      id: 22,
       name: r'nokName',
       type: IsarType.string,
     ),
     r'nokPhoneNumber': PropertySchema(
-      id: 22,
+      id: 23,
       name: r'nokPhoneNumber',
       type: IsarType.string,
     ),
     r'nokRelationship': PropertySchema(
-      id: 23,
+      id: 24,
       name: r'nokRelationship',
       type: IsarType.string,
     ),
     r'otherNames': PropertySchema(
-      id: 24,
+      id: 25,
       name: r'otherNames',
       type: IsarType.string,
     ),
     r'phoneNumber': PropertySchema(
-      id: 25,
+      id: 26,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 26,
+      id: 27,
       name: r'pk',
       type: IsarType.long,
     ),
     r'registrationDate': PropertySchema(
-      id: 27,
+      id: 28,
       name: r'registrationDate',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 28,
+      id: 29,
       name: r'title',
       type: IsarType.string,
     ),
     r'ward': PropertySchema(
-      id: 29,
+      id: 30,
       name: r'ward',
       type: IsarType.object,
       target: r'WardData',
     ),
     r'wardId': PropertySchema(
-      id: 30,
+      id: 31,
       name: r'wardId',
       type: IsarType.long,
     )
@@ -200,11 +206,12 @@ const FarmerSchema = CollectionSchema(
   },
   links: {},
   embeddedSchemas: {
+    r'FarmerPlots': FarmerPlotsSchema,
     r'CooperativeData': CooperativeDataSchema,
-    r'LgaData': LgaDataSchema,
     r'NokData': NokDataSchema,
     r'BankDetail': BankDetailSchema,
     r'BankData': BankDataSchema,
+    r'LgaData': LgaDataSchema,
     r'WardData': WardDataSchema
   },
   getId: _farmerGetId,
@@ -275,6 +282,20 @@ int _farmerEstimateSize(
     final value = object.crop;
     if (value != null) {
       bytesCount += 3 + value.length * 8;
+    }
+  }
+  {
+    final list = object.farmerFarms;
+    if (list != null) {
+      bytesCount += 3 + list.length * 3;
+      {
+        final offsets = allOffsets[FarmerPlots]!;
+        for (var i = 0; i < list.length; i++) {
+          final value = list[i];
+          bytesCount +=
+              FarmerPlotsSchema.estimateSize(value, offsets, allOffsets);
+        }
+      }
     }
   }
   {
@@ -411,42 +432,48 @@ void _farmerSerialize(
   );
   writer.writeString(offsets[8], object.cooperativeCode);
   writer.writeLongList(offsets[9], object.crop);
-  writer.writeString(offsets[10], object.firstName);
-  writer.writeString(offsets[11], object.folioId);
-  writer.writeString(offsets[12], object.gender);
-  writer.writeBool(offsets[13], object.isBlacklisted);
-  writer.writeBool(offsets[14], object.isVerified);
-  writer.writeString(offsets[15], object.lastName);
+  writer.writeObjectList<FarmerPlots>(
+    offsets[10],
+    allOffsets,
+    FarmerPlotsSchema.serialize,
+    object.farmerFarms,
+  );
+  writer.writeString(offsets[11], object.firstName);
+  writer.writeString(offsets[12], object.folioId);
+  writer.writeString(offsets[13], object.gender);
+  writer.writeBool(offsets[14], object.isBlacklisted);
+  writer.writeBool(offsets[15], object.isVerified);
+  writer.writeString(offsets[16], object.lastName);
   writer.writeObject<LgaData>(
-    offsets[16],
+    offsets[17],
     allOffsets,
     LgaDataSchema.serialize,
     object.lga,
   );
-  writer.writeLongList(offsets[17], object.livestock);
-  writer.writeString(offsets[18], object.nin);
-  writer.writeString(offsets[19], object.nokAddress);
+  writer.writeLongList(offsets[18], object.livestock);
+  writer.writeString(offsets[19], object.nin);
+  writer.writeString(offsets[20], object.nokAddress);
   writer.writeObject<NokData>(
-    offsets[20],
+    offsets[21],
     allOffsets,
     NokDataSchema.serialize,
     object.nokDetails,
   );
-  writer.writeString(offsets[21], object.nokName);
-  writer.writeString(offsets[22], object.nokPhoneNumber);
-  writer.writeString(offsets[23], object.nokRelationship);
-  writer.writeString(offsets[24], object.otherNames);
-  writer.writeString(offsets[25], object.phoneNumber);
-  writer.writeLong(offsets[26], object.pk);
-  writer.writeString(offsets[27], object.registrationDate);
-  writer.writeString(offsets[28], object.title);
+  writer.writeString(offsets[22], object.nokName);
+  writer.writeString(offsets[23], object.nokPhoneNumber);
+  writer.writeString(offsets[24], object.nokRelationship);
+  writer.writeString(offsets[25], object.otherNames);
+  writer.writeString(offsets[26], object.phoneNumber);
+  writer.writeLong(offsets[27], object.pk);
+  writer.writeString(offsets[28], object.registrationDate);
+  writer.writeString(offsets[29], object.title);
   writer.writeObject<WardData>(
-    offsets[29],
+    offsets[30],
     allOffsets,
     WardDataSchema.serialize,
     object.ward,
   );
-  writer.writeLong(offsets[30], object.wardId);
+  writer.writeLong(offsets[31], object.wardId);
 }
 
 Farmer _farmerDeserialize(
@@ -474,40 +501,46 @@ Farmer _farmerDeserialize(
   );
   object.cooperativeCode = reader.readStringOrNull(offsets[8]);
   object.crop = reader.readLongList(offsets[9]);
-  object.firstName = reader.readStringOrNull(offsets[10]);
-  object.folioId = reader.readStringOrNull(offsets[11]);
-  object.gender = reader.readStringOrNull(offsets[12]);
+  object.farmerFarms = reader.readObjectList<FarmerPlots>(
+    offsets[10],
+    FarmerPlotsSchema.deserialize,
+    allOffsets,
+    FarmerPlots(),
+  );
+  object.firstName = reader.readStringOrNull(offsets[11]);
+  object.folioId = reader.readStringOrNull(offsets[12]);
+  object.gender = reader.readStringOrNull(offsets[13]);
   object.id = id;
-  object.isBlacklisted = reader.readBoolOrNull(offsets[13]);
-  object.isVerified = reader.readBoolOrNull(offsets[14]);
-  object.lastName = reader.readStringOrNull(offsets[15]);
+  object.isBlacklisted = reader.readBoolOrNull(offsets[14]);
+  object.isVerified = reader.readBoolOrNull(offsets[15]);
+  object.lastName = reader.readStringOrNull(offsets[16]);
   object.lga = reader.readObjectOrNull<LgaData>(
-    offsets[16],
+    offsets[17],
     LgaDataSchema.deserialize,
     allOffsets,
   );
-  object.livestock = reader.readLongList(offsets[17]);
-  object.nin = reader.readStringOrNull(offsets[18]);
-  object.nokAddress = reader.readStringOrNull(offsets[19]);
+  object.livestock = reader.readLongList(offsets[18]);
+  object.nin = reader.readStringOrNull(offsets[19]);
+  object.nokAddress = reader.readStringOrNull(offsets[20]);
   object.nokDetails = reader.readObjectOrNull<NokData>(
-    offsets[20],
+    offsets[21],
     NokDataSchema.deserialize,
     allOffsets,
   );
-  object.nokName = reader.readStringOrNull(offsets[21]);
-  object.nokPhoneNumber = reader.readStringOrNull(offsets[22]);
-  object.nokRelationship = reader.readStringOrNull(offsets[23]);
-  object.otherNames = reader.readStringOrNull(offsets[24]);
-  object.phoneNumber = reader.readStringOrNull(offsets[25]);
-  object.pk = reader.readLong(offsets[26]);
-  object.registrationDate = reader.readStringOrNull(offsets[27]);
-  object.title = reader.readStringOrNull(offsets[28]);
+  object.nokName = reader.readStringOrNull(offsets[22]);
+  object.nokPhoneNumber = reader.readStringOrNull(offsets[23]);
+  object.nokRelationship = reader.readStringOrNull(offsets[24]);
+  object.otherNames = reader.readStringOrNull(offsets[25]);
+  object.phoneNumber = reader.readStringOrNull(offsets[26]);
+  object.pk = reader.readLong(offsets[27]);
+  object.registrationDate = reader.readStringOrNull(offsets[28]);
+  object.title = reader.readStringOrNull(offsets[29]);
   object.ward = reader.readObjectOrNull<WardData>(
-    offsets[29],
+    offsets[30],
     WardDataSchema.deserialize,
     allOffsets,
   );
-  object.wardId = reader.readLongOrNull(offsets[30]);
+  object.wardId = reader.readLongOrNull(offsets[31]);
   return object;
 }
 
@@ -547,37 +580,42 @@ P _farmerDeserializeProp<P>(
     case 9:
       return (reader.readLongList(offset)) as P;
     case 10:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectList<FarmerPlots>(
+        offset,
+        FarmerPlotsSchema.deserialize,
+        allOffsets,
+        FarmerPlots(),
+      )) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 14:
       return (reader.readBoolOrNull(offset)) as P;
     case 15:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 16:
+      return (reader.readStringOrNull(offset)) as P;
+    case 17:
       return (reader.readObjectOrNull<LgaData>(
         offset,
         LgaDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 17:
-      return (reader.readLongList(offset)) as P;
     case 18:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongList(offset)) as P;
     case 19:
       return (reader.readStringOrNull(offset)) as P;
     case 20:
+      return (reader.readStringOrNull(offset)) as P;
+    case 21:
       return (reader.readObjectOrNull<NokData>(
         offset,
         NokDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 21:
-      return (reader.readStringOrNull(offset)) as P;
     case 22:
       return (reader.readStringOrNull(offset)) as P;
     case 23:
@@ -587,18 +625,20 @@ P _farmerDeserializeProp<P>(
     case 25:
       return (reader.readStringOrNull(offset)) as P;
     case 26:
-      return (reader.readLong(offset)) as P;
-    case 27:
       return (reader.readStringOrNull(offset)) as P;
+    case 27:
+      return (reader.readLong(offset)) as P;
     case 28:
       return (reader.readStringOrNull(offset)) as P;
     case 29:
+      return (reader.readStringOrNull(offset)) as P;
+    case 30:
       return (reader.readObjectOrNull<WardData>(
         offset,
         WardDataSchema.deserialize,
         allOffsets,
       )) as P;
-    case 30:
+    case 31:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1965,6 +2005,107 @@ extension FarmerQueryFilter on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'crop',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'farmerFarms',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'farmerFarms',
+      ));
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'farmerFarms',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'farmerFarms',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'farmerFarms',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'farmerFarms',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition>
+      farmerFarmsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'farmerFarms',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'farmerFarms',
         lower,
         includeLower,
         upper,
@@ -4339,6 +4480,13 @@ extension FarmerQueryObject on QueryBuilder<Farmer, Farmer, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Farmer, Farmer, QAfterFilterCondition> farmerFarmsElement(
+      FilterQuery<FarmerPlots> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'farmerFarms');
+    });
+  }
+
   QueryBuilder<Farmer, Farmer, QAfterFilterCondition> lga(
       FilterQuery<LgaData> q) {
     return QueryBuilder.apply(this, (query) {
@@ -5202,6 +5350,13 @@ extension FarmerQueryProperty on QueryBuilder<Farmer, Farmer, QQueryProperty> {
   QueryBuilder<Farmer, List<int>?, QQueryOperations> cropProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'crop');
+    });
+  }
+
+  QueryBuilder<Farmer, List<FarmerPlots>?, QQueryOperations>
+      farmerFarmsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'farmerFarms');
     });
   }
 

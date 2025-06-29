@@ -11,6 +11,8 @@ abstract class ReportIncidentControllerContract {
 
   void onSelectWard(Ward? newValue);
   void onSelectLga(Lga? newValue);
+  void onSelectCategory(String? newValue);
+
 
   late TextEditingController titleController;
   late TextEditingController descriptionController;
@@ -18,6 +20,7 @@ abstract class ReportIncidentControllerContract {
 
   late Ward? selectedWard;
   late Lga? selectedLga;
+  late String? selectedCategory;
 
 
   final picker = ImagePicker();

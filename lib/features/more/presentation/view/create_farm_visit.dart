@@ -49,7 +49,14 @@ class CreateFarmVisitView extends StatelessWidget
                     builder: (context, state) {
                       List<Farmer> farmers = [];
                       if (state is FarmerListLoaded) {
-                        farmers = state.dataList;
+                        farmers =
+                            state.dataList
+                                .where(
+                                  (farmer) =>
+                                      farmer.farmerFarms != null &&
+                                      farmer.farmerFarms!.isNotEmpty,
+                                )
+                                .toList();
                       }
                       return DropdownSearch<Farmer>(
                         suffixProps: DropdownSuffixProps(

@@ -13,6 +13,8 @@ class GlobalVariables {
 
   var genderList = ["Male", "Female"];
 
+  var categoryList = ["Security", "Pest Attack", "Weather", "Other"];
+
   var nokRelationshipList = [
     "Brother",
     "Sister",

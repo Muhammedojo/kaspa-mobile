@@ -39,8 +39,10 @@ class Farmer {
   String? registrationDate = "";
   String? phoneNumber = "";
 
-  @ignore
+   @ignore
   List<Map<String, dynamic>>? farms;
+
+  List<FarmerPlots>? farmerFarms;
 
   CooperativeData? cooperative;
 
@@ -99,18 +101,19 @@ Farmer _$FarmerFromJson(Map<String, dynamic> json) {
   }
 
   if (json.containsKey(KEY_FARMS) && json[KEY_FARMS] != null) {
-    var farmDataFromServer = json[KEY_FARMS] as List<dynamic>?;
+      var farmDataFromServer = json[KEY_FARMS] as List<dynamic>?;
     if (farmDataFromServer != null) {
-      obj.farms =
-          farmDataFromServer
-              .map((farm) => Map<String, dynamic>.from(farm as Map))
-              .toList();
+      obj.farmerFarms = farmDataFromServer
+          .map((farm) => FarmerPlots.fromJson(farm as Map<String, dynamic>))
+          .toList();
     }
   }
 
-  // if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
-  //   obj.cooperative = CooperativeData.fromJson(json[KEY_COOPERATIVE]);
-  // }
+ 
+
+  if (json.containsKey(KEY_COOPERATIVE) && json[KEY_COOPERATIVE] != null) {
+    obj.cooperative = CooperativeData.fromJson(json[KEY_COOPERATIVE]);
+  }
 
   obj.registrationDate = json[KEY_REGISTRATION_DATE];
   obj.livestock = json[KEY_LIVESTOCK];

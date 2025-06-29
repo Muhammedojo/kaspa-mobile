@@ -13,6 +13,7 @@ import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/button.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
+import '../../../../core/utils/global_variables.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/incident_report/incident_report_cubit.dart';
@@ -68,6 +69,43 @@ class ReportIncidentView extends StatelessWidget
                       onChanged: (value) {},
                     ),
                   ),
+16.verticalSpace,
+  'category'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+                 
+      Padding(
+                                      padding: REdgeInsets.only(top: 5.0),
+                                      child: DropdownButtonFormField<String>(
+                                        validator:
+                                            ValidationBuilder()
+                                                .required()
+                                                .build(),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.zero,
+                                        ),
+                                        value: controller.selectedCategory,
+                                        onChanged: (newValue) {
+                                          controller.onSelectCategory(newValue);
+                                        },
+                                        items:
+                                            GlobalVariables().categoryList.map((
+                                              String value,
+                                            ) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                        style: Styles.x14dp_4A4A4A(14.0.sp),
+                                        decoration:
+                                            Styles.textFormFieldDecorationBorderWithBackground(
+                                              'choose_an_option'.tr(),
+                                              '',
+                                            ),
+                                        icon: 'arrowDown'.toSvg(),
+                                      ),
+                                    ),
+                                  
+
                   16.verticalSpace,
 
                   'LGA'.toText(

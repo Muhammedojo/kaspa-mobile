@@ -64,23 +64,28 @@ const FarmVisitSchema = CollectionSchema(
       name: r'longitude',
       type: IsarType.string,
     ),
-    r'noOfHectares': PropertySchema(
+    r'name': PropertySchema(
       id: 9,
+      name: r'name',
+      type: IsarType.string,
+    ),
+    r'noOfHectares': PropertySchema(
+      id: 10,
       name: r'noOfHectares',
       type: IsarType.long,
     ),
     r'ownershipType': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'ownershipType',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'pk',
       type: IsarType.long,
     ),
     r'sizeInHa': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'sizeInHa',
       type: IsarType.string,
     )
@@ -169,6 +174,12 @@ int _farmVisitEstimateSize(
     }
   }
   {
+    final value = object.name;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.ownershipType;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -208,10 +219,11 @@ void _farmVisitSerialize(
   writer.writeString(offsets[6], object.folioId);
   writer.writeString(offsets[7], object.latitude);
   writer.writeString(offsets[8], object.longitude);
-  writer.writeLong(offsets[9], object.noOfHectares);
-  writer.writeString(offsets[10], object.ownershipType);
-  writer.writeLong(offsets[11], object.pk);
-  writer.writeString(offsets[12], object.sizeInHa);
+  writer.writeString(offsets[9], object.name);
+  writer.writeLong(offsets[10], object.noOfHectares);
+  writer.writeString(offsets[11], object.ownershipType);
+  writer.writeLong(offsets[12], object.pk);
+  writer.writeString(offsets[13], object.sizeInHa);
 }
 
 FarmVisit _farmVisitDeserialize(
@@ -241,10 +253,11 @@ FarmVisit _farmVisitDeserialize(
   object.id = id;
   object.latitude = reader.readStringOrNull(offsets[7]);
   object.longitude = reader.readStringOrNull(offsets[8]);
-  object.noOfHectares = reader.readLongOrNull(offsets[9]);
-  object.ownershipType = reader.readStringOrNull(offsets[10]);
-  object.pk = reader.readLong(offsets[11]);
-  object.sizeInHa = reader.readStringOrNull(offsets[12]);
+  object.name = reader.readStringOrNull(offsets[9]);
+  object.noOfHectares = reader.readLongOrNull(offsets[10]);
+  object.ownershipType = reader.readStringOrNull(offsets[11]);
+  object.pk = reader.readLong(offsets[12]);
+  object.sizeInHa = reader.readStringOrNull(offsets[13]);
   return object;
 }
 
@@ -284,12 +297,14 @@ P _farmVisitDeserializeProp<P>(
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readLongOrNull(offset)) as P;
-    case 10:
       return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readLongOrNull(offset)) as P;
     case 11:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 12:
+      return (reader.readLong(offset)) as P;
+    case 13:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1590,6 +1605,152 @@ extension FarmVisitQueryFilter
     });
   }
 
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'name',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'name',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'name',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'name',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'name',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition> nameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'name',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QAfterFilterCondition>
       noOfHectaresIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -2124,6 +2285,18 @@ extension FarmVisitQuerySortBy on QueryBuilder<FarmVisit, FarmVisit, QSortBy> {
     });
   }
 
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> sortByNoOfHectares() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'noOfHectares', Sort.asc);
@@ -2271,6 +2444,18 @@ extension FarmVisitQuerySortThenBy
     });
   }
 
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenByName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenByNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QAfterSortBy> thenByNoOfHectares() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'noOfHectares', Sort.asc);
@@ -2369,6 +2554,13 @@ extension FarmVisitQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FarmVisit, FarmVisit, QDistinct> distinctByName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<FarmVisit, FarmVisit, QDistinct> distinctByNoOfHectares() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'noOfHectares');
@@ -2457,6 +2649,12 @@ extension FarmVisitQueryProperty
   QueryBuilder<FarmVisit, String?, QQueryOperations> longitudeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'longitude');
+    });
+  }
+
+  QueryBuilder<FarmVisit, String?, QQueryOperations> nameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'name');
     });
   }
 

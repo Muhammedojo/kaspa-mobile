@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
@@ -183,7 +182,6 @@ class ApiServicesImpl implements ApiServices {
   Future<Either<Failure, ApiResponse<List<Farmer>>>> getFarmerList(
     String? endpoint,
   ) async {
-    debugPrint('Debugging **');
     var lastRequestTime =
         await GetIt.I.get<LocalStorage>().getLastRequestTime();
     return apiClient.request<List<Farmer>>(

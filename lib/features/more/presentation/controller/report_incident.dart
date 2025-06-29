@@ -49,6 +49,9 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
   Lga? selectedLga;
 
   @override
+  String? selectedCategory;
+
+  @override
   List<File> imageFileList = [];
 
   @override
@@ -94,16 +97,12 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
         // report.image = imageFileList;
         report.description = descriptionController.text;
         report.title = titleController.text;
-        // report.lgaId = selectedLga?.pk;
-        report.category = "Fire";
+        report.category = selectedCategory.toString();
         report.wardId = selectedWard?.pk;
         report.date = formattedToday.toString();
-        debugPrint('Here ${selectedWard?.pk}');
 
-    GetIt.I.get<IncidentCubit>().logIncidentReport(report);
-     
-
-   }
+        GetIt.I.get<IncidentCubit>().logIncidentReport(report);
+      }
     }
   }
 
@@ -126,6 +125,13 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen>
   void removeImage(int index) {
     imageFileList.removeAt(index);
     setState(() {});
+  }
+
+  @override
+  void onSelectCategory(String? newValue) {
+    setState(() {
+      selectedCategory = newValue!;
+    });
   }
 
   @override

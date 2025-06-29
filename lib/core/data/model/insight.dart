@@ -101,36 +101,14 @@ class CooperativeData {
   int? id;
   String? name;
   String? code;
-  String? doi;
-  LgaData? lga;
-  String? head;
-  String? secretary;
-  String? longitude;
-  String? latitude;
 
-  CooperativeData({
-    this.id,
-    this.name,
-    this.code,
-    this.doi,
-    this.lga,
-    this.head,
-    this.secretary,
-    this.longitude,
-    this.latitude,
-  });
+  CooperativeData({this.id, this.name, this.code});
 
   factory CooperativeData.fromJson(Map<String, dynamic> json) {
     return CooperativeData(
       id: json['id'],
       name: json['name'],
       code: json['code'],
-      doi: json['doi'],
-      lga: LgaData.fromJson(json['lga']),
-      head: json['head'],
-      secretary: json['secretary'],
-      longitude: json['longitude'],
-      latitude: json['latitude'],
     );
   }
 }
@@ -359,17 +337,27 @@ class MarketObject {
 
 @embedded
 class FarmerPlots {
-  double? totalHectares;
-  double? cultivated;
-  double? fallowHectares;
+  String? address;
+  String? sizeInHa;
+  String? ownershipType;
+  String? longitude;
+  String? latitude;
 
-  FarmerPlots({this.totalHectares, this.cultivated, this.fallowHectares});
+  FarmerPlots({
+    this.address,
+    this.sizeInHa,
+    this.ownershipType,
+    this.longitude,
+    this.latitude,
+  });
 
   factory FarmerPlots.fromJson(Map<String, dynamic> json) {
     return FarmerPlots(
-      totalHectares: (json['total_hectares'] as num).toDouble(),
-      cultivated: json['cultivated'],
-      fallowHectares: (json['fallow_hectares'] as num).toDouble(),
+      address: json['address'],
+      sizeInHa: json['size_in_ha'],
+      ownershipType: json['ownership_type'],
+      longitude: json['longitude'],
+      latitude: json['latitude'],
     );
   }
 }

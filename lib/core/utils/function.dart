@@ -33,6 +33,7 @@ class Utils {
     List<Widget>? actions,
   }) {
     List<Widget> effectiveActions = [];
+    final canPop = Navigator.canPop(context);
 
     if (actions != null && actions.isNotEmpty) {
       effectiveActions.addAll(actions);
@@ -54,15 +55,27 @@ class Utils {
       elevation: 0,
       centerTitle: true,
       title: title.toText(fontSize: 14, fontWeight: FontWeight.w700),
-      leading: InkWell(
-        onTap: onPressed ?? () => Navigator.pop(context),
-        child: SvgPicture.asset(
-          AppIcon.pop,
-          fit: BoxFit.scaleDown,
-          height: 32.sp,
-          width: 32.sp,
-        ),
-      ),
+      // leading: InkWell(
+      //   onTap: onPressed ?? () => Navigator.pop(context),
+      //   child: SvgPicture.asset(
+      //     AppIcon.pop,
+      //     fit: BoxFit.scaleDown,
+      //     height: 32.sp,
+      //     width: 32.sp,
+      //   ),
+      // ),
+      leading:
+          canPop
+              ? InkWell(
+                onTap: onPressed ?? () => Navigator.maybePop(context),
+                child: SvgPicture.asset(
+                  AppIcon.pop,
+                  fit: BoxFit.scaleDown,
+                  height: 32.sp,
+                  width: 32.sp,
+                ),
+              )
+              : null,
       actions: effectiveActions.isEmpty ? null : effectiveActions,
     );
   }
@@ -221,7 +234,7 @@ class Utils {
                 leading: Icon(Icons.image),
                 title: 'Select farmer from gallery'.toText(
                   fontSize: 14,
-                      translate: false,
+                  translate: false,
                   fontWeight: FontWeight.w600,
                 ),
                 onTap: () {
@@ -229,7 +242,7 @@ class Utils {
                   onGallerySelected();
                 },
               ),
-              80.verticalSpace
+              80.verticalSpace,
             ],
           ),
         );

@@ -36,7 +36,8 @@ class FarmVisitCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                (data.name ?? 'N/A').toText(
+               // (data.name ?? 'N/A').toText(
+               (data.farmerName ?? 'N/A').toText(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   translate: false,

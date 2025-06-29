@@ -2416,45 +2416,14 @@ const CooperativeDataSchema = Schema(
       name: r'code',
       type: IsarType.string,
     ),
-    r'doi': PropertySchema(
-      id: 1,
-      name: r'doi',
-      type: IsarType.string,
-    ),
-    r'head': PropertySchema(
-      id: 2,
-      name: r'head',
-      type: IsarType.string,
-    ),
     r'id': PropertySchema(
-      id: 3,
+      id: 1,
       name: r'id',
       type: IsarType.long,
     ),
-    r'latitude': PropertySchema(
-      id: 4,
-      name: r'latitude',
-      type: IsarType.string,
-    ),
-    r'lga': PropertySchema(
-      id: 5,
-      name: r'lga',
-      type: IsarType.object,
-      target: r'LgaData',
-    ),
-    r'longitude': PropertySchema(
-      id: 6,
-      name: r'longitude',
-      type: IsarType.string,
-    ),
     r'name': PropertySchema(
-      id: 7,
+      id: 2,
       name: r'name',
-      type: IsarType.string,
-    ),
-    r'secretary': PropertySchema(
-      id: 8,
-      name: r'secretary',
       type: IsarType.string,
     )
   },
@@ -2477,44 +2446,7 @@ int _cooperativeDataEstimateSize(
     }
   }
   {
-    final value = object.doi;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.head;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.latitude;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.lga;
-    if (value != null) {
-      bytesCount += 3 +
-          LgaDataSchema.estimateSize(value, allOffsets[LgaData]!, allOffsets);
-    }
-  }
-  {
-    final value = object.longitude;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.name;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.secretary;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -2529,19 +2461,8 @@ void _cooperativeDataSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.code);
-  writer.writeString(offsets[1], object.doi);
-  writer.writeString(offsets[2], object.head);
-  writer.writeLong(offsets[3], object.id);
-  writer.writeString(offsets[4], object.latitude);
-  writer.writeObject<LgaData>(
-    offsets[5],
-    allOffsets,
-    LgaDataSchema.serialize,
-    object.lga,
-  );
-  writer.writeString(offsets[6], object.longitude);
-  writer.writeString(offsets[7], object.name);
-  writer.writeString(offsets[8], object.secretary);
+  writer.writeLong(offsets[1], object.id);
+  writer.writeString(offsets[2], object.name);
 }
 
 CooperativeData _cooperativeDataDeserialize(
@@ -2552,18 +2473,8 @@ CooperativeData _cooperativeDataDeserialize(
 ) {
   final object = CooperativeData(
     code: reader.readStringOrNull(offsets[0]),
-    doi: reader.readStringOrNull(offsets[1]),
-    head: reader.readStringOrNull(offsets[2]),
-    id: reader.readLongOrNull(offsets[3]),
-    latitude: reader.readStringOrNull(offsets[4]),
-    lga: reader.readObjectOrNull<LgaData>(
-      offsets[5],
-      LgaDataSchema.deserialize,
-      allOffsets,
-    ),
-    longitude: reader.readStringOrNull(offsets[6]),
-    name: reader.readStringOrNull(offsets[7]),
-    secretary: reader.readStringOrNull(offsets[8]),
+    id: reader.readLongOrNull(offsets[1]),
+    name: reader.readStringOrNull(offsets[2]),
   );
   return object;
 }
@@ -2578,24 +2489,8 @@ P _cooperativeDataDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
-    case 2:
-      return (reader.readStringOrNull(offset)) as P;
-    case 3:
       return (reader.readLongOrNull(offset)) as P;
-    case 4:
-      return (reader.readStringOrNull(offset)) as P;
-    case 5:
-      return (reader.readObjectOrNull<LgaData>(
-        offset,
-        LgaDataSchema.deserialize,
-        allOffsets,
-      )) as P;
-    case 6:
-      return (reader.readStringOrNull(offset)) as P;
-    case 7:
-      return (reader.readStringOrNull(offset)) as P;
-    case 8:
+    case 2:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2759,314 +2654,6 @@ extension CooperativeDataQueryFilter
   }
 
   QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'doi',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'doi',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'doi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'doi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'doi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'doi',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'doi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'doi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'doi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'doi',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'doi',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      doiIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'doi',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'head',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'head',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'head',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'head',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'head',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'head',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'head',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'head',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'head',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'head',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'head',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      headIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'head',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
       idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -3136,332 +2723,6 @@ extension CooperativeDataQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'latitude',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'latitude',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'latitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'latitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'latitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'latitude',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'latitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'latitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'latitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'latitude',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'latitude',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      latitudeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'latitude',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      lgaIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'lga',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      lgaIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'lga',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'longitude',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'longitude',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'longitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'longitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'longitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'longitude',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'longitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'longitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'longitude',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'longitude',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'longitude',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      longitudeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'longitude',
-        value: '',
       ));
     });
   }
@@ -3619,171 +2880,10 @@ extension CooperativeDataQueryFilter
       ));
     });
   }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'secretary',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'secretary',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'secretary',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'secretary',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'secretary',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'secretary',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'secretary',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'secretary',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'secretary',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'secretary',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'secretary',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition>
-      secretaryIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'secretary',
-        value: '',
-      ));
-    });
-  }
 }
 
 extension CooperativeDataQueryObject
-    on QueryBuilder<CooperativeData, CooperativeData, QFilterCondition> {
-  QueryBuilder<CooperativeData, CooperativeData, QAfterFilterCondition> lga(
-      FilterQuery<LgaData> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'lga');
-    });
-  }
-}
+    on QueryBuilder<CooperativeData, CooperativeData, QFilterCondition> {}
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
@@ -9726,20 +8826,30 @@ const FarmerPlotsSchema = Schema(
   name: r'FarmerPlots',
   id: -6007644835446849739,
   properties: {
-    r'cultivated': PropertySchema(
+    r'address': PropertySchema(
       id: 0,
-      name: r'cultivated',
-      type: IsarType.double,
+      name: r'address',
+      type: IsarType.string,
     ),
-    r'fallowHectares': PropertySchema(
+    r'latitude': PropertySchema(
       id: 1,
-      name: r'fallowHectares',
-      type: IsarType.double,
+      name: r'latitude',
+      type: IsarType.string,
     ),
-    r'totalHectares': PropertySchema(
+    r'longitude': PropertySchema(
       id: 2,
-      name: r'totalHectares',
-      type: IsarType.double,
+      name: r'longitude',
+      type: IsarType.string,
+    ),
+    r'ownershipType': PropertySchema(
+      id: 3,
+      name: r'ownershipType',
+      type: IsarType.string,
+    ),
+    r'sizeInHa': PropertySchema(
+      id: 4,
+      name: r'sizeInHa',
+      type: IsarType.string,
     )
   },
   estimateSize: _farmerPlotsEstimateSize,
@@ -9754,6 +8864,36 @@ int _farmerPlotsEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.address;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.latitude;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.longitude;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.ownershipType;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.sizeInHa;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -9763,9 +8903,11 @@ void _farmerPlotsSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDouble(offsets[0], object.cultivated);
-  writer.writeDouble(offsets[1], object.fallowHectares);
-  writer.writeDouble(offsets[2], object.totalHectares);
+  writer.writeString(offsets[0], object.address);
+  writer.writeString(offsets[1], object.latitude);
+  writer.writeString(offsets[2], object.longitude);
+  writer.writeString(offsets[3], object.ownershipType);
+  writer.writeString(offsets[4], object.sizeInHa);
 }
 
 FarmerPlots _farmerPlotsDeserialize(
@@ -9775,9 +8917,11 @@ FarmerPlots _farmerPlotsDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = FarmerPlots(
-    cultivated: reader.readDoubleOrNull(offsets[0]),
-    fallowHectares: reader.readDoubleOrNull(offsets[1]),
-    totalHectares: reader.readDoubleOrNull(offsets[2]),
+    address: reader.readStringOrNull(offsets[0]),
+    latitude: reader.readStringOrNull(offsets[1]),
+    longitude: reader.readStringOrNull(offsets[2]),
+    ownershipType: reader.readStringOrNull(offsets[3]),
+    sizeInHa: reader.readStringOrNull(offsets[4]),
   );
   return object;
 }
@@ -9790,11 +8934,15 @@ P _farmerPlotsDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
+    case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -9803,253 +8951,767 @@ P _farmerPlotsDeserializeProp<P>(
 extension FarmerPlotsQueryFilter
     on QueryBuilder<FarmerPlots, FarmerPlots, QFilterCondition> {
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      cultivatedIsNull() {
+      addressIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'cultivated',
+        property: r'address',
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      cultivatedIsNotNull() {
+      addressIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'cultivated',
+        property: r'address',
       ));
     });
   }
 
-  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      cultivatedEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> addressEqualTo(
+    String? value, {
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cultivated',
+        property: r'address',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      cultivatedGreaterThan(
-    double? value, {
+      addressGreaterThan(
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'cultivated',
+        property: r'address',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      cultivatedLessThan(
-    double? value, {
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> addressLessThan(
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'cultivated',
+        property: r'address',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      cultivatedBetween(
-    double? lower,
-    double? upper, {
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> addressBetween(
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'cultivated',
+        property: r'address',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      fallowHectaresIsNull() {
+      addressStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> addressEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> addressContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> addressMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'address',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      addressIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      addressIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      latitudeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'fallowHectares',
+        property: r'latitude',
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      fallowHectaresIsNotNull() {
+      latitudeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'fallowHectares',
+        property: r'latitude',
       ));
     });
   }
 
-  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      fallowHectaresEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> latitudeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fallowHectares',
+        property: r'latitude',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      fallowHectaresGreaterThan(
-    double? value, {
+      latitudeGreaterThan(
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'fallowHectares',
+        property: r'latitude',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      fallowHectaresLessThan(
-    double? value, {
+      latitudeLessThan(
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'fallowHectares',
+        property: r'latitude',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      fallowHectaresBetween(
-    double? lower,
-    double? upper, {
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> latitudeBetween(
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'fallowHectares',
+        property: r'latitude',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      totalHectaresIsNull() {
+      latitudeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'latitude',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      latitudeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'latitude',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      latitudeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'latitude',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> latitudeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'latitude',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      latitudeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'latitude',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      latitudeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'latitude',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      longitudeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'totalHectares',
+        property: r'longitude',
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      totalHectaresIsNotNull() {
+      longitudeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'totalHectares',
+        property: r'longitude',
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      totalHectaresEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
+      longitudeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'totalHectares',
+        property: r'longitude',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      totalHectaresGreaterThan(
-    double? value, {
+      longitudeGreaterThan(
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'totalHectares',
+        property: r'longitude',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      totalHectaresLessThan(
-    double? value, {
+      longitudeLessThan(
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'totalHectares',
+        property: r'longitude',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
-      totalHectaresBetween(
-    double? lower,
-    double? upper, {
+      longitudeBetween(
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'totalHectares',
+        property: r'longitude',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      longitudeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'longitude',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      longitudeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'longitude',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      longitudeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'longitude',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      longitudeMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'longitude',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      longitudeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'longitude',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      longitudeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'longitude',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'ownershipType',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'ownershipType',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ownershipType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'ownershipType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'ownershipType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'ownershipType',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'ownershipType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'ownershipType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'ownershipType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'ownershipType',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ownershipType',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      ownershipTypeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'ownershipType',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'sizeInHa',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'sizeInHa',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> sizeInHaEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sizeInHa',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'sizeInHa',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'sizeInHa',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> sizeInHaBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'sizeInHa',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'sizeInHa',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'sizeInHa',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'sizeInHa',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition> sizeInHaMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'sizeInHa',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sizeInHa',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      sizeInHaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'sizeInHa',
+        value: '',
       ));
     });
   }
