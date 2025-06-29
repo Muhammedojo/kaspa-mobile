@@ -1151,6 +1151,7 @@ class RegisterFarmerView extends StatelessWidget
                                     child: DottedBorder(
                                       color: AppColors.primaryGreen,
                                       radius: Radius.circular(8.r),
+                                       borderType: BorderType.RRect,
                                       strokeWidth: 2,
                                       dashPattern: const [10, 6],
                                       child: Container(
@@ -1217,7 +1218,7 @@ class RegisterFarmerView extends StatelessWidget
                           if (controller
                               .currentFarmLocationCoordinates
                               .isNotEmpty)
-                            controller.isFetchingLocation
+                            controller.isFetchingLocation 
                                 ? Center(
                                   child: Padding(
                                     padding: REdgeInsets.all(8.0),
