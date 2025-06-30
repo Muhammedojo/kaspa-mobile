@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/data/model/farm_coordinate.dart';
 import '../../../../core/data/model/farmer.dart';
+import '../../../../core/data/model/lga.dart';
+import '../../../../core/data/model/ward.dart';
 import '../../../../core/utils/contract.dart';
 
 abstract class AddFarmControllerContract {
@@ -13,6 +14,11 @@ abstract class AddFarmControllerContract {
   bool get isFetchingLocation;
   void onAddFarmLocation(BuildContext context);
   void addNewFarm();
+  late Lga? selectedLga;
+  late Ward? selectedWard;
+  late GlobalKey<FormState> formKey;
+  void onSelectWard(Ward? newValue);
+  void onSelectLga(Lga? newValue);
 }
 
 abstract class AddFarmViewContract extends BaseViewContract {}

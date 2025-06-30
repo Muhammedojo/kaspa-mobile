@@ -20,6 +20,17 @@ class Farm extends GeneralModel {
   String? latitude;
   String? soilProfile;
   String? soilType;
+  int? wardId;
+  
+
+
+  // "ward_id": 1,
+  //   "address": "44, Tester Street",
+  //   "size_in_ha": 0,
+  //   "ownership_type": "Leased",
+  //   "longitude": 6.32322332,
+  //   "latitude": -3.23772382,
+  //   "polygon": {}
 
   Farm();
 

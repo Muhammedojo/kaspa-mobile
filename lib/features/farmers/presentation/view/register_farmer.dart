@@ -566,6 +566,8 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
+                          
+                          
                           16.verticalSpace,
                           'cooperative'.toText(
                             fontSize: 14,

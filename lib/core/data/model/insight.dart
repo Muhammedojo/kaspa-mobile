@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-
 import '../../utils/const.dart';
 
 part 'insight.g.dart';
@@ -343,12 +342,16 @@ class FarmerPlots {
   String? longitude;
   String? latitude;
 
+  @ignore
+  PolygonData? polygon;
+
   FarmerPlots({
     this.address,
     this.sizeInHa,
     this.ownershipType,
     this.longitude,
     this.latitude,
+    this.polygon,
   });
 
   factory FarmerPlots.fromJson(Map<String, dynamic> json) {
@@ -358,7 +361,43 @@ class FarmerPlots {
       ownershipType: json['ownership_type'],
       longitude: json['longitude'],
       latitude: json['latitude'],
-    );
+     polygon: json['polygon'] == null
+          ? null
+          : PolygonData.fromJson(json['polygon']),);
+  }
+}
+
+@embedded
+class PolygonData {
+
+  @ignore
+  List<List<List<double>>>? coordinates;
+
+  PolygonData({this.coordinates});
+
+  factory PolygonData.fromJson(Map<String, dynamic> json) {
+    List<List<List<double>>>? coords;
+    if (json['coordinates'] != null && json['coordinates'] is List) {
+      try {
+        coords =
+            (json['coordinates'] as List<dynamic>).map((polygonRing) {
+              return (polygonRing as List<dynamic>).map((pointArray) {
+                return (pointArray as List<dynamic>).map((coordinate) {
+                  return (coordinate as num).toDouble();
+                }).toList();
+              }).toList();
+            }).toList();
+      } catch (e) {
+        coords = null;
+      }
+    }
+    return PolygonData(coordinates: coords);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['coordinates'] = coordinates;
+    return data;
   }
 }
 

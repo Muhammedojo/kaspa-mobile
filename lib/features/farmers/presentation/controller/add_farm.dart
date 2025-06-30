@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get_it/get_it.dart';
+import 'package:kaspa/core/data/model/farm.dart';
 import '../../../../core/data/model/farm_coordinate.dart';
 import '../../../../core/data/model/farmer.dart';
+import '../../../../core/data/model/lga.dart';
+import '../../../../core/data/model/ward.dart';
 import '../../../../core/utils/function.dart';
+import '../../../home/presentation/bloc/farm/farm_cubit.dart';
 import '../contract/add_farm.dart';
 import '../view/add_farm.dart';
 
@@ -31,11 +38,19 @@ class _AddFarmScreenState extends State<AddFarmScreen>
   List<Coordinates> currentFarmLocationCoordinates = [];
 
   @override
+  late GlobalKey<FormState> formKey;
+
+  @override
+  Lga? selectedLga;
+  @override
+  Ward? selectedWard;
+
+  @override
   void initState() {
     super.initState();
     farmer = widget.farmer;
     view = AddFarmView(controller: this);
-
+    formKey = GlobalKey<FormState>();
     farmAddressController = TextEditingController();
   }
 
@@ -50,6 +65,23 @@ class _AddFarmScreenState extends State<AddFarmScreen>
   }
 
   late bool _isFetchingLocation = false;
+
+  @override
+  void onSelectLga(Lga? newValue) {
+    setState(() {
+      if (selectedLga?.pk != newValue?.pk) {
+        selectedWard = null;
+      }
+      selectedLga = newValue;
+    });
+  }
+
+  @override
+  void onSelectWard(Ward? newValue) {
+    setState(() {
+      selectedWard = newValue;
+    });
+  }
 
   @override
   void onAddFarmLocation(BuildContext context) async {
@@ -139,7 +171,53 @@ class _AddFarmScreenState extends State<AddFarmScreen>
   }
 
   @override
-  void addNewFarm() {}
+  void addNewFarm() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (selectedWard == null) {
+      Utils.showToastError(context, 'Please select a ward.', '', () {});
+      return;
+    }
+
+    if (currentFarmLocationCoordinates.length < 4) {
+      Utils.showToastError(
+        context,
+        "A minimum of 4 points are required to create a farm polygon.",
+        '',
+        () {},
+      );
+      return;
+    }
+
+    Farm farm = Farm();
+    farm.address = farmAddressController.text.trim();
+    farm.wardId = selectedWard!.pk;
+    farm.sizeInHa = "0";
+    farm.ownershipType = "Leased";
+
+    final firstCoordinate = currentFarmLocationCoordinates.first;
+    farm.longitude = firstCoordinate.longitude.toString();
+    farm.latitude = firstCoordinate.latitude.toString();
+
+    List<List<double>> polygonRing =
+        currentFarmLocationCoordinates
+            .map((coord) => [coord.longitude!, coord.latitude!])
+            .toList();
+
+    if (polygonRing.first.first != polygonRing.last.first ||
+        polygonRing.first.last != polygonRing.last.last) {
+      polygonRing.add(List.from(polygonRing.first));
+    }
+
+    Map<String, dynamic> polygonData = {
+      "coordinates": [polygonRing],
+    };
+    farm.polygon = jsonEncode(polygonData);
+
+    GetIt.I.get<FarmCubit>().createFarm(farm, folioId: farmer.folioId);
+  }
 
   @override
   void onDeleteFarmLocationCoordinates(int index) {

@@ -9723,6 +9723,62 @@ extension FarmerPlotsQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
+const PolygonDataSchema = Schema(
+  name: r'PolygonData',
+  id: 3789332070181386156,
+  properties: {},
+  estimateSize: _polygonDataEstimateSize,
+  serialize: _polygonDataSerialize,
+  deserialize: _polygonDataDeserialize,
+  deserializeProp: _polygonDataDeserializeProp,
+);
+
+int _polygonDataEstimateSize(
+  PolygonData object,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  var bytesCount = offsets.last;
+  return bytesCount;
+}
+
+void _polygonDataSerialize(
+  PolygonData object,
+  IsarWriter writer,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {}
+PolygonData _polygonDataDeserialize(
+  Id id,
+  IsarReader reader,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  final object = PolygonData();
+  return object;
+}
+
+P _polygonDataDeserializeProp<P>(
+  IsarReader reader,
+  int propertyId,
+  int offset,
+  Map<Type, List<int>> allOffsets,
+) {
+  switch (propertyId) {
+    default:
+      throw IsarError('Unknown property with id $propertyId');
+  }
+}
+
+extension PolygonDataQueryFilter
+    on QueryBuilder<PolygonData, PolygonData, QFilterCondition> {}
+
+extension PolygonDataQueryObject
+    on QueryBuilder<PolygonData, PolygonData, QFilterCondition> {}
+
+// coverage:ignore-file
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
+
 const LivestockDataSchema = Schema(
   name: r'LivestockData',
   id: 8314214860748757504,

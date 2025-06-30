@@ -5,6 +5,7 @@ import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/crop_activities.dart';
 import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
+import '../../../core/data/model/farm.dart';
 import '../../../core/data/model/farm_visit.dart';
 import '../../../core/data/model/incident_report.dart';
 import '../../../core/data/model/insight.dart';
@@ -97,6 +98,10 @@ abstract class IHomeRepository {
 
   Future<Either<Failure, ApiResponse<FarmVisit>>> createFarmVisit(
     FarmVisit data,
+  );
+
+   Future<Either<Failure, ApiResponse<Farm>>> createFarm(
+    Farm data, {String? folioId}
   );
 
   //FARM CROP ACTIVITY CUBIT CALLS

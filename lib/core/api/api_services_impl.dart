@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
+import '../data/model/farm.dart';
 import '../data/model/farm_visit.dart';
 import '../data/model/forgot_password.dart';
 import '../data/model/incident_report.dart';
@@ -681,6 +682,21 @@ class ApiServicesImpl implements ApiServices {
       data.toJson(),
     );
   }
+
+
+
+ @override
+  Future<Either<Failure, ApiResponse<Farm>>> createFarm(
+    Farm data, {String? folioId}
+  ) {
+    return apiClient.request<Farm>(
+     '$createFarmEndpoint/$folioId',
+      MethodType.post,
+      (data, {String? realUri}) => Farm.fromJson(data),
+      data.toJson(),
+    );
+  }
+
 
   // @override
   // Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async {

@@ -11,7 +11,8 @@ import '../../../../core/utils/function.dart';
 import '../../../../core/utils/styles.dart';
 import '../contract/farmer_farm_location.dart';
 import '../controller/add_farm.dart';
-import '../controller/farm_view.dart';
+
+import 'sample.dart';
 
 class FarmerFarmLocationView extends StatelessWidget
     implements FarmerFarmLocationViewContract {
@@ -79,7 +80,10 @@ class FarmerFarmLocationView extends StatelessWidget
                               child: InkWell(
                                 onTap:
                                     () => pushTo(
-                                      FarmScreen(farmer: controller.farmer),
+                                      FarmDetailsPage(
+                                        farmer: controller.farmer,
+                                      ),
+
                                       context,
                                     ),
                                 child: CardContainerWidget(
