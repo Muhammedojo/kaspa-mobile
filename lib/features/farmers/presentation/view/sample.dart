@@ -22,11 +22,20 @@ class _FarmDetailsPageState extends State<FarmDetailsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   MapController mapController = MapController();
+  late List<LatLng> polygonPoints;
+
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+
+      final polygon = widget.farmer.farmerFarms?[widget.farmer.farmerFarms!.length - 1].polygon;
+  if (polygon != null) {
+    polygon.loadCoordinatesFromJson();
+  }
+
+  polygonPoints = _getPolygonPoints();
   }
 
   @override
@@ -35,37 +44,61 @@ class _FarmDetailsPageState extends State<FarmDetailsPage>
     super.dispose();
   }
 
+  // List<LatLng> _getPolygonPoints() {
+  //   try {
+  //     final coordinates = widget.farmer.farmerFarms?[0].polygon?.coordinates;
+
+  //     if (coordinates == null || coordinates.isEmpty) {
+  //       return [];
+  //     }
+
+  //     final polygonCoords = coordinates[0];
+
+  //     if (polygonCoords.isEmpty) {
+  //       return [];
+  //     }
+
+  //     List<LatLng> points = [];
+  //     for (var coord in polygonCoords) {
+  //       if (coord.length >= 2) {
+  //         double lat = coord[1].toDouble();
+  //         double lng = coord[0].toDouble();
+
+  //         if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+  //           points.add(LatLng(lat, lng));
+  //         }
+  //       }
+  //     }
+
+  //     return points;
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
+
   List<LatLng> _getPolygonPoints() {
-    try {
-      final coordinates = widget.farmer.farmerFarms?[0].polygon?.coordinates;
+  try {
+    final coordinates = widget.farmer.farmerFarms?[0].polygon?.coordinates;
 
-      if (coordinates == null || coordinates.isEmpty) {
-        return [];
-      }
+    if (coordinates == null || coordinates.isEmpty) return [];
 
-      final polygonCoords = coordinates[0];
+    final polygonCoords = coordinates[0];
+    if (polygonCoords.isEmpty) return [];
 
-      if (polygonCoords.isEmpty) {
-        return [];
-      }
-
-      List<LatLng> points = [];
-      for (var coord in polygonCoords) {
-        if (coord.length >= 2) {
-          double lat = coord[1].toDouble();
-          double lng = coord[0].toDouble();
-
-          if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-            points.add(LatLng(lat, lng));
-          }
-        }
-      }
-
-      return points;
-    } catch (e) {
-      return [];
-    }
+    return polygonCoords
+        .where((coord) => coord.length >= 2)
+        .map((coord) => LatLng(coord[1], coord[0]))
+        .where((point) =>
+            point.latitude >= -90 &&
+            point.latitude <= 90 &&
+            point.longitude >= -180 &&
+            point.longitude <= 180)
+        .toList();
+  } catch (e) {
+    debugPrint('Error in _getPolygonPoints: $e');
+    return [];
   }
+}
 
   @override
   Widget build(BuildContext context) {

@@ -103,6 +103,15 @@ class GetFarmersCubit extends Cubit<GetFarmersState> {
 
   saveFarmersToDb(List<Farmer> farmerList) async {
     try {
+      for (final farmer in farmerList) {
+        final plots = farmer.farmerFarms;
+        if (plots != null && plots.isNotEmpty) {
+          for (final plot in plots) {
+            plot.updatePolygonJson();
+          }
+        }
+      }
+
       await repository.saveFarmer(farmerList);
       loadFarmersFromDb();
     } on Error catch (e) {

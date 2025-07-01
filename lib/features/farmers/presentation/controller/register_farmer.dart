@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -577,6 +578,24 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     });
   }
 
+    double _calculateAreaInHectares(List<Coordinates> points) {
+    if (points.length < 3) {
+      return 0.0;
+    }
+
+    final geodesy.Geodesy g = geodesy.Geodesy();
+    final latlngs =
+        points.map((p) => geodesy.LatLng(p.latitude!, p.longitude!)).toList();
+
+    final areaInSquareMeters = g.calculatePolygonArea(latlngs);
+
+    if (areaInSquareMeters == null) return 0.0;
+
+    // 1 Hectare = 10,000 square meters
+    return areaInSquareMeters / 10000;
+  }
+
+
   Widget showFarmerDetailsModal(context, Function onProceed) {
     final today = DateTime.now();
     final formattedToday = DateFormat('yyyy-MM-dd').format(today);
@@ -662,6 +681,14 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
               polygonRing.first.last != polygonRing.last.last)) {
         polygonRing.add(List.from(polygonRing.first));
       }
+
+          final double calculatedHectares =
+        _calculateAreaInHectares(currentFarmLocationCoordinates);
+    setState(() {
+      estimatedHectaresOfLand = calculatedHectares;
+    });
+
+
 
       Map<String, dynamic> farmData = {
         "address": farmAddressController.text,

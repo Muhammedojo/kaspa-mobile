@@ -102,6 +102,7 @@ abstract class IHomeRepository {
 
    Future<Either<Failure, ApiResponse<Farm>>> createFarm(
     Farm data, {String? folioId}
+    
   );
 
   //FARM CROP ACTIVITY CUBIT CALLS

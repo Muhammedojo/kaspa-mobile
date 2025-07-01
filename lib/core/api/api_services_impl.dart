@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
@@ -689,6 +690,7 @@ class ApiServicesImpl implements ApiServices {
   Future<Either<Failure, ApiResponse<Farm>>> createFarm(
     Farm data, {String? folioId}
   ) {
+    debugPrint('Folio here $folioId');
     return apiClient.request<Farm>(
      '$createFarmEndpoint/$folioId',
       MethodType.post,

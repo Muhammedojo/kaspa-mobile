@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:isar/isar.dart';
 import '../../utils/const.dart';
 
@@ -342,6 +344,10 @@ class FarmerPlots {
   String? longitude;
   String? latitude;
 
+  /// This holds the serialized coordinates for Isar
+  late String polygonJson;
+
+  /// This is ignored by Isar but used in app logic
   @ignore
   PolygonData? polygon;
 
@@ -352,54 +358,177 @@ class FarmerPlots {
     this.longitude,
     this.latitude,
     this.polygon,
-  });
+  }) {
+    // Serialize polygon if available
+    polygonJson = polygon != null ? polygon!.toJson()['polygonJson'] ?? '' : '';
+  }
 
   factory FarmerPlots.fromJson(Map<String, dynamic> json) {
+    final polygonData = json['polygon'] != null
+        ? PolygonData.fromJson(json['polygon'])
+        : null;
+
     return FarmerPlots(
       address: json['address'],
       sizeInHa: json['size_in_ha'],
       ownershipType: json['ownership_type'],
       longitude: json['longitude'],
       latitude: json['latitude'],
-     polygon: json['polygon'] == null
-          ? null
-          : PolygonData.fromJson(json['polygon']),);
-  }
-}
-
-@embedded
-class PolygonData {
-
-  @ignore
-  List<List<List<double>>>? coordinates;
-
-  PolygonData({this.coordinates});
-
-  factory PolygonData.fromJson(Map<String, dynamic> json) {
-    List<List<List<double>>>? coords;
-    if (json['coordinates'] != null && json['coordinates'] is List) {
-      try {
-        coords =
-            (json['coordinates'] as List<dynamic>).map((polygonRing) {
-              return (polygonRing as List<dynamic>).map((pointArray) {
-                return (pointArray as List<dynamic>).map((coordinate) {
-                  return (coordinate as num).toDouble();
-                }).toList();
-              }).toList();
-            }).toList();
-      } catch (e) {
-        coords = null;
-      }
-    }
-    return PolygonData(coordinates: coords);
+      polygon: polygonData,
+    )..polygonJson = polygonData?.toJson()['polygonJson'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['coordinates'] = coordinates;
-    return data;
+    return {
+      'address': address,
+      'size_in_ha': sizeInHa,
+      'ownership_type': ownershipType,
+      'longitude': longitude,
+      'latitude': latitude,
+      'polygon': polygon?.toJson(), // Full nested object
+      'polygonJson': polygonJson,   // Flattened for Isar
+    };
+  }
+
+  /// Call this after reading from Isar
+  void loadPolygonFromJson() {
+    if (polygonJson.isNotEmpty) {
+      polygon = PolygonData.fromJson({'polygonJson': polygonJson});
+    }
+  }
+
+  /// Call this before saving to Isar
+  void updatePolygonJson() {
+    polygonJson = polygon?.toJson()['polygonJson'] ?? '';
   }
 }
+
+// @embedded
+// class FarmerPlots {
+//   String? address;
+//   String? sizeInHa;
+//   String? ownershipType;
+//   String? longitude;
+//   String? latitude;
+
+//   @ignore
+//   PolygonData? polygon;
+
+//   FarmerPlots({
+//     this.address,
+//     this.sizeInHa,
+//     this.ownershipType,
+//     this.longitude,
+//     this.latitude,
+//     this.polygon,
+//   });
+
+//   factory FarmerPlots.fromJson(Map<String, dynamic> json) {
+//     return FarmerPlots(
+//       address: json['address'],
+//       sizeInHa: json['size_in_ha'],
+//       ownershipType: json['ownership_type'],
+//       longitude: json['longitude'],
+//       latitude: json['latitude'],
+//      polygon: json['polygon'] == null
+//           ? null
+//           : PolygonData.fromJson(json['polygon']),);
+//   }
+// }
+
+@embedded
+class PolygonData {
+  @ignore
+  List<List<List<double>>>? coordinates;
+
+  late String polygonJson; // This will be stored in Isar
+
+  PolygonData({this.coordinates}) {
+    if (coordinates != null) {
+      polygonJson = json.encode(coordinates);
+    }
+  }
+
+  factory PolygonData.fromJson(Map<String, dynamic> jsonMap) {
+    final String? rawJson = jsonMap['polygonJson'];
+    List<List<List<double>>>? coords;
+
+    if (rawJson != null) {
+      try {
+        final decoded = json.decode(rawJson);
+        coords = (decoded as List)
+            .map((ring) => (ring as List)
+                .map((point) => (point as List)
+                    .map((coord) => (coord as num).toDouble())
+                    .toList())
+                .toList())
+            .toList();
+      } catch (_) {
+        coords = null;
+      }
+    }
+
+    return PolygonData(coordinates: coords)..polygonJson = rawJson ?? '';
+  }
+
+  Map<String, dynamic> toJson() {
+    polygonJson = json.encode(coordinates);
+    return {
+      'polygonJson': polygonJson,
+    };
+  }
+
+  void updateJsonFromCoordinates() {
+    polygonJson = json.encode(coordinates);
+  }
+
+  void loadCoordinatesFromJson() {
+    if (polygonJson.isNotEmpty) {
+      final decoded = json.decode(polygonJson);
+      coordinates = (decoded as List)
+          .map((ring) => (ring as List)
+              .map((point) => (point as List)
+                  .map((coord) => (coord as num).toDouble())
+                  .toList())
+              .toList())
+          .toList();
+    }
+  }
+}
+
+// @embedded
+// class PolygonData {
+
+//   @ignore
+//   List<List<List<double>>>? coordinates;
+
+//   PolygonData({this.coordinates});
+
+//   factory PolygonData.fromJson(Map<String, dynamic> json) {
+//     List<List<List<double>>>? coords;
+//     if (json['coordinates'] != null && json['coordinates'] is List) {
+//       try {
+//         coords =
+//             (json['coordinates'] as List<dynamic>).map((polygonRing) {
+//               return (polygonRing as List<dynamic>).map((pointArray) {
+//                 return (pointArray as List<dynamic>).map((coordinate) {
+//                   return (coordinate as num).toDouble();
+//                 }).toList();
+//               }).toList();
+//             }).toList();
+//       } catch (e) {
+//         coords = null;
+//       }
+//     }
+//     return PolygonData(coordinates: coords);
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['coordinates'] = coordinates;
+//     return data;
+//   }
+// }
 
 @embedded
 class LivestockData {

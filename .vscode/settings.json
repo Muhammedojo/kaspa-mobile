@@ -10,6 +10,7 @@
         "fpdart",
         "geolocator",
         "kaspa",
+        "latlngs",
         "Lgas",
         "Livestocks",
         "loggedin",

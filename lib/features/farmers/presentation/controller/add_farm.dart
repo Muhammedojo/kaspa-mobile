@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kaspa/core/data/model/farm.dart';
@@ -36,6 +37,9 @@ class _AddFarmScreenState extends State<AddFarmScreen>
 
   @override
   List<Coordinates> currentFarmLocationCoordinates = [];
+
+  @override
+  late double estimatedHectaresOfLand = 0.0;
 
   @override
   late GlobalKey<FormState> formKey;
@@ -112,20 +116,20 @@ class _AddFarmScreenState extends State<AddFarmScreen>
             latitude: position.latitude,
             longitude: position.longitude,
           );
-          if (Utils.isDuplicateCoordinate(
-            currentFarmLocationCoordinates,
-            newCoordinate,
-          )) {
-            if (mounted) {
-              Utils.showToastError(
-                this.context,
-                'Multiple Coordinate Detected',
-                'close',
-                () {},
-              );
-            }
-            return;
-          }
+          // if (Utils.isDuplicateCoordinate(
+          //   currentFarmLocationCoordinates,
+          //   newCoordinate,
+          // )) {
+          //   if (mounted) {
+          //     Utils.showToastError(
+          //       this.context,
+          //       'Multiple Coordinate Detected',
+          //       'close',
+          //       () {},
+          //     );
+          //   }
+          //   return;
+          // }
 
           if (mounted) {
             setState(() {
@@ -170,8 +174,34 @@ class _AddFarmScreenState extends State<AddFarmScreen>
     }
   }
 
+  double _calculateAreaInHectares(List<Coordinates> points) {
+    if (points.length < 3) {
+      return 0.0;
+    }
+
+    try {
+      final geodesy.Geodesy g = geodesy.Geodesy();
+      final latlngs =
+          points
+              .where((p) => p.latitude != null && p.longitude != null)
+              .map((p) => geodesy.LatLng(p.latitude!, p.longitude!))
+              .toList();
+
+      if (latlngs.length < 3) {
+        return 0.0;
+      }
+
+      final areaInSquareMeters = g.calculatePolygonArea(latlngs);
+
+      return areaInSquareMeters.abs() / 10000;
+    } catch (e) {
+      debugPrint('Error calculating area: $e');
+      return 0.0;
+    }
+  }
+
   @override
-  void addNewFarm() async {
+  void addNewFarm(String? folioId) async {
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -191,11 +221,19 @@ class _AddFarmScreenState extends State<AddFarmScreen>
       return;
     }
 
+    final double calculatedHectares = _calculateAreaInHectares(
+      currentFarmLocationCoordinates,
+    );
+    setState(() {
+      estimatedHectaresOfLand = calculatedHectares;
+    });
+
     Farm farm = Farm();
     farm.address = farmAddressController.text.trim();
     farm.wardId = selectedWard!.pk;
-    farm.sizeInHa = "0";
-    farm.ownershipType = "Leased";
+    farm.sizeInHa = calculatedHectares.toStringAsFixed(4);
+
+    farm.ownershipType = "Owned";
 
     final firstCoordinate = currentFarmLocationCoordinates.first;
     farm.longitude = firstCoordinate.longitude.toString();
@@ -216,7 +254,9 @@ class _AddFarmScreenState extends State<AddFarmScreen>
     };
     farm.polygon = jsonEncode(polygonData);
 
-    GetIt.I.get<FarmCubit>().createFarm(farm, folioId: farmer.folioId);
+    
+
+    GetIt.I.get<FarmCubit>().createFarm(farm, folioId: folioId);
   }
 
   @override

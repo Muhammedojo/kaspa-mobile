@@ -88,7 +88,7 @@ class HomeRepository implements IHomeRepository {
     @override
   Future<Either<Failure, ApiResponse<Farm>>> createFarm(
     Farm data,{String? folioId}
-  ) => apiServices.createFarm(data);
+  ) => apiServices.createFarm(data,folioId: folioId);
 
   @override
   Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({

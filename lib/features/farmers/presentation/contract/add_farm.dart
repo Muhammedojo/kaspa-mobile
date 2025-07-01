@@ -13,12 +13,14 @@ abstract class AddFarmControllerContract {
   TextEditingController? lat, long;
   bool get isFetchingLocation;
   void onAddFarmLocation(BuildContext context);
-  void addNewFarm();
+  void addNewFarm(String? folioId);
   late Lga? selectedLga;
   late Ward? selectedWard;
   late GlobalKey<FormState> formKey;
   void onSelectWard(Ward? newValue);
   void onSelectLga(Lga? newValue);
+
+  late double estimatedHectaresOfLand;
 }
 
 abstract class AddFarmViewContract extends BaseViewContract {}

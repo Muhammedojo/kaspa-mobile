@@ -8846,8 +8846,13 @@ const FarmerPlotsSchema = Schema(
       name: r'ownershipType',
       type: IsarType.string,
     ),
-    r'sizeInHa': PropertySchema(
+    r'polygonJson': PropertySchema(
       id: 4,
+      name: r'polygonJson',
+      type: IsarType.string,
+    ),
+    r'sizeInHa': PropertySchema(
+      id: 5,
       name: r'sizeInHa',
       type: IsarType.string,
     )
@@ -8888,6 +8893,7 @@ int _farmerPlotsEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.polygonJson.length * 3;
   {
     final value = object.sizeInHa;
     if (value != null) {
@@ -8907,7 +8913,8 @@ void _farmerPlotsSerialize(
   writer.writeString(offsets[1], object.latitude);
   writer.writeString(offsets[2], object.longitude);
   writer.writeString(offsets[3], object.ownershipType);
-  writer.writeString(offsets[4], object.sizeInHa);
+  writer.writeString(offsets[4], object.polygonJson);
+  writer.writeString(offsets[5], object.sizeInHa);
 }
 
 FarmerPlots _farmerPlotsDeserialize(
@@ -8921,8 +8928,9 @@ FarmerPlots _farmerPlotsDeserialize(
     latitude: reader.readStringOrNull(offsets[1]),
     longitude: reader.readStringOrNull(offsets[2]),
     ownershipType: reader.readStringOrNull(offsets[3]),
-    sizeInHa: reader.readStringOrNull(offsets[4]),
+    sizeInHa: reader.readStringOrNull(offsets[5]),
   );
+  object.polygonJson = reader.readString(offsets[4]);
   return object;
 }
 
@@ -8942,6 +8950,8 @@ P _farmerPlotsDeserializeProp<P>(
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -9564,6 +9574,142 @@ extension FarmerPlotsQueryFilter
   }
 
   QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'polygonJson',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'polygonJson',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'polygonJson',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
+      polygonJsonIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'polygonJson',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FarmerPlots, FarmerPlots, QAfterFilterCondition>
       sizeInHaIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -9726,7 +9872,13 @@ extension FarmerPlotsQueryObject
 const PolygonDataSchema = Schema(
   name: r'PolygonData',
   id: 3789332070181386156,
-  properties: {},
+  properties: {
+    r'polygonJson': PropertySchema(
+      id: 0,
+      name: r'polygonJson',
+      type: IsarType.string,
+    )
+  },
   estimateSize: _polygonDataEstimateSize,
   serialize: _polygonDataSerialize,
   deserialize: _polygonDataDeserialize,
@@ -9739,6 +9891,7 @@ int _polygonDataEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.polygonJson.length * 3;
   return bytesCount;
 }
 
@@ -9747,7 +9900,10 @@ void _polygonDataSerialize(
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
-) {}
+) {
+  writer.writeString(offsets[0], object.polygonJson);
+}
+
 PolygonData _polygonDataDeserialize(
   Id id,
   IsarReader reader,
@@ -9755,6 +9911,7 @@ PolygonData _polygonDataDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PolygonData();
+  object.polygonJson = reader.readString(offsets[0]);
   return object;
 }
 
@@ -9765,13 +9922,151 @@ P _polygonDataDeserializeProp<P>(
   Map<Type, List<int>> allOffsets,
 ) {
   switch (propertyId) {
+    case 0:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 extension PolygonDataQueryFilter
-    on QueryBuilder<PolygonData, PolygonData, QFilterCondition> {}
+    on QueryBuilder<PolygonData, PolygonData, QFilterCondition> {
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'polygonJson',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'polygonJson',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'polygonJson',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'polygonJson',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<PolygonData, PolygonData, QAfterFilterCondition>
+      polygonJsonIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'polygonJson',
+        value: '',
+      ));
+    });
+  }
+}
 
 extension PolygonDataQueryObject
     on QueryBuilder<PolygonData, PolygonData, QFilterCondition> {}

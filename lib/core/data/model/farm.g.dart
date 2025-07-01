@@ -91,6 +91,17 @@ const FarmSchema = CollectionSchema(
       id: 14,
       name: r'updated',
       type: IsarType.string,
+    ),
+    r'ward': PropertySchema(
+      id: 15,
+      name: r'ward',
+      type: IsarType.object,
+      target: r'WardData',
+    ),
+    r'wardId': PropertySchema(
+      id: 16,
+      name: r'wardId',
+      type: IsarType.long,
     )
   },
   estimateSize: _farmEstimateSize,
@@ -140,7 +151,7 @@ const FarmSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'WardData': WardDataSchema},
   getId: _farmGetId,
   getLinks: _farmGetLinks,
   attach: _farmAttach,
@@ -231,6 +242,13 @@ int _farmEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.ward;
+    if (value != null) {
+      bytesCount += 3 +
+          WardDataSchema.estimateSize(value, allOffsets[WardData]!, allOffsets);
+    }
+  }
   return bytesCount;
 }
 
@@ -255,6 +273,13 @@ void _farmSerialize(
   writer.writeString(offsets[12], object.soilProfile);
   writer.writeString(offsets[13], object.soilType);
   writer.writeString(offsets[14], object.updated);
+  writer.writeObject<WardData>(
+    offsets[15],
+    allOffsets,
+    WardDataSchema.serialize,
+    object.ward,
+  );
+  writer.writeLong(offsets[16], object.wardId);
 }
 
 Farm _farmDeserialize(
@@ -280,6 +305,12 @@ Farm _farmDeserialize(
   object.soilProfile = reader.readStringOrNull(offsets[12]);
   object.soilType = reader.readStringOrNull(offsets[13]);
   object.updated = reader.readStringOrNull(offsets[14]);
+  object.ward = reader.readObjectOrNull<WardData>(
+    offsets[15],
+    WardDataSchema.deserialize,
+    allOffsets,
+  );
+  object.wardId = reader.readLongOrNull(offsets[16]);
   return object;
 }
 
@@ -320,6 +351,14 @@ P _farmDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 14:
       return (reader.readStringOrNull(offset)) as P;
+    case 15:
+      return (reader.readObjectOrNull<WardData>(
+        offset,
+        WardDataSchema.deserialize,
+        allOffsets,
+      )) as P;
+    case 16:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -2708,9 +2747,100 @@ extension FarmQueryFilter on QueryBuilder<Farm, Farm, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'ward',
+      ));
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'ward',
+      ));
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'wardId',
+      ));
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'wardId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> wardIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'wardId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
-extension FarmQueryObject on QueryBuilder<Farm, Farm, QFilterCondition> {}
+extension FarmQueryObject on QueryBuilder<Farm, Farm, QFilterCondition> {
+  QueryBuilder<Farm, Farm, QAfterFilterCondition> ward(
+      FilterQuery<WardData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'ward');
+    });
+  }
+}
 
 extension FarmQueryLinks on QueryBuilder<Farm, Farm, QFilterCondition> {}
 
@@ -2892,6 +3022,18 @@ extension FarmQuerySortBy on QueryBuilder<Farm, Farm, QSortBy> {
   QueryBuilder<Farm, Farm, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updated', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterSortBy> sortByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterSortBy> sortByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
     });
   }
 }
@@ -3088,6 +3230,18 @@ extension FarmQuerySortThenBy on QueryBuilder<Farm, Farm, QSortThenBy> {
       return query.addSortBy(r'updated', Sort.desc);
     });
   }
+
+  QueryBuilder<Farm, Farm, QAfterSortBy> thenByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Farm, Farm, QAfterSortBy> thenByWardIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'wardId', Sort.desc);
+    });
+  }
 }
 
 extension FarmQueryWhereDistinct on QueryBuilder<Farm, Farm, QDistinct> {
@@ -3196,6 +3350,12 @@ extension FarmQueryWhereDistinct on QueryBuilder<Farm, Farm, QDistinct> {
       return query.addDistinctBy(r'updated', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Farm, Farm, QDistinct> distinctByWardId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'wardId');
+    });
+  }
 }
 
 extension FarmQueryProperty on QueryBuilder<Farm, Farm, QQueryProperty> {
@@ -3292,6 +3452,18 @@ extension FarmQueryProperty on QueryBuilder<Farm, Farm, QQueryProperty> {
   QueryBuilder<Farm, String?, QQueryOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updated');
+    });
+  }
+
+  QueryBuilder<Farm, WardData?, QQueryOperations> wardProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ward');
+    });
+  }
+
+  QueryBuilder<Farm, int?, QQueryOperations> wardIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'wardId');
     });
   }
 }
