@@ -76,7 +76,7 @@ class FarmerFarmLocationView extends StatelessWidget
                           itemBuilder: (context, index) {
                             final farm = controller.farmer.farmerFarms![index];
                             return Padding(
-                              padding: REdgeInsets.only(bottom: 5.0),
+                              padding: REdgeInsets.only(bottom: 10.0),
                               child: InkWell(
                                 onTap:
                                     () => pushTo(
@@ -103,9 +103,9 @@ class FarmerFarmLocationView extends StatelessWidget
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          'Farm ${index + 1}'.toText(),
-                                          '${farm.address}'.toText(),
-                                          '${farm.sizeInHa} Hectares'.toText(),
+                                          'Farm ${index + 1}'.toText(translate: false,fontSize: 14,fontWeight: FontWeight.w700),
+                                          '${farm.address}'.toText(translate: false,fontSize: 12,fontWeight: FontWeight.w500),
+                                          '${farm.sizeInHa} Hectares'.toText(translate: false,fontSize: 12,fontWeight: FontWeight.w500),
                                         ],
                                       ),
                                       const Spacer(),

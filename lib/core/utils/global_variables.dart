@@ -15,6 +15,9 @@ class GlobalVariables {
 
   var categoryList = ["Security", "Pest Attack", "Weather", "Other"];
 
+   var ownershipTypeList = ["Owned", "Leased"];
+
+
   var nokRelationshipList = [
     "Brother",
     "Sister",

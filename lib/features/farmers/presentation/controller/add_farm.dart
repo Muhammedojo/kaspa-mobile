@@ -30,7 +30,7 @@ class _AddFarmScreenState extends State<AddFarmScreen>
   late TextEditingController farmAddressController;
 
   @override
-  TextEditingController? lat = TextEditingController();
+  TextEditingController? lat = TextEditingController(); 
 
   @override
   TextEditingController? long = TextEditingController();
@@ -48,6 +48,9 @@ class _AddFarmScreenState extends State<AddFarmScreen>
   Lga? selectedLga;
   @override
   Ward? selectedWard;
+
+    @override
+  String? selectedOwnershipType;
 
   @override
   void initState() {
@@ -77,6 +80,13 @@ class _AddFarmScreenState extends State<AddFarmScreen>
         selectedWard = null;
       }
       selectedLga = newValue;
+    });
+  }
+
+  @override
+  void onSelectOwnershipType(String? newValue) {
+    setState(() {
+      selectedOwnershipType = newValue!;
     });
   }
 
@@ -116,20 +126,20 @@ class _AddFarmScreenState extends State<AddFarmScreen>
             latitude: position.latitude,
             longitude: position.longitude,
           );
-          // if (Utils.isDuplicateCoordinate(
-          //   currentFarmLocationCoordinates,
-          //   newCoordinate,
-          // )) {
-          //   if (mounted) {
-          //     Utils.showToastError(
-          //       this.context,
-          //       'Multiple Coordinate Detected',
-          //       'close',
-          //       () {},
-          //     );
-          //   }
-          //   return;
-          // }
+          if (Utils.isDuplicateCoordinate(
+            currentFarmLocationCoordinates,
+            newCoordinate,
+          )) {
+            if (mounted) {
+              Utils.showToastError(
+                this.context,
+                'Multiple Coordinate Detected',
+                'close',
+                () {},
+              );
+            }
+            return;
+          }
 
           if (mounted) {
             setState(() {
@@ -211,6 +221,11 @@ class _AddFarmScreenState extends State<AddFarmScreen>
       return;
     }
 
+    if (selectedOwnershipType == null) {
+      Utils.showToastError(context, 'Please select ownership type.', '', () {});
+      return;
+    }
+
     if (currentFarmLocationCoordinates.length < 4) {
       Utils.showToastError(
         context,
@@ -233,7 +248,7 @@ class _AddFarmScreenState extends State<AddFarmScreen>
     farm.wardId = selectedWard!.pk;
     farm.sizeInHa = calculatedHectares.toStringAsFixed(4);
 
-    farm.ownershipType = "Owned";
+    farm.ownershipType = selectedOwnershipType.toString();
 
     final firstCoordinate = currentFarmLocationCoordinates.first;
     farm.longitude = firstCoordinate.longitude.toString();

@@ -13,6 +13,7 @@ import '../../../../core/utils/extensions.dart';
 import '../../../../core/resources/vectors.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/function.dart';
+import '../../../../core/utils/global_variables.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/farm/farm_cubit.dart';
@@ -244,6 +245,35 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                                 },
                               ),
                             ),
+                             16.verticalSpace,
+                  'Ownership Type'.toText(fontSize: 14, fontWeight: FontWeight.w600,translate: false),
+
+                  Padding(
+                    padding: REdgeInsets.only(top: 5.0),
+                    child: DropdownButtonFormField<String>(
+                      validator: ValidationBuilder().required().build(),
+                      borderRadius: const BorderRadius.all(Radius.zero),
+                      value: controller.selectedOwnershipType,
+                      onChanged: (newValue) {
+                        controller.onSelectOwnershipType(newValue);
+                      },
+                      items:
+                          GlobalVariables().ownershipTypeList.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                      style: Styles.x14dp_4A4A4A(14.0.sp),
+                      decoration:
+                          Styles.textFormFieldDecorationBorderWithBackground(
+                            'choose_an_option'.tr(),
+                            '',
+                          ),
+                      icon: 'arrowDown'.toSvg(),
+                    ),
+                  ),
+
                             
                   16.verticalSpace,
                   Row(
@@ -392,9 +422,9 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                           ),
                         ),
                   30.verticalSpace,
-                  // controller.currentFarmLocationCoordinates.length < 4
-                  //     ? SizedBox.shrink()
-                  //     :
+                  controller.currentFarmLocationCoordinates.length < 4
+                      ? SizedBox.shrink()
+                      :
                        BlocListener<FarmCubit, FarmState>(
                         listener: (context, state) {
                           if (state is FarmLoading) {

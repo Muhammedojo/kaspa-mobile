@@ -40,7 +40,7 @@ Farm _$FarmFromJson(Map<String, dynamic> json) {
   }
   obj.sizeInHa = json[KEY_SIZE_IN_HA];
   obj.ownershipType = json[KEY_OWNERSHIP_TYPE];
-  obj.polygon = json[KEY_POLYGON];
+  // obj.polygon = json[KEY_POLYGON];
   obj.longitude = json[KEY_LONGITUDE];
   obj.latitude = json[KEY_LATITUDE];
   obj.soilProfile = json[KEY_SOIL_PROFILE];

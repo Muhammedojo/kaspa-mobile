@@ -188,7 +188,7 @@ class CreateFarmVisitView extends StatelessWidget
                             filteredPlots.map((e) {
                               return DropdownMenuItem<Plot>(
                                 value: e,
-                                child: ('${e.sizeInHa} ha').toText(
+                                child: ('${e.address}').toText(
                                   translate: false,
                                 ),
                               );

@@ -69,42 +69,34 @@ class ReportIncidentView extends StatelessWidget
                       onChanged: (value) {},
                     ),
                   ),
-16.verticalSpace,
-  'category'.toText(fontSize: 14, fontWeight: FontWeight.w600),
-                 
-      Padding(
-                                      padding: REdgeInsets.only(top: 5.0),
-                                      child: DropdownButtonFormField<String>(
-                                        validator:
-                                            ValidationBuilder()
-                                                .required()
-                                                .build(),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.zero,
-                                        ),
-                                        value: controller.selectedCategory,
-                                        onChanged: (newValue) {
-                                          controller.onSelectCategory(newValue);
-                                        },
-                                        items:
-                                            GlobalVariables().categoryList.map((
-                                              String value,
-                                            ) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                        style: Styles.x14dp_4A4A4A(14.0.sp),
-                                        decoration:
-                                            Styles.textFormFieldDecorationBorderWithBackground(
-                                              'choose_an_option'.tr(),
-                                              '',
-                                            ),
-                                        icon: 'arrowDown'.toSvg(),
-                                      ),
-                                    ),
-                                  
+                  16.verticalSpace,
+                  'category'.toText(fontSize: 14, fontWeight: FontWeight.w600),
+
+                  Padding(
+                    padding: REdgeInsets.only(top: 5.0),
+                    child: DropdownButtonFormField<String>(
+                      validator: ValidationBuilder().required().build(),
+                      borderRadius: const BorderRadius.all(Radius.zero),
+                      value: controller.selectedCategory,
+                      onChanged: (newValue) {
+                        controller.onSelectCategory(newValue);
+                      },
+                      items:
+                          GlobalVariables().categoryList.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                      style: Styles.x14dp_4A4A4A(14.0.sp),
+                      decoration:
+                          Styles.textFormFieldDecorationBorderWithBackground(
+                            'choose_an_option'.tr(),
+                            '',
+                          ),
+                      icon: 'arrowDown'.toSvg(),
+                    ),
+                  ),
 
                   16.verticalSpace,
 
@@ -113,7 +105,7 @@ class ReportIncidentView extends StatelessWidget
                     translate: false,
                     fontWeight: FontWeight.w600,
                   ),
-                  
+
                   BlocBuilder<LgaCubit, LgaState>(
                     builder: (context, state) {
                       List<Lga> lgas = [];
@@ -193,10 +185,7 @@ class ReportIncidentView extends StatelessWidget
                   ),
 
                   16.verticalSpace,
-                  'ward'.toText(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  'ward'.toText(fontSize: 14, fontWeight: FontWeight.w600),
 
                   Padding(
                     padding: REdgeInsets.only(top: 5.0),

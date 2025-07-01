@@ -20,6 +20,9 @@ abstract class AddFarmControllerContract {
   void onSelectWard(Ward? newValue);
   void onSelectLga(Lga? newValue);
 
+  late String? selectedOwnershipType;
+  void onSelectOwnershipType(String? newValue);
+
   late double estimatedHectaresOfLand;
 }
 
