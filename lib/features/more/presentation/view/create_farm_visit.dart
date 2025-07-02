@@ -188,9 +188,8 @@ class CreateFarmVisitView extends StatelessWidget
                             filteredPlots.map((e) {
                               return DropdownMenuItem<Plot>(
                                 value: e,
-                                child: ('${e.address}').toText(
-                                  translate: false,
-                                ),
+                                child: ('${e.address} (${e.sizeInHa} Ha)')
+                                    .toText(translate: false),
                               );
                             }).toList(),
                         value: controller.selectedPlot,
@@ -251,14 +250,17 @@ class CreateFarmVisitView extends StatelessWidget
                               ),
 
                           items:
-                              state.productList.map((e) {
-                                return DropdownMenuItem(
-                                  value: e,
-                                  child: (e.name ?? '').toText(
-                                    translate: false,
-                                  ),
-                                );
-                              }).toList(),
+                              state.productList
+                                  .where((product) => product.type == 'Crop')
+                                  .map((e) {
+                                    return DropdownMenuItem(
+                                      value: e,
+                                      child: (e.name ?? '').toText(
+                                        translate: false,
+                                      ),
+                                    );
+                                  })
+                                  .toList(),
                           onChanged: (newValue) {
                             controller.onSelectCrop(newValue!);
                           },

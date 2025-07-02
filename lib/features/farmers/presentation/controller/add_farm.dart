@@ -30,7 +30,7 @@ class _AddFarmScreenState extends State<AddFarmScreen>
   late TextEditingController farmAddressController;
 
   @override
-  TextEditingController? lat = TextEditingController(); 
+  TextEditingController? lat = TextEditingController();
 
   @override
   TextEditingController? long = TextEditingController();
@@ -49,7 +49,7 @@ class _AddFarmScreenState extends State<AddFarmScreen>
   @override
   Ward? selectedWard;
 
-    @override
+  @override
   String? selectedOwnershipType;
 
   @override
@@ -239,8 +239,12 @@ class _AddFarmScreenState extends State<AddFarmScreen>
     final double calculatedHectares = _calculateAreaInHectares(
       currentFarmLocationCoordinates,
     );
+
+    final String trimmed = calculatedHectares.toStringAsPrecision(7);
+    final double limitedHectares = double.parse(trimmed);
+
     setState(() {
-      estimatedHectaresOfLand = calculatedHectares;
+      estimatedHectaresOfLand = limitedHectares;
     });
 
     Farm farm = Farm();
@@ -268,8 +272,6 @@ class _AddFarmScreenState extends State<AddFarmScreen>
       "coordinates": [polygonRing],
     };
     farm.polygon = jsonEncode(polygonData);
-
-    
 
     GetIt.I.get<FarmCubit>().createFarm(farm, folioId: folioId);
   }

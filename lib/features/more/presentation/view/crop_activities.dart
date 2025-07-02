@@ -62,9 +62,7 @@ class CropActivitiesView extends StatelessWidget
             _showAdvisoryDialog(context, state.advisory);
           } else if (state is CropAdvisoryFailure) {
             Navigator.of(context).pop();
-            Utils.showToastError(context, state.error, '', () {
-                  
-            });
+            Utils.showToastError(context, state.error, '', () {});
           }
         },
 
@@ -131,11 +129,16 @@ class CropActivitiesView extends StatelessWidget
                                   Checkbox(
                                     checkColor: AppColors.primaryBackground,
                                     activeColor: AppColors.primaryGreen,
-                                    value:
+                                    value: activity.isComplete == true,
+                                    onChanged:
                                         activity.isComplete == true
-                                            ? true
-                                            : false,
-                                    onChanged: (value) {},
+                                            ? null 
+                                            : (value) {
+                                              if (value == true) {
+                                                // Send payload to server to mark as complete
+                                                //  sendCompletionPayload(activity.id); // Replace with your actual function
+                                              }
+                                            },
                                   ),
                                   8.horizontalSpace,
                                   Column(

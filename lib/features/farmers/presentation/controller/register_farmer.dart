@@ -578,7 +578,7 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     });
   }
 
-    double _calculateAreaInHectares(List<Coordinates> points) {
+  double _calculateAreaInHectares(List<Coordinates> points) {
     if (points.length < 3) {
       return 0.0;
     }
@@ -594,7 +594,6 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
     // 1 Hectare = 10,000 square meters
     return areaInSquareMeters / 10000;
   }
-
 
   Widget showFarmerDetailsModal(context, Function onProceed) {
     final today = DateTime.now();
@@ -682,13 +681,16 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
         polygonRing.add(List.from(polygonRing.first));
       }
 
-          final double calculatedHectares =
-        _calculateAreaInHectares(currentFarmLocationCoordinates);
-    setState(() {
-      estimatedHectaresOfLand = calculatedHectares;
-    });
+      final double calculatedHectares = _calculateAreaInHectares(
+        currentFarmLocationCoordinates,
+      );
 
+      final String trimmed = calculatedHectares.toStringAsPrecision(7);
+      final double limitedHectares = double.parse(trimmed);
 
+      setState(() {
+        estimatedHectaresOfLand = limitedHectares;
+      });
 
       Map<String, dynamic> farmData = {
         "address": farmAddressController.text,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../core/navigation/navigator.dart';
+import '../../../../features/home/presentation/controller/profile_issue.dart';
 import '../../../../core/component/card_container_widget.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
@@ -89,10 +91,12 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                                 }
                                 final currentWeatherData = state.insightList[0];
 
-                                return WeatherCard(insight: currentWeatherData, onTap: () { 
-                                  controller.refreshData();
-
-                                 },);
+                                return WeatherCard(
+                                  insight: currentWeatherData,
+                                  onTap: () {
+                                    controller.refreshData();
+                                  },
+                                );
                               }
 
                               return ErrorWidgets(
@@ -100,7 +104,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                               );
                             },
                           ),
-                            BlocBuilder<LgaWeatherCubit, LgaWeatherState>(
+                          BlocBuilder<LgaWeatherCubit, LgaWeatherState>(
                             builder: (context, state) {
                               if (state is LgaWeatherLoading) {
                                 return Center(
@@ -116,8 +120,8 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                                         'Weather data not available for your location.',
                                   );
                                 }
-                              
-                                return ForecastCard(weather: state.weatherList,);
+
+                                return ForecastCard(weather: state.weatherList);
                               }
 
                               return ErrorWidgets(
@@ -125,7 +129,6 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                               );
                             },
                           ),
-                          
                         ],
                         onPageChanged: (index) {
                           controller.monitor(index);
@@ -293,22 +296,27 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                                 8.verticalSpace,
                                 const Divider(),
                                 10.verticalSpace,
-                                Row(
-                                  children: [
-                                    '690 Profile Issues'.toText(
-                                      fontSize: 10,
-                                      translate: false,
-                                      color: AppColors.burntRed,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    8.horizontalSpace,
-                                    'tap_to_view'.toText(
-                                      fontSize: 10,
-                                      color: AppColors.accentText,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    SvgPicture.asset(AppIcon.rightArrow),
-                                  ],
+                                InkWell(
+                                  onTap:
+                                      () =>
+                                          pushTo(ProfileIssueScreen(), context),
+                                  child: Row(
+                                    children: [
+                                      '690 Profile Issues'.toText(
+                                        fontSize: 10,
+                                        translate: false,
+                                        color: AppColors.burntRed,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      8.horizontalSpace,
+                                      'tap_to_view'.toText(
+                                        fontSize: 10,
+                                        color: AppColors.accentText,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      SvgPicture.asset(AppIcon.rightArrow),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -406,6 +414,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
       ),
     );
   }
+
   Widget _buildQuickActionButton(
     String label,
     String labels,

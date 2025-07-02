@@ -75,178 +75,171 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                       onChanged: (value) {},
                     ),
                   ),
-                  
-                     16.verticalSpace,
-                            'LGA'.toText(
-                              fontSize: 14,
-                              translate: false,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            BlocBuilder<LgaCubit, LgaState>(
-                              builder: (context, state) {
-                                List<Lga> lgas = [];
-                                if (state is LgaLoaded) {
-                                  lgas = state.dataList;
-                                }
-              
-                                return DropdownSearch<Lga>(
-                                  suffixProps: DropdownSuffixProps(
-                                    dropdownButtonProps: DropdownButtonProps(
-                                      iconClosed: 'arrowDown'.toSvg(),
-                                    ),
-                                  ),
-                                  popupProps: PopupProps.menu(
-                                    showSearchBox: true,
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        labelStyle:
-                                            Styles
-                                                .normalWeightGreyNormalSizeTextStyle,
-              
-                                        hintText: "search_lga".tr(),
-                                        hintStyle:
-                                            Styles
-                                                .normalWeightGreyNormalSizeTextStyle,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8.r,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    itemBuilder:
-                                        (
-                                          context,
-                                          lgaItem,
-                                          isDisabled,
-                                          isSelected,
-                                        ) => ListTile(
-                                          title: (lgaItem.name ?? '').toText(
-                                            translate: false,
-                                          ),
-              
-                                          selected: isSelected,
-                                        ),
-              
-                                    emptyBuilder:
-                                        (context, searchEntry) => Center(
-                                          child: 'no_lga_found'.toText(),
-                                        ),
-                                  ),
-                                  items: (filter, infiniteScrollProps) async {
-                                    if (filter.isEmpty) {
-                                      return lgas;
-                                    }
-                                    return lgas
-                                        .where(
-                                          (lga) =>
-                                              lga.name?.toLowerCase().contains(
-                                                filter.toLowerCase(),
-                                              ) ??
-                                              false,
-                                        )
-                                        .toList();
-                                  },
-                                  itemAsString: (Lga? lga) => lga?.name ?? '',
-                                  compareFn: (Lga? item1, Lga? item2) {
-                                    return item1?.pk == item2?.pk;
-                                  },
-                                  selectedItem: controller.selectedLga,
-                                  onChanged: (Lga? newValue) {
-                                    if (newValue != null) {
-                                      controller.onSelectLga(newValue);
-                                    }
-                                  },
-                                  decoratorProps: DropDownDecoratorProps(
-                                    decoration:
-                                        Styles.textFormFieldDecorationBorderWithBackground(
-                                          'choose_an_option'.tr(),
-                                          '',
-                                        ),
-                                  ),
-                                );
-                              },
-                            ),
-              
-                            16.verticalSpace,
-                            'Ward of Residence'.toText(
-                              fontSize: 14,
-                              translate: false,
-                              fontWeight: FontWeight.w600,
-                            ),
-              
-                            Padding(
-                              padding: REdgeInsets.only(top: 5.0),
-                              child: BlocBuilder<WardCubit, WardState>(
-                                builder: (context, state) {
-                                  List<Ward> filteredWards = [];
-                                  String hintText = 'choose_an_option'.tr();
-                                  bool isDisabled = false;
-                                  if (state is WardLoaded) {
-                                    if (controller.selectedLga == null) {
-                                      hintText = 'select_lga_first'.tr();
-                                      isDisabled = true;
-                                    } else {
-                                      filteredWards =
-                                          state.dataList
-                                              .where(
-                                                (ward) =>
-                                                    ward.lga?.id ==
-                                                    controller.selectedLga!.pk,
-                                              )
-                                              .toList();
-                                      if (filteredWards.isEmpty) {
-                                        hintText = 'no_wards_available'.tr();
-                                        isDisabled = true;
-                                      }
-                                    }
-                                  } else if (state is WardLoading) {
-                                    hintText = 'loading_wards'.tr();
-                                    isDisabled = true;
-                                  } else {
-                                    // WardFailure or initial state
-                                    hintText = 'wards_not_loaded'.tr();
-                                    isDisabled = true;
-                                  }
-                                  final Ward? currentSelectedWard =
-                                      filteredWards.any(
-                                            (w) =>
-                                                w.pk ==
-                                                controller.selectedWard?.pk,
-                                          )
-                                          ? controller.selectedWard
-                                          : null;
-              
-                                  return DropdownButtonFormField<Ward>(
-                                    icon: 'arrowDown'.toSvg(),
-                                    style: Styles.x14dp_4A4A4A(14.0.sp),
-                                    decoration:
-                                        Styles.textFormFieldDecorationBorderWithBackground(
-                                          hintText,
-                                          '',
-                                        ),
-                                    items:
-                                        filteredWards.map((e) {
-                                          return DropdownMenuItem<Ward>(
-                                            value: e,
-                                            child: (e.name ?? '').toText(
-                                              translate: false,
-                                            ),
-                                          );
-                                        }).toList(),
-                                    value: currentSelectedWard,
-                                    onChanged:
-                                        isDisabled
-                                            ? null
-                                            : (Ward? newValue) {
-                                              controller.onSelectWard(newValue);
-                                            },
-                                  );
-                                },
+
+                  16.verticalSpace,
+                  'LGA'.toText(
+                    fontSize: 14,
+                    translate: false,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  BlocBuilder<LgaCubit, LgaState>(
+                    builder: (context, state) {
+                      List<Lga> lgas = [];
+                      if (state is LgaLoaded) {
+                        lgas = state.dataList;
+                      }
+
+                      return DropdownSearch<Lga>(
+                        suffixProps: DropdownSuffixProps(
+                          dropdownButtonProps: DropdownButtonProps(
+                            iconClosed: 'arrowDown'.toSvg(),
+                          ),
+                        ),
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              labelStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+
+                              hintText: "search_lga".tr(),
+                              hintStyle:
+                                  Styles.normalWeightGreyNormalSizeTextStyle,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.r),
                               ),
                             ),
-                             16.verticalSpace,
-                  'Ownership Type'.toText(fontSize: 14, fontWeight: FontWeight.w600,translate: false),
+                          ),
+                          itemBuilder:
+                              (context, lgaItem, isDisabled, isSelected) =>
+                                  ListTile(
+                                    title: (lgaItem.name ?? '').toText(
+                                      translate: false,
+                                    ),
+
+                                    selected: isSelected,
+                                  ),
+
+                          emptyBuilder:
+                              (context, searchEntry) =>
+                                  Center(child: 'no_lga_found'.toText()),
+                        ),
+                        items: (filter, infiniteScrollProps) async {
+                          if (filter.isEmpty) {
+                            return lgas;
+                          }
+                          return lgas
+                              .where(
+                                (lga) =>
+                                    lga.name?.toLowerCase().contains(
+                                      filter.toLowerCase(),
+                                    ) ??
+                                    false,
+                              )
+                              .toList();
+                        },
+                        itemAsString: (Lga? lga) => lga?.name ?? '',
+                        compareFn: (Lga? item1, Lga? item2) {
+                          return item1?.pk == item2?.pk;
+                        },
+                        selectedItem: controller.selectedLga,
+                        onChanged: (Lga? newValue) {
+                          if (newValue != null) {
+                            controller.onSelectLga(newValue);
+                          }
+                        },
+                        decoratorProps: DropDownDecoratorProps(
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                'choose_an_option'.tr(),
+                                '',
+                              ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  16.verticalSpace,
+                  'Ward of Residence'.toText(
+                    fontSize: 14,
+                    translate: false,
+                    fontWeight: FontWeight.w600,
+                  ),
+
+                  Padding(
+                    padding: REdgeInsets.only(top: 5.0),
+                    child: BlocBuilder<WardCubit, WardState>(
+                      builder: (context, state) {
+                        List<Ward> filteredWards = [];
+                        String hintText = 'choose_an_option'.tr();
+                        bool isDisabled = false;
+                        if (state is WardLoaded) {
+                          if (controller.selectedLga == null) {
+                            hintText = 'select_lga_first'.tr();
+                            isDisabled = true;
+                          } else {
+                            filteredWards =
+                                state.dataList
+                                    .where(
+                                      (ward) =>
+                                          ward.lga?.id ==
+                                          controller.selectedLga!.pk,
+                                    )
+                                    .toList();
+                            if (filteredWards.isEmpty) {
+                              hintText = 'no_wards_available'.tr();
+                              isDisabled = true;
+                            }
+                          }
+                        } else if (state is WardLoading) {
+                          hintText = 'loading_wards'.tr();
+                          isDisabled = true;
+                        } else {
+                          // WardFailure or initial state
+                          hintText = 'wards_not_loaded'.tr();
+                          isDisabled = true;
+                        }
+                        final Ward? currentSelectedWard =
+                            filteredWards.any(
+                                  (w) => w.pk == controller.selectedWard?.pk,
+                                )
+                                ? controller.selectedWard
+                                : null;
+
+                        return DropdownButtonFormField<Ward>(
+                          icon: 'arrowDown'.toSvg(),
+                          style: Styles.x14dp_4A4A4A(14.0.sp),
+                          decoration:
+                              Styles.textFormFieldDecorationBorderWithBackground(
+                                hintText,
+                                '',
+                              ),
+                          items:
+                              filteredWards.map((e) {
+                                return DropdownMenuItem<Ward>(
+                                  value: e,
+                                  child: (e.name ?? '').toText(
+                                    translate: false,
+                                  ),
+                                );
+                              }).toList(),
+                          value: currentSelectedWard,
+                          onChanged:
+                              isDisabled
+                                  ? null
+                                  : (Ward? newValue) {
+                                    controller.onSelectWard(newValue);
+                                  },
+                        );
+                      },
+                    ),
+                  ),
+                  16.verticalSpace,
+                  'Ownership Type'.toText(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    translate: false,
+                  ),
 
                   Padding(
                     padding: REdgeInsets.only(top: 5.0),
@@ -258,7 +251,9 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                         controller.onSelectOwnershipType(newValue);
                       },
                       items:
-                          GlobalVariables().ownershipTypeList.map((String value) {
+                          GlobalVariables().ownershipTypeList.map((
+                            String value,
+                          ) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -274,7 +269,6 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                     ),
                   ),
 
-                            
                   16.verticalSpace,
                   Row(
                     children: [
@@ -309,7 +303,8 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                             onTap:
                                 controller.isFetchingLocation
                                     ? null
-                                    : () => controller.onAddFarmLocation(context),
+                                    : () =>
+                                        controller.onAddFarmLocation(context),
                             child: DottedBorder(
                               color: AppColors.primaryGreen,
                               radius: Radius.circular(8.r),
@@ -324,7 +319,9 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                                   borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 child: Padding(
-                                  padding: REdgeInsets.symmetric(vertical: 20.0),
+                                  padding: REdgeInsets.symmetric(
+                                    vertical: 20.0,
+                                  ),
                                   child: Column(
                                     children: [
                                       SvgPicture.asset(
@@ -353,14 +350,19 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                         itemBuilder: (context, index) {
                           final coordinate =
                               controller.currentFarmLocationCoordinates[index];
-                          return Points(
-                            lat: coordinate.latitude!.toStringAsFixed(6),
-                            long: coordinate.longitude!.toStringAsFixed(6),
-                            delete: () {
-                              controller.onDeleteFarmLocationCoordinates(index);
-                            },
-                            showIcon: true,
-                            point: index + 1,
+                          return Padding(
+                            padding: REdgeInsets.only(bottom: 8.0),
+                            child: Points(
+                              lat: coordinate.latitude!.toStringAsFixed(6),
+                              long: coordinate.longitude!.toStringAsFixed(6),
+                              delete: () {
+                                controller.onDeleteFarmLocationCoordinates(
+                                  index,
+                                );
+                              },
+                              showIcon: true,
+                              point: index + 1,
+                            ),
                           );
                         },
                       ),
@@ -385,7 +387,8 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                             onTap:
                                 controller.isFetchingLocation
                                     ? null
-                                    : () => controller.onAddFarmLocation(context),
+                                    : () =>
+                                        controller.onAddFarmLocation(context),
                             child: DottedBorder(
                               color: AppColors.bgGreen,
                               radius: Radius.circular(10.r),
@@ -399,7 +402,9 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                                   borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 child: Padding(
-                                  padding: REdgeInsets.symmetric(vertical: 10.0),
+                                  padding: REdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -424,20 +429,22 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                   30.verticalSpace,
                   controller.currentFarmLocationCoordinates.length < 4
                       ? SizedBox.shrink()
-                      :
-                       BlocListener<FarmCubit, FarmState>(
+                      : BlocListener<FarmCubit, FarmState>(
                         listener: (context, state) {
                           if (state is FarmLoading) {
                             Utils.showLoading(context);
                           } else if (state is FarmSuccess) {
                             Utils.hideLoading(context);
-              
+
                             Utils.showToastSuccess(
                               context,
                               'Congratulations! The farm has been added successfully.',
                               'Go to Farm Location List',
                               () {
-                                Navigator.of(context, rootNavigator: true).pop();
+                                Navigator.of(
+                                  context,
+                                  rootNavigator: true,
+                                ).pop();
                                 Navigator.pop(context);
                               },
                             );
@@ -453,12 +460,11 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                             Utils.hideLoading(context);
                           }
                         },
-              
+
                         child: ButtonWidget(
                           label: 'Add Farm',
                           onPressed: () {
-                               controller.addNewFarm(controller.farmer.folioId);
-                          
+                            controller.addNewFarm(controller.farmer.folioId);
                           },
                         ),
                       ),
