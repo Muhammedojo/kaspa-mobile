@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:isar/isar.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/advisory.dart';
 import '../../../core/data/model/crop_activities.dart';
 import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
@@ -21,6 +22,16 @@ abstract class IHomeRepository {
   // ADVISORY
   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload);
 
+    //ADVISORY MESSAGE CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<Advisory>>>> getAdvisoryMessageList({
+    String? endpoint,
+  });
+
+  Future<void> saveAdvisoryMessage(List<Advisory> advisoryMessageList);
+
+  Future<List<Advisory>> getAdvisoryMessage();
+  
+  
   //BANK CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<Bank>>>> getBankList({
     String? endpoint,

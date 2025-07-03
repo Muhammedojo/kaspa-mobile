@@ -67,6 +67,7 @@ class GlobalVariables {
     cropCalendarListEndpoint,
     cooperativeListEndpoint,
     cropCalendarListEndpoint,
+    advisoryMessageListEndpoint,
     feoListEndpoint,
   ];
 
@@ -84,13 +85,15 @@ class GlobalVariables {
     productListEndpoint: KEY_PRODUCT,
     incidentReportListEndpoint: KEY_INCIDENT,
     dashboardEndpoint: KEY_INSIGHT,
+    advisoryMessageListEndpoint:KEY_ADVISORY_MESSAGE,
     dashboardFarmerEndpoint: KEY_DASHBOARD,
     farmersListEndpoint: KEY_FARMER,
     plotListEndpoint: KEY_PLOT,
     farmCropActivityListEndpoint: KEY_FARM_CROP_ACTIVITY,
     farmVisitListEndpoint: KEY_FARM_VISIT,
-    cropCalendarListEndpoint: KEY_CROP_CALENDAR,
     cooperativeListEndpoint: KEY_COOPERATIVE,
+    cropCalendarListEndpoint: KEY_CROP_CALENDAR,
+    
     feoListEndpoint: KEY_FEO,
   };
 

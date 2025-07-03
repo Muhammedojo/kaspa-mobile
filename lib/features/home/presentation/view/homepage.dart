@@ -16,6 +16,7 @@ import '../bloc/farmer_dashboard/farmer_dashboard_cubit.dart';
 import '../bloc/insight/insight_cubit.dart';
 import '../bloc/weather_lga/cubit.dart';
 import '../contract/homepage.dart';
+import '../controller/advisory_messages.dart';
 import '../widget/forecast_card.dart';
 import '../widget/weather_card.dart';
 
@@ -211,18 +212,25 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                           10.verticalSpace,
                           const Divider(),
                           12.verticalSpace,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              '29 new Advisory Messages for 400 of your farmers'
-                                  .toText(
-                                    fontSize: 12,
-                                    translate: false,
-                                    color: AppColors.colorPrimary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                              SvgPicture.asset(AppIcon.rightArrow),
-                            ],
+                          InkWell(
+                            onTap:
+                                () => pushTo(
+                                  const AdvisoryMessageScreen(),
+                                  context,
+                                ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                'Click here to view advisory messages'
+                                    .toText(
+                                      fontSize: 12,
+                                      translate: false,
+                                      color: AppColors.colorPrimary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                SvgPicture.asset(AppIcon.rightArrow),
+                              ],
+                            ),
                           ),
                         ],
                       ),

@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:isar/isar.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
+import '../../../core/data/model/advisory.dart';
 import '../../../core/data/model/crop_activities.dart';
 import '../../../core/data/model/crop_calendar.dart';
 import '../../../core/data/model/dashboard_data.dart';
@@ -30,6 +31,11 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload) =>
       apiServices.getAdvisory(payload);
+
+  @override
+  Future<Either<Failure, ApiResponse<List<Advisory>>>> getAdvisoryMessageList({
+    String? endpoint,
+  }) => apiServices.getAdvisoryMessageList(endpoint);
 
   @override
   Future<Either<Failure, ApiResponse<List<Bank>>>> getBankList({
@@ -85,10 +91,11 @@ class HomeRepository implements IHomeRepository {
     FarmVisit data,
   ) => apiServices.createFarmVisit(data);
 
-    @override
+  @override
   Future<Either<Failure, ApiResponse<Farm>>> createFarm(
-    Farm data,{String? folioId}
-  ) => apiServices.createFarm(data,folioId: folioId);
+    Farm data, {
+    String? folioId,
+  }) => apiServices.createFarm(data, folioId: folioId);
 
   @override
   Future<Either<Failure, ApiResponse<List<Insight>>>> getInsightList({
@@ -161,6 +168,9 @@ class HomeRepository implements IHomeRepository {
   }) => apiServices.getWardList(endpoint);
 
   //GET LOCAL STORAGE CALLS
+  @override
+  Future<List<Advisory>> getAdvisoryMessage() => localStorage.getAdvisoryMessage();
+
   @override
   Future<List<Bank>> getBank() => localStorage.getBank();
 
@@ -240,6 +250,11 @@ class HomeRepository implements IHomeRepository {
   Future<List<Weather>> getLgaWeather() => localStorage.getLgaWeather();
 
   //SAVE LOCAL STORAGE CALLS
+
+  @override
+  Future<void> saveAdvisoryMessage(List<Advisory> advisoryMessageList) =>
+      localStorage.saveAdvisoryMessage(advisoryMessageList);
+
   @override
   Future<void> saveBank(List<Bank> bankList) => localStorage.saveBank(bankList);
 
@@ -314,4 +329,6 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveLgaWeather(List<Weather> weatherList) =>
       localStorage.saveLgaWeather(weatherList);
+      
+     
 }

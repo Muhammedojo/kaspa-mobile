@@ -115,6 +115,18 @@ class CooperativeData {
 }
 
 @embedded
+class AudienceData {
+  int? id;
+  String? title;
+
+  AudienceData({this.id, this.title});
+
+  factory AudienceData.fromJson(Map<String, dynamic> json) {
+    return AudienceData(id: json['id'], title: json['title']);
+  }
+}
+
+@embedded
 class WardData {
   int? id;
   String? name;
@@ -364,9 +376,8 @@ class FarmerPlots {
   }
 
   factory FarmerPlots.fromJson(Map<String, dynamic> json) {
-    final polygonData = json['polygon'] != null
-        ? PolygonData.fromJson(json['polygon'])
-        : null;
+    final polygonData =
+        json['polygon'] != null ? PolygonData.fromJson(json['polygon']) : null;
 
     return FarmerPlots(
       address: json['address'],
@@ -386,7 +397,7 @@ class FarmerPlots {
       'longitude': longitude,
       'latitude': latitude,
       'polygon': polygon?.toJson(), // Full nested object
-      'polygonJson': polygonJson,   // Flattened for Isar
+      'polygonJson': polygonJson, // Flattened for Isar
     };
   }
 
@@ -456,13 +467,20 @@ class PolygonData {
     if (rawJson != null) {
       try {
         final decoded = json.decode(rawJson);
-        coords = (decoded as List)
-            .map((ring) => (ring as List)
-                .map((point) => (point as List)
-                    .map((coord) => (coord as num).toDouble())
-                    .toList())
-                .toList())
-            .toList();
+        coords =
+            (decoded as List)
+                .map(
+                  (ring) =>
+                      (ring as List)
+                          .map(
+                            (point) =>
+                                (point as List)
+                                    .map((coord) => (coord as num).toDouble())
+                                    .toList(),
+                          )
+                          .toList(),
+                )
+                .toList();
       } catch (_) {
         coords = null;
       }
@@ -473,9 +491,7 @@ class PolygonData {
 
   Map<String, dynamic> toJson() {
     polygonJson = json.encode(coordinates);
-    return {
-      'polygonJson': polygonJson,
-    };
+    return {'polygonJson': polygonJson};
   }
 
   void updateJsonFromCoordinates() {
@@ -485,13 +501,20 @@ class PolygonData {
   void loadCoordinatesFromJson() {
     if (polygonJson.isNotEmpty) {
       final decoded = json.decode(polygonJson);
-      coordinates = (decoded as List)
-          .map((ring) => (ring as List)
-              .map((point) => (point as List)
-                  .map((coord) => (coord as num).toDouble())
-                  .toList())
-              .toList())
-          .toList();
+      coordinates =
+          (decoded as List)
+              .map(
+                (ring) =>
+                    (ring as List)
+                        .map(
+                          (point) =>
+                              (point as List)
+                                  .map((coord) => (coord as num).toDouble())
+                                  .toList(),
+                        )
+                        .toList(),
+              )
+              .toList();
     }
   }
 }

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/component/card_container_widget.dart';
 import '../../../../core/utils/function.dart';
-import '../../../../core/component/empty_list_widget.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/styles.dart';
-import '../bloc/notification/cubit.dart';
 import '../contract/profile_issue.dart';
 
 class ProfileIssueView extends StatelessWidget

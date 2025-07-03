@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/plot.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../data/model/advisory.dart';
 import '../../data/model/crop_activities.dart';
 import '../../data/model/crop_calendar.dart';
 import '../../data/model/dashboard_data.dart';
@@ -29,6 +30,7 @@ class IsarImpl implements DatabaseStorage {
       _isar = await Isar.open(
         name: username,
         [
+          AdvisorySchema,
           BankSchema,
           CropSchema,
           CropActivitiesSchema,
@@ -64,6 +66,20 @@ class IsarImpl implements DatabaseStorage {
   Future<void> closeDb() async {
     if (_isar.isOpen) {
       await _isar.close();
+    }
+  }
+
+   @override
+  Future<List<Advisory>> getAdvisoryMessage() {
+    if (!_isar.isOpen) {
+      return Future.value(<Advisory>[]);
+    }
+    try {
+      final advisories = _isar.advisorys.where().findAllSync();
+      return Future.value(advisories);
+    } catch (e) {
+      debugPrint("Error retrieving Advisory Message: $e");
+      return Future.value(<Advisory>[]);
     }
   }
 
@@ -397,6 +413,18 @@ class IsarImpl implements DatabaseStorage {
     } catch (e) {
       debugPrint("Error retrieving weathers: $e");
       return Future.value(<Weather>[]);
+    }
+  }
+
+   @override
+  Future<void> saveAdvisoryMessage(List<Advisory> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.advisorys.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving advisory messages: $e");
     }
   }
 

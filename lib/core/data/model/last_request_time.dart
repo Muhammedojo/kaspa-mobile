@@ -1,6 +1,8 @@
 import '../../utils/const.dart';
 
 class LastRequestTime {
+  String? advisoryMessage;
+  String? advisoryMessageUrl;
   String? bank;
   String? bankUrl;
   String? crop;
@@ -55,6 +57,8 @@ class LastRequestTime {
 
 LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
   var obj = LastRequestTime();
+  obj.advisoryMessage = json['advisoryMessage'];
+  obj.advisoryMessageUrl = json['advisoryMessageUrl'];
   obj.bank = json['bank'];
   obj.bankUrl = json['bankUrl'];
   obj.crop = json['crop'];
@@ -105,6 +109,8 @@ LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
     <String, dynamic>{
+      KEY_ADVISORY_MESSAGE: obj.advisoryMessage,
+      KEY_ADVISORY_MESSAGE_URL: obj.advisoryMessageUrl,
       KEY_BANK: obj.bank,
       KEY_BANK_URL: obj.bankUrl,
       KEY_CROP: obj.crop,
@@ -148,5 +154,5 @@ Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
       KEY_FARM_VISIT: obj.farmVisit,
       KEY_FARM_VISIT_URL: obj.farmVisitUrl,
       KEY_FARM_CROP_ACTIVITY: obj.farmCropActivity,
-      KEY_FARM_CROP_ACTIVITY_URL: obj
+      KEY_FARM_CROP_ACTIVITY_URL: obj.farmCropActivityUrl
     };

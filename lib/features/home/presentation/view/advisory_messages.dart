@@ -1,32 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../features/more/presentation/controller/create_farm_visit.dart';
 import '../../../../core/utils/function.dart';
-import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/empty_list_widget.dart';
-import '../../../../core/navigation/navigator.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/styles.dart';
-import '../../../home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
-import '../contract/farm_visit.dart';
-import '../controller/farm_visit_crops.dart';
-import '../widget/farm_visit_widget.dart';
+import '../bloc/advisory_message/cubit.dart';
+import '../contract/advisory_messages.dart';
+import '../widget/advisory_card.dart';
 
-class FarmVisitView extends StatelessWidget implements FarmVisitViewContract {
-  const FarmVisitView({super.key, required this.controller});
+class AdvisoryMessageView extends StatelessWidget
+    implements AdvisoryMessageViewContract {
+  const AdvisoryMessageView({super.key, required this.controller});
 
-  final FarmVisitControllerContract controller;
+  final AdvisoryMessageControllerContract controller;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primaryGreen,
-        onPressed: () => pushTo(CreateFarmVisitScreen(), context),
-        child: Icon(Icons.add, color: AppColors.primaryBackground),
-      ),
       body: _body(context),
     );
   }
@@ -38,7 +30,7 @@ class FarmVisitView extends StatelessWidget implements FarmVisitViewContract {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Utils.customAppBar(context, 'farm_visit', false, () {}),
+            Utils.customAppBar(context, 'advisory_messages', false, () {}),
             20.verticalSpace,
             Expanded(
               child: Padding(
@@ -47,43 +39,32 @@ class FarmVisitView extends StatelessWidget implements FarmVisitViewContract {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     2.verticalSpace,
-                    "Here’s a list of farm visits".toText(
-                      translate: false,
-                      color: AppColors.accentText,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+
                     16.verticalSpace,
                     Expanded(
-                      child: BlocBuilder<FarmVisitCubit, FarmVisitState>(
+                      child: BlocBuilder<
+                        AdvisoryMessageCubit,
+                        AdvisoryMessageState
+                      >(
                         builder: (context, state) {
-                          if (state is FarmVisitLoading) {
+                          if (state is AdvisoryMessageLoading) {
                             return ErrorWidgets(title: "empty", message: '');
                           }
-                          if (state is FarmVisitLoaded) {
-                            final farmVisitsWithCrops =
-                                state.farmVisitList
-                                    .where(
-                                      (visit) => visit.farmCrops.isNotEmpty,
-                                    )
-                                    .toList();
-                            return farmVisitsWithCrops.isEmpty
-                                ? ErrorWidgets(message: 'visit_list_empty')
+                          if (state is AdvisoryMessageLoaded) {
+                            return state.advisoryList.isEmpty
+                                ? ErrorWidgets(
+                                  message: 'advisory_message_list_empty',
+                                )
                                 : ListView.separated(
-                                  itemCount: farmVisitsWithCrops.length,
-
+                                  itemCount: state.advisoryList.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
-                                    return FarmVisitCard(
-                                      data: farmVisitsWithCrops[index],
+                                    final item = state.advisoryList[index];
+                                    return AdvisoryMessageWidget(
+                                      data: item,
                                       onTap: () {
-                                        pushTo(
-                                          FarmVisitCropsScreen(
-                                            visit: farmVisitsWithCrops[index],
-                                          ),
-                                          context,
-                                        );
+                                            controller.previewLogModal(item);
                                       },
                                     );
                                   },
@@ -92,7 +73,7 @@ class FarmVisitView extends StatelessWidget implements FarmVisitViewContract {
                                           12.verticalSpace,
                                 );
                           }
-                          if (state is FarmVisitFailure) {
+                          if (state is AdvisoryMessageFailure) {
                             return ErrorWidgets(
                               title: "Error",
                               message: state.toString(),

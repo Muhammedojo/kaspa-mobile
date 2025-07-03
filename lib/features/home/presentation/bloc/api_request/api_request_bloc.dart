@@ -4,6 +4,7 @@ import '../../../../../config/di/app_initializer.dart';
 import '../../../../../core/api/api.dart';
 import '../../../../../core/utils/global_variables.dart';
 import '../../../../farmers/presentation/bloc/bloc.dart';
+import '../advisory_message/cubit.dart';
 import '../bloc.dart';
 import '../crop_calendar/crop_calendar_cubit.dart';
 import '../farm_crop_activity/farm_crop_activity_cubit.dart';
@@ -176,6 +177,12 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
         AppInitializer.instanceLocator.get<PlotCubit>().loadPlot();
         break;
 
+      case advisoryMessageListEndpoint:
+        AppInitializer.instanceLocator
+            .get<AdvisoryMessageCubit>()
+            .loadAdvisoryMessage();
+        break;
+
       case cooperativeListEndpoint:
         AppInitializer.instanceLocator
             .get<CooperativeCubit>()
@@ -196,9 +203,6 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
             .loadCropCalendar();
         break;
 
-      // case usersListEndpoint:
-      //   AppInitializer.instanceLocator.get<UserCubit>().loadUser();
-      //   break;
       // case weatherListEndpoint:
       //   AppInitializer.instanceLocator.get<WeatherCubit>().loadWeather();
       //   break;

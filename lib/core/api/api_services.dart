@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import '../data/model/advisory.dart';
 import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
@@ -34,12 +35,15 @@ abstract class ApiServices {
     String newPassword,
   );
 
+  Future<Either<Failure, ApiResponse<List<Advisory>>>> getAdvisoryMessageList(
+    String? endpoint,
+  );
+
   Future<Either<Failure, ApiResponse<List<Bank>>>> getBankList(
     String? endpoint,
   );
 
-   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload);
-
+  Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload);
 
   Future<Either<Failure, ApiResponse<List<Crop>>>> getCropList(
     String? endpoint,
@@ -139,6 +143,7 @@ abstract class ApiServices {
   );
 
   Future<Either<Failure, ApiResponse<Farm>>> createFarm(
-    Farm data,{String? folioId}
-  );
+    Farm data, {
+    String? folioId,
+  });
 }

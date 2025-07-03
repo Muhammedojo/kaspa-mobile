@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 
+import '../data/model/advisory.dart';
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
@@ -42,6 +43,7 @@ abstract class CacheStorage {
 abstract class DatabaseStorage {
   Future<void> openDb(String username);
   Future<void> closeDb();
+  Future<List<Advisory>> getAdvisoryMessage();
   Future<List<Bank>> getBank();
   Future<List<Crop>> getCrop();
   Future<List<CropCalendar>> getCropCalendar();
@@ -83,6 +85,7 @@ abstract class DatabaseStorage {
   Future<void> saveInsight(List<Insight> objectList);
   Future<void> saveIncident(List<IncidentReport> objectList);
   Future<void> saveBank(List<Bank> objectList);
+  Future<void> saveAdvisoryMessage(List<Advisory> objectList);
   Future<void> saveCrop(List<Crop> objectList);
   Future<void> saveCropCalendar(List<CropCalendar> objectList);
   Future<void> saveCooperative(List<Cooperative> objectList);

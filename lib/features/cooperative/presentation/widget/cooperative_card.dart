@@ -6,6 +6,7 @@ import 'package:kaspa/core/utils/extensions.dart';
 
 import '../../../../core/component/card_container_widget.dart';
 import '../../../../core/data/model/cooperative.dart';
+import '../../../../core/resources/vectors.dart';
 
 class CooperativeCard extends StatelessWidget {
   final Cooperative cooperative;
@@ -28,7 +29,7 @@ class CooperativeCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SvgPicture.asset('assets/vectors/coops.svg'),
+            SvgPicture.asset(AppIcon.coop),
             8.horizontalSpace,
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -48,11 +49,11 @@ class CooperativeCard extends StatelessWidget {
             ),
             const Spacer(),
             Container(
-              padding: REdgeInsets.symmetric(horizontal: 8 ),
+              padding: REdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
-                color:AppColors.colorPrimary.withAlpha((0.1 * 255).toInt()),
+                color: AppColors.colorPrimary.withAlpha((0.1 * 255).toInt()),
                 borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(color:AppColors.colorPrimary, width: 0.8),
+                border: Border.all(color: AppColors.colorPrimary, width: 0.8),
               ),
               child: ((cooperative.isVerified == true)
                       ? 'Verified'

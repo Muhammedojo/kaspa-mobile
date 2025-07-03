@@ -19,10 +19,12 @@ class AppIcon {
   static const String more = 'assets/vectors/moreOption.svg';
   static const String empty = 'assets/vectors/emptyIcon.svg';
   static const String incident = 'assets/vectors/incident.svg';
+  static const String advice = 'assets/vectors/advice.svg';
   static const String edit = 'assets/vectors/edit.svg';
   static const String map = 'assets/vectors/map.svg';
   static const String people = 'assets/vectors/people.svg';
   static const String money = 'assets/vectors/money.svg';
+  static const String coop = 'assets/vectors/coops.svg';
   static const String blacklist = 'assets/vectors/blacklist.svg';
   static const String farm = 'assets/vectors/farm.svg';
   static const String crop = 'assets/vectors/crop.svg';

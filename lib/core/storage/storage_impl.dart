@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 
+import '../data/model/advisory.dart';
 import '../data/model/bank.dart';
 import '../data/model/cooperative.dart';
 import '../data/model/crop.dart';
@@ -77,6 +78,10 @@ class LocalStorageImpl implements LocalStorage {
   // LOAD FROM DB CALLS
 
   @override
+  Future<List<Advisory>> getAdvisoryMessage() =>
+      databaseStorage.getAdvisoryMessage();
+
+  @override
   Future<List<Bank>> getBank() => databaseStorage.getBank();
 
   @override
@@ -131,8 +136,8 @@ class LocalStorageImpl implements LocalStorage {
   Future<List<FarmVisit>> getFarmVisit() => databaseStorage.getFarmVisit();
 
   @override
-  Future<List<CropActivities>> getFarmCropActivity() => databaseStorage.getFarmCropActivity();
-
+  Future<List<CropActivities>> getFarmCropActivity() =>
+      databaseStorage.getFarmCropActivity();
 
   @override
   Future<List<Lga>> getLga() => databaseStorage.getLga();
@@ -176,6 +181,10 @@ class LocalStorageImpl implements LocalStorage {
 
   // SAVE TO DB CALLS
 
+   @override
+  Future<void> saveAdvisoryMessage(List<Advisory> objectList) =>
+      databaseStorage.saveAdvisoryMessage(objectList);
+
   @override
   Future<void> saveBank(List<Bank> objectList) =>
       databaseStorage.saveBank(objectList);
@@ -203,7 +212,6 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveFarmCropActivity(List<CropActivities> objectList) =>
       databaseStorage.saveFarmCropActivity(objectList);
-
 
   @override
   Future<void> saveFarmVisit(List<FarmVisit> objectList) =>

@@ -19,6 +19,7 @@ const updateCooperativesEndpoint = "cooperatives";
 const cropListEndpoint = "crops";
 const plotListEndpoint = "farms";
 const notificationListEndpoint = "notifications";
+const advisoryMessageListEndpoint = "advisory";
 const farmVisitListEndpoint = "farms/farm-crops";
 const farmCropActivityListEndpoint = "farms/farm-crops/activities";
 const createFarmVisitEndpoint = "farms/farm-crops";

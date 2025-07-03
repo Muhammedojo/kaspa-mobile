@@ -1,28 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../core/data/model/advisory.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/resources/vectors.dart';
 
-class AdvisoryPreviewWidget extends StatelessWidget {
-  final String message;
-  const AdvisoryPreviewWidget({super.key, required this.message});
+class AdvisoryMessagePreviewWidget extends StatelessWidget {
+  final Advisory data;
+  const AdvisoryMessagePreviewWidget({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    String advisoryText = message;
-    try {
-      final decoded = jsonDecode(message);
-
-      if (decoded is Map<String, dynamic> && decoded.containsKey('text')) {
-        advisoryText = decoded['text'] as String;
-      }
-    } catch (e) {
-      debugPrint('Could not parse advisory JSON: $e');
-    }
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -34,7 +23,7 @@ class AdvisoryPreviewWidget extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-
+        
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -56,13 +45,13 @@ class AdvisoryPreviewWidget extends StatelessWidget {
                     child: Row(
                       children: [
                         SvgPicture.asset(
-                          AppIcon.boxFly,
+                          AppIcon.advice,
                           height: 20.sp,
                           width: 20.sp,
                         ),
                         4.horizontalSpace,
                         Expanded(
-                          child: 'Generate Advisory Message'.toText(
+                          child: (data.title ?? 'N/A').toText(
                             fontSize: 12,
                             color: AppColors.colorPrimary,
                             translate: false,
@@ -87,23 +76,68 @@ class AdvisoryPreviewWidget extends StatelessWidget {
                 Padding(
                   padding: REdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          'Recommended Next Steps for Farmers:'.toText(
-                            translate: false,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ],
-                      ),
-                      8.verticalSpace,
-                      (advisoryText).toText(
+                      'Date'.toText(
+                        fontSize: 12,
+                        color: AppColors.accentText,
                         translate: false,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                       ),
+                      (data.getDateLabel()).toText(
+                        fontSize: 14,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      16.verticalSpace,
+                      'Message Description'.toText(
+                        fontSize: 12,
+                        color: AppColors.accentText,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      (data.description ?? 'N/A').toText(
+                        fontSize: 14,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      16.verticalSpace,
+                      'Recommended Action'.toText(
+                        fontSize: 12,
+                        color: AppColors.accentText,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      (data.recommendedAction ?? 'N/A').toText(
+                        fontSize: 14,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                          16.verticalSpace,
+                      'Priority'.toText(
+                        fontSize: 12,
+                        color: AppColors.accentText,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      (data.priority ?? 'N/A').toText(
+                        fontSize: 14,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      16.verticalSpace,
+                      'Source'.toText(
+                        fontSize: 12,
+                        color: AppColors.accentText,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      'KASPA Weather Monitoring API | GFS Forecast System'.toText(
+                        fontSize: 14,
+                        translate: false,
+                        fontWeight: FontWeight.w700,
+                      ),
+        
                       25.verticalSpace,
                     ],
                   ),

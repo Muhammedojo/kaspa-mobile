@@ -274,31 +274,31 @@ class CreateFarmVisitView extends StatelessWidget
                     },
                   ),
                 ),
-                16.verticalSpace,
-                'Area of land (in Ha)'.toText(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  translate: false,
-                ),
-                Padding(
-                  padding: REdgeInsets.only(top: 5.0),
-                  child: TextFormField(
-                    controller: controller.aolController,
-                    style: Styles.x14dp_4A4A4A(14.0.sp),
-                    maxLines: 1,
-                    validator: ValidationBuilder().required().build(),
-                    keyboardType: TextInputType.number,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    textInputAction: TextInputAction.next,
-                    decoration:
-                        Styles.textFormFieldDecorationBorderWithBackground(
-                          'Kindly enter the area of land in Hectares',
-                          '',
-                          check: false,
-                        ),
-                    onChanged: (value) {},
-                  ),
-                ),
+                // 16.verticalSpace,
+                // 'Area of land (in Ha)'.toText(
+                //   fontSize: 14,
+                //   fontWeight: FontWeight.w600,
+                //   translate: false,
+                // ),
+                // Padding(
+                //   padding: REdgeInsets.only(top: 5.0),
+                //   child: TextFormField(
+                //     controller: controller.aolController,
+                //     style: Styles.x14dp_4A4A4A(14.0.sp),
+                //     maxLines: 1,
+                //     validator: ValidationBuilder().required().build(),
+                //     keyboardType: TextInputType.number,
+                //     autovalidateMode: AutovalidateMode.onUserInteraction,
+                //     textInputAction: TextInputAction.next,
+                //     decoration:
+                //         Styles.textFormFieldDecorationBorderWithBackground(
+                //           'Kindly enter the area of land in Hectares',
+                //           '',
+                //           check: false,
+                //         ),
+                //     onChanged: (value) {},
+                //   ),
+                // ),
 
                 50.verticalSpace,
                 BlocListener<FarmVisitCubit, FarmVisitState>(

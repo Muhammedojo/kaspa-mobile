@@ -80,111 +80,96 @@ class FarmVisitCropsView extends StatelessWidget
                       ),
 
                       16.verticalSpace,
-                      CardContainerWidget(
-                        decoration: BoxDecoration(
-                          color: Color(0xffF8F8F8),
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: BoxBorder.all(
-                            color: Color(0xffC8C8C8),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: Column(
+                      'List of crops cultivated on this plot'.toText(
+                        translate: false,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      12.verticalSpace,
+                      if (controller.visit.farmCrops.isEmpty)
+                        ErrorWidgets(
+                          title: "Oops",
+                          message: 'No Crop Cultivated',
+                        )
+                      else
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                'List of crops cultivated by farmer'.toText(
-                                  translate: false,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ],
-                            ),
-                            12.verticalSpace,
-                            const Divider(),
-                            12.verticalSpace,
-
-                            if (controller.visit.farmCrops.isEmpty)
-                              ErrorWidgets(
-                                title: "Oops",
-                                message: 'No Crop Cultivated',
-                              )
-                            else
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children:
-                                    controller.visit.farmCrops
-                                        .map((farmCrop) => InkWell(
-                                            onTap: () => pushTo(
-                                                CropActivitiesScreen(
-                                                    farmCrop: farmCrop),
-                                                context),
-                                            child: Padding(
-                                              padding: REdgeInsets.only(
-                                                bottom: 12.0,
-                                              ),
-                                              child: Column(
+                          children:
+                              controller.visit.farmCrops
+                                  .map(
+                                    (farmCrop) => InkWell(
+                                      onTap:
+                                          () => pushTo(
+                                            CropActivitiesScreen(
+                                              farmCrop: farmCrop,
+                                            ),
+                                            context,
+                                          ),
+                                      child: Padding(
+                                        padding: REdgeInsets.only(bottom: 12.0),
+                                        child: CardContainerWidget(
+                                          decoration: BoxDecoration(
+                                            color: Color(0xffF8F8F8),
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
+                                            ),
+                                            border: BoxBorder.all(
+                                              color: Color(0xffC8C8C8),
+                                              width: 0.5,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          (farmCrop
-                                                                      .crop
-                                                                      ?.product
-                                                                      ?.name ??
-                                                                  'N/A')
-                                                              .toText(
+                                                      (farmCrop
+                                                                  .crop
+                                                                  ?.product
+                                                                  ?.name ??
+                                                              'N/A')
+                                                          .toText(
                                                             translate: false,
                                                             fontSize: 14,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w700,
+                                                                FontWeight.w700,
                                                           ),
-                                                          '${farmCrop.noOfHectares ?? 0} ha'
-                                                              .toText(
+                                                      '${farmCrop.noOfHectares ?? 0} ha'
+                                                          .toText(
                                                             translate: false,
                                                             fontSize: 14,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w500,
+                                                                FontWeight.w500,
                                                           ),
-                                                          'No pending farm activity'
-                                                              .toText(
+                                                      'No pending farm activity'
+                                                          .toText(
                                                             translate: false,
                                                             fontSize: 14,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w500,
+                                                                FontWeight.w500,
                                                           ),
-                                                        ],
-                                                      ),
-                                                      SvgPicture.asset(
-                                                        AppIcon.rightArrow,
-                                                      ),
                                                     ],
                                                   ),
-                                                  10.verticalSpace,
-                                                  const Divider(),
+                                                  SvgPicture.asset(
+                                                    AppIcon.rightArrow,
+                                                  ),
                                                 ],
                                               ),
-                                            ),
-                                          ))
-                                        .toList(),
-                              ),
-                         
-                         
-                          ],
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
                         ),
-                      ),
-
                     ],
                   ),
                 ),

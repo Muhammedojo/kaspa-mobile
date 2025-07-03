@@ -54,7 +54,7 @@ class GeneralModel {
   }
 
 
-  String getGrnCreated() {
+  String getDateLabel() {
     return created != null
         ? DateAndTimeUtil.readableDate(created ?? '')
         : (created != null ? DateAndTimeUtil.readableDate(created!) : "");

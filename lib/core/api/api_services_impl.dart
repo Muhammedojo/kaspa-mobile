@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
+import '../data/model/advisory.dart';
 import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
@@ -65,6 +68,30 @@ class ApiServicesImpl implements ApiServices {
     (data, {String? realUri}) => ForgotPassword.fromJson(data),
     {KEY_TOKEN: token, KEY_OTP: otp, KEY_PASSWORD: password},
   );
+
+  @override
+  Future<Either<Failure, ApiResponse<List<Advisory>>>> getAdvisoryMessageList(
+    String? endpoint,
+  ) async {
+    var lastRequestTime =
+        await GetIt.I.get<LocalStorage>().getLastRequestTime();
+    return apiClient.request<List<Advisory>>(
+      endpoint ?? advisoryMessageListEndpoint,
+      MethodType.get,
+      (data, {String? realUri}) {
+        lastRequestTime.advisoryMessage = currentDateTime();
+        lastRequestTime.advisoryMessageUrl = realUri;
+
+        final advisoryMessageList =
+            (data as List).map((e) => Advisory.fromJson(e)).toList();
+        GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+
+        return advisoryMessageList;
+      },
+      null,
+      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+    );
+  }
 
   @override
   Future<Either<Failure, ApiResponse<List<Bank>>>> getBankList(
@@ -684,75 +711,48 @@ class ApiServicesImpl implements ApiServices {
     );
   }
 
-
-
- @override
+  @override
   Future<Either<Failure, ApiResponse<Farm>>> createFarm(
-    Farm data, {String? folioId}
-  ) {
+    Farm data, {
+    String? folioId,
+  }) {
     debugPrint('Folio here $folioId');
     return apiClient.request<Farm>(
-     '$createFarmEndpoint/$folioId',
+      '$createFarmEndpoint/$folioId',
       MethodType.post,
       (data, {String? realUri}) => Farm.fromJson(data),
       data.toJson(),
     );
   }
 
-
-  // @override
-  // Future<Either<Failure, ApiResponse<Farmer>>> createFarmer(Farmer data) async {
-  //   // final Map<String, dynamic> farmerJsonData = data;
-  //   // debugPrint('Farmer Data ${farmerJsonData.toString()}');
-
-  //   FormData formData = FormData.fromMap({
-  //      KEY_FOLIO_ID: data.folioId,
-  // KEY_FIRST_NAME: data.firstName,
-  // KEY_LAST_NAME: data.lastName,
-  // KEY_OTHER_NAME: data.otherNames,
-  // KEY_AGE: data.age,
-  // KEY_TITLE: data.title,
-  // KEY_GENDER: data.gender,
-  // KEY_ADDRESS: data.address,
-  // KEY_PHONE_NUMBER: data.phoneNumber,
-  // KEY_NIN: data.nin,
-  // KEY_ACCOUNT_NAME: data.accountName,
-  // KEY_ACCOUNT_NUMBER: data.accountNumber,
-  // KEY_NOK_NAME: data.nokName,
-  // KEY_BANK_ID: data.bankId,
-  // KEY_NOK_PHONE_NUMBER: data.nokPhoneNumber,
-  // KEY_NOK_ADDRESS: data.nokAddress,
-  // KEY_NOK_RELATIONSHIP: data.nokRelationship,
-  // KEY_FARMS: data.farmLand,
-  // KEY_BVN: data.bvn,
-  // KEY_REGISTRATION_DATE: data.registrationDate,
-  // KEY_LGA: data.lga,
-  // KEY_WARD_ID: data.wardId,
-  // KEY_LIVESTOCK_ID: data.livestock,
-  // KEY_CROP_ID: data.crop,
-  //   });
-  //   return apiClient.multipartRequest<Farmer>(
-  //     registerFarmerEndpoint,
-  //     MethodType.post,
-  //     (data, {String? realUri}) => Farmer.fromJson(data),
-  //     formData,
-  //   );
-  // }
-
-  final String _apiKey = 't8ryGLf4.eS51IE0si8fjlw8jCLaxeQu9UjBITSDK';
   final String _url = 'https://payload.vextapp.com/hook/CVTU6U7BQZ/catch/1234';
+  final Dio _dio = Dio();
 
   @override
   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> data) async {
-    final result = await apiClient.request<String>(
-      _url,
-      MethodType.post,
+    try {
+      final String innerPayloadString = jsonEncode(data);
+      final Map<String, dynamic> outerPayload = {'payload': innerPayloadString};
 
-      (responseBody, {String? realUri}) => responseBody.toString(),
-      data,
-      headerOption: {'X-Api-Key': _apiKey, 'Content-Type': 'application/json'},
-    );
-
-    return result.map((apiResponse) => apiResponse.data.toString());
+      final response = await _dio.post(
+        _url,
+        data: outerPayload,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "ApiKey": "Api-Key Kvf2vOgX.66stOQYC9Qdy5fcwpSlCgdZ1fYByszsS",
+          },
+          responseType: ResponseType.plain,
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+      return Right(response.data.toString());
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return Left(ServerFailure(message: e.response!.data.toString()));
+      }
+    }
+    return Left(ServerFailure(message: "Unexpected error: "));
   }
+
 }
