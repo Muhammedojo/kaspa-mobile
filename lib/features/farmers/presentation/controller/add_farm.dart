@@ -252,8 +252,6 @@ class _AddFarmScreenState extends State<AddFarmScreen>
     farm.wardId = selectedWard!.pk;
     farm.sizeInHa = calculatedHectares.toStringAsFixed(4);
 
-    debugPrint('Size ${calculatedHectares.toStringAsFixed(4)}');
-
     farm.ownershipType = selectedOwnershipType.toString();
 
     final firstCoordinate = currentFarmLocationCoordinates.first;
@@ -275,7 +273,7 @@ class _AddFarmScreenState extends State<AddFarmScreen>
     };
     farm.polygon = jsonEncode(polygonData);
 
-    GetIt.I.get<FarmCubit>().createFarm(farm, folioId: "");
+    GetIt.I.get<FarmCubit>().createFarm(farm, folioId: folioId);
   }
 
   @override
