@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kaspa/core/storage/istorage.dart';
+import '../../../../../core/storage/istorage.dart';
 import '../../../../../core/data/model/insight.dart';
-import '../../../../../core/data/model/weather.dart';
 import '../../../repository/home_repository_contract.dart';
 
 part 'crop_advisory_state.dart';
@@ -27,9 +26,9 @@ class CropAdvisoryCubit extends Cubit<CropAdvisoryState> {
         'end_date': lastActivity?.endDate ?? 'N/A',
       };
         final weatherPayload = {
-        'temperature': weatherData?.weather.tempMean ?? 'N/A',
-        'humidity': weatherData?.weather.precipSum ?? 'N/A',
-        'wind': weatherData?.weather.windSpeedMax ?? 'N/A',
+        'temperature': weatherData.weather.tempMean ?? 'N/A',
+        'humidity': weatherData.weather.precipSum ?? 'N/A',
+        'wind': weatherData.weather.windSpeedMax ?? 'N/A',
       };
 
      final payload = {

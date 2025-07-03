@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kaspa/features/calendar/presentation/controller/calendar.dart';
-import 'package:kaspa/features/calendar/presentation/controller/crop_activity.dart';
+import '../../../../features/calendar/presentation/controller/calendar.dart';
+import '../../../../features/calendar/presentation/controller/crop_activity.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../core/navigation/navigator.dart';
 import '../../../../core/utils/extensions.dart';
@@ -154,11 +154,20 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                         );
                       }
                       if (state is CropCalendarLoaded) {
-                        List<CropCalendar> filteredList =
-                            state.cropCalendarList;
+                   List<CropCalendar> filteredList;
                         String emptyListMessageKey = 'crop_list_empty';
 
-                        if (controller.selectedTabIndex == 1) {
+                     if (controller.selectedTabIndex == 0) {
+                          final uniqueCrops = <String, CropCalendar>{};
+                          for (var item in state.cropCalendarList) {
+                            final cropName = item.crop?.product?.name;
+                            if (cropName != null &&
+                                !uniqueCrops.containsKey(cropName)) {
+                              uniqueCrops[cropName] = item;
+                            }
+                          }
+                          filteredList = uniqueCrops.values.toList();
+                        } else if (controller.selectedTabIndex == 1) {
                           filteredList =
                               state.cropCalendarList
                                   .where(
@@ -196,6 +205,9 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                             emptyListMessageKey =
                                 'no_crops_in_harvesting_stage';
                           }
+                                                  } else {
+                          filteredList = state.cropCalendarList;
+
                         }
 
                         if (filteredList.isEmpty) {
@@ -221,7 +233,7 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                                 onTap: () {
                                   pushTo(
                                     CropActivityScreen(
-                                      crop: state.cropCalendarList[itemIndex],
+                                      crop: cropCalendarItem
                                     ),
                                     context,
                                   );
@@ -425,7 +437,6 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
         selectedDecoration: BoxDecoration(
           color: AppColors.primaryGreen,
           shape: BoxShape.rectangle,
-        
         ),
       ),
       headerStyle: HeaderStyle(
