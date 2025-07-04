@@ -126,20 +126,20 @@ class _AddFarmScreenState extends State<AddFarmScreen>
             latitude: position.latitude,
             longitude: position.longitude,
           );
-          // if (Utils.isDuplicateCoordinate(
-          //   currentFarmLocationCoordinates,
-          //   newCoordinate,
-          // )) {
-          //   if (mounted) {
-          //     Utils.showToastError(
-          //       this.context,
-          //       'Multiple Coordinate Detected',
-          //       'close',
-          //       () {},
-          //     );
-          //   }
-          //   return;
-          // }
+          if (Utils.isDuplicateCoordinate(
+            currentFarmLocationCoordinates,
+            newCoordinate,
+          )) {
+            if (mounted) {
+              Utils.showToastError(
+                this.context,
+                'Multiple Coordinate Detected',
+                'close',
+                () {},
+              );
+            }
+            return;
+          }
 
           if (mounted) {
             setState(() {
@@ -250,7 +250,7 @@ class _AddFarmScreenState extends State<AddFarmScreen>
     Farm farm = Farm();
     farm.address = farmAddressController.text.trim();
     farm.wardId = selectedWard!.pk;
-    farm.sizeInHa = calculatedHectares.toStringAsFixed(4);
+    farm.sizeInHa = calculatedHectares.toStringAsFixed(2);
 
     farm.ownershipType = selectedOwnershipType.toString();
 
@@ -272,6 +272,8 @@ class _AddFarmScreenState extends State<AddFarmScreen>
       "coordinates": [polygonRing],
     };
     farm.polygon = jsonEncode(polygonData);
+
+    debugPrint('Farm size value${calculatedHectares.toStringAsFixed(4)}');
 
     GetIt.I.get<FarmCubit>().createFarm(farm, folioId: folioId);
   }

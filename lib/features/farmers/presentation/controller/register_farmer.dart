@@ -695,7 +695,8 @@ class _RegisterFarmerScreenState extends State<RegisterFarmerScreen>
       Map<String, dynamic> farmData = {
         "address": farmAddressController.text,
         "ward_id": selectedWard?.pk,
-        "size_in_ha": estimatedHectaresOfLand,
+        "size_in_ha": calculatedHectares.toStringAsFixed(2),
+
         "ownership_type": "Owned",
         "longitude": currentFarmLocationCoordinates.first.longitude,
         "latitude": currentFarmLocationCoordinates.first.latitude,

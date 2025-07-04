@@ -154,10 +154,10 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                         );
                       }
                       if (state is CropCalendarLoaded) {
-                   List<CropCalendar> filteredList;
+                        List<CropCalendar> filteredList;
                         String emptyListMessageKey = 'crop_list_empty';
 
-                     if (controller.selectedTabIndex == 0) {
+                        if (controller.selectedTabIndex == 0) {
                           final uniqueCrops = <String, CropCalendar>{};
                           for (var item in state.cropCalendarList) {
                             final cropName = item.crop?.product?.name;
@@ -205,9 +205,8 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                             emptyListMessageKey =
                                 'no_crops_in_harvesting_stage';
                           }
-                                                  } else {
+                        } else {
                           filteredList = state.cropCalendarList;
-
                         }
 
                         if (filteredList.isEmpty) {
@@ -232,9 +231,7 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                                 data: cropCalendarItem,
                                 onTap: () {
                                   pushTo(
-                                    CropActivityScreen(
-                                      crop: cropCalendarItem
-                                    ),
+                                    CropActivityScreen(crop: cropCalendarItem),
                                     context,
                                   );
                                 },
@@ -291,8 +288,10 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
 
   Widget _buildCalendarDay(String day, String date, bool isSelected) {
     return Container(
-      width: 50,
+      //width: 50,
       height: 60,
+      margin: REdgeInsets.symmetric(horizontal: 2),
+
       decoration: BoxDecoration(
         border: Border.all(
           color: isSelected ? Colors.green : Colors.white,
@@ -396,16 +395,17 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
         ),
         16.verticalSpace,
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(7, (index) {
             final day = controller.focusedDay.subtract(
               Duration(days: controller.focusedDay.weekday - 1 - index),
             );
             final isToday = isSameDay(day, DateTime.now());
-            return _buildCalendarDay(
-              DateFormat('E').format(day),
-              DateFormat('d').format(day),
-              isToday,
+            return Expanded(
+              child: _buildCalendarDay(
+                DateFormat('E').format(day),
+                DateFormat('d').format(day),
+                isToday,
+              ),
             );
           }),
         ),

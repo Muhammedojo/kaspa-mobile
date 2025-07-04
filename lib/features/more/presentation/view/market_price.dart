@@ -97,6 +97,7 @@ class MarketPriceView extends StatelessWidget
                                           )
                                           .toText(
                                             fontSize: 12,
+                                            translate: false,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.accentText,
                                           ),

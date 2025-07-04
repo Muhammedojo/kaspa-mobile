@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kaspa/features/home/presentation/bloc/advisory_message/cubit.dart';
 import '../../../../features/more/presentation/controller/market_price.dart';
 import '../../../../features/more/presentation/controller/farm_visit.dart';
 import '../../../../../features/more/presentation/controller/incident_report.dart';
@@ -96,6 +97,7 @@ class _HomePageScreenState extends State<HomePageScreen>
   void refreshData() {
     GetIt.I.get<InsightCubit>().loadInsight();
     GetIt.I.get<LgaWeatherCubit>().loadLgaWeather();
+    GetIt.I.get<AdvisoryMessageCubit>().loadAdvisoryMessage();
   }
 
   @override

@@ -15,8 +15,7 @@ class GlobalVariables {
 
   var categoryList = ["Security", "Pest Attack", "Weather", "Other"];
 
-   var ownershipTypeList = ["Owned", "Leased"];
-
+  var ownershipTypeList = ["Owned", "Leased"];
 
   var nokRelationshipList = [
     "Brother",
@@ -59,6 +58,7 @@ class GlobalVariables {
     productListEndpoint,
     incidentReportListEndpoint,
     dashboardEndpoint,
+    advisoryMessageListEndpoint,
     dashboardFarmerEndpoint,
     farmersListEndpoint,
     plotListEndpoint,
@@ -67,7 +67,7 @@ class GlobalVariables {
     cropCalendarListEndpoint,
     cooperativeListEndpoint,
     cropCalendarListEndpoint,
-    advisoryMessageListEndpoint,
+
     feoListEndpoint,
   ];
 
@@ -85,7 +85,7 @@ class GlobalVariables {
     productListEndpoint: KEY_PRODUCT,
     incidentReportListEndpoint: KEY_INCIDENT,
     dashboardEndpoint: KEY_INSIGHT,
-    advisoryMessageListEndpoint:KEY_ADVISORY_MESSAGE,
+    advisoryMessageListEndpoint: KEY_ADVISORY_MESSAGE,
     dashboardFarmerEndpoint: KEY_DASHBOARD,
     farmersListEndpoint: KEY_FARMER,
     plotListEndpoint: KEY_PLOT,
@@ -93,7 +93,6 @@ class GlobalVariables {
     farmVisitListEndpoint: KEY_FARM_VISIT,
     cooperativeListEndpoint: KEY_COOPERATIVE,
     cropCalendarListEndpoint: KEY_CROP_CALENDAR,
-    
     feoListEndpoint: KEY_FEO,
   };
 

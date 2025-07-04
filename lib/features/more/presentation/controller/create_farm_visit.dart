@@ -101,7 +101,7 @@ class _CreateFarmVisitScreenState extends State<CreateFarmVisitScreen>
       FarmVisit visit = FarmVisit();
       visit.farmId = selectedPlot?.pk;
       visit.cropId = selectedCrop?.pk;
-      visit.noOfHectares = double.parse(aolController.text).round();
+      visit.noOfHectares = double.parse(totalAOLController.text).round();
 
       GetIt.I.get<FarmVisitCubit>().createFarmVisit(visit);
     }
