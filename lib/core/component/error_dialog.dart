@@ -39,7 +39,7 @@ class ErrorDialogWidget extends StatelessWidget {
               padding: REdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
               child: Row(
                 children: [
-                  Image.asset(AppImage.error,height: 32.sp,width: 32.sp,),
+                  Image.asset(AppImage.error, height: 32.sp, width: 32.sp),
                   4.horizontalSpace,
                   Expanded(
                     child: 'Error!!!'.toText(
@@ -50,11 +50,14 @@ class ErrorDialogWidget extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                     onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
-                    child:
-                     SvgPicture.asset(AppIcon.cancel,height: 32.sp,width: 32.sp,),
+                    child: SvgPicture.asset(
+                      AppIcon.cancel,
+                      height: 32.sp,
+                      width: 32.sp,
+                    ),
                   ),
                 ],
               ),
@@ -66,6 +69,7 @@ class ErrorDialogWidget extends StatelessWidget {
               padding: REdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
               child: '$message'.toText(
                 fontSize: 14,
+                translate: false,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -112,7 +116,6 @@ class ErrorDialogWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-             
                 ],
               ),
             ),
