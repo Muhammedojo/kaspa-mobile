@@ -1,9 +1,9 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 const liveMode = bool.fromEnvironment("mode", defaultValue: false);
-const baseUrl = liveMode ? 
-"https://kaspa.effing.cloud"  
- //"https://5fb2-154-113-120-30.ngrok-free.app" 
- : "https://kaspa.effing.cloud";
-const baseApi = "$baseUrl/api/v1/";
+String get baseUrl =>
+    liveMode ? (dotenv.env['BASE_URL'] ?? '') : (dotenv.env['BASE_URL'] ?? '');
+String get baseApi => "$baseUrl/api/v1/";
 
 const loginEndpoint = "auth/login";
 const forgotPasswordEndpoint = "auth/password/forgot";
@@ -41,7 +41,3 @@ const wardListEndpoint = "locations/wards";
 const bankListEndpoint = "banks";
 const dashboardEndpoint = "dashboard/home";
 const userListEndpoint = "users";
-
-
-
-

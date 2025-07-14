@@ -2,15 +2,14 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:kaspa/core/utils/firebase_options.dart';
 import 'package:kaspa/kaspa.dart';
 import 'config/di/app_initializer.dart';
 import 'core/utils/global_variables.dart';
 
-
 void main() {
-
   final completer = Completer<void>();
 
   FlutterError.onError = (details) {
@@ -21,10 +20,12 @@ void main() {
   runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      await dotenv.load(fileName: "assets/.env");
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
       await AppInitializer.initGetIt();
+
       runApp(
         EasyLocalization(
           supportedLocales: GlobalVariables.appLocales,
@@ -36,7 +37,6 @@ void main() {
           useOnlyLangCode: true,
           child: const Kaspa(),
         ),
-        
       );
       FlutterNativeSplash.remove();
       completer.complete();
@@ -64,7 +64,7 @@ class ErrorHandlerWidget extends StatelessWidget {
         try {
           return child;
         } catch (e) {
-        //  debugPrint('Root widget error: $e\n$stack');
+          //  debugPrint('Root widget error: $e\n$stack');
           return _buildErrorScreen(e.toString(), context);
         }
       },
