@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
@@ -725,7 +726,8 @@ class ApiServicesImpl implements ApiServices {
     );
   }
 
-  final String _url = 'https://payload.vextapp.com/hook/CVTU6U7BQZ/catch/1234';
+  final String _url = (dotenv.env['ADVISORY_URL'] ?? '');
+ 
   final Dio _dio = Dio();
 
   @override
@@ -740,7 +742,7 @@ class ApiServicesImpl implements ApiServices {
         options: Options(
           headers: {
             "Content-Type": "application/json",
-            "ApiKey": "Api-Key Kvf2vOgX.66stOQYC9Qdy5fcwpSlCgdZ1fYByszsS",
+            "ApiKey":(dotenv.env['ADVISORY_API'] ?? ''),
           },
           responseType: ResponseType.plain,
           validateStatus: (status) => status != null && status < 500,
