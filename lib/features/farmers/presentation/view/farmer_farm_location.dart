@@ -49,7 +49,7 @@ class FarmerFarmLocationView extends StatelessWidget
 
   Widget _body(context) {
     return Container(
-      decoration: Styles.colorComboDecoration(),
+      decoration: Styles.colorComboDecoration(context),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +33,7 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
 
   Widget _body(context) {
     return Container(
-      decoration: Styles.colorComboDecoration(),
+      decoration: Styles.colorComboDecoration(context),
       child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -57,17 +58,17 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                         BlocBuilder<UserCubit, UserState>(
                           builder: (context, stateBloc) {
                             if (stateBloc is UserLoaded) {
-                              return stateBloc.login.fullname.toString().toText(
-                                translate: false,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              );
+                              return 
+                              Text('${stateBloc.login.fullname}'.tr(),style: TextStyle( fontSize: 12,
+                                fontWeight: FontWeight.w600,),);
+                           
                             }
                             return 'N/A'.toText();
                           },
                         ),
                       ],
                     ),
+                
                     16.verticalSpace,
                     SizedBox(
                       height: 280.h,

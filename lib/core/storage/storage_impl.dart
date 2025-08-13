@@ -75,6 +75,13 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> openDb(String username) => databaseStorage.openDb(username);
 
+  @override
+  Future<void> setThemeSetting(String theme) =>
+      cacheStorage.setThemeSetting(theme);
+
+  @override
+  Future<String?> getThemeSetting() => cacheStorage.getThemeSetting();
+
   // LOAD FROM DB CALLS
 
   @override
@@ -181,7 +188,7 @@ class LocalStorageImpl implements LocalStorage {
 
   // SAVE TO DB CALLS
 
-   @override
+  @override
   Future<void> saveAdvisoryMessage(List<Advisory> objectList) =>
       databaseStorage.saveAdvisoryMessage(objectList);
 

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/theme/bloc/theme_cubit.dart';
 import '../../features/auth/presentation/bloc/forgot_password/forgot_password_cubit.dart';
 import '../../features/auth/presentation/bloc/reset_password/reset_password_cubit.dart';
 import '../../core/api/api_services.dart';
@@ -95,6 +96,11 @@ class AppInitializer {
     instanceLocator.registerLazySingleton<ApiRequestBloc>(
       () => ApiRequestBloc(),
     );
+
+     instanceLocator.registerLazySingleton<ThemeCubit>(
+      () => ThemeCubit(),
+    );
+
 
     instanceLocator.registerLazySingleton<AuthCubit>(
       () => AuthCubit(repository: instanceLocator()),

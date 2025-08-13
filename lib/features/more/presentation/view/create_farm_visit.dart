@@ -30,7 +30,7 @@ class CreateFarmVisitView extends StatelessWidget
 
   Widget _body(context) {
     return Container(
-      decoration: Styles.colorComboDecoration(),
+      decoration: Styles.colorComboDecoration(context),
       child: SafeArea(
         child: Padding(
           padding: REdgeInsets.symmetric(horizontal: 16.0),

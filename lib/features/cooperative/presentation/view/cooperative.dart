@@ -29,13 +29,13 @@ class CooperativeView extends StatelessWidget
         onPressed: () => pushTo(RegisterCooperativeScreen(), context),
         child: Icon(Icons.add, color: AppColors.primaryBackground),
       ),
-      body: _body(),
+      body: _body(context),
     );
   }
 
-  Widget _body() {
+  Widget _body(context) {
     return Container(
-      decoration: Styles.colorComboDecoration(),
+      decoration: Styles.colorComboDecoration(context),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

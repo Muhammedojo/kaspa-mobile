@@ -73,7 +73,7 @@ class CropActivitiesView extends StatelessWidget
 
   Widget _body(BuildContext context) {
     return Container(
-      decoration: Styles.colorComboDecoration(),
+      decoration: Styles.colorComboDecoration(context),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +106,8 @@ class CropActivitiesView extends StatelessWidget
                         );
                       }
 
-                      return ListView.separated(
+                      return
+                       ListView.separated(
                         itemCount: activities.length,
                         separatorBuilder: (context, index) => 12.verticalSpace,
                         itemBuilder: (context, index) {

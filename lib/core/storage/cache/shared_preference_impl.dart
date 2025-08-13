@@ -61,6 +61,18 @@ class SharedPreferenceImpl implements CacheStorage {
   }
 
   @override
+  Future<String?> getThemeSetting() async {
+    return await getString(KEY_THEME_SETTING);
+  }
+
+  @override
+  Future<void> setThemeSetting(String theme) async {
+    await _getPrefs().then((pref) {
+      pref.setString(KEY_THEME_SETTING, theme);
+    });
+  }
+
+  @override
   void saveLastRequestObject(LastRequestTime object) async {
     await _getPrefs().then((pref) {
       String encodedObject = json.encode(object);

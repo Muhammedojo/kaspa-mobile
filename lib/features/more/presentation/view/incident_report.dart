@@ -37,7 +37,7 @@ class IncidentReportView extends StatelessWidget
 
   Widget _body(context) {
     return Container(
-      decoration: Styles.colorComboDecoration(),
+      decoration: Styles.colorComboDecoration(context),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +58,8 @@ class IncidentReportView extends StatelessWidget
                     ),
                     16.verticalSpace,
                     Expanded(
-                      child: BlocBuilder<IncidentCubit, IncidentState>(
+                      child: 
+                      BlocBuilder<IncidentCubit, IncidentState>(
                         builder: (context, state) {
                           if (state is IncidentLoading) {
                             return ErrorWidgets(title: "empty", message: '');
@@ -66,7 +67,9 @@ class IncidentReportView extends StatelessWidget
                           if (state is IncidentLoaded) {
                             return state.incidentList.isEmpty
                                 ? ErrorWidgets(message: 'no_incident_logged')
-                                : StickyGroupedListView<
+                                : 
+                                
+                                StickyGroupedListView<
                                   IncidentReport,
                                   DateTime
                                 >(

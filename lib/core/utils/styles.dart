@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:path/path.dart';
 
 import '../theme/colors.dart';
+import '../theme/theme.dart';
 
 class Styles {
   static const textFormFamily = 'Nunito';
@@ -1235,9 +1237,9 @@ class Styles {
     );
   }
 
-  static colorComboDecoration() {
+  static colorComboDecoration(context) {
     return BoxDecoration(
-      color: Color(0xFFFCFCFC),
+      color: isDarkTheme(context) ?AppColors.accentText: AppColors.primaryBackground ,
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,

@@ -38,6 +38,8 @@ abstract class CacheStorage {
   Future<LastRequestTime> getLastRequestTime();
   void saveLastRequestObject(LastRequestTime object);
   Future<Map<String, dynamic>> getLastRequestTimeMap();
+  Future<void> setThemeSetting(String theme);
+  Future<String?> getThemeSetting();
 }
 
 abstract class DatabaseStorage {

@@ -7,7 +7,9 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'config/di/app_initializer.dart';
 import 'core/navigation/app_router.dart';
+import 'core/theme/bloc/theme_cubit.dart';
 import 'core/theme/colors.dart';
+import 'core/theme/theme.dart';
 import 'features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'features/auth/presentation/bloc/forgot_password/forgot_password_cubit.dart';
 import 'features/auth/presentation/bloc/reset_password/reset_password_cubit.dart';
@@ -43,11 +45,10 @@ class Kaspa extends StatelessWidget {
     ]);
     return MultiBlocProvider(
       providers: [
-        
-
-         BlocProvider(
+        BlocProvider(
           create:
-              (context) => AppInitializer.instanceLocator.get<CropAdvisoryCubit>(),
+              (context) =>
+                  AppInitializer.instanceLocator.get<CropAdvisoryCubit>(),
         ),
         BlocProvider(
           create:
@@ -56,8 +57,10 @@ class Kaspa extends StatelessWidget {
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<AuthCubit>(),
         ),
-          BlocProvider(
-          create: (context) => AppInitializer.instanceLocator.get<AdvisoryMessageCubit>(),
+        BlocProvider(
+          create:
+              (context) =>
+                  AppInitializer.instanceLocator.get<AdvisoryMessageCubit>(),
         ),
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<BankCubit>(),
@@ -90,17 +93,17 @@ class Kaspa extends StatelessWidget {
           create:
               (context) => AppInitializer.instanceLocator.get<DashboardCubit>(),
         ),
-          BlocProvider(
+        BlocProvider(
           create:
-              (context) => AppInitializer.instanceLocator.get<FarmCropActivityCubit>(),
+              (context) =>
+                  AppInitializer.instanceLocator.get<FarmCropActivityCubit>(),
         ),
         BlocProvider(
           create:
               (context) => AppInitializer.instanceLocator.get<FarmVisitCubit>(),
         ),
-         BlocProvider(
-          create:
-              (context) => AppInitializer.instanceLocator.get<FarmCubit>(),
+        BlocProvider(
+          create: (context) => AppInitializer.instanceLocator.get<FarmCubit>(),
         ),
         BlocProvider(
           create:
@@ -163,6 +166,13 @@ class Kaspa extends StatelessWidget {
                   AppInitializer.instanceLocator.get<ResetPasswordCubit>(),
         ),
 
+          BlocProvider(
+          create:
+              (context) =>
+                  AppInitializer.instanceLocator.get<ThemeCubit>(),
+        ),
+
+
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<WardCubit>(),
         ),
@@ -184,43 +194,48 @@ class Kaspa extends StatelessWidget {
         ensureScreenSize: true,
         fontSizeResolver: FontSizeResolvers.height,
         rebuildFactor: (old, data) => true,
-        builder:
-            (context, child) => GlobalLoaderOverlay(
-              overlayColor: Colors.white.withAlpha((0.51 * 255).toInt()),
-              overlayWholeScreen: true,
-              child: MaterialApp.router(
-                debugShowCheckedModeBanner: false,
-                title: 'Kaspa',
-                color: AppColors.primaryGreen,
-                routerConfig: AppRouter.router,
-                supportedLocales: context.supportedLocales,
-                localizationsDelegates: context.localizationDelegates,
-                locale: context.locale,
-                builder: (context, child) {
-                  ResponsiveBreakpoints.builder(
-                    child: child!,
-                    breakpoints: [
-                      const Breakpoint(start: 0, end: 450, name: MOBILE),
-                      const Breakpoint(start: 451, end: 800, name: TABLET),
-                      const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                      const Breakpoint(
-                        start: 1921,
-                        end: double.infinity,
-                        name: '4K',
-                      ),
-                    ],
-                  );
-                  return MediaQuery(
-                    data: MediaQuery.of(context).copyWith(
-                      textScaler: TextScaler.linear(
-                        MediaQuery.of(context).size.width > 428 ? 1 : 1.12,
-                      ),
+        builder: (context, child) {
+          final appTheme = AppTheme();
+          return GlobalLoaderOverlay(
+            overlayColor: Colors.white.withAlpha((0.51 * 255).toInt()),
+            overlayWholeScreen: true,
+            child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Kaspa',
+              color: AppColors.primaryGreen,
+              themeMode: ThemeMode.light,
+              theme: appTheme.lightTheme,
+              darkTheme: appTheme.darkTheme,
+              routerConfig: AppRouter.router,
+              supportedLocales: context.supportedLocales,
+              localizationsDelegates: context.localizationDelegates,
+              locale: context.locale,
+              builder: (context, child) {
+                ResponsiveBreakpoints.builder(
+                  child: child!,
+                  breakpoints: [
+                    const Breakpoint(start: 0, end: 450, name: MOBILE),
+                    const Breakpoint(start: 451, end: 800, name: TABLET),
+                    const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                    const Breakpoint(
+                      start: 1921,
+                      end: double.infinity,
+                      name: '4K',
                     ),
-                    child: child,
-                  );
-                },
-              ),
+                  ],
+                );
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    textScaler: TextScaler.linear(
+                      MediaQuery.of(context).size.width > 428 ? 1 : 1.12,
+                    ),
+                  ),
+                  child: child,
+                );
+              },
             ),
+          );
+        },
       ),
     );
   }

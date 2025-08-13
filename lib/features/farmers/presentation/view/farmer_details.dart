@@ -27,7 +27,7 @@ class FarmerDetailsView extends StatelessWidget
 
   Widget _body(BuildContext context) {
     return Container(
-      decoration: Styles.colorComboDecoration(),
+      decoration: Styles.colorComboDecoration(context),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

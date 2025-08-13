@@ -12,15 +12,12 @@ class HomeView extends StatelessWidget implements HomeViewContract {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      home: Scaffold(
+    return  Scaffold(
         bottomNavigationBar: _navBar(context),
         backgroundColor: AppColors.primaryBackground,
         body: controller.widgetOptions.elementAt(controller.selectedIndex),
-      ),
-    );
+      );
+    
   }
 
   Widget _navBar(context) {

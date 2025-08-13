@@ -24,7 +24,7 @@ const REG_EXP_PHONE_NUMBER =
 const KEY_IS_USER_STILL_LOGGED_IN = "is_user_still_logged_in";
 const KEY_IS_USER_LOGGED_IN = "is_loggedin";
 const KEY_REMEMBER_ME = "remember_me";
-
+const KEY_THEME_SETTING = "theme_setting";
 const SESSION_KEY_EMAIL_ADDRESS = "email_address";
 
 const TABLE_WAREHOUSE = "warehouses";
