@@ -79,8 +79,7 @@ class FarmerDetailsView extends StatelessWidget
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                (controller.farmer.cooperative?.name ??
-                                        'N/A')
+                                (controller.farmer.cooperative?.name ?? 'N/A')
                                     .toText(
                                       translate: false,
                                       fontSize: 12,
@@ -210,7 +209,7 @@ class FarmerDetailsView extends StatelessWidget
                               children: [
                                 "NOK Relationship".toText(
                                   fontSize: 14,
-                                     translate: false,
+                                  translate: false,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
@@ -229,7 +228,7 @@ class FarmerDetailsView extends StatelessWidget
                               children: [
                                 "NOK Phone".toText(
                                   fontSize: 14,
-                                     translate: false,
+                                  translate: false,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 8.horizontalSpace,
@@ -246,154 +245,155 @@ class FarmerDetailsView extends StatelessWidget
                           ],
                         ),
                       ),
-                      16.verticalSpace,
-                      CustomTile(
-                        title: "Financial details",
-                        body: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                "wallet_balance".toText(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                8.horizontalSpace,
-                                Expanded(
-                                  child: (controller.farmer.lastName ??
-                                          'NGN 60,000.00')
-                                      .toText(translate: false, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            12.verticalSpace,
-                            Row(
-                              children: [
-                                "credit_score".toText(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                8.horizontalSpace,
-                                Expanded(
-                                  child: (controller.farmer.gender ??
-                                          'Not specified')
-                                      .toText(translate: false, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            12.verticalSpace,
-                            Row(
-                              children: [
-                                "account_details".toText(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                8.horizontalSpace,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    (controller
-                                                .farmer
-                                                .bankDetails
-                                                ?.accountNumber ??
-                                            'Not specified')
-                                        .toText(translate: false, fontSize: 14),
-                                    (controller
-                                                .farmer
-                                                .bankDetails
-                                                ?.accountName ??
-                                            'Not specified')
-                                        .toText(translate: false, fontSize: 14),
-                                    SizedBox(
-                                      width: 210.w,
-                                      child: (controller
-                                                  .farmer
-                                                  .bankDetails
-                                                  ?.bank
-                                                  ?.name ??
-                                              'Not specified')
-                                          .toText(
-                                            textOverflow: TextOverflow.ellipsis,
-                                            translate: false,
-                                            fontSize: 14,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                // Expanded(
-                                //   child: (controller.farmer.gender ?? 'Not specified').toText(
-                                //     translate: false,
-                                //     fontSize: 14,
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                     
-                      16.verticalSpace,
-                      CustomTile(
-                        title: "Farmer's Loan",
-                        body: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                "wallet_balance".toText(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                8.horizontalSpace,
-                                Expanded(
-                                  child: (controller.farmer.lastName ??
-                                          'NGN 60,000.00')
-                                      .toText(translate: false, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            12.verticalSpace,
-                            Row(
-                              children: [
-                                "credit_score".toText(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                8.horizontalSpace,
-                                Expanded(
-                                  child: (controller.farmer.gender ??
-                                          'Not specified')
-                                      .toText(translate: false, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            12.verticalSpace,
-                            Row(
-                              children: [
-                                "account_details".toText(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                8.horizontalSpace,
-                                Column(
-                                  children: [
-                                    (controller.farmer.accountNumber ??
-                                            'Not specified')
-                                        .toText(translate: false, fontSize: 14),
-                                    (controller.farmer.accountName ??
-                                            'Not specified')
-                                        .toText(translate: false, fontSize: 14),
-                                    ('UBA').toText(
-                                      translate: false,
-                                      fontSize: 14,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+
+                      // 16.verticalSpace,
+                      // CustomTile(
+                      //   title: "Financial details",
+                      //   body: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       Row(
+                      //         children: [
+                      //           "wallet_balance".toText(
+                      //             fontSize: 14,
+                      //             fontWeight: FontWeight.w600,
+                      //           ),
+                      //           8.horizontalSpace,
+                      //           Expanded(
+                      //             child: (controller.farmer.lastName ??
+                      //                     'NGN 60,000.00')
+                      //                 .toText(translate: false, fontSize: 14),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       12.verticalSpace,
+                      //       Row(
+                      //         children: [
+                      //           "credit_score".toText(
+                      //             fontSize: 14,
+                      //             fontWeight: FontWeight.w600,
+                      //           ),
+                      //           8.horizontalSpace,
+                      //           Expanded(
+                      //             child: (controller.farmer.gender ??
+                      //                     'Not specified')
+                      //                 .toText(translate: false, fontSize: 14),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       12.verticalSpace,
+                      //       Row(
+                      //         children: [
+                      //           "account_details".toText(
+                      //             fontSize: 14,
+                      //             fontWeight: FontWeight.w600,
+                      //           ),
+                      //           8.horizontalSpace,
+                      //           Column(
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //               (controller
+                      //                           .farmer
+                      //                           .bankDetails
+                      //                           ?.accountNumber ??
+                      //                       'Not specified')
+                      //                   .toText(translate: false, fontSize: 14),
+                      //               (controller
+                      //                           .farmer
+                      //                           .bankDetails
+                      //                           ?.accountName ??
+                      //                       'Not specified')
+                      //                   .toText(translate: false, fontSize: 14),
+                      //               SizedBox(
+                      //                 width: 210.w,
+                      //                 child: (controller
+                      //                             .farmer
+                      //                             .bankDetails
+                      //                             ?.bank
+                      //                             ?.name ??
+                      //                         'Not specified')
+                      //                     .toText(
+                      //                       textOverflow: TextOverflow.ellipsis,
+                      //                       translate: false,
+                      //                       fontSize: 14,
+                      //                     ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           // Expanded(
+                      //           //   child: (controller.farmer.gender ?? 'Not specified').toText(
+                      //           //     translate: false,
+                      //           //     fontSize: 14,
+                      //           //   ),
+                      //           // ),
+                      //         ],
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+
+                      // 16.verticalSpace,
+                      // CustomTile(
+                      //   title: "Farmer's Loan",
+                      //   body: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       Row(
+                      //         children: [
+                      //           "wallet_balance".toText(
+                      //             fontSize: 14,
+                      //             fontWeight: FontWeight.w600,
+                      //           ),
+                      //           8.horizontalSpace,
+                      //           Expanded(
+                      //             child: (controller.farmer.lastName ??
+                      //                     'NGN 60,000.00')
+                      //                 .toText(translate: false, fontSize: 14),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       12.verticalSpace,
+                      //       Row(
+                      //         children: [
+                      //           "credit_score".toText(
+                      //             fontSize: 14,
+                      //             fontWeight: FontWeight.w600,
+                      //           ),
+                      //           8.horizontalSpace,
+                      //           Expanded(
+                      //             child: (controller.farmer.gender ??
+                      //                     'Not specified')
+                      //                 .toText(translate: false, fontSize: 14),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       12.verticalSpace,
+                      //       Row(
+                      //         children: [
+                      //           "account_details".toText(
+                      //             fontSize: 14,
+                      //             fontWeight: FontWeight.w600,
+                      //           ),
+                      //           8.horizontalSpace,
+                      //           Column(
+                      //             children: [
+                      //               (controller.farmer.accountNumber ??
+                      //                       'Not specified')
+                      //                   .toText(translate: false, fontSize: 14),
+                      //               (controller.farmer.accountName ??
+                      //                       'Not specified')
+                      //                   .toText(translate: false, fontSize: 14),
+                      //               ('UBA').toText(
+                      //                 translate: false,
+                      //                 fontSize: 14,
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -410,7 +410,6 @@ class FarmerDetailsView extends StatelessWidget
     const String deleteAction = 'delete';
     const String editAction = 'edit';
 
-
     return PopupMenuButton<String>(
       icon: SvgPicture.asset(AppIcon.more),
       color: Colors.white,
@@ -418,7 +417,10 @@ class FarmerDetailsView extends StatelessWidget
       onSelected: (String item) {
         switch (item) {
           case viewFarmAction:
-            pushTo(FarmerFarmLocationScreen(farmer: controller.farmer), context);
+            pushTo(
+              FarmerFarmLocationScreen(farmer: controller.farmer),
+              context,
+            );
             break;
           case deleteAction:
             debugPrint('Delete cooperative selected');
