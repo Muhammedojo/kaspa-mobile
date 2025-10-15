@@ -243,7 +243,7 @@ class RegisterFarmerView extends StatelessWidget
                                         borderRadius: const BorderRadius.all(
                                           Radius.zero,
                                         ),
-                                        value: controller.selectedGender,
+                                        initialValue: controller.selectedGender,
                                         onChanged: (newValue) {
                                           controller.onSelectGender(newValue);
                                         },
@@ -555,7 +555,7 @@ class RegisterFarmerView extends StatelessWidget
                                           ),
                                         );
                                       }).toList(),
-                                  value: currentSelectedWard,
+                                  initialValue: currentSelectedWard,
                                   onChanged:
                                       isDisabled
                                           ? null
@@ -812,7 +812,7 @@ class RegisterFarmerView extends StatelessWidget
                             child: DropdownButtonFormField<String>(
                               validator: ValidationBuilder().build(),
                               borderRadius: const BorderRadius.all(Radius.zero),
-                              value: controller.selectedNokRelationship,
+                              initialValue: controller.selectedNokRelationship,
                               onChanged: (newValue) {
                                 controller.onSelectNokRelationship(newValue);
                               },
@@ -880,7 +880,7 @@ class RegisterFarmerView extends StatelessWidget
                                             ),
                                           );
                                         }).toList(),
-                                    value: controller.selectedBank,
+                                    initialValue: controller.selectedBank,
                                     onChanged: (newValue) {
                                       controller.onSelectBank(newValue!);
                                     },

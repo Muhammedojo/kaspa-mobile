@@ -128,10 +128,10 @@ class AppTheme {
       ),
     );
 
-    darkTheme = ThemeData(
+    darkTheme = ThemeData(  
       useMaterial3: true,
       brightness: Brightness.dark,
-      primaryColor: AppColors.primaryGreen,
+      primaryColor: AppColors.primaryGreen.withAlpha((0.25 * 255).toInt()),
       scaffoldBackgroundColor: AppColors.accentElement,
       // splashColor: Colors.transparent,
       // highlightColor: Colors.transparent,

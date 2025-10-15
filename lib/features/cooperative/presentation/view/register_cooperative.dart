@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kaspa/core/utils/extensions.dart';
+import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/button.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/ward.dart';
@@ -222,7 +222,7 @@ class RegisterCooperativeView extends StatelessWidget
                                   ),
                                 );
                               }).toList(),
-                          value: currentSelectedWard,
+                          initialValue: currentSelectedWard,
                           onChanged:
                               isDisabled
                                   ? null

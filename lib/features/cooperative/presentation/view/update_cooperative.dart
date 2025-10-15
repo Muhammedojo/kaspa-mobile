@@ -222,7 +222,7 @@ class UpdateCooperativeView extends StatelessWidget
                                   ),
                                 );
                               }).toList(),
-                          value: currentSelectedWard,
+                          initialValue: currentSelectedWard,
                           onChanged:
                               isDisabled
                                   ? null

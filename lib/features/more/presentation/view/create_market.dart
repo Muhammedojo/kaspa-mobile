@@ -80,7 +80,7 @@ class CreateMarketView extends StatelessWidget
                                   child: (e.name!).toText(translate: false),
                                 );
                               }).toList(),
-                          value: controller.selectedWard,
+                          initialValue: controller.selectedWard,
                           onChanged: (newValue) {
                             controller.onSelectWard(newValue!);
                           },
@@ -120,7 +120,7 @@ class CreateMarketView extends StatelessWidget
                                   child: (e.name!).toText(translate: false),
                                 );
                               }).toList(),
-                          value: controller.selectedLga,
+                          initialValue: controller.selectedLga,
                           onChanged: (newValue) {
                             controller.onSelectLga(newValue!);
                           },

@@ -244,7 +244,7 @@ class CropActivitiesView extends StatelessWidget
       cropName: cropName,
       lastActivity: lastActivity,
       weatherData: weatherData,
-    );
+    );  
   }
 
   void _showAdvisoryDialog(BuildContext context, String advisoryText) {

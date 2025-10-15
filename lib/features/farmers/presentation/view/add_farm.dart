@@ -223,7 +223,7 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                                   ),
                                 );
                               }).toList(),
-                          value: currentSelectedWard,
+                          initialValue: currentSelectedWard,
                           onChanged:
                               isDisabled
                                   ? null
@@ -246,7 +246,7 @@ class AddFarmView extends StatelessWidget implements AddFarmViewContract {
                     child: DropdownButtonFormField<String>(
                       validator: ValidationBuilder().required().build(),
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      value: controller.selectedOwnershipType,
+                      initialValue: controller.selectedOwnershipType,
                       onChanged: (newValue) {
                         controller.onSelectOwnershipType(newValue);
                       },

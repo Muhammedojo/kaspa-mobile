@@ -20,7 +20,7 @@ class DefaultFirebaseOptions {
     projectId: 'kaspa-38f73',
     // databaseURL: 'YOUR_DATABASE_URL',
     storageBucket: 'kaspa-38f73.firebasestorage.app',
-  );
+  ); 
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDP9Gmds6IngAiQDcUeS5C7wCRBMiDe-ck',

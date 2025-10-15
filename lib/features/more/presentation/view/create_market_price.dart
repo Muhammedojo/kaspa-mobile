@@ -179,7 +179,7 @@ class CreateMarketPriceView extends StatelessWidget
                                 child: (e.name ?? '').toText(translate: false),
                               );
                             }).toList(),
-                        value: currentSelectedMarket,
+                        initialValue: currentSelectedMarket,
                         onChanged:
                             isDisabled
                                 ? null

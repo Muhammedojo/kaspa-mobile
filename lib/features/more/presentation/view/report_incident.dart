@@ -77,7 +77,7 @@ class ReportIncidentView extends StatelessWidget
                     child: DropdownButtonFormField<String>(
                       validator: ValidationBuilder().required().build(),
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      value: controller.selectedCategory,
+                      initialValue: controller.selectedCategory,
                       onChanged: (newValue) {
                         controller.onSelectCategory(newValue);
                       },
@@ -244,7 +244,7 @@ class ReportIncidentView extends StatelessWidget
                                   ),
                                 );
                               }).toList(),
-                          value: currentSelectedWard,
+                          initialValue: currentSelectedWard,
                           onChanged:
                               isDisabled
                                   ? null

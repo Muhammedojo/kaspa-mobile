@@ -192,7 +192,7 @@ class CreateFarmVisitView extends StatelessWidget
                                     .toText(translate: false),
                               );
                             }).toList(),
-                        value: controller.selectedPlot,
+                        initialValue: controller.selectedPlot,
                         onChanged:
                             isDisabled
                                 ? null
