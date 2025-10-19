@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import '../../../../core/component/button.dart';
+import '../../../../core/data/model/crop.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/utils/extensions.dart';
@@ -199,10 +200,10 @@ class CreateMarketPriceView extends StatelessWidget
                 ),
                 Padding(
                   padding: REdgeInsets.only(top: 5.0),
-                  child: BlocBuilder<ProductCubit, ProductState>(
+                  child: BlocBuilder<CropCubit, CropState>(
                     builder: (context, state) {
-                      if (state is ProductLoaded) {
-                        return DropdownButtonFormField(
+                      if (state is CropLoaded) {
+                        return DropdownButtonFormField<Crop>(
                           icon: 'arrowDown'.toSvg(),
                           style: Styles.x14dp_4A4A4A(14.0.sp),
                           decoration:
@@ -210,18 +211,20 @@ class CreateMarketPriceView extends StatelessWidget
                                 'choose_an_option'.tr(),
                                 '',
                               ),
-
                           items:
-                              state.productList.map((e) {
-                                return DropdownMenuItem(
+                              state.cropList.map((e) {
+                                return DropdownMenuItem<Crop>(
                                   value: e,
-                                  child: (e.name ?? '').toText(
+                                  child: (e.variety ?? e.product?.name ?? '')
+                                      .toText(
                                     translate: false,
                                   ),
                                 );
                               }).toList(),
                           onChanged: (newValue) {
-                            controller.onSelectCrop(newValue!);
+                            if (newValue != null) {
+                              controller.onSelectCrop(newValue);
+                            }
                           },
                         );
                       }
@@ -232,6 +235,8 @@ class CreateMarketPriceView extends StatelessWidget
                       );
                     },
                   ),
+               
+               
                 ),
                 16.verticalSpace,
                 'price'.toText(fontSize: 14, fontWeight: FontWeight.w600),

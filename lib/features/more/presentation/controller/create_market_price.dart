@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import '../../../../core/data/model/crop.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/market_data.dart';
@@ -42,13 +43,13 @@ class _CreateMarketPriceScreenState extends State<CreateMarketPriceScreen>
   Lga? selectedLga;
 
   @override
-  Product? selectedCrop;
+  Crop? selectedCrop;
 
   @override
   Market? selectedMarket;
 
   @override
-  void onSelectCrop(Product? newValue) {
+  void onSelectCrop(Crop? newValue) {
     setState(() {
       selectedCrop = newValue!;
     });

@@ -183,8 +183,8 @@ class HomePageView extends StatelessWidget implements HomePageViewContract {
                           () => controller.farmVisit(),
                         ),
                         _buildQuickActionButton(
-                          'Price',
-                          'Updates',
+                          'Market',
+                          'Insights',
                           AppIcon.cal,
                           AppColors.bgYellow,
                           () => controller.priceUpdate(),
