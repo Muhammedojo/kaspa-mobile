@@ -7,6 +7,8 @@ class LastRequestTime {
   String? bankUrl;
   String? crop;
   String? cropUrl;
+  String? dodChange;
+  String? dodChangeUrl;
   String? cooperative;
   String? cooperativeUrl;
   String? cropCalendar;
@@ -63,6 +65,8 @@ LastRequestTime _$LastRequestTimeFromJson(Map<String, dynamic> json) {
   obj.bankUrl = json['bankUrl'];
   obj.crop = json['crop'];
   obj.cropUrl = json['cropUrl'];
+  obj.dodChange = json['dodChange'];
+  obj.dodChangeUrl = json['dodChangeUrl'];
   obj.cooperative = json['cooperative'];
   obj.cooperativeUrl = json['cooperativeUrl'];
   obj.cropCalendar = json['cropCalendar'];
@@ -154,5 +158,5 @@ Map<String, dynamic> _$LastRequestTimeToJson(LastRequestTime obj) =>
       KEY_FARM_VISIT: obj.farmVisit,
       KEY_FARM_VISIT_URL: obj.farmVisitUrl,
       KEY_FARM_CROP_ACTIVITY: obj.farmCropActivity,
-      KEY_FARM_CROP_ACTIVITY_URL: obj.farmCropActivityUrl
+      KEY_FARM_CROP_ACTIVITY_URL: obj.farmCropActivityUrl,
     };

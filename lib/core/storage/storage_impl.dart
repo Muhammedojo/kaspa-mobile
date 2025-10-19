@@ -7,6 +7,7 @@ import '../data/model/crop.dart';
 import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
+import '../data/model/dod_change.dart';
 import '../data/model/farm_visit.dart';
 import '../data/model/farmer.dart';
 import '../data/model/incident_report.dart';
@@ -93,6 +94,9 @@ class LocalStorageImpl implements LocalStorage {
 
   @override
   Future<List<Crop>> getCrop() => databaseStorage.getCrop();
+
+  @override
+  Future<List<DodChange>> getDodChange() => databaseStorage.getDodChange();
 
   @override
   Future<List<CropCalendar>> getCropCalendar() =>
@@ -199,6 +203,10 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> saveCrop(List<Crop> objectList) =>
       databaseStorage.saveCrop(objectList);
+
+        @override
+  Future<void> saveDodChange(List<DodChange> objectList) =>
+      databaseStorage.saveDodChange(objectList);
 
   @override
   Future<void> saveCropCalendar(List<CropCalendar> objectList) =>

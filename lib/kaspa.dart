@@ -20,6 +20,7 @@ import 'features/home/presentation/bloc/advisory_message/cubit.dart';
 import 'features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import 'features/home/presentation/bloc/bloc.dart';
 import 'features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
+import 'features/home/presentation/bloc/dod_change/dod_cubit.dart';
 import 'features/home/presentation/bloc/farm/farm_cubit.dart';
 import 'features/home/presentation/bloc/farm_crop_activity/farm_crop_activity_cubit.dart';
 import 'features/home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
@@ -78,6 +79,9 @@ class Kaspa extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<CropCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => AppInitializer.instanceLocator.get<DodCubit>(),
         ),
         BlocProvider(
           create:
@@ -166,12 +170,9 @@ class Kaspa extends StatelessWidget {
                   AppInitializer.instanceLocator.get<ResetPasswordCubit>(),
         ),
 
-          BlocProvider(
-          create:
-              (context) =>
-                  AppInitializer.instanceLocator.get<ThemeCubit>(),
+        BlocProvider(
+          create: (context) => AppInitializer.instanceLocator.get<ThemeCubit>(),
         ),
-
 
         BlocProvider(
           create: (context) => AppInitializer.instanceLocator.get<WardCubit>(),

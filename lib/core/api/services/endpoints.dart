@@ -41,3 +41,4 @@ const wardListEndpoint = "locations/wards";
 const bankListEndpoint = "banks";
 const dashboardEndpoint = "dashboard/home";
 const userListEndpoint = "users";
+const dodChangeListEndpoint = "market-data/insights/dod-change-list";

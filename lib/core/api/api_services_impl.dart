@@ -10,6 +10,7 @@ import '../data/model/advisory.dart';
 import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
 import '../data/model/dashboard_data.dart';
+import '../data/model/dod_change.dart';
 import '../data/model/farm.dart';
 import '../data/model/farm_visit.dart';
 import '../data/model/forgot_password.dart';
@@ -130,6 +131,27 @@ class ApiServicesImpl implements ApiServices {
         final cropList = (data as List).map((e) => Crop.fromJson(e)).toList();
         GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
         return cropList;
+      },
+      null,
+      headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},
+    );
+  }
+
+    @override
+  Future<Either<Failure, ApiResponse<List<DodChange>>>> getDodChangeList(
+    String? endpoint,
+  ) async {
+    var lastRequestTime =
+        await GetIt.I.get<LocalStorage>().getLastRequestTime();
+    return apiClient.request<List<DodChange>>(
+      endpoint ?? dodChangeListEndpoint,
+      MethodType.get,
+      (data, {String? realUri}) {
+        lastRequestTime.dodChange = currentDateTime();
+        lastRequestTime.dodChangeUrl = realUri;
+        final dodChangeList = (data as List).map((e) => DodChange.fromJson(e)).toList();
+        GetIt.I.get<LocalStorage>().saveLastRequestObject(lastRequestTime);
+        return dodChangeList;
       },
       null,
       headerOption: {KEY_HTTP_LAST_REQUEST_TIME: lastRequestTime},

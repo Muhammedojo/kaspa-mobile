@@ -31,6 +31,7 @@ import '../../features/home/presentation/bloc/advisory_message/cubit.dart';
 import '../../features/home/presentation/bloc/api_request/api_request_bloc.dart';
 import '../../features/home/presentation/bloc/bloc.dart';
 import '../../features/home/presentation/bloc/crop_calendar/crop_calendar_cubit.dart';
+import '../../features/home/presentation/bloc/dod_change/dod_cubit.dart';
 import '../../features/home/presentation/bloc/farm/farm_cubit.dart';
 import '../../features/home/presentation/bloc/farm_crop_activity/farm_crop_activity_cubit.dart';
 import '../../features/home/presentation/bloc/farm_visit/farm_visit_cubit.dart';
@@ -158,6 +159,13 @@ class AppInitializer {
 
     instanceLocator.registerLazySingleton<CropCubit>(
       () => CropCubit(
+        repository: instanceLocator(),
+        databaseManager: instanceLocator(),
+      ),
+    );
+
+     instanceLocator.registerLazySingleton<DodCubit>(
+      () => DodCubit(
         repository: instanceLocator(),
         databaseManager: instanceLocator(),
       ),

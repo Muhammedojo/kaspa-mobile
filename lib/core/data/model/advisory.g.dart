@@ -17,73 +17,79 @@ const AdvisorySchema = CollectionSchema(
   name: r'Advisory',
   id: 5612891639173554239,
   properties: {
-    r'created': PropertySchema(
+    r'audience': PropertySchema(
       id: 0,
+      name: r'audience',
+      type: IsarType.object,
+      target: r'AudienceData',
+    ),
+    r'created': PropertySchema(
+      id: 1,
       name: r'created',
       type: IsarType.string,
     ),
     r'createdInEpsilon': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'createdInEpsilon',
       type: IsarType.long,
     ),
     r'createdOffline': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'createdOffline',
       type: IsarType.string,
     ),
     r'description': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'description',
       type: IsarType.string,
     ),
     r'documentUrl': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'documentUrl',
       type: IsarType.string,
     ),
     r'errorMessage': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'errorMessage',
       type: IsarType.string,
     ),
     r'group': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'group',
       type: IsarType.string,
     ),
     r'hasSynced': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'hasSynced',
       type: IsarType.bool,
     ),
     r'lastPulledTime': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'lastPulledTime',
       type: IsarType.string,
     ),
     r'pk': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'pk',
       type: IsarType.long,
     ),
     r'priority': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'priority',
       type: IsarType.string,
     ),
     r'recommendedAction': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'recommendedAction',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'title',
       type: IsarType.string,
     ),
     r'updated': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'updated',
       type: IsarType.string,
     )
@@ -148,7 +154,7 @@ const AdvisorySchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'AudienceData': AudienceDataSchema},
   getId: _advisoryGetId,
   getLinks: _advisoryGetLinks,
   attach: _advisoryAttach,
@@ -161,6 +167,14 @@ int _advisoryEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.audience;
+    if (value != null) {
+      bytesCount += 3 +
+          AudienceDataSchema.estimateSize(
+              value, allOffsets[AudienceData]!, allOffsets);
+    }
+  }
   {
     final value = object.created;
     if (value != null) {
@@ -236,20 +250,26 @@ void _advisorySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.created);
-  writer.writeLong(offsets[1], object.createdInEpsilon);
-  writer.writeString(offsets[2], object.createdOffline);
-  writer.writeString(offsets[3], object.description);
-  writer.writeString(offsets[4], object.documentUrl);
-  writer.writeString(offsets[5], object.errorMessage);
-  writer.writeString(offsets[6], object.group);
-  writer.writeBool(offsets[7], object.hasSynced);
-  writer.writeString(offsets[8], object.lastPulledTime);
-  writer.writeLong(offsets[9], object.pk);
-  writer.writeString(offsets[10], object.priority);
-  writer.writeString(offsets[11], object.recommendedAction);
-  writer.writeString(offsets[12], object.title);
-  writer.writeString(offsets[13], object.updated);
+  writer.writeObject<AudienceData>(
+    offsets[0],
+    allOffsets,
+    AudienceDataSchema.serialize,
+    object.audience,
+  );
+  writer.writeString(offsets[1], object.created);
+  writer.writeLong(offsets[2], object.createdInEpsilon);
+  writer.writeString(offsets[3], object.createdOffline);
+  writer.writeString(offsets[4], object.description);
+  writer.writeString(offsets[5], object.documentUrl);
+  writer.writeString(offsets[6], object.errorMessage);
+  writer.writeString(offsets[7], object.group);
+  writer.writeBool(offsets[8], object.hasSynced);
+  writer.writeString(offsets[9], object.lastPulledTime);
+  writer.writeLong(offsets[10], object.pk);
+  writer.writeString(offsets[11], object.priority);
+  writer.writeString(offsets[12], object.recommendedAction);
+  writer.writeString(offsets[13], object.title);
+  writer.writeString(offsets[14], object.updated);
 }
 
 Advisory _advisoryDeserialize(
@@ -259,21 +279,26 @@ Advisory _advisoryDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Advisory();
-  object.created = reader.readStringOrNull(offsets[0]);
-  object.createdInEpsilon = reader.readLongOrNull(offsets[1]);
-  object.createdOffline = reader.readStringOrNull(offsets[2]);
-  object.description = reader.readStringOrNull(offsets[3]);
-  object.documentUrl = reader.readStringOrNull(offsets[4]);
-  object.errorMessage = reader.readStringOrNull(offsets[5]);
-  object.group = reader.readStringOrNull(offsets[6]);
-  object.hasSynced = reader.readBoolOrNull(offsets[7]);
+  object.audience = reader.readObjectOrNull<AudienceData>(
+    offsets[0],
+    AudienceDataSchema.deserialize,
+    allOffsets,
+  );
+  object.created = reader.readStringOrNull(offsets[1]);
+  object.createdInEpsilon = reader.readLongOrNull(offsets[2]);
+  object.createdOffline = reader.readStringOrNull(offsets[3]);
+  object.description = reader.readStringOrNull(offsets[4]);
+  object.documentUrl = reader.readStringOrNull(offsets[5]);
+  object.errorMessage = reader.readStringOrNull(offsets[6]);
+  object.group = reader.readStringOrNull(offsets[7]);
+  object.hasSynced = reader.readBoolOrNull(offsets[8]);
   object.id = id;
-  object.lastPulledTime = reader.readStringOrNull(offsets[8]);
-  object.pk = reader.readLong(offsets[9]);
-  object.priority = reader.readStringOrNull(offsets[10]);
-  object.recommendedAction = reader.readStringOrNull(offsets[11]);
-  object.title = reader.readStringOrNull(offsets[12]);
-  object.updated = reader.readStringOrNull(offsets[13]);
+  object.lastPulledTime = reader.readStringOrNull(offsets[9]);
+  object.pk = reader.readLong(offsets[10]);
+  object.priority = reader.readStringOrNull(offsets[11]);
+  object.recommendedAction = reader.readStringOrNull(offsets[12]);
+  object.title = reader.readStringOrNull(offsets[13]);
+  object.updated = reader.readStringOrNull(offsets[14]);
   return object;
 }
 
@@ -285,11 +310,15 @@ P _advisoryDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectOrNull<AudienceData>(
+        offset,
+        AudienceDataSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
-    case 2:
       return (reader.readStringOrNull(offset)) as P;
+    case 2:
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
@@ -299,18 +328,20 @@ P _advisoryDeserializeProp<P>(
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 9:
-      return (reader.readLong(offset)) as P;
-    case 10:
       return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readLong(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
+      return (reader.readStringOrNull(offset)) as P;
+    case 14:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -806,6 +837,22 @@ extension AdvisoryQueryWhere on QueryBuilder<Advisory, Advisory, QWhereClause> {
 
 extension AdvisoryQueryFilter
     on QueryBuilder<Advisory, Advisory, QFilterCondition> {
+  QueryBuilder<Advisory, Advisory, QAfterFilterCondition> audienceIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'audience',
+      ));
+    });
+  }
+
+  QueryBuilder<Advisory, Advisory, QAfterFilterCondition> audienceIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'audience',
+      ));
+    });
+  }
+
   QueryBuilder<Advisory, Advisory, QAfterFilterCondition> createdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2667,7 +2714,14 @@ extension AdvisoryQueryFilter
 }
 
 extension AdvisoryQueryObject
-    on QueryBuilder<Advisory, Advisory, QFilterCondition> {}
+    on QueryBuilder<Advisory, Advisory, QFilterCondition> {
+  QueryBuilder<Advisory, Advisory, QAfterFilterCondition> audience(
+      FilterQuery<AudienceData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'audience');
+    });
+  }
+}
 
 extension AdvisoryQueryLinks
     on QueryBuilder<Advisory, Advisory, QFilterCondition> {}
@@ -3131,6 +3185,12 @@ extension AdvisoryQueryProperty
   QueryBuilder<Advisory, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Advisory, AudienceData?, QQueryOperations> audienceProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'audience');
     });
   }
 

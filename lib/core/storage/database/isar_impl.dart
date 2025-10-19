@@ -6,6 +6,7 @@ import '../../data/model/advisory.dart';
 import '../../data/model/crop_activities.dart';
 import '../../data/model/crop_calendar.dart';
 import '../../data/model/dashboard_data.dart';
+import '../../data/model/dod_change.dart';
 import '../../data/model/farm_visit.dart';
 import '../../data/model/incident_report.dart';
 import '../../data/model/insight.dart';
@@ -33,6 +34,7 @@ class IsarImpl implements DatabaseStorage {
           AdvisorySchema,
           BankSchema,
           CropSchema,
+          DodChangeSchema,
           CropActivitiesSchema,
           CropCalendarSchema,
           CooperativeSchema,
@@ -108,6 +110,20 @@ class IsarImpl implements DatabaseStorage {
     } catch (e) {
       debugPrint("Error retrieving crops: $e");
       return Future.value(<Crop>[]);
+    }
+  }
+
+   @override
+  Future<List<DodChange>> getDodChange() {
+    if (!_isar.isOpen) {
+      return Future.value(<DodChange>[]);
+    }
+    try {
+      final dodChange = _isar.dodChanges.where().findAllSync();
+      return Future.value(dodChange);
+    } catch (e) {
+      debugPrint("Error retrieving dod changes: $e");
+      return Future.value(<DodChange>[]);
     }
   }
 
@@ -447,6 +463,18 @@ class IsarImpl implements DatabaseStorage {
     }
     try {
       await _isar.writeTxn(() => _isar.crops.putAll(objectList));
+    } catch (e) {
+      debugPrint("Error saving crop: $e");
+    }
+  }
+
+    @override
+  Future<void> saveDodChange(List<DodChange> objectList) async {
+    if (!_isar.isOpen) {
+      return;
+    }
+    try {
+      await _isar.writeTxn(() => _isar.dodChanges.putAll(objectList));
     } catch (e) {
       debugPrint("Error saving crop: $e");
     }

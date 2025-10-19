@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:isar/isar.dart';
+import 'package:kaspa/core/data/model/dod_change.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/advisory.dart';
@@ -70,6 +71,15 @@ abstract class IHomeRepository {
   Future<void> saveCrop(List<Crop> cropList);
 
   Future<List<Crop>> getCrop();
+
+    //DOD CHANGE CUBIT CALLS
+  Future<Either<Failure, ApiResponse<List<DodChange>>>> getDodChangeList({
+    String? endpoint,
+  });
+
+  Future<void> saveDodChange(List<DodChange> dodChangeList);
+
+  Future<List<DodChange>> getDodChange();
 
   //CROP CALENDAR CUBIT CALLS
   Future<Either<Failure, ApiResponse<List<CropCalendar>>>> getCropCalendarList({

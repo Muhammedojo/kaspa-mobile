@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:kaspa/core/data/model/dod_change.dart';
 
 import '../data/model/advisory.dart';
 import '../data/model/bank.dart';
@@ -48,6 +49,7 @@ abstract class DatabaseStorage {
   Future<List<Advisory>> getAdvisoryMessage();
   Future<List<Bank>> getBank();
   Future<List<Crop>> getCrop();
+   Future<List<DodChange>> getDodChange();
   Future<List<CropCalendar>> getCropCalendar();
   Future<List<Cooperative>> getCooperative({
     String? searchTerm,
@@ -89,6 +91,7 @@ abstract class DatabaseStorage {
   Future<void> saveBank(List<Bank> objectList);
   Future<void> saveAdvisoryMessage(List<Advisory> objectList);
   Future<void> saveCrop(List<Crop> objectList);
+  Future<void> saveDodChange(List<DodChange> objectList);
   Future<void> saveCropCalendar(List<CropCalendar> objectList);
   Future<void> saveCooperative(List<Cooperative> objectList);
   Future<void> saveDashboard(List<DashboardData> objectList);

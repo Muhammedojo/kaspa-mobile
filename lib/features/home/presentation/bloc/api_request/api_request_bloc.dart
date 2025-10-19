@@ -7,6 +7,7 @@ import '../../../../farmers/presentation/bloc/bloc.dart';
 import '../advisory_message/cubit.dart';
 import '../bloc.dart';
 import '../crop_calendar/crop_calendar_cubit.dart';
+import '../dod_change/dod_cubit.dart';
 import '../farm_crop_activity/farm_crop_activity_cubit.dart';
 import '../farm_visit/farm_visit_cubit.dart';
 import '../farmer_dashboard/farmer_dashboard_cubit.dart';
@@ -195,6 +196,10 @@ class ApiRequestBloc extends Bloc<ApiRequestEvent, ApiRequestState> {
 
       case cropListEndpoint:
         AppInitializer.instanceLocator.get<CropCubit>().loadCrop();
+        break;
+
+      case dodChangeListEndpoint:
+        AppInitializer.instanceLocator.get<DodCubit>().loadDod();
         break;
 
       case cropCalendarListEndpoint:

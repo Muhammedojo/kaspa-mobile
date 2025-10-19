@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:isar/isar.dart';
+import 'package:kaspa/core/data/model/dod_change.dart';
 import '../../../core/api/api.dart';
 import '../../../core/api/exceptions/contracts/failure.dart';
 import '../../../core/data/model/advisory.dart';
@@ -28,8 +29,6 @@ class HomeRepository implements IHomeRepository {
 
   //API CALLS
 
-  
-
   @override
   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload) =>
       apiServices.getAdvisory(payload);
@@ -48,6 +47,11 @@ class HomeRepository implements IHomeRepository {
   Future<Either<Failure, ApiResponse<List<Crop>>>> getCropList({
     String? endpoint,
   }) => apiServices.getCropList(endpoint);
+
+  @override
+  Future<Either<Failure, ApiResponse<List<DodChange>>>> getDodChangeList({
+    String? endpoint,
+  }) => apiServices.getDodChangeList(endpoint);
 
   @override
   Future<Either<Failure, ApiResponse<List<CropCalendar>>>> getCropCalendarList({
@@ -171,13 +175,17 @@ class HomeRepository implements IHomeRepository {
 
   //GET LOCAL STORAGE CALLS
   @override
-  Future<List<Advisory>> getAdvisoryMessage() => localStorage.getAdvisoryMessage();
+  Future<List<Advisory>> getAdvisoryMessage() =>
+      localStorage.getAdvisoryMessage();
 
   @override
   Future<List<Bank>> getBank() => localStorage.getBank();
 
   @override
   Future<List<Crop>> getCrop() => localStorage.getCrop();
+
+  @override
+  Future<List<DodChange>> getDodChange() => localStorage.getDodChange();
 
   @override
   Future<List<CropCalendar>> getCropCalendar() =>
@@ -264,6 +272,9 @@ class HomeRepository implements IHomeRepository {
   Future<void> saveCrop(List<Crop> cropList) => localStorage.saveCrop(cropList);
 
   @override
+  Future<void> saveDodChange(List<DodChange> dodChangeList) => localStorage.saveDodChange(dodChangeList);
+
+  @override
   Future<void> saveCropCalendar(List<CropCalendar> cropCalendarList) =>
       localStorage.saveCropCalendar(cropCalendarList);
 
@@ -331,6 +342,4 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<void> saveLgaWeather(List<Weather> weatherList) =>
       localStorage.saveLgaWeather(weatherList);
-      
-     
 }

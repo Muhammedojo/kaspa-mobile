@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:kaspa/core/data/model/dod_change.dart';
 import '../data/model/advisory.dart';
 import '../data/model/crop_activities.dart';
 import '../data/model/crop_calendar.dart';
@@ -46,6 +47,10 @@ abstract class ApiServices {
   Future<Either<Failure, String>> getAdvisory(Map<String, dynamic> payload);
 
   Future<Either<Failure, ApiResponse<List<Crop>>>> getCropList(
+    String? endpoint,
+  );
+
+   Future<Either<Failure, ApiResponse<List<DodChange>>>> getDodChangeList(
     String? endpoint,
   );
 

@@ -45,7 +45,7 @@ class CropActivityView extends StatelessWidget
                             width: 48.sp,
                             height: 48.sp,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(24.r),
                             ),
                             child: controller.crop.getCropIcon(),
                           ),

@@ -143,9 +143,6 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                     ),
                   ),
 
-                  if (!controller.showFixedTabs)
-                    SliverToBoxAdapter(child: _buildTabBar()),
-
                   BlocBuilder<CropCalendarCubit, CropCalendarState>(
                     builder: (context, state) {
                       if (state is CropCalendarLoading) {
@@ -155,65 +152,21 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                       }
                       if (state is CropCalendarLoaded) {
                         List<CropCalendar> filteredList;
-                        String emptyListMessageKey = 'crop_list_empty';
-
-                        if (controller.selectedTabIndex == 0) {
-                          final uniqueCrops = <String, CropCalendar>{};
-                          for (var item in state.cropCalendarList) {
-                            final cropName = item.crop?.product?.name;
-                            if (cropName != null &&
-                                !uniqueCrops.containsKey(cropName)) {
-                              uniqueCrops[cropName] = item;
-                            }
+                        final uniqueCrops = <String, CropCalendar>{};
+                        for (var item in state.cropCalendarList) {
+                          final cropName = item.crop?.product?.name;
+                          if (cropName != null &&
+                              !uniqueCrops.containsKey(cropName)) {
+                            uniqueCrops[cropName] = item;
                           }
-                          filteredList = uniqueCrops.values.toList();
-                        } else if (controller.selectedTabIndex == 1) {
-                          filteredList =
-                              state.cropCalendarList
-                                  .where(
-                                    (item) =>
-                                        item.stage?.toLowerCase() == "planting",
-                                  )
-                                  .toList();
-                          if (state.cropCalendarList.isNotEmpty &&
-                              filteredList.isEmpty) {
-                            emptyListMessageKey = 'no_crops_in_planting_stage';
-                          }
-                        } else if (controller.selectedTabIndex == 2) {
-                          filteredList =
-                              state.cropCalendarList
-                                  .where(
-                                    (item) =>
-                                        item.stage?.toLowerCase() == "growing",
-                                  )
-                                  .toList();
-                          if (state.cropCalendarList.isNotEmpty &&
-                              filteredList.isEmpty) {
-                            emptyListMessageKey = 'no_crops_in_growing_stage';
-                          }
-                        } else if (controller.selectedTabIndex == 3) {
-                          filteredList =
-                              state.cropCalendarList
-                                  .where(
-                                    (item) =>
-                                        item.stage?.toLowerCase() ==
-                                        "harvesting",
-                                  )
-                                  .toList();
-                          if (state.cropCalendarList.isNotEmpty &&
-                              filteredList.isEmpty) {
-                            emptyListMessageKey =
-                                'no_crops_in_harvesting_stage';
-                          }
-                        } else {
-                          filteredList = state.cropCalendarList;
                         }
+                        filteredList = uniqueCrops.values.toList();
 
                         if (filteredList.isEmpty) {
                           return SliverToBoxAdapter(
                             child: Padding(
                               padding: REdgeInsets.symmetric(vertical: 15.0),
-                              child: ErrorWidgets(message: emptyListMessageKey),
+                              child: ErrorWidgets(message: 'Empty'),
                             ),
                           );
                         }
@@ -246,40 +199,6 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
                 ],
               ),
             ),
-            if (controller.showFixedTabs)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  color: AppColors.bgGreen.withAlpha((0.93 * 255).toInt()),
-                  child: SafeArea(
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.transparent,
-                          padding: REdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              12.horizontalSpace,
-                              'Crops currently in season'.toText(
-                                fontSize: 14,
-                                translate: false,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ],
-                          ),
-                        ),
-                        _buildTabBar(),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
           ],
         ),
       ),
@@ -317,45 +236,6 @@ class CalendarView extends StatelessWidget implements CalendarViewContract {
             color: isSelected ? Colors.white : AppColors.accentElement,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTabBar() {
-    return Container(
-      height: 60,
-      padding: REdgeInsets.symmetric(vertical: 8),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            _buildTab('All', 0),
-            _buildTab('Planting Stage', 1),
-            _buildTab('Growing Stage', 2),
-            _buildTab('Harvesting Stage', 3),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTab(String text, int index) {
-    bool isSelected = controller.selectedTabIndex == index;
-    return GestureDetector(
-      onTap: () {
-        controller.tabClick(index);
-      },
-      child: Container(
-        padding: REdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryBackground : Colors.grey[100],
-        ),
-        child: text.toText(
-          translate: false,
-          color: isSelected ? AppColors.colorPrimary : Colors.grey[700],
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
       ),
     );
   }

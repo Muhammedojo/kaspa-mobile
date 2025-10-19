@@ -16,6 +16,9 @@ class _CropActivityScreenState extends State<CropActivityScreen>
     implements CropActivityControllerContract {
   late final CropActivityViewContract view;
 
+   @override
+  int selectedTabIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +29,13 @@ class _CropActivityScreenState extends State<CropActivityScreen>
   @override
   void dispose() {
     super.dispose();
+  }
+
+ @override
+  void tabClick(int index) {
+    setState(() {
+      selectedTabIndex = index;
+    });
   }
 
   @override
