@@ -76,7 +76,7 @@ class RegisterFarmerView extends StatelessWidget
             child: Column(
               children: [
                 Padding(
-                  padding:REdgeInsets.symmetric(horizontal: 16.0),
+                  padding: REdgeInsets.symmetric(horizontal: 16.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Row(
@@ -259,7 +259,7 @@ class RegisterFarmerView extends StatelessWidget
                                         style: Styles.x14dp_4A4A4A(14.0.sp),
                                         decoration:
                                             Styles.textFormFieldDecorationBorderWithBackground(
-                                              'choose_an_option'.tr(),
+                                              'Choose Option',
                                               '',
                                             ),
                                         icon: 'arrowDown'.toSvg(),
@@ -566,8 +566,7 @@ class RegisterFarmerView extends StatelessWidget
                               },
                             ),
                           ),
-                          
-                          
+
                           16.verticalSpace,
                           'cooperative'.toText(
                             fontSize: 14,
@@ -1153,7 +1152,7 @@ class RegisterFarmerView extends StatelessWidget
                                     child: DottedBorder(
                                       color: AppColors.primaryGreen,
                                       radius: Radius.circular(8.r),
-                                       borderType: BorderType.RRect,
+                                      borderType: BorderType.RRect,
                                       strokeWidth: 2,
                                       dashPattern: const [10, 6],
                                       child: Container(
@@ -1220,7 +1219,7 @@ class RegisterFarmerView extends StatelessWidget
                           if (controller
                               .currentFarmLocationCoordinates
                               .isNotEmpty)
-                            controller.isFetchingLocation 
+                            controller.isFetchingLocation
                                 ? Center(
                                   child: Padding(
                                     padding: REdgeInsets.all(8.0),

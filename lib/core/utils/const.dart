@@ -419,7 +419,7 @@ const KEY_DATE = "date";
 const KEY_ACCESS_TOKEN = "access_token";
 const KEY_FULL_NAME = "full_name";
 const KEY_USER_TYPE = "user_type";
-
+const KEY_LGAS = "lgas";
 const KEY_TEMP_MAX = "temp_max";
 const KEY_TEMP_MEAN = "temp_mean";
 const KEY_TEMP_MIN = "temp_min";

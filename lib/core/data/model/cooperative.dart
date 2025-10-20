@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
-import 'package:kaspa/core/data/model/certificate.dart';
-import 'package:kaspa/core/data/model/general_model.dart';
+import '../../../core/data/model/certificate.dart';
+import '../../../core/data/model/general_model.dart';
 import '../../utils/const.dart';
 import 'insight.dart';
 

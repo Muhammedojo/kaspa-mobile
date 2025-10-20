@@ -107,6 +107,7 @@ class MarketInsightView extends StatelessWidget
                             return ErrorWidgets(title: "empty", message: '');
                           }
                           if (state is DodLoaded) {
+                           // debugPrint('DOD List Length: ${state.dodList.length}');
                             return state.dodList.isEmpty
                                 ? ErrorWidgets(message: 'empty')
                                 : ListView.separated(

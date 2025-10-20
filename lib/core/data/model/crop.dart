@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:kaspa/core/data/model/general_model.dart';
-import 'package:kaspa/core/data/model/insight.dart';
+import '../../../core/data/model/general_model.dart';
+import '../../../core/data/model/insight.dart';
 import '../../utils/const.dart';
 
 part 'crop.g.dart';

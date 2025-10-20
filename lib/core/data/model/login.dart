@@ -1,5 +1,8 @@
+import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
+import '../../storage/istorage.dart';
 import '../../utils/const.dart';
+import 'lga.dart';
 
 class Login {
   Id? userId;
@@ -8,6 +11,7 @@ class Login {
   String? username;
   String? email;
   String? userType;
+  int? lgaId;
 
   String? token;
   List<String>? roles;
@@ -26,6 +30,8 @@ class Login {
 
   bool isRequestSuccessful() => responseCode == "100";
   bool isValidationError() => message == VALIDATION_STATUS_MESSAGE;
+  
+  Lga? getUserLga() => GetIt.I.get<LocalStorage>().getUserLga(lgaId ?? 21);
 
   factory Login.fromJson(Map<String, dynamic> json) => _$LoginFromJson(json);
   Map<String, dynamic> toJson() => _$LoginToJson(this);
@@ -38,6 +44,7 @@ Login _$LoginFromJson(Map<String, dynamic> json) {
   obj.fullname = json[KEY_FULL_NAME];
   obj.username = json[KEY_USERNAME];
   obj.userType = json[KEY_USER_TYPE];
+  obj.lgaId = json[KEY_LGAS];
 
   List<String> roles = [];
   if (json.containsKey(KEY_ROLES)) {

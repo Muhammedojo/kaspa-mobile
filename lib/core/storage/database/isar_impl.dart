@@ -250,6 +250,18 @@ class IsarImpl implements DatabaseStorage {
     }
   }
 
+   @override
+  Lga? getUserLga(int lgaId) {
+    if (_isar.isOpen == false) {
+      return Lga();
+    }
+
+    final lgaObject =
+        _isar.lgas.filter().pkEqualTo(lgaId).findFirstSync();
+
+    return lgaObject;
+  }
+
   @override
   Future<List<Plot>> getPlot() {
     if (!_isar.isOpen) {

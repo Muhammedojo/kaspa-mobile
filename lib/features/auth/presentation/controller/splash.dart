@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kaspa/core/navigation/navigator.dart';
-import 'package:kaspa/features/auth/presentation/view/auth_options.dart';
+import '../../../../core/navigation/navigator.dart';
+import '../../../../features/auth/presentation/view/auth_options.dart';
 import '../../../../core/data/model/login.dart';
 import '../../../../core/navigation/route_constant.dart';
 import '../../../../core/storage/istorage.dart';
@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
       bool? hasUserLoggedIn = await GetIt.I.get<LocalStorage>().isLoggedIn();
       if (hasUserLoggedIn != null && hasUserLoggedIn) {
         Login user = await GetIt.I.get<LocalStorage>().getLoggedInUser();
-        debugPrint('User ${user.fullname}');
+       // debugPrint('User ${user.fullname}');
         await showHomeScreen(user);
       } else {
         if (mounted) {

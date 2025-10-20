@@ -4,7 +4,6 @@ import '../../../../core/data/model/crop.dart';
 import '../../../../core/data/model/lga.dart';
 import '../../../../core/data/model/market.dart';
 import '../../../../core/data/model/market_data.dart';
-import '../../../../core/data/model/product.dart';
 import '../../../home/presentation/bloc/market_price/cubit.dart';
 import '../contract/create_market_price.dart';
 import '../view/create_market_price.dart';

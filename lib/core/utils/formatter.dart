@@ -39,6 +39,15 @@ class NumberFormatter {
           value.isNotEmpty
               ? value
               : "$DEFAULT_DECIMAL_VALUE"));
+
+  static String formatCurrency(String value, {String currencyCode = 'NGN'}) =>
+      NumberFormat.simpleCurrency(
+        locale: Platform.localeName,
+        name: currencyCode,
+      ).format(num.parse(value.isNotEmpty
+              ? value
+              : "$DEFAULT_DECIMAL_VALUE"));
+
   static String formatPhoneNumber(String value) {
     String text = value;
     if (value.length == 11) {

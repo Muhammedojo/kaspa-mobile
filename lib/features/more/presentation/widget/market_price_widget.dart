@@ -5,6 +5,7 @@ import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/card_container_widget.dart';
 import '../../../../core/data/model/market_data.dart';
+import '../../../../core/utils/formatter.dart';
 
 class MarketPriceCard extends StatelessWidget {
   final MarketData data;
@@ -48,7 +49,8 @@ class MarketPriceCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                'NGN ${data.price ?? 0.0}'.toText(
+            
+             NumberFormatter.formatCurrency('${data.price ?? 0.0}').toText(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: AppColors.colorPrimary,

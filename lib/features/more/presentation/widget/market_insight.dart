@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +7,7 @@ import '../../../../core/resources/vectors.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/component/card_container_widget.dart';
+import '../../../../core/utils/formatter.dart';
 
 class MarketInsightCard extends StatelessWidget {
   final DodChange data;
@@ -24,7 +26,7 @@ class MarketInsightCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-           SvgPicture.asset(AppIcon.incident),
+            SvgPicture.asset(AppIcon.incident),
             8.horizontalSpace,
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -47,13 +49,13 @@ class MarketInsightCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                'NGN ${data.averagePrice ?? 0.0}'.toText(
+                NumberFormatter.formatCurrency('${data.averagePrice ?? 0.0}').toText(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: AppColors.colorPrimary,
                   translate: false,
                 ),
-                '${data.changePercent?? '0.0'}'.toText(
+                '${data.changePercent ?? '0.0'}'.toText(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   translate: false,

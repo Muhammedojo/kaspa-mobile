@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/colors.dart';
+import '../../../../core/utils/formatter.dart';
 
 class CooperativeDetailsCard extends StatelessWidget {
   const CooperativeDetailsCard({super.key});
@@ -46,7 +47,8 @@ class CooperativeDetailsCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryBackground,
                     ),
-                    'NGN 50000'.toText(
+
+                    NumberFormatter.formatCurrency('50000}').toText(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       translate: false,

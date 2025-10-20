@@ -83,13 +83,16 @@ class WeatherCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildWeatherDetail('-- hPa', 'Pressure'),
-              _buildWeatherDetail('--%', 'Humidity'),
+              _buildWeatherDetail('${insight.weather.precipSum}%', 'Rain (mm)'),
+              _buildWeatherDetail(
+                '${insight.weather.precipProbMean}%',
+                'Rain Probability',
+              ),
               _buildWeatherDetail(
                 '${insight.weather.windSpeedMax}km/h',
                 'Wind',
               ),
-              _buildWeatherDetail('--°C', 'Soil Temp'),
+              _buildWeatherDetail('${insight.weather.tempMax}°C', 'Soil Temp'),
             ],
           ),
           10.verticalSpace,

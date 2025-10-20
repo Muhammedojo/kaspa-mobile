@@ -14,7 +14,6 @@ import '../../../../core/utils/styles.dart';
 import '../../../home/presentation/bloc/bloc.dart';
 import '../../../home/presentation/bloc/market/cubit.dart';
 import '../../../home/presentation/bloc/market_price/cubit.dart';
-import '../../../home/presentation/bloc/product/cubit.dart';
 import '../contract/create_market_price.dart';
 
 class CreateMarketPriceView extends StatelessWidget
@@ -216,9 +215,7 @@ class CreateMarketPriceView extends StatelessWidget
                                 return DropdownMenuItem<Crop>(
                                   value: e,
                                   child: (e.variety ?? e.product?.name ?? '')
-                                      .toText(
-                                    translate: false,
-                                  ),
+                                      .toText(translate: false),
                                 );
                               }).toList(),
                           onChanged: (newValue) {
@@ -235,8 +232,6 @@ class CreateMarketPriceView extends StatelessWidget
                       );
                     },
                   ),
-               
-               
                 ),
                 16.verticalSpace,
                 'price'.toText(fontSize: 14, fontWeight: FontWeight.w600),

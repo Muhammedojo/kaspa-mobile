@@ -261,8 +261,9 @@ class FarmerDetailsView extends StatelessWidget
                       //           8.horizontalSpace,
                       //           Expanded(
                       //             child: (controller.farmer.lastName ??
-                      //                     'NGN 60,000.00')
-                      //                 .toText(translate: false, fontSize: 14),
+                      //                  
+                      // NumberFormatter.formatCurrency('60000').toText(
+                      //translate: false, fontSize: 14),
                       //           ),
                       //         ],
                       //       ),

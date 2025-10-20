@@ -153,6 +153,10 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<List<Lga>> getLga() => databaseStorage.getLga();
 
+   @override
+  Lga? getUserLga(int lgaId) =>
+      databaseStorage.getUserLga(lgaId);
+
   @override
   Future<List<Livestock>> getLivestock() => databaseStorage.getLivestock();
 

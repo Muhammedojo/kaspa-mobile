@@ -72,6 +72,7 @@ abstract class DatabaseStorage {
   });
   Future<List<FarmVisit>> getFarmVisit();
   Future<List<Lga>> getLga();
+  Lga? getUserLga(int lgaId);
   Future<List<Product>> getProduct();
   Future<List<Plot>> getPlot();
   Future<List<Livestock>> getLivestock();
